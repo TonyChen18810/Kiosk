@@ -5,18 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp">
-<!--
-    <View
-        android:id="@+id/colorView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"/>
 
-    <TextView
-        android:id="@+id/tvAnimalName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"/>
--->
     <androidx.cardview.widget.CardView
         android:id="@+id/HeartOfTheCards"
         android:layout_width="150dp"
@@ -24,7 +13,9 @@
         app:cardCornerRadius="7.5dp"
         android:clipToPadding="true"
         android:hapticFeedbackEnabled="true"
-        android:clickable="true">
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <LinearLayout
             android:layout_width="match_parent"

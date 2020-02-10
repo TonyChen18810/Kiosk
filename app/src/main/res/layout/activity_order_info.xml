@@ -29,7 +29,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="Logout"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.94"
@@ -74,11 +74,12 @@
         android:layout_height="45dp"
         android:background="@drawable/mybutton"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:focusable="true"
         android:gravity="center"
         android:padding="10dp"
         android:text="Next"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.472"
@@ -152,7 +153,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/AccountInfo"
         android:layout_width="200dp"
-        android:layout_height="225dp"
+        android:layout_height="235dp"
         android:clipToPadding="true"
         android:hapticFeedbackEnabled="true"
         app:cardCornerRadius="4dp"
@@ -178,7 +179,7 @@
                 android:text="You are logged in as: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/andy_accent"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <View
                 android:layout_width="wrap_content"
@@ -198,7 +199,7 @@
                 android:paddingBottom="15dp"
                 android:text="someone@mail.com"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <View
                 android:layout_width="wrap_content"
@@ -217,7 +218,7 @@
                 android:paddingBottom="15dp"
                 android:text="(123)-456-7890"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <View
                 android:layout_width="wrap_content"
@@ -236,7 +237,7 @@
                 android:paddingBottom="10dp"
                 android:text="Truck #"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

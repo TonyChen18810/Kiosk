@@ -45,6 +45,7 @@
         android:layout_height="wrap_content"
         android:text="How would you prefer communication?"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
@@ -66,19 +67,22 @@
             android:id="@+id/TextMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Text message" />
+            android:text="Text message"
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/EmailMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email" />
+            android:text="Email"
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/BothMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Text message and email" />
+            android:text="Text message and email"
+            android:textSize="16sp" />
 
     </RadioGroup>
 
@@ -89,6 +93,7 @@
         android:text="*Please select one"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/holo_red_dark"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/VerifyText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.415"
@@ -230,7 +235,7 @@
         android:text="*By clicking 'Next' I verify that all information is correct and accurate"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/andy_accent"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/NextBtn"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -247,11 +252,13 @@
         android:layout_marginRight="192dp"
         android:background="@drawable/mybutton"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:focusable="true"
         android:gravity="center"
         android:padding="10dp"
         android:text="Next"
-        android:textSize="12sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -264,10 +271,12 @@
         android:layout_height="50dp"
         android:background="@drawable/mybutton"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center"
         android:padding="10dp"
         android:text="Logout"
-        android:textSize="12sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.967"
@@ -281,6 +290,7 @@
         android:layout_height="45dp"
         android:background="#0000"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/TruckNumberBox"
@@ -296,6 +306,7 @@
         android:layout_height="45dp"
         android:background="#0000"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/TruckNameBox"
@@ -311,6 +322,7 @@
         android:layout_height="45dp"
         android:background="#0000"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/DriverLicenseBox"
@@ -326,6 +338,7 @@
         android:layout_height="45dp"
         android:background="#0000"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/DriverNameBox"
@@ -341,6 +354,7 @@
         android:layout_height="45dp"
         android:background="#0000"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/DispatcherPhoneNumberBox"
@@ -356,6 +370,7 @@
         android:layout_height="45dp"
         android:background="#0000"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/TrailerLicenseBox"
@@ -364,178 +379,6 @@
         app:layout_constraintTop_toTopOf="@+id/TrailerLicenseBox"
         app:layout_constraintVertical_bias="0.014"
         app:srcCompat="@drawable/info" />
-
-    <ImageView
-        android:id="@+id/TruckNameHelpBubble"
-        android:layout_width="333dp"
-        android:layout_height="233dp"
-        app:layout_constraintBottom_toBottomOf="@+id/TruckNameHelp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/TruckNameHelp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/bubble" />
-
-    <TextView
-        android:id="@+id/TruckNameHelpText"
-        android:layout_width="217dp"
-        android:layout_height="125dp"
-        android:text="Please enter the company name that is on your truck. DO NOT enter make or model of your vehicle"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#C9000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/TruckNameHelpBubble"
-        app:layout_constraintEnd_toEndOf="@id/TruckNameHelpBubble"
-        app:layout_constraintHorizontal_bias="0.456"
-        app:layout_constraintStart_toStartOf="@+id/TruckNameHelpBubble"
-        app:layout_constraintTop_toTopOf="@+id/TruckNameHelpBubble"
-        app:layout_constraintVertical_bias="0.157" />
-
-    <ImageView
-        android:id="@+id/TruckNumberHelpBubble"
-        android:layout_width="333dp"
-        android:layout_height="233dp"
-        app:layout_constraintBottom_toBottomOf="@+id/TruckNumberHelp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/TruckNumberHelp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/bubble" />
-
-    <TextView
-        android:id="@+id/TruckNumberHelpText"
-        android:layout_width="217dp"
-        android:layout_height="125dp"
-        android:layout_marginEnd="63dp"
-        android:layout_marginRight="63dp"
-        android:text="Please enter your truck number"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#C9000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/TruckNameHelpBubble"
-        app:layout_constraintEnd_toEndOf="@+id/TruckNameHelpBubble"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/TruckNameHelpBubble"
-        app:layout_constraintTop_toTopOf="@+id/TruckNumberHelpBubble"
-        app:layout_constraintVertical_bias="0.531" />
-
-    <ImageView
-        android:id="@+id/TrailerLicenseHelpBubble"
-        android:layout_width="333dp"
-        android:layout_height="233dp"
-        app:layout_constraintBottom_toBottomOf="@+id/TrailerLicenseHelp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/TrailerLicenseHelp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/bubble" />
-
-    <TextView
-        android:id="@+id/TrailerLicenseHelpText"
-        android:layout_width="217dp"
-        android:layout_height="125dp"
-        android:layout_marginEnd="63dp"
-        android:layout_marginRight="63dp"
-        android:text="Please enter your trailer license number"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#C9000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/TrailerLicenseHelpBubble"
-        app:layout_constraintEnd_toEndOf="@+id/TrailerLicenseHelpBubble"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/TrailerLicenseHelpBubble"
-        app:layout_constraintTop_toTopOf="@+id/TrailerLicenseHelpBubble"
-        app:layout_constraintVertical_bias="0.194" />
-
-    <ImageView
-        android:id="@+id/DriverLicenseHelpBubble"
-        android:layout_width="333dp"
-        android:layout_height="233dp"
-        app:layout_constraintBottom_toBottomOf="@+id/DriverLicenseHelp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/DriverLicenseHelp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/bubble" />
-
-    <TextView
-        android:id="@+id/DriverLicenseHelpText"
-        android:layout_width="217dp"
-        android:layout_height="125dp"
-        android:layout_marginEnd="63dp"
-        android:layout_marginRight="63dp"
-        android:text="Please enter your driver's license number"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#C9000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/DriverLicenseHelpBubble"
-        app:layout_constraintEnd_toEndOf="@+id/DriverLicenseHelpBubble"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/DriverLicenseHelpBubble"
-        app:layout_constraintTop_toTopOf="@+id/DriverLicenseHelpBubble"
-        app:layout_constraintVertical_bias="0.259" />
-
-    <ImageView
-        android:id="@+id/DriverNameHelpBubble"
-        android:layout_width="333dp"
-        android:layout_height="233dp"
-        app:layout_constraintBottom_toBottomOf="@+id/DriverNameHelp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/DriverNameHelp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/bubble" />
-
-    <TextView
-        android:id="@+id/DriverNameHelpText"
-        android:layout_width="217dp"
-        android:layout_height="125dp"
-        android:layout_marginEnd="63dp"
-        android:layout_marginRight="63dp"
-        android:text="Please enter your name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#C9000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/DriverNameHelpBubble"
-        app:layout_constraintEnd_toEndOf="@+id/DriverNameHelpBubble"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/DriverNameHelpBubble"
-        app:layout_constraintTop_toTopOf="@+id/DriverNameHelpBubble"
-        app:layout_constraintVertical_bias="0.24" />
-
-    <ImageView
-        android:id="@+id/DispatcherPhoneNumberHelpBubble"
-        android:layout_width="333dp"
-        android:layout_height="233dp"
-        app:layout_constraintBottom_toBottomOf="@+id/DispatcherPhoneNumberHelp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/DispatcherPhoneNumberHelp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/bubble" />
-
-    <TextView
-        android:id="@+id/DispatcherPhoneNumberHelpText"
-        android:layout_width="217dp"
-        android:layout_height="125dp"
-        android:layout_marginEnd="63dp"
-        android:layout_marginRight="63dp"
-        android:text="Please enter your Dispatcher's phone number"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#C9000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/DispatcherPhoneNumberHelpBubble"
-        app:layout_constraintEnd_toEndOf="@+id/DispatcherPhoneNumberHelpBubble"
-        app:layout_constraintHorizontal_bias="0.924"
-        app:layout_constraintStart_toStartOf="@+id/DispatcherPhoneNumberHelpBubble"
-        app:layout_constraintTop_toTopOf="@+id/DispatcherPhoneNumberHelpBubble"
-        app:layout_constraintVertical_bias="0.175" />
 
     <TextView
         android:id="@+id/helpText"

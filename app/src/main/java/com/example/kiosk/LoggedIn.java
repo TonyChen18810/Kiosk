@@ -1,15 +1,16 @@
 package com.example.kiosk;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -157,67 +158,102 @@ public class LoggedIn extends AppCompatActivity {
         truckNameHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableHelpButtons();
-                findViewById(R.id.TruckNameHelpBubble).setVisibility(View.VISIBLE);
-                findViewById(R.id.TruckNameHelpText).setVisibility(View.VISIBLE);
-                /**
-                 AnimationSet ani = new AnimationSet(true);
-                 ScaleAnimation scale = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                 TranslateAnimation translate = new TranslateAnimation(-50f, 0f, 130f, 0f);
-                 AlphaAnimation alpha = new AlphaAnimation(0f, 1f);
-                 ani.addAnimation(translate);
-                 ani.addAnimation(scale);
-                 ani.addAnimation(alpha);
-                 ani.setDuration(400);
-                 findViewById(R.id.TruckNameHelpBubble).startAnimation(ani);
-                 findViewById(R.id.TruckNameHelpText).startAnimation(ani);
-                 */
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
+                builder.setCancelable(true);
+                builder.setTitle("Help information");
+                builder.setMessage("Please enter the name of your truck/truck company");
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
         truckNumberHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableHelpButtons();
-                findViewById(R.id.TruckNumberHelpBubble).setVisibility(View.VISIBLE);
-                findViewById(R.id.TruckNumberHelpText).setVisibility(View.VISIBLE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
+                builder.setCancelable(true);
+                builder.setTitle("Help information");
+                builder.setMessage("Please enter the number of your truck (NOT your license plate number)");
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
         trailerLicenseHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableHelpButtons();
-                findViewById(R.id.TrailerLicenseHelpBubble).setVisibility(View.VISIBLE);
-                findViewById(R.id.TrailerLicenseHelpText).setVisibility(View.VISIBLE);
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
+                builder.setCancelable(true);
+                builder.setTitle("Help information");
+                builder.setMessage("Please enter the license plate number of your trailer");
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
         driverLicenseHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableHelpButtons();
-                findViewById(R.id.DriverLicenseHelpBubble).setVisibility(View.VISIBLE);
-                findViewById(R.id.DriverLicenseHelpText).setVisibility(View.VISIBLE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
+                builder.setCancelable(true);
+                builder.setTitle("Help information");
+                builder.setMessage("Please enter your driver's license number");
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
         driverNameHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableHelpButtons();
-                findViewById(R.id.DriverNameHelpBubble).setVisibility(View.VISIBLE);
-                findViewById(R.id.DriverNameHelpText).setVisibility(View.VISIBLE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
+                builder.setCancelable(true);
+                builder.setTitle("Help information");
+                builder.setMessage("Please enter your name");
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
         dispatcherPhoneNumberHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableHelpButtons();
-                findViewById(R.id.DispatcherPhoneNumberHelpBubble).setVisibility(View.VISIBLE);
-                findViewById(R.id.DispatcherPhoneNumberHelpText).setVisibility(View.VISIBLE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
+                builder.setCancelable(true);
+                builder.setTitle("Help information");
+                builder.setMessage("Please enter your dispatcher's phone number");
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -279,21 +315,6 @@ public class LoggedIn extends AppCompatActivity {
                 imm.showSoftInput(view, SHOW_IMPLICIT);
             }
         }
-    }
-
-    public void disableHelpButtons() {
-        findViewById(R.id.TruckNameHelpBubble).setVisibility(View.INVISIBLE);
-        findViewById(R.id.TruckNameHelpText).setVisibility(View.INVISIBLE);
-        findViewById(R.id.TruckNumberHelpBubble).setVisibility(View.INVISIBLE);
-        findViewById(R.id.TruckNumberHelpText).setVisibility(View.INVISIBLE);
-        findViewById(R.id.TrailerLicenseHelpBubble).setVisibility(View.INVISIBLE);
-        findViewById(R.id.TrailerLicenseHelpText).setVisibility(View.INVISIBLE);
-        findViewById(R.id.DriverLicenseHelpBubble).setVisibility(View.INVISIBLE);
-        findViewById(R.id.DriverLicenseHelpText).setVisibility(View.INVISIBLE);
-        findViewById(R.id.DriverNameHelpBubble).setVisibility(View.INVISIBLE);
-        findViewById(R.id.DriverNameHelpText).setVisibility(View.INVISIBLE);
-        findViewById(R.id.DispatcherPhoneNumberHelpBubble).setVisibility(View.INVISIBLE);
-        findViewById(R.id.DispatcherPhoneNumberHelpText).setVisibility(View.INVISIBLE);
     }
 
     @SuppressLint("SetTextI18n")
@@ -413,6 +434,5 @@ public class LoggedIn extends AppCompatActivity {
         phoneNumber.setText(emailAddress.getText().toString());
         emailAddress.setTextColor(getResources().getColor(R.color.black));
         phoneNumber.setTextColor(getResources().getColor(R.color.black));
-        disableHelpButtons();
     }
 }

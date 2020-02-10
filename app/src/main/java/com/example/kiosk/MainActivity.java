@@ -1,6 +1,5 @@
 package com.example.kiosk;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
@@ -11,7 +10,6 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -76,27 +74,8 @@ public class MainActivity extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
-        emailAddressBox = findViewById(R.id.EmailAddressBox);
-        phoneNumberBox = findViewById(R.id.PhoneNumberBox);
-        confirmEmailAddress = findViewById(R.id.ConfirmEmailAddress);
-        confirmPhoneNumber = findViewById(R.id.ConfirmPhoneNumber);
-        appointmentText = findViewById(R.id.AppointmentText);
-        welcomeText = findViewById(R.id.WelcomeText);
-        loginText = findViewById(R.id.LoginText);
-        nextBtn = findViewById(R.id.NextBtn);
-        noEmailWarning = findViewById(R.id.NoEmailWarning);
-        noPhoneNumberWarning = findViewById(R.id.NoPhoneNumberWarning);
-        unmatchingEmail = findViewById(R.id.UnmatchingEmail);
-        unmatchingPhone = findViewById(R.id.UnmatchingPhone);
+        setup();
 
-        noEmailWarning.setVisibility(View.INVISIBLE);
-        noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-        unmatchingEmail.setVisibility(View.INVISIBLE);
-        unmatchingPhone.setVisibility(View.INVISIBLE);
-
-        // nextBtn.setEnabled(false);
-
-        showSoftKeyboard(emailAddressBox);
         confirmPhoneNumber.setOnEditorActionListener(new KeyboardListener());
 
         Account kyleAccount = new Account("kyle@gmail.com", "8315885534", "Kyle's Truck",
@@ -119,6 +98,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, OrderInfo.class);
+                startActivity(intent);
             }
         });
 
@@ -177,8 +164,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        // phoneNumberBox.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         emailAddressBox.addTextChangedListener(new TextWatcher() {
             @Override
@@ -287,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
     nextBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (accountExists()) {
+            if (accountExists() && validNumber()) {
                 noEmailWarning.setVisibility(View.INVISIBLE);
                 noPhoneNumberWarning.setVisibility(View.INVISIBLE);
                 phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
@@ -308,12 +293,16 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 if (emailAddressBox.getText().toString().equals("") && phoneNumberBox.getText().toString().equals("")) {
                     noEmailWarning.setVisibility(View.VISIBLE);
+                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                     noPhoneNumberWarning.setVisibility(View.VISIBLE);
+                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                 } else if (phoneNumberBox.getText().toString().equals("")) {
                     noPhoneNumberWarning.setVisibility(View.VISIBLE);
+                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                     noEmailWarning.setVisibility(View.INVISIBLE);
                 } else if (emailAddressBox.getText().toString().equals("")) {
                     noEmailWarning.setVisibility(View.VISIBLE);
+                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                     noPhoneNumberWarning.setVisibility(View.INVISIBLE);
                 } else if (validEmail() && validNumber() && doesEmailMatch() && doesPhoneMatch()) {
                     nextBtn.setEnabled(false);
@@ -394,12 +383,34 @@ public class MainActivity extends AppCompatActivity {
         return currentAccount;
     }
 
-    public void showSoftKeyboard(View view) {
+    private void showSoftKeyboard(View view) {
         if (view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager)
                     getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(view, SHOW_IMPLICIT);
         }
+    }
+
+    private void setup() {
+        emailAddressBox = findViewById(R.id.EmailAddressBox);
+        phoneNumberBox = findViewById(R.id.PhoneNumberBox);
+        confirmEmailAddress = findViewById(R.id.ConfirmEmailAddress);
+        confirmPhoneNumber = findViewById(R.id.ConfirmPhoneNumber);
+        appointmentText = findViewById(R.id.AppointmentText);
+        welcomeText = findViewById(R.id.WelcomeText);
+        loginText = findViewById(R.id.LoginText);
+        nextBtn = findViewById(R.id.NextBtn);
+        noEmailWarning = findViewById(R.id.NoEmailWarning);
+        noPhoneNumberWarning = findViewById(R.id.NoPhoneNumberWarning);
+        unmatchingEmail = findViewById(R.id.UnmatchingEmail);
+        unmatchingPhone = findViewById(R.id.UnmatchingPhone);
+
+        noEmailWarning.setVisibility(View.INVISIBLE);
+        noPhoneNumberWarning.setVisibility(View.INVISIBLE);
+        unmatchingEmail.setVisibility(View.INVISIBLE);
+        unmatchingPhone.setVisibility(View.INVISIBLE);
+
+        showSoftKeyboard(emailAddressBox);
     }
 
     @SuppressLint("SetTextI18n")
