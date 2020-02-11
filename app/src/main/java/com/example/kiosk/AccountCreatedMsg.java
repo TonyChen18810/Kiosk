@@ -1,10 +1,11 @@
 package com.example.kiosk;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -12,33 +13,27 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
-public class OrderSubmitted extends AppCompatActivity {
+public class AccountCreatedMsg extends AppCompatActivity {
 
     private TextView email, number, truckName, truckNumber, trailerLicense, driverLicense, driverName, dispatcherPhone;
 
-    private List<Order> orders = new ArrayList<>();
-    private static RecyclerViewAdapter adapter;
-    private static Account currentAccount;
+    private Account currentAccount;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_submitted);
-
         if (Build.VERSION.SDK_INT < 16) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+        setContentView(R.layout.activity_account_created_msg);
+
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -55,17 +50,12 @@ public class OrderSubmitted extends AppCompatActivity {
         }
 
         setup();
+        currentAccount = CreateAccount.getCurrentAccount();
 
-        orders.addAll(OrderInfo.getOrders());
-
-        final RecyclerView recyclerView = findViewById(R.id.OrdersView);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(OrderSubmitted.this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManager);
-        adapter = new RecyclerViewAdapter(this, orders);
-        recyclerView.setAdapter(adapter);
-
-        email.setText(Html.fromHtml("Email address: " + "<b>" + "kyle@gmail.com" + "<b>"));
-        number.setText(Html.fromHtml("Phone number: " + "<b>" + "8315885534" + "<b>"));
+        // email.setText("Email address: " + currentAccount.getEmail());
+        // String str = "Email address: " + "<b>" + currentAccount.getEmail() + "<b>";
+        email.setText(Html.fromHtml("Email address: " + "<b>" + currentAccount.getEmail() + "<b>"));
+        number.setText(Html.fromHtml("Phone number: " + "<b>" + currentAccount.getPhoneNumber() + "<b>"));
         truckName.setText(Html.fromHtml("Current truck name: " + "<b>" + currentAccount.getTruckName() + "<b>"));
         truckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + currentAccount.getTruckNumber() + "<b>"));
         trailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
@@ -73,8 +63,16 @@ public class OrderSubmitted extends AppCompatActivity {
         driverName.setText(Html.fromHtml("Driver name: " + "<b>" + currentAccount.getDriverName() + "<b>"));
         dispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + currentAccount.getDispatcherPhoneNumber() + "<b>"));
 
+        EditText blank = findViewById(R.id.editText);
+        showSoftKeyboard(blank);
+        blank.setVisibility(View.INVISIBLE);
 
-        Toast.makeText(this, "Here's the order count: " + orders.size(), Toast.LENGTH_SHORT).show();
+        findViewById(R.id.loginBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AccountCreatedMsg.this, MainActivity.class));
+            }
+        });
     }
 
     private void showSoftKeyboard(View view) {
@@ -94,7 +92,5 @@ public class OrderSubmitted extends AppCompatActivity {
         driverLicense = findViewById(R.id.driverLicense);
         driverName = findViewById(R.id.driverName);
         dispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
-
-        currentAccount = MainActivity.getCurrentAccount();
     }
 }

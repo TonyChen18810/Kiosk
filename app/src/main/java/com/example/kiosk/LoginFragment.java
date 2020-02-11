@@ -1,19 +1,23 @@
 package com.example.kiosk;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -31,7 +35,29 @@ import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link LoginFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link LoginFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class LoginFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    private OnFragmentInteractionListener mListener;
+
+    public LoginFragment() {
+        // Required empty public constructor
+    }
 
     private static int currentLanguage = 0;
 
@@ -52,28 +78,49 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Account> accounts = new ArrayList<>();
     private static Account currentAccount;
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment LoginFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static LoginFragment newInstance(String param1, String param2) {
+        LoginFragment fragment = new LoginFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
         if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        setContentView(R.layout.activity_main);
-        // getSupportFragmentManager().beginTransaction().replace(R.id.login_layout, new LoginFragment()).commit();
-
-        View decorView = getWindow().getDecorView();
+        getActivity().setContentView(R.layout.activity_main);
+        View decorView = getActivity().getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-        getSupportActionBar().hide();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
+            Window w = getActivity().getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
@@ -86,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
                 "Arizona", "Kyle Gilbert", "4083675954");
         accounts.add(kyleAccount);
 
-        Spinner languageSpinner = findViewById(R.id.LanguageSpinner);
-        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.languages, android.R.layout.simple_spinner_dropdown_item);
+        Spinner languageSpinner = getView().findViewById(R.id.LanguageSpinner);
+        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(getContext(), R.array.languages, android.R.layout.simple_spinner_dropdown_item);
         languageSpinner.setPrompt("Language/Idioma/Langue");
         languageSpinner.setAdapter(languageAdapter);
 
@@ -259,80 +306,84 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 /**
-        if (doesEmailMatch() && doesPhoneMatch() && validEmail() && validNumber()) {
-            nextBtn.setEnabled(true);
-        }
-*/
+ if (doesEmailMatch() && doesPhoneMatch() && validEmail() && validNumber()) {
+ nextBtn.setEnabled(true);
+ }
+ */
 
-    nextBtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (accountExists() && validNumber()) {
-                noEmailWarning.setVisibility(View.INVISIBLE);
-                noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-                phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                nextBtn.setEnabled(false);
-                Intent intent = new Intent(MainActivity.this, LoggedIn.class);
-                intent.putExtra("Email Address", currentAccount.getEmail());
-                intent.putExtra("Phone Number", currentAccount.getPhoneNumber());
-                intent.putExtra("Truck Name", currentAccount.getTruckName());
-                intent.putExtra("Truck Number", currentAccount.getTruckNumber());
-                intent.putExtra("Trailer License", currentAccount.getTrailerLicense());
-                intent.putExtra("Trailer State", currentAccount.getTrailerState());
-                intent.putExtra("Driver License", currentAccount.getDriverLicense());
-                intent.putExtra("Driver State", currentAccount.getDriverState());
-                intent.putExtra("Driver Name", currentAccount.getDriverName());
-                intent.putExtra("Dispatcher's Phone Number", currentAccount.getDispatcherPhoneNumber());
-                startActivity(intent);
-            } else {
-                if (emailAddressBox.getText().toString().equals("") && phoneNumberBox.getText().toString().equals("")) {
-                    noEmailWarning.setVisibility(View.VISIBLE);
-                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                    noPhoneNumberWarning.setVisibility(View.VISIBLE);
-                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                } else if (phoneNumberBox.getText().toString().equals("")) {
-                    noPhoneNumberWarning.setVisibility(View.VISIBLE);
-                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (accountExists() && validNumber()) {
                     noEmailWarning.setVisibility(View.INVISIBLE);
-                } else if (emailAddressBox.getText().toString().equals("")) {
-                    noEmailWarning.setVisibility(View.VISIBLE);
-                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                     noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-                } else if (validEmail() && validNumber() && doesEmailMatch() && doesPhoneMatch()) {
-                    nextBtn.setEnabled(false);
                     phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                    confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                    noEmailWarning.setVisibility(View.INVISIBLE);
-                    noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-                    unmatchingEmail.setVisibility(View.INVISIBLE);
-                    unmatchingPhone.setVisibility(View.INVISIBLE);
-                    Intent createAccountIntent = new Intent(MainActivity.this, CreateAccount.class);
-                    createAccountIntent.putExtra("Email Address", emailAddressBox.getText().toString());
-                    createAccountIntent.putExtra("Phone Number", phoneNumberBox.getText().toString());
-                    startActivity(createAccountIntent);
-                } else if (!doesEmailMatch() && !doesPhoneMatch() && validEmail() && validNumber()) {
-                    unmatchingEmail.setVisibility(View.VISIBLE);
-                    unmatchingPhone.setVisibility(View.VISIBLE);
-                } else if (validEmail() && !validNumber()) {
-                    noPhoneNumberWarning.setVisibility(View.VISIBLE);
-                    noEmailWarning.setVisibility(View.INVISIBLE);
-                } else if (!validEmail() && validNumber()) {
-                    noEmailWarning.setVisibility(View.VISIBLE);
-                    noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-                } else if (!doesPhoneMatch() && validNumber()) {
-                    unmatchingPhone.setVisibility(View.VISIBLE);
-                } else if (!doesEmailMatch() && validEmail()) {
-                    unmatchingEmail.setVisibility(View.VISIBLE);
+                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                    nextBtn.setEnabled(false);
+                    /*
+                    Intent intent = new Intent(MainActivity.this, LoggedIn.class);
+                    intent.putExtra("Email Address", currentAccount.getEmail());
+                    intent.putExtra("Phone Number", currentAccount.getPhoneNumber());
+                    intent.putExtra("Truck Name", currentAccount.getTruckName());
+                    intent.putExtra("Truck Number", currentAccount.getTruckNumber());
+                    intent.putExtra("Trailer License", currentAccount.getTrailerLicense());
+                    intent.putExtra("Trailer State", currentAccount.getTrailerState());
+                    intent.putExtra("Driver License", currentAccount.getDriverLicense());
+                    intent.putExtra("Driver State", currentAccount.getDriverState());
+                    intent.putExtra("Driver Name", currentAccount.getDriverName());
+                    intent.putExtra("Dispatcher's Phone Number", currentAccount.getDispatcherPhoneNumber());
+                    startActivity(intent);
+                     */
                 } else {
-                    noEmailWarning.setVisibility(View.VISIBLE);
-                    noPhoneNumberWarning.setVisibility(View.VISIBLE);
+                    if (emailAddressBox.getText().toString().equals("") && phoneNumberBox.getText().toString().equals("")) {
+                        noEmailWarning.setVisibility(View.VISIBLE);
+                        emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                        noPhoneNumberWarning.setVisibility(View.VISIBLE);
+                        phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                    } else if (phoneNumberBox.getText().toString().equals("")) {
+                        noPhoneNumberWarning.setVisibility(View.VISIBLE);
+                        phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                        noEmailWarning.setVisibility(View.INVISIBLE);
+                    } else if (emailAddressBox.getText().toString().equals("")) {
+                        noEmailWarning.setVisibility(View.VISIBLE);
+                        emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                        noPhoneNumberWarning.setVisibility(View.INVISIBLE);
+                    } else if (validEmail() && validNumber() && doesEmailMatch() && doesPhoneMatch()) {
+                        nextBtn.setEnabled(false);
+                        phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                        confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                        noEmailWarning.setVisibility(View.INVISIBLE);
+                        noPhoneNumberWarning.setVisibility(View.INVISIBLE);
+                        unmatchingEmail.setVisibility(View.INVISIBLE);
+                        unmatchingPhone.setVisibility(View.INVISIBLE);
+                        /*
+                        Intent createAccountIntent = new Intent(MainActivity.this, CreateAccount.class);
+                        createAccountIntent.putExtra("Email Address", emailAddressBox.getText().toString());
+                        createAccountIntent.putExtra("Phone Number", phoneNumberBox.getText().toString());
+                        startActivity(createAccountIntent);
+                        */
+                    } else if (!doesEmailMatch() && !doesPhoneMatch() && validEmail() && validNumber()) {
+                        unmatchingEmail.setVisibility(View.VISIBLE);
+                        unmatchingPhone.setVisibility(View.VISIBLE);
+                    } else if (validEmail() && !validNumber()) {
+                        noPhoneNumberWarning.setVisibility(View.VISIBLE);
+                        noEmailWarning.setVisibility(View.INVISIBLE);
+                    } else if (!validEmail() && validNumber()) {
+                        noEmailWarning.setVisibility(View.VISIBLE);
+                        noPhoneNumberWarning.setVisibility(View.INVISIBLE);
+                    } else if (!doesPhoneMatch() && validNumber()) {
+                        unmatchingPhone.setVisibility(View.VISIBLE);
+                    } else if (!doesEmailMatch() && validEmail()) {
+                        unmatchingEmail.setVisibility(View.VISIBLE);
+                    } else {
+                        noEmailWarning.setVisibility(View.VISIBLE);
+                        noPhoneNumberWarning.setVisibility(View.VISIBLE);
+                    }
                 }
             }
-        }
-    });
-
+        });
     }
+
     public static int getCurrentLanguage() {
         return currentLanguage;
     }
@@ -380,25 +431,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void showSoftKeyboard(View view) {
         if (view.requestFocus()) {
-            InputMethodManager imm = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(view, SHOW_IMPLICIT);
         }
     }
 
     private void setup() {
-        emailAddressBox = findViewById(R.id.EmailAddressBox);
-        phoneNumberBox = findViewById(R.id.PhoneNumberBox);
-        confirmEmailAddress = findViewById(R.id.ConfirmEmailAddress);
-        confirmPhoneNumber = findViewById(R.id.ConfirmPhoneNumber);
-        appointmentText = findViewById(R.id.AppointmentText);
-        welcomeText = findViewById(R.id.WelcomeText);
-        loginText = findViewById(R.id.LoginText);
-        nextBtn = findViewById(R.id.NextBtn);
-        noEmailWarning = findViewById(R.id.NoEmailWarning);
-        noPhoneNumberWarning = findViewById(R.id.NoPhoneNumberWarning);
-        unmatchingEmail = findViewById(R.id.UnmatchingEmail);
-        unmatchingPhone = findViewById(R.id.UnmatchingPhone);
+        emailAddressBox = getView().findViewById(R.id.EmailAddressBox);
+        phoneNumberBox = getView().findViewById(R.id.PhoneNumberBox);
+        confirmEmailAddress = getView().findViewById(R.id.ConfirmEmailAddress);
+        confirmPhoneNumber = getView().findViewById(R.id.ConfirmPhoneNumber);
+        appointmentText = getView().findViewById(R.id.AppointmentText);
+        welcomeText = getView().findViewById(R.id.WelcomeText);
+        loginText = getView().findViewById(R.id.LoginText);
+        nextBtn = getView().findViewById(R.id.NextBtn);
+        noEmailWarning = getView().findViewById(R.id.NoEmailWarning);
+        noPhoneNumberWarning = getView().findViewById(R.id.NoPhoneNumberWarning);
+        unmatchingEmail = getView().findViewById(R.id.UnmatchingEmail);
+        unmatchingPhone = getView().findViewById(R.id.UnmatchingPhone);
 
         noEmailWarning.setVisibility(View.INVISIBLE);
         noPhoneNumberWarning.setVisibility(View.INVISIBLE);
@@ -459,5 +509,51 @@ public class MainActivity extends AppCompatActivity {
                 nextBtn.setText("Suivant");
                 break;
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_login, container, false);
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 }

@@ -56,6 +56,8 @@ public class CreateAccount extends AppCompatActivity {
     private ImageButton truckNameHelp, truckNumberHelp, trailerLicenseHelp,
             driverLicenseHelp, driverNameHelp, dispatcherPhoneNumberHelp;
 
+    private static Account currentAccount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -259,6 +261,7 @@ public class CreateAccount extends AppCompatActivity {
                 dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
                 Account account = new Account(email, phone, truckNameStr, truckNumberStr, trailerLicenseStr,
                         trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
+                currentAccount = account;
 
                 // Fragment fragment = new AccountCreatedMsgFragment();
                 // getSupportFragmentManager().beginTransaction().replace(R.id.fragment_frame, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
@@ -278,6 +281,8 @@ public class CreateAccount extends AppCompatActivity {
                 truckNameHelp.setVisibility(View.INVISIBLE);
                 truckNumberHelp.setVisibility(View.INVISIBLE);
                  */
+                // such a waste
+                startActivity(new Intent(CreateAccount.this, AccountCreatedMsg.class));
 
                 if (radioTextMsg.isChecked()) {
                     try {
@@ -310,6 +315,10 @@ public class CreateAccount extends AppCompatActivity {
                 imm.showSoftInput(view, SHOW_IMPLICIT);
             }
         }
+    }
+
+    public static Account getCurrentAccount() {
+        return currentAccount;
     }
 
     @SuppressLint("SetTextI18n")
