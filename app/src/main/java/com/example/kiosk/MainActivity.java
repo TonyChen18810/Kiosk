@@ -387,6 +387,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setup() {
+        Order.clearOrders();
         emailAddressBox = findViewById(R.id.EmailAddressBox);
         phoneNumberBox = findViewById(R.id.PhoneNumberBox);
         confirmEmailAddress = findViewById(R.id.ConfirmEmailAddress);

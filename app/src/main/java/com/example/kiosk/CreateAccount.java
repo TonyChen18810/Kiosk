@@ -142,7 +142,7 @@ public class CreateAccount extends AppCompatActivity {
                 builder.setCancelable(true);
                 builder.setTitle("Help information");
                 builder.setMessage("Please enter the name of your truck/truck company");
-                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
@@ -159,7 +159,7 @@ public class CreateAccount extends AppCompatActivity {
                 builder.setCancelable(true);
                 builder.setTitle("Help information");
                 builder.setMessage("Please enter the number of your truck (NOT your license plate number)");
-                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }
@@ -178,7 +178,7 @@ public class CreateAccount extends AppCompatActivity {
                 builder.setCancelable(true);
                 builder.setTitle("Help information");
                 builder.setMessage("Please enter the license plate number of your trailer");
-                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
@@ -195,7 +195,7 @@ public class CreateAccount extends AppCompatActivity {
                 builder.setCancelable(true);
                 builder.setTitle("Help information");
                 builder.setMessage("Please enter your driver's license number");
-                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
@@ -212,7 +212,7 @@ public class CreateAccount extends AppCompatActivity {
                 builder.setCancelable(true);
                 builder.setTitle("Help information");
                 builder.setMessage("Please enter your name");
-                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
@@ -229,7 +229,7 @@ public class CreateAccount extends AppCompatActivity {
                 builder.setCancelable(true);
                 builder.setTitle("Help information");
                 builder.setMessage("Please enter your dispatcher's phone number");
-                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }

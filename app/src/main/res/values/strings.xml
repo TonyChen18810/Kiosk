@@ -1,6 +1,24 @@
 <resources>
     <string name="app_name">Kiosk</string>
 
+    <string name="yes">
+        <font size="20">
+            yes
+        </font>
+    </string>
+
+    <string name="no">
+        <font size="20">
+            no
+        </font>
+    </string>
+
+    <string name="confirm">
+        <front size="30">
+            confirm
+        </front>
+    </string>
+
     <string-array name="languages">
         <item>English</item>
         <item>Español</item>

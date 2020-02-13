@@ -1,10 +1,14 @@
 package com.example.kiosk;
 
-public class Order {
+import java.util.ArrayList;
+
+class Order {
 
     private String orderNumber;
     private String buyerName;
     private String destination;
+
+    private static ArrayList<Order> orders = new ArrayList<>();
 
     public Order(String orderNumber, String buyerName, String destination) {
         this.orderNumber = orderNumber;
@@ -34,5 +38,21 @@ public class Order {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public static ArrayList<Order> getOrders() {
+        return orders;
+    }
+
+    public static void addOrder(Order order) {
+        orders.add(order);
+    }
+
+    public static int getSize() {
+        return orders.size();
+    }
+
+    public static void clearOrders() {
+        orders.clear();
     }
 }

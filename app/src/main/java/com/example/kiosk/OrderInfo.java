@@ -9,10 +9,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.health.SystemHealthManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -24,10 +22,9 @@ import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +47,9 @@ public class OrderInfo extends AppCompatActivity {
 
     private static RecyclerViewAdapter adapter;
 
-    private static List<Order> orders = new ArrayList<>();
+    private static RecyclerView recyclerView;
+
+    private String beforeEdit = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,30 +75,38 @@ public class OrderInfo extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
         setup();
-        changeLanguage(MainActivity.getCurrentLanguage());
 
+        Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+
+        } else {
+            orderNumber.setText(extras.getString("Order Number"));
+            buyerName.setText(extras.getString("Buyer Name"));
+            destination.setText(extras.getString("Destination"));
+            int position = extras.getInt("Position");
+            beforeEdit = orderNumber.getText().toString();
+        }
+
+        changeLanguage(MainActivity.getCurrentLanguage());
+/*
         orders.add(new Order("FF555", "Charlies", "Yuma, Arizona"));
         orders.add(new Order("ASDA4", "Whole Foods", "Santa Cruz, California"));
         orders.add(new Order("654FF", "Jonathon", "Denver, Colorado"));
-        // orders.add(new Order("BC333", "Brock", "Detroit, Michigan"));
-        // orders.add(new Order("JHGG5", "Safeway", "Los Angeles, California"));
-        // orders.add(new Order("GSSD2", "New Leaf", "San Francisco, California"));
-        // orders.add(new Order("HGFF3", "Target", "Orlando, Florida"));
-        // orders.add(new Order("XF2DX", "Costco", "Seattle, Washington"));
+        orders.add(new Order("BC333", "Brock", "Detroit, Michigan"));
+        orders.add(new Order("JHGG5", "Safeway", "Los Angeles, California"));
+        orders.add(new Order("GSSD2", "New Leaf", "San Francisco, California"));
+        orders.add(new Order("HGFF3", "Target", "Orlando, Florida"));
+        orders.add(new Order("XF2DX", "Costco", "Seattle, Washington"));
+        orders.add(new Order("54VVC", "Johnnie's Farm", "Houston, Texas"));
+*/
+
         // orders.add(new Order("54VVC", "Johnnie's Farm", "Houston, Texas"));
 
-        final RecyclerView recyclerView = findViewById(R.id.OrdersView);
+        recyclerView = findViewById(R.id.OrdersView);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(OrderInfo.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
-        adapter = new RecyclerViewAdapter(this, orders);
+        adapter = new RecyclerViewAdapter(this, Order.getOrders());
         recyclerView.setAdapter(adapter);
-
-        adapter.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(OrderInfo.this, "You clicked " + adapter.getItem(position) + " on item position " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,27 +176,39 @@ public class OrderInfo extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("Orders size: " + Order.getSize());
                 String orderNumberStr, buyerNameStr, destinationStr;
                 orderNumberStr = orderNumber.getText().toString();
                 buyerNameStr = buyerName.getText().toString();
                 destinationStr = destination.getText().toString();
-                final Order order = new Order(orderNumberStr, buyerNameStr, destinationStr);
-                orders.add(order);
-
-                adapter.notifyItemInserted(adapter.getItemCount() - 1);
-                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                boolean exists = false;
+                for (int i = 0; i < Order.getSize(); i++) {
+                    if (beforeEdit.equals(Order.getOrders().get(i).getOrderNumber())) {
+                        Order.getOrders().get(i).setOrderNumber(orderNumberStr);
+                        Order.getOrders().get(i).setBuyerName(buyerNameStr);
+                        Order.getOrders().get(i).setDestination(destinationStr);
+                        adapter.notifyDataSetChanged();
+                        exists = true;
+                    }
+                }
+                if (!exists) {
+                    final Order order = new Order(orderNumberStr, buyerNameStr, destinationStr);
+                    Order.addOrder(order);
+                    adapter.notifyDataSetChanged();
+                    adapter.notifyItemInserted(adapter.getItemCount() - 1);
+                    recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(OrderInfo.this);
                 builder.setCancelable(true);
                 builder.setTitle("Multiple orders");
                 builder.setMessage("Do you have another order to enter?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 orderNumber.setText("");
                                 buyerName.setText("");
                                 destination.setText("");
-
 
                                 Animation animation = new AlphaAnimation(1, 0.5f);
                                 animation.setDuration(500);
@@ -202,7 +221,7 @@ public class OrderInfo extends AppCompatActivity {
                                 orderNumber.requestFocus();
                             }
                         });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(OrderInfo.this, OrderSubmitted.class);
@@ -214,14 +233,6 @@ public class OrderInfo extends AppCompatActivity {
                 nextBtn.setEnabled(false);
             }
         });
-/**
-        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                printOrders();
-            }
-        });
- */
     }
 
     public void showSoftKeyboard(View view) {
@@ -235,8 +246,8 @@ public class OrderInfo extends AppCompatActivity {
     }
 
     public void printOrders() {
-        for (int i = 0; i < orders.size(); i++) {
-            System.out.println("Order " + i + ":\n" + "Order number: " + orders.get(i).getOrderNumber() + "\n" + "Buyer name: " + orders.get(i).getBuyerName() + "\n" + "Destination: " + orders.get(i).getDestination());
+        for (int i = 0; i < Order.getSize(); i++) {
+            System.out.println("Order " + i + ":\n" + "Order number: " + Order.getOrders().get(i).getOrderNumber() + "\n" + "Buyer name: " + Order.getOrders().get(i).getBuyerName() + "\n" + "Destination: " + Order.getOrders().get(i).getDestination());
         }
     }
 
@@ -256,10 +267,6 @@ public class OrderInfo extends AppCompatActivity {
             }
         }
         return newNum;
-    }
-
-    public static List<Order> getOrders() {
-        return orders;
     }
 
     public static RecyclerViewAdapter getAdapter() {

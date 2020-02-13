@@ -1,34 +1,32 @@
 package com.example.kiosk;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class OrderSubmitted extends AppCompatActivity {
 
-    private TextView email, number, truckName, truckNumber, trailerLicense, driverLicense, driverName, dispatcherPhone;
+    // private static ArrayList<Order> orders = new ArrayList<>();
+    private static ArrayList<String> removedOrders = new ArrayList<>();
 
-    private List<Order> orders = new ArrayList<>();
-    private static RecyclerViewAdapter adapter;
-    private static Account currentAccount;
+    private static RecyclerViewVerticalAdapter adapter;
+    private static RecyclerView recyclerView;
+
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,54 +45,86 @@ public class OrderSubmitted extends AppCompatActivity {
         getSupportActionBar().hide();
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
+        context = this;
 
-        setup();
+        // orders.addAll(OrderInfo.getOrders());
 
-        orders.addAll(OrderInfo.getOrders());
-
-        final RecyclerView recyclerView = findViewById(R.id.OrdersView);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(OrderSubmitted.this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManager);
-        adapter = new RecyclerViewAdapter(this, orders);
+        recyclerView = findViewById(R.id.OrdersView);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter = new RecyclerViewVerticalAdapter(Order.getOrders());
         recyclerView.setAdapter(adapter);
 
-        email.setText(Html.fromHtml("Email address: " + "<b>" + "kyle@gmail.com" + "<b>"));
-        number.setText(Html.fromHtml("Phone number: " + "<b>" + "8315885534" + "<b>"));
-        truckName.setText(Html.fromHtml("Current truck name: " + "<b>" + currentAccount.getTruckName() + "<b>"));
-        truckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + currentAccount.getTruckNumber() + "<b>"));
-        trailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
-        driverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
-        driverName.setText(Html.fromHtml("Driver name: " + "<b>" + currentAccount.getDriverName() + "<b>"));
-        dispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + currentAccount.getDispatcherPhoneNumber() + "<b>"));
-
-
-        Toast.makeText(this, "Here's the order count: " + orders.size(), Toast.LENGTH_SHORT).show();
+        findViewById(R.id.SubmitBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(OrderSubmitted.this, OrderSummary.class));
+            }
+        });
     }
 
-    private void showSoftKeyboard(View view) {
-        if (view.requestFocus()) {
-            InputMethodManager imm = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(view, SHOW_IMPLICIT);
+    public static void confirmMsg(final View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(true);
+        builder.setTitle("Delete order");
+        builder.setMessage("Are you sure you want to delete this order?");
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                removeItem(v);
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public static void editOrder(View v) {
+        Intent intent = new Intent(context, OrderInfo.class);
+
+        int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
+        RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(selectedItemPosition);
+        TextView orderNumber = viewHolder.itemView.findViewById(R.id.OrderNum);
+        String orderNumberStr = orderNumber.getText().toString();
+        TextView buyerName = viewHolder.itemView.findViewById(R.id.BuyerName);
+        String buyerNameStr = buyerName.getText().toString();
+        TextView destination = viewHolder.itemView.findViewById(R.id.Destination);
+        String destinationStr = destination.getText().toString();
+
+        intent.putExtra("Order Number", orderNumberStr);
+        intent.putExtra("Buyer Name", buyerNameStr);
+        intent.putExtra("Destination", destinationStr);
+        intent.putExtra("Position", selectedItemPosition);
+        context.startActivity(intent);
+    }
+
+    private static void removeItem(View v) {
+        int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
+        RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(selectedItemPosition);
+        TextView orderNum = viewHolder.itemView.findViewById(R.id.OrderNum);
+        String selectedName = orderNum.getText().toString();
+        String selectedOrderNumber = "-1";
+
+        for (int i = 0; i < Order.getSize(); i++) {
+            if (selectedName.equals(Order.getOrders().get(i).getOrderNumber())) {
+                selectedOrderNumber = Order.getOrders().get(i).getOrderNumber();
+            }
         }
-    }
-
-    private void setup() {
-        email = findViewById(R.id.emailAddress);
-        number = findViewById(R.id.phoneNumber);
-        truckName = findViewById(R.id.truckName);
-        truckNumber = findViewById(R.id.truckNumber);
-        trailerLicense = findViewById(R.id.trailerLicense);
-        driverLicense = findViewById(R.id.driverLicense);
-        driverName = findViewById(R.id.driverName);
-        dispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
-
-        currentAccount = MainActivity.getCurrentAccount();
+        removedOrders.add(selectedOrderNumber);
+        Order.getOrders().remove(selectedItemPosition);
+        adapter.notifyItemRemoved(selectedItemPosition);
     }
 }

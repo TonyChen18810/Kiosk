@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysVisible">
-        <activity android:name=".AccountCreatedMsg"></activity>
+        <activity android:name=".OrderSummary"></activity>
+        <activity android:name=".AccountCreatedMsg" />
         <activity android:name=".OrderSubmitted" />
         <activity android:name=".OrderInfo" />
         <activity android:name=".LoggedIn" />
