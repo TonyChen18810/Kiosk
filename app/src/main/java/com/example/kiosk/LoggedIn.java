@@ -25,6 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class LoggedIn extends AppCompatActivity {
@@ -56,25 +58,19 @@ public class LoggedIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_in);
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-        setContentView(R.layout.activity_logged_in);
+
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         String[] states = getResources().getStringArray(R.array.states);
         setup();
@@ -285,13 +281,6 @@ public class LoggedIn extends AppCompatActivity {
                 startActivity(intent);
 
                 if (radioTextMsg.isChecked()) {
-                    try {
-                        MessageSender sendTxtMsg = new MessageSender();
-                        sendTxtMsg.sendSMS(getApplicationContext());
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
-                    }
-
                     // send text message
                     // start next activity
                 } else if (radioEmailMsg.isChecked()) {

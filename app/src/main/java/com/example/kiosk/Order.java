@@ -10,49 +10,37 @@ class Order {
 
     private static ArrayList<Order> orders = new ArrayList<>();
 
-    public Order(String orderNumber, String buyerName, String destination) {
+    Order(String orderNumber, String buyerName, String destination) {
         this.orderNumber = orderNumber;
         this.buyerName = buyerName;
         this.destination = destination;
     }
 
-    public String getOrderNumber() {
+    String getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
-    public String getBuyerName() {
+    String getBuyerName() {
         return buyerName;
-    }
-
-    public void setBuyerName(String buyerName) {
-        this.buyerName = buyerName;
     }
 
     public String getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
     public static ArrayList<Order> getOrders() {
         return orders;
     }
 
-    public static void addOrder(Order order) {
+    static void addOrder(Order order) {
         orders.add(order);
     }
 
-    public static int getSize() {
+    static int getSize() {
         return orders.size();
     }
 
-    public static void clearOrders() {
+    static void clearOrders() {
         orders.clear();
     }
 }

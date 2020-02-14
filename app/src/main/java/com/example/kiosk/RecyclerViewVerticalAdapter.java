@@ -14,7 +14,7 @@ public class RecyclerViewVerticalAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private ArrayList<Order> orders;
 
-    public RecyclerViewVerticalAdapter(ArrayList<Order> orders) {
+    RecyclerViewVerticalAdapter(ArrayList<Order> orders) {
         this.orders = orders;
     }
 
@@ -22,8 +22,7 @@ public class RecyclerViewVerticalAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_view_long, parent, false);
-        MyViewHolder viewHolder = new MyViewHolder(view);
-        return viewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -42,14 +41,14 @@ public class RecyclerViewVerticalAdapter extends RecyclerView.Adapter<RecyclerVi
         return orders.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView orderNumber;
         TextView buyerName;
         TextView destination;
         Button deleteBtn;
 
-        public MyViewHolder(@NonNull final View itemView) {
+        MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             this.orderNumber = itemView.findViewById(R.id.OrderNum);
             this.buyerName = itemView.findViewById(R.id.BuyerName);

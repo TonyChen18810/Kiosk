@@ -63,10 +63,6 @@ public class CreateAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
         setContentView(R.layout.activity_create_account);
         View decorView = getWindow().getDecorView();
 
@@ -78,10 +74,8 @@ public class CreateAccount extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -274,13 +268,6 @@ public class CreateAccount extends AppCompatActivity {
                 startActivity(new Intent(CreateAccount.this, AccountCreatedMsg.class));
 
                 if (radioTextMsg.isChecked()) {
-                    try {
-                        MessageSender sendTxtMsg = new MessageSender();
-                        sendTxtMsg.sendSMS(getApplicationContext());
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
-                    }
-
                     // send text message
                     // start next activity
                 } else if (radioEmailMsg.isChecked()) {

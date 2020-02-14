@@ -6,37 +6,30 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.example.App;
+
 import java.util.ArrayList;
 
 public class OrderSubmitted extends AppCompatActivity {
 
-    // private static ArrayList<Order> orders = new ArrayList<>();
     private static ArrayList<String> removedOrders = new ArrayList<>();
 
     private static RecyclerViewVerticalAdapter adapter;
     private static RecyclerView recyclerView;
-
-    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_submitted);
 
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -47,13 +40,8 @@ public class OrderSubmitted extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
-        context = this;
-
-        // orders.addAll(OrderInfo.getOrders());
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         recyclerView = findViewById(R.id.OrdersView);
         recyclerView.setHasFixedSize(true);
@@ -86,7 +74,7 @@ public class OrderSubmitted extends AppCompatActivity {
 
     public static void confirmMsg(final View v) {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(App.getContext());
         builder.setCancelable(true);
         builder.setTitle("Delete order");
         builder.setMessage("Are you sure you want to delete order " + Order.getOrders().get(selectedItemPosition).getOrderNumber() + "?");
