@@ -66,16 +66,30 @@ public class OrderSubmitted extends AppCompatActivity {
         findViewById(R.id.SubmitBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrderSubmitted.this, OrderSummary.class));
+                setContentView(R.layout.rules_regulations);
+                findViewById(R.id.SubmitBtn2).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(OrderSubmitted.this, OrderSummary.class));
+                    }
+                });
+            }
+        });
+
+        findViewById(R.id.addBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(OrderSubmitted.this, OrderInfo.class));
             }
         });
     }
 
     public static void confirmMsg(final View v) {
+        int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(true);
         builder.setTitle("Delete order");
-        builder.setMessage("Are you sure you want to delete this order?");
+        builder.setMessage("Are you sure you want to delete order " + Order.getOrders().get(selectedItemPosition).getOrderNumber() + "?");
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -90,25 +104,6 @@ public class OrderSubmitted extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public static void editOrder(View v) {
-        Intent intent = new Intent(context, OrderInfo.class);
-
-        int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
-        RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(selectedItemPosition);
-        TextView orderNumber = viewHolder.itemView.findViewById(R.id.OrderNum);
-        String orderNumberStr = orderNumber.getText().toString();
-        TextView buyerName = viewHolder.itemView.findViewById(R.id.BuyerName);
-        String buyerNameStr = buyerName.getText().toString();
-        TextView destination = viewHolder.itemView.findViewById(R.id.Destination);
-        String destinationStr = destination.getText().toString();
-
-        intent.putExtra("Order Number", orderNumberStr);
-        intent.putExtra("Buyer Name", buyerNameStr);
-        intent.putExtra("Destination", destinationStr);
-        intent.putExtra("Position", selectedItemPosition);
-        context.startActivity(intent);
     }
 
     private static void removeItem(View v) {

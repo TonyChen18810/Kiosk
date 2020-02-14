@@ -84,7 +84,17 @@ public class MainActivity extends AppCompatActivity {
         Account kyleAccount = new Account("kyle@gmail.com", "8315885534", "Kyle's Truck",
                 "57", "5WHA67V", "California", "F3342376",
                 "Arizona", "Kyle Gilbert", "4083675954");
-        accounts.add(kyleAccount);
+        Account testAccount = new Account("bob@gmail.com", "8319345883", "Bob's Truck",
+                "57", "5WHA67V", "California", "F3342376",
+                "Arizona", "Bob John", "4083675954");
+        Account.addAccount(kyleAccount);
+        Account.addAccount(testAccount);
+
+        ArrayList<Account> temp = new ArrayList<>();
+        temp = Account.getAccounts();
+        for (int i = 0; i < temp.size(); i++) {
+            System.out.println(temp.get(i).getEmail());
+        }
 
         Spinner languageSpinner = findViewById(R.id.LanguageSpinner);
         ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.languages, android.R.layout.simple_spinner_dropdown_item);
@@ -365,9 +375,10 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean accountExists() {
         String email = emailAddressBox.getText().toString();
-        for (int i = 0; i < accounts.size(); i++) {
-            if (accounts.get(i).getEmail().equals(email)) {
-                currentAccount = accounts.get(i);
+        ArrayList<Account> temp = Account.getAccounts();
+        for (int i = 0; i < temp.size(); i++) {
+            if (temp.get(i).getEmail().equals(email)) {
+                currentAccount = temp.get(i);
                 return true;
             }
         }

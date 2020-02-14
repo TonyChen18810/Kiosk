@@ -1,5 +1,7 @@
 package com.example.kiosk;
 
+import java.util.ArrayList;
+
 public class Account {
 
     private String email;
@@ -12,6 +14,8 @@ public class Account {
     private String driverState;
     private String driverName;
     private String dispatcherPhoneNumber;
+
+    private static ArrayList<Account> accounts = new ArrayList<>();
 
     public Account(String email, String phoneNumber, String truckName, String truckNumber,
                    String trailerLicense, String trailerState, String driverLicense,
@@ -60,5 +64,21 @@ public class Account {
 
     public String getDispatcherPhoneNumber() {
         return dispatcherPhoneNumber;
+    }
+
+    public static ArrayList<Account> getAccounts() {
+        return accounts;
+    }
+
+    public int getAccountsSize() {
+        return accounts.size();
+    }
+
+    public static void addAccount(Account account) {
+        accounts.add(account);
+    }
+
+    public static void clearAccounts() {
+        accounts.clear();
     }
 }

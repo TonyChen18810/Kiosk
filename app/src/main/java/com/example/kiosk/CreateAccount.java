@@ -31,6 +31,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class CreateAccount extends AppCompatActivity {
@@ -262,25 +264,12 @@ public class CreateAccount extends AppCompatActivity {
                 Account account = new Account(email, phone, truckNameStr, truckNumberStr, trailerLicenseStr,
                         trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
                 currentAccount = account;
-
-                // Fragment fragment = new AccountCreatedMsgFragment();
-                // getSupportFragmentManager().beginTransaction().replace(R.id.fragment_frame, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
-                /*
-                emailAddress.setVisibility(View.INVISIBLE);
-                phoneNumber.setVisibility(View.INVISIBLE);
-                truckName.setVisibility(View.INVISIBLE);
-                truckNumber.setVisibility(View.INVISIBLE);
-                trailerLicense.setVisibility(View.INVISIBLE);
-                driverLicense.setVisibility(View.INVISIBLE);
-                driverName.setVisibility(View.INVISIBLE);
-                dispatcherPhoneNumber.setVisibility(View.INVISIBLE);
-                dispatcherPhoneNumberHelp.setVisibility(View.INVISIBLE);
-                driverLicenseHelp.setVisibility(View.INVISIBLE);
-                driverNameHelp.setVisibility(View.INVISIBLE);
-                trailerLicenseHelp.setVisibility(View.INVISIBLE);
-                truckNameHelp.setVisibility(View.INVISIBLE);
-                truckNumberHelp.setVisibility(View.INVISIBLE);
-                 */
+                Account.addAccount(account);
+                System.out.println("Currently registered accounts: ");
+                ArrayList<Account> temp = Account.getAccounts();
+                for (int i = 0; i < temp.size(); i++) {
+                    System.out.println("Email: " + temp.get(i).getEmail() + " | Phone number: " + temp.get(i).getPhoneNumber());
+                }
                 // such a waste
                 startActivity(new Intent(CreateAccount.this, AccountCreatedMsg.class));
 

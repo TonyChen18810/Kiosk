@@ -2,6 +2,7 @@ package com.example.kiosk;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,10 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.Toast;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -46,10 +44,11 @@ public class OrderInfo extends AppCompatActivity {
     private Button nextBtn;
 
     private static RecyclerViewAdapter adapter;
-
     private static RecyclerView recyclerView;
 
-    private String beforeEdit = "";
+    boolean empty;
+
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,30 +83,37 @@ public class OrderInfo extends AppCompatActivity {
             buyerName.setText(extras.getString("Buyer Name"));
             destination.setText(extras.getString("Destination"));
             int position = extras.getInt("Position");
-            beforeEdit = orderNumber.getText().toString();
         }
 
         changeLanguage(MainActivity.getCurrentLanguage());
-/*
-        orders.add(new Order("FF555", "Charlies", "Yuma, Arizona"));
-        orders.add(new Order("ASDA4", "Whole Foods", "Santa Cruz, California"));
-        orders.add(new Order("654FF", "Jonathon", "Denver, Colorado"));
-        orders.add(new Order("BC333", "Brock", "Detroit, Michigan"));
-        orders.add(new Order("JHGG5", "Safeway", "Los Angeles, California"));
-        orders.add(new Order("GSSD2", "New Leaf", "San Francisco, California"));
-        orders.add(new Order("HGFF3", "Target", "Orlando, Florida"));
-        orders.add(new Order("XF2DX", "Costco", "Seattle, Washington"));
-        orders.add(new Order("54VVC", "Johnnie's Farm", "Houston, Texas"));
-*/
+        context = this;
 
-        // orders.add(new Order("54VVC", "Johnnie's Farm", "Houston, Texas"));
+        if (Order.getSize() == 0) {
+            Order.addOrder(new Order("","",""));
+            empty = true;
+        }
 
         recyclerView = findViewById(R.id.OrdersView);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(OrderInfo.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
-        adapter = new RecyclerViewAdapter(this, Order.getOrders());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter = new RecyclerViewAdapter(context, Order.getOrders());
         recyclerView.setAdapter(adapter);
-
+        adapter.notifyDataSetChanged();
+       if (empty) {
+           recyclerView.setVisibility(View.INVISIBLE);
+      }
+/*
+        Order.addOrder(new Order("FF555", "Charlies", "Yuma, Arizona"));
+        Order.addOrder(new Order("ASDA4", "Whole Foods", "Santa Cruz, California"));
+        Order.addOrder(new Order("654FF", "Jonathon", "Denver, Colorado"));
+        Order.addOrder(new Order("BC333", "Brock", "Detroit, Michigan"));
+        Order.addOrder(new Order("JHGG5", "Safeway", "Los Angeles, California"));
+        Order.addOrder(new Order("GSSD2", "New Leaf", "San Francisco, California"));
+        Order.addOrder(new Order("HGFF3", "Target", "Orlando, Florida"));
+        Order.addOrder(new Order("XF2DX", "Costco", "Seattle, Washington"));
+        Order.addOrder(new Order("54VVC", "Johnnie's Farm", "Houston, Texas"));
+*/
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,28 +182,20 @@ public class OrderInfo extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Orders size: " + Order.getSize());
                 String orderNumberStr, buyerNameStr, destinationStr;
                 orderNumberStr = orderNumber.getText().toString();
                 buyerNameStr = buyerName.getText().toString();
                 destinationStr = destination.getText().toString();
-                boolean exists = false;
-                for (int i = 0; i < Order.getSize(); i++) {
-                    if (beforeEdit.equals(Order.getOrders().get(i).getOrderNumber())) {
-                        Order.getOrders().get(i).setOrderNumber(orderNumberStr);
-                        Order.getOrders().get(i).setBuyerName(buyerNameStr);
-                        Order.getOrders().get(i).setDestination(destinationStr);
-                        adapter.notifyDataSetChanged();
-                        exists = true;
-                    }
+                if (!recyclerView.isShown()) {
+                    Order.getOrders().remove(0);
+                    recyclerView.setVisibility(View.VISIBLE);
                 }
-                if (!exists) {
-                    final Order order = new Order(orderNumberStr, buyerNameStr, destinationStr);
-                    Order.addOrder(order);
-                    adapter.notifyDataSetChanged();
-                    adapter.notifyItemInserted(adapter.getItemCount() - 1);
-                    recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-                }
+                Order.addOrder(new Order(orderNumberStr, buyerNameStr, destinationStr));
+                empty = false;
+
+                adapter.notifyDataSetChanged();
+                adapter.notifyItemInserted(adapter.getItemCount() - 1);
+                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(OrderInfo.this);
                 builder.setCancelable(true);

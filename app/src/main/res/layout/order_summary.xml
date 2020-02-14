@@ -7,36 +7,36 @@
     android:padding="10dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/HeartOfTheCards"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="7.5dp"
+        android:id="@+id/OrderSummaryCard"
+        android:layout_width="220dp"
+        android:layout_height="350dp"
         android:clipToPadding="true"
-        app:cardElevation="5dp">
+        app:cardElevation="5dp"
+        android:layout_gravity="center">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
             <TextView
                 android:id="@+id/OrderNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="15dp"
                 android:gravity="center"
-                android:paddingBottom="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="13dp"
                 android:text="Order Number"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
                 android:background="#C97A7171" />
 
             <TextView
@@ -45,18 +45,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="8dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="13dp"
                 android:text="Buyer Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
                 android:background="#C97A7171" />
 
             <TextView
@@ -65,18 +64,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="13dp"
                 android:text="Destination"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
                 android:background="#C97A7171" />
 
             <TextView
@@ -85,18 +83,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="13dp"
                 android:text="Apt. Time"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
                 android:background="#C97A7171" />
 
             <TextView
@@ -105,18 +102,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="13dp"
                 android:text="Est.Pallets"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
                 android:background="#C97A7171" />
 
             <TextView
@@ -125,11 +121,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:text="Est. Weight"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 

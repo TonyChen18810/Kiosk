@@ -1,19 +1,29 @@
 package com.example.kiosk;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
+import java.util.concurrent.ThreadLocalRandom;
+
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class OrderSummary extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RecyclerViewAdapter adapter;
+    private RecyclerViewSummaryAdapter adapter;
+
+    private final int CONFIRMATION_NUMBER = ThreadLocalRandom.current().nextInt(1000, 9999 + 1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +41,42 @@ public class OrderSummary extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
-/*
+
         recyclerView = findViewById(R.id.OrdersView);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(OrderSummary.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
-        adapter = new RecyclerViewAdapter(this, Order.getOrders());
+        adapter = new RecyclerViewSummaryAdapter(this, Order.getOrders());
         recyclerView.setAdapter(adapter);
- */
+
+        TextView confirmationNum = findViewById(R.id.confirm);
+        confirmationNum.setText(String.valueOf(CONFIRMATION_NUMBER));
+
+        findViewById(R.id.ConfirmBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.final_screen);
+                findViewById(R.id.LogoutBtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        /*
+                        ConstraintLayout final_screen = findViewById(R.id.finalScreenLayout);
+                        final_screen.setVisibility(View.GONE);
+                        ConstraintLayout rules_regulations = findViewById(R.id.RulesRegulations);
+                        rules_regulations.setVisibility(View.GONE);
+                         */
+                        Account.clearAccounts();
+                        Order.clearOrders();
+                        startActivity(new Intent(OrderSummary.this, MainActivity.class));
+                    }
+                });
+            }
+        });
     }
 }
