@@ -117,9 +117,9 @@ public class LoggedIn extends AppCompatActivity {
 
         ActivityCompat.requestPermissions(LoggedIn.this, new String[]{Manifest.permission.SEND_SMS}, 0);
 
-        final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item);
+        final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.my_custom_spinner);
         // SpinnerAdapter stateAdapter = new SpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.states));
-        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         trailerStateSpinner.setAdapter(stateAdapter);
         // stateSpinner.setSelection(stateAdapter.getCount());
         trailerStateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -134,9 +134,9 @@ public class LoggedIn extends AppCompatActivity {
             }
         });
 
-        final ArrayAdapter<CharSequence> stateAdapter2 = ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item);
+        final ArrayAdapter<CharSequence> stateAdapter2 = ArrayAdapter.createFromResource(this, R.array.states, R.layout.my_custom_spinner);
         // SpinnerAdapter stateAdapter2 = new SpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.states));
-        stateAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // stateAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         driverStateSpinner.setAdapter(stateAdapter2);
         // stateSpinner2.setSelection(stateAdapter.getCount() - 1);
         driverStateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

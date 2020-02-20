@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/fragment_frame"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:screenOrientation="landscape"
+    tools:context=".CreateAccount">
+
+    <TextView
+        android:id="@+id/LoggedInText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+        android:paddingTop="-500dp"
+        android:text="You are logged in as: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#C9000000"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <EditText
+        android:id="@+id/DriverLicenseBox"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
+        android:background="@drawable/boxbackground"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="5dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/DriverNameBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.973" />
+
+    <EditText
+        android:id="@+id/DispatcherPhoneNumberBox"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="556dp"
+        android:background="@drawable/boxbackground"
+        android:ems="10"
+        android:inputType="phone"
+        android:paddingLeft="5dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/PreferInfoText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.957" />
+
+    <EditText
+        android:id="@+id/PhoneNumberBox"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
+        android:background="@drawable/boxbackground"
+        android:ems="10"
+        android:inputType="phone"
+        android:paddingLeft="5dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/TruckNameBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.941" />
+
+    <Spinner
+        android:id="@+id/StateSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:dropDownWidth="50dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintStart_toEndOf="@+id/TrailerLicenseBox"
+        app:layout_constraintTop_toBottomOf="@+id/TruckNumberBox"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/PreferInfoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="How would you prefer communication?"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Spinner
+        android:id="@+id/StateSpinner2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:dropDownWidth="50dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toEndOf="@+id/DriverLicenseBox"
+        app:layout_constraintTop_toBottomOf="@+id/TrailerLicenseBox"
+        app:layout_constraintVertical_bias="0.005" />
+
+    <EditText
+        android:id="@+id/DriverNameBox"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
+        android:background="@drawable/boxbackground"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="5dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/DispatcherPhoneNumberBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.981" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="537dp"
+        android:layout_height="170dp"
+        app:layout_constraintBottom_toTopOf="@+id/PleaseSelectOne"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.994">
+
+        <RadioButton
+            android:id="@+id/TextMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Text message"
+            android:textSize="40sp" />
+
+        <RadioButton
+            android:id="@+id/EmailMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textSize="40sp" />
+
+        <RadioButton
+            android:id="@+id/BothMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Text message and email"
+            android:textSize="40sp" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/PleaseSelectOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*Please select one"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/VerifyText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.445"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.992" />
+
+    <EditText
+        android:id="@+id/EmailAddressBox"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/boxbackground"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="5dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/PhoneNumberBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CreateAccountText"
+        app:layout_constraintVertical_bias="0.714" />
+
+    <EditText
+        android:id="@+id/TruckNumberBox"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
+        android:background="@drawable/boxbackground"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="5dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/TrailerLicenseBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.959" />
+
+    <EditText
+        android:id="@+id/TruckNameBox"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
+        android:background="@drawable/boxbackground"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="5dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/TruckNumberBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.953" />
+
+    <TextView
+        android:id="@+id/VerifyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1588dp"
+        android:lineSpacingExtra="8sp"
+        android:text="*By clicking 'Submit' I verify that all information is correct and accurate"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/andy_accent"
+        android:textSize="42sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/TrailerLicenseBox"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
+        android:background="@drawable/boxbackground"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="5dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/DriverLicenseBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.966" />
+
+    <Button
+        android:id="@+id/NextBtn"
+        style="@android:style/Widget.Button.Small"
+        android:layout_width="200dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="1760dp"
+        android:background="@drawable/mybutton"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Next"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/LogoutBtn"
+        style="@android:style/Widget.Button.Small"
+        android:layout_width="200dp"
+        android:layout_height="110dp"
+        android:background="@drawable/mybutton"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Logout"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <ImageButton
+        android:id="@+id/TruckNameHelp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/TruckNameBox"
+        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TruckNameBox"
+        app:layout_constraintVertical_bias="0.016"
+        app:srcCompat="@drawable/info" />
+
+    <ImageButton
+        android:id="@+id/TruckNumberHelp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/TruckNumberBox"
+        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TruckNameBox"
+        app:layout_constraintVertical_bias="0.03"
+        app:srcCompat="@drawable/info" />
+
+    <ImageButton
+        android:id="@+id/DriverNameHelp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/DriverNameBox"
+        app:layout_constraintHorizontal_bias="0.933"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DriverLicenseBox"
+        app:layout_constraintVertical_bias="0.036"
+        app:srcCompat="@drawable/info" />
+
+    <ImageButton
+        android:id="@+id/DispatcherPhoneNumberHelp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/DispatcherPhoneNumberBox"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/DispatcherPhoneNumberBox"
+        app:layout_constraintVertical_bias="0.022"
+        app:srcCompat="@drawable/info" />
+
+    <ImageButton
+        android:id="@+id/TrailerLicenseHelp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/TrailerLicenseBox"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TrailerLicenseBox"
+        app:layout_constraintVertical_bias="0.017"
+        app:srcCompat="@drawable/info" />
+
+    <ImageButton
+        android:id="@+id/DriverLicenseHelp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/DriverLicenseBox"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/DriverLicenseBox"
+        app:layout_constraintVertical_bias="0.021"
+        app:srcCompat="@drawable/info" />
+
+    <TextView
+        android:id="@+id/helpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:text="Select icon for help"
+        android:textColor="#C9000000"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/helpIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.031" />
+
+    <ImageView
+        android:id="@+id/helpIcon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.029"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.028"
+        app:srcCompat="@drawable/info" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
