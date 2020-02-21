@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -20,59 +19,53 @@ import java.util.ArrayList;
 
 public class OrderSubmitted extends AppCompatActivity {
 
-    // private static ArrayList<Order> orders = new ArrayList<>();
     private static ArrayList<String> removedOrders = new ArrayList<>();
 
     private static RecyclerViewVerticalAdapter adapter;
     private static RecyclerView recyclerView;
 
-    private static Context context;
+    // private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_submitted);
 
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-        getSupportActionBar().hide();
-
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
-        context = this;
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-        // orders.addAll(OrderInfo.getOrders());
+        // context = this;
 
         recyclerView = findViewById(R.id.OrdersView);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new RecyclerViewVerticalAdapter(Order.getOrders());
+        adapter = new RecyclerViewVerticalAdapter(OrderSubmitted.this, Order.getOrders());
         recyclerView.setAdapter(adapter);
 
         findViewById(R.id.SubmitBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.rules_regulations);
-                findViewById(R.id.SubmitBtn2).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(OrderSubmitted.this, OrderSummary.class));
-                    }
-                });
+                if (Order.getSize() > 0) {
+                    setContentView(R.layout.rules_regulations);
+                    findViewById(R.id.SubmitBtn2).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(OrderSubmitted.this, OrderSummary.class));
+                        }
+                    });
+                } else {
+                    // Display error message
+                }
             }
         });
 
@@ -84,7 +77,7 @@ public class OrderSubmitted extends AppCompatActivity {
         });
     }
 
-    public static void confirmMsg(final View v) {
+    public static void confirmMsg(final View v, Context context) {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(true);
@@ -109,12 +102,18 @@ public class OrderSubmitted extends AppCompatActivity {
     private static void removeItem(View v) {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
         RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(selectedItemPosition);
-        TextView orderNum = viewHolder.itemView.findViewById(R.id.OrderNum);
-        String selectedName = orderNum.getText().toString();
+        TextView orderNum = null;
+        if (viewHolder != null) {
+            orderNum = viewHolder.itemView.findViewById(R.id.OrderNum);
+        }
+        String selectedName = null;
+        if (orderNum != null) {
+            selectedName = orderNum.getText().toString();
+        }
         String selectedOrderNumber = "-1";
 
         for (int i = 0; i < Order.getSize(); i++) {
-            if (selectedName.equals(Order.getOrders().get(i).getOrderNumber())) {
+            if (selectedName != null && selectedName.equals(Order.getOrders().get(i).getOrderNumber())) {
                 selectedOrderNumber = Order.getOrders().get(i).getOrderNumber();
             }
         }

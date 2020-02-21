@@ -17,7 +17,7 @@ public class Account {
 
     private static ArrayList<Account> accounts = new ArrayList<>();
 
-    public Account(String email, String phoneNumber, String truckName, String truckNumber,
+    Account(String email, String phoneNumber, String truckName, String truckNumber,
                    String trailerLicense, String trailerState, String driverLicense,
                    String driverState, String driverName, String dispatcherPhoneNumber) {
         this.email = email;
@@ -36,49 +36,45 @@ public class Account {
         return email;
     }
 
-    public String getPhoneNumber() {
+    String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public String getTruckName() {
+    String getTruckName() {
         return truckName;
     }
 
-    public String getTruckNumber() {
+    String getTruckNumber() {
         return truckNumber;
     }
 
-    public String getTrailerLicense() { return trailerLicense; }
+    String getTrailerLicense() { return trailerLicense; }
 
-    public String getTrailerState() { return trailerState; }
+    String getTrailerState() { return trailerState; }
 
-    public String getDriverLicense() {
+    String getDriverLicense() {
         return driverLicense;
     }
 
-    public String getDriverState() { return driverState; }
+    String getDriverState() { return driverState; }
 
-    public String getDriverName() {
+    String getDriverName() {
         return driverName;
     }
 
-    public String getDispatcherPhoneNumber() {
+    String getDispatcherPhoneNumber() {
         return dispatcherPhoneNumber;
     }
 
-    public static ArrayList<Account> getAccounts() {
+    static ArrayList<Account> getAccounts() {
         return accounts;
     }
 
-    public int getAccountsSize() {
-        return accounts.size();
-    }
-
-    public static void addAccount(Account account) {
+    static void addAccount(Account account) {
         accounts.add(account);
     }
 
-    public static void clearAccounts() {
+    static void clearAccounts() {
         accounts.clear();
     }
 }

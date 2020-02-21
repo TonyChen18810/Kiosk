@@ -1,7 +1,6 @@
 package com.example.kiosk;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -9,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -49,33 +47,23 @@ public class MainActivity extends AppCompatActivity {
     private TextView unmatchingPhone;
     private boolean expanded = false;
 
-    private ArrayList<Account> accounts = new ArrayList<>();
     private static Account currentAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
         setContentView(R.layout.activity_main);
-        // getSupportFragmentManager().beginTransaction().replace(R.id.login_layout, new LoginFragment()).commit();
 
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-        getSupportActionBar().hide();
-
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         setup();
 
@@ -90,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         Account.addAccount(kyleAccount);
         Account.addAccount(testAccount);
 
-        ArrayList<Account> temp = new ArrayList<>();
+        ArrayList<Account> temp;
         temp = Account.getAccounts();
         for (int i = 0; i < temp.size(); i++) {
             System.out.println(temp.get(i).getEmail());
@@ -268,11 +256,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-/**
-        if (doesEmailMatch() && doesPhoneMatch() && validEmail() && validNumber()) {
-            nextBtn.setEnabled(true);
-        }
-*/
 
     nextBtn.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -393,7 +376,9 @@ public class MainActivity extends AppCompatActivity {
         if (view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager)
                     getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(view, SHOW_IMPLICIT);
+            if (imm != null) {
+                imm.showSoftInput(view, SHOW_IMPLICIT);
+            }
         }
     }
 

@@ -11,7 +11,9 @@ public class KeyboardListener implements TextView.OnEditorActionListener {
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(v, 0);
+            if (imm != null) {
+                imm.showSoftInput(v, 0);
+            }
             return true;
         }
         return false;

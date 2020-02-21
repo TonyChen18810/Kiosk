@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -22,38 +20,26 @@ public class AccountCreatedMsg extends AppCompatActivity {
 
     private TextView email, number, truckName, truckNumber, trailerLicense, driverLicense, driverName, dispatcherPhone;
 
-    private Account currentAccount;
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
         setContentView(R.layout.activity_account_created_msg);
 
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-
-        getSupportActionBar().hide();
+        decorView.setSystemUiVisibility(uiOptions);;
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         setup();
-        currentAccount = CreateAccount.getCurrentAccount();
+        Account currentAccount = CreateAccount.getCurrentAccount();
 
-        // email.setText("Email address: " + currentAccount.getEmail());
-        // String str = "Email address: " + "<b>" + currentAccount.getEmail() + "<b>";
         email.setText(Html.fromHtml("Email address: " + "<b>" + currentAccount.getEmail() + "<b>"));
         number.setText(Html.fromHtml("Phone number: " + "<b>" + currentAccount.getPhoneNumber() + "<b>"));
         truckName.setText(Html.fromHtml("Current truck name: " + "<b>" + currentAccount.getTruckName() + "<b>"));
@@ -79,7 +65,9 @@ public class AccountCreatedMsg extends AppCompatActivity {
         if (view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager)
                     getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(view, SHOW_IMPLICIT);
+            if (imm != null) {
+                imm.showSoftInput(view, SHOW_IMPLICIT);
+            }
         }
     }
 

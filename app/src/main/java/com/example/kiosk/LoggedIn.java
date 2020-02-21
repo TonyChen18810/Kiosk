@@ -9,7 +9,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -56,25 +55,16 @@ public class LoggedIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_in);
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-        setContentView(R.layout.activity_logged_in);
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-        getSupportActionBar().hide();
-
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         String[] states = getResources().getStringArray(R.array.states);
         setup();
@@ -115,17 +105,13 @@ public class LoggedIn extends AppCompatActivity {
             // phone = (String) savedInstanceState.getSerializable("Phone Number");
         }
 
-        // phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-
         changeLanguage(MainActivity.getCurrentLanguage());
 
         ActivityCompat.requestPermissions(LoggedIn.this, new String[]{Manifest.permission.SEND_SMS}, 0);
 
         final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item);
-        // SpinnerAdapter stateAdapter = new SpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.states));
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         trailerStateSpinner.setAdapter(stateAdapter);
-        // stateSpinner.setSelection(stateAdapter.getCount());
         trailerStateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -139,10 +125,8 @@ public class LoggedIn extends AppCompatActivity {
         });
 
         final ArrayAdapter<CharSequence> stateAdapter2 = ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item);
-        // SpinnerAdapter stateAdapter2 = new SpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.states));
         stateAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         driverStateSpinner.setAdapter(stateAdapter2);
-        // stateSpinner2.setSelection(stateAdapter.getCount() - 1);
         driverStateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -285,13 +269,6 @@ public class LoggedIn extends AppCompatActivity {
                 startActivity(intent);
 
                 if (radioTextMsg.isChecked()) {
-                    try {
-                        MessageSender sendTxtMsg = new MessageSender();
-                        sendTxtMsg.sendSMS(getApplicationContext());
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
-                    }
-
                     // send text message
                     // start next activity
                 } else if (radioEmailMsg.isChecked()) {

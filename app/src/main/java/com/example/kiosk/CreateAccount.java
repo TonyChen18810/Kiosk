@@ -3,17 +3,12 @@ package com.example.kiosk;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
-import androidx.fragment.app.Fragment;
-
 import android.Manifest;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import android.view.View;
@@ -41,8 +36,6 @@ public class CreateAccount extends AppCompatActivity {
     private Button homeBtn;
     private Button submitBtn;
     private TextView createAccount;
-    private EditText emailAddress;
-    private EditText phoneNumber;
     private EditText truckName;
     private EditText truckNumber;
     private EditText trailerLicense;
@@ -63,25 +56,17 @@ public class CreateAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
         setContentView(R.layout.activity_create_account);
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-        getSupportActionBar().hide();
-
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -103,10 +88,8 @@ public class CreateAccount extends AppCompatActivity {
 
         final Spinner stateSpinner = findViewById(R.id.StateSpinner);
         final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item);
-        // SpinnerAdapter stateAdapter = new SpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.states));
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner.setAdapter(stateAdapter);
-        // stateSpinner.setSelection(stateAdapter.getCount());
         stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -121,10 +104,8 @@ public class CreateAccount extends AppCompatActivity {
 
         final Spinner stateSpinner2 = findViewById(R.id.StateSpinner2);
         final ArrayAdapter<CharSequence> stateAdapter2 = ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item);
-        // SpinnerAdapter stateAdapter2 = new SpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.states));
         stateAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner2.setAdapter(stateAdapter2);
-        // stateSpinner2.setSelection(stateAdapter.getCount() - 1);
         stateSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -168,8 +149,6 @@ public class CreateAccount extends AppCompatActivity {
                         });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-                // findViewById(R.id.TruckNumberHelpBubble).setVisibility(View.VISIBLE);
-                // findViewById(R.id.TruckNumberHelpText).setVisibility(View.VISIBLE);
             }
         });
 
@@ -270,17 +249,10 @@ public class CreateAccount extends AppCompatActivity {
                 for (int i = 0; i < temp.size(); i++) {
                     System.out.println("Email: " + temp.get(i).getEmail() + " | Phone number: " + temp.get(i).getPhoneNumber());
                 }
-                // such a waste
+                // such a waste - change to a view
                 startActivity(new Intent(CreateAccount.this, AccountCreatedMsg.class));
 
                 if (radioTextMsg.isChecked()) {
-                    try {
-                        MessageSender sendTxtMsg = new MessageSender();
-                        sendTxtMsg.sendSMS(getApplicationContext());
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
-                    }
-
                     // send text message
                     // start next activity
                 } else if (radioEmailMsg.isChecked()) {
@@ -393,8 +365,8 @@ public class CreateAccount extends AppCompatActivity {
         homeBtn = findViewById(R.id.HomeBtn);
         submitBtn = findViewById(R.id.SubmitBtn);
         createAccount = findViewById(R.id.CreateAccountText);
-        emailAddress = findViewById(R.id.EmailAddressBox);
-        phoneNumber = findViewById(R.id.PhoneNumberBox);
+        EditText emailAddress = findViewById(R.id.EmailAddressBox);
+        EditText phoneNumber = findViewById(R.id.PhoneNumberBox);
         truckName = findViewById(R.id.TruckNameBox);
         truckNumber = findViewById(R.id.TruckNumberBox);
         trailerLicense = findViewById(R.id.TrailerLicenseBox);

@@ -10,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,7 +23,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -34,16 +32,12 @@ public class OrderInfo extends AppCompatActivity {
     private EditText buyerName;
     private EditText destination;
     private Button logoutBtn;
-    private TextView emailStr;
-    private TextView phoneNumberStr;
-    private TextView truckNumberStr;
-    private Account currentAccount;
     private TextView pleaseEnterText;
     private TextView appointmentText;
     private TextView loggedInAsText;
     private Button nextBtn;
 
-    private static RecyclerViewAdapter adapter;
+    private static RecyclerViewHorizontalAdapter adapter;
     private static RecyclerView recyclerView;
 
     boolean empty;
@@ -55,34 +49,24 @@ public class OrderInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_info);
 
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-        getSupportActionBar().hide();
-
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         setup();
 
         Bundle extras = getIntent().getExtras();
-        if (extras == null) {
-
-        } else {
+        if (extras != null) {
             orderNumber.setText(extras.getString("Order Number"));
             buyerName.setText(extras.getString("Buyer Name"));
             destination.setText(extras.getString("Destination"));
-            int position = extras.getInt("Position");
         }
 
         changeLanguage(MainActivity.getCurrentLanguage());
@@ -97,7 +81,7 @@ public class OrderInfo extends AppCompatActivity {
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(OrderInfo.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new RecyclerViewAdapter(context, Order.getOrders());
+        adapter = new RecyclerViewHorizontalAdapter(context, Order.getOrders());
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
        if (empty) {
@@ -214,7 +198,9 @@ public class OrderInfo extends AppCompatActivity {
                                 animation.setRepeatCount(3);
                                 animation.setRepeatMode(Animation.REVERSE);
                                 View lastItemView = recyclerView.getLayoutManager().findViewByPosition(adapter.getItemCount() - 1);
-                                lastItemView.startAnimation(animation);
+                                if (lastItemView != null) {
+                                    lastItemView.startAnimation(animation);
+                                }
 
                                 orderNumber.requestFocus();
                             }
@@ -243,32 +229,22 @@ public class OrderInfo extends AppCompatActivity {
         }
     }
 
-    public void printOrders() {
-        for (int i = 0; i < Order.getSize(); i++) {
-            System.out.println("Order " + i + ":\n" + "Order number: " + Order.getOrders().get(i).getOrderNumber() + "\n" + "Buyer name: " + Order.getOrders().get(i).getBuyerName() + "\n" + "Destination: " + Order.getOrders().get(i).getDestination());
-        }
-    }
-
     public String formatPhoneNumber(String number) {
-        String newNum = "";
-        char charNum[] = number.toCharArray();
-        newNum += "(";
+        StringBuilder newNum = new StringBuilder();
+        char[] charNum = number.toCharArray();
+        newNum.append("(");
         for (int i = 0; i < charNum.length; i++) {
             if (i == 2) {
-                newNum += charNum[i];
-                newNum += ")-";
+                newNum.append(charNum[i]);
+                newNum.append(")-");
             } else if (i == 5) {
-                newNum += charNum[i];
-                newNum += "-";
+                newNum.append(charNum[i]);
+                newNum.append("-");
             } else {
-                newNum += charNum[i];
+                newNum.append(charNum[i]);
             }
         }
-        return newNum;
-    }
-
-    public static RecyclerViewAdapter getAdapter() {
-        return adapter;
+        return newNum.toString();
     }
 
     @SuppressLint("SetTextI18n")
@@ -320,19 +296,17 @@ public class OrderInfo extends AppCompatActivity {
         buyerName = findViewById(R.id.BuyerNameBox);
         destination = findViewById(R.id.DestinationBox);
         logoutBtn = findViewById(R.id.LogoutBtn);
-        emailStr = findViewById(R.id.EmailStr);
-        phoneNumberStr = findViewById(R.id.PhoneNumberStr);
-        truckNumberStr = findViewById(R.id.TruckNumberStr);
+        TextView emailStr = findViewById(R.id.EmailStr);
+        TextView phoneNumberStr = findViewById(R.id.PhoneNumberStr);
+        TextView truckNumberStr = findViewById(R.id.TruckNumberStr);
         pleaseEnterText = findViewById(R.id.EnterInfoText);
         appointmentText = findViewById(R.id.AppointmentText);
         loggedInAsText = findViewById(R.id.LoggedInAsText);
         nextBtn = findViewById(R.id.NextBtn);
         showSoftKeyboard(orderNumber);
-        currentAccount = MainActivity.getCurrentAccount();
+        Account currentAccount = MainActivity.getCurrentAccount();
         emailStr.setText(currentAccount.getEmail());
         phoneNumberStr.setText(formatPhoneNumber(currentAccount.getPhoneNumber()));
-        truckNumberStr.setText(currentAccount.getTruckName() + " " + currentAccount.getTruckNumber());
-
-        // nextBtn.setEnabled(false);
+        truckNumberStr.setText(String.format("%s %s", currentAccount.getTruckName(), currentAccount.getTruckNumber()));
     }
 }

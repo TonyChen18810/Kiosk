@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<RecyclerViewHorizontalAdapter.MyViewHolder> {
 
     private List<Order> orders;
     private LayoutInflater mInflater;
 
-    RecyclerViewAdapter(Context context, List<Order> orders) {
+    RecyclerViewHorizontalAdapter(Context context, List<Order> orders) {
         this.mInflater = LayoutInflater.from(context);
         this.orders = orders;
     }
@@ -41,13 +41,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return orders.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView orderNumber;
         TextView buyerName;
         TextView destination;
 
-        public MyViewHolder(@NonNull View itemView) {
+        MyViewHolder(@NonNull View itemView) {
             super(itemView);
             this.orderNumber = itemView.findViewById(R.id.OrderNum);
             this.buyerName = itemView.findViewById(R.id.BuyerName);
