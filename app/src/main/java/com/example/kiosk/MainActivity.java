@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Spinner languageSpinner = findViewById(R.id.LanguageSpinner);
-        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.languages, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.languages, R.layout.language_spinner_text);
         languageSpinner.setPrompt("Language/Idioma/Langue");
         languageSpinner.setAdapter(languageAdapter);
 
@@ -112,26 +114,26 @@ public class MainActivity extends AppCompatActivity {
                     if (accountExists()) {
                         noEmailWarning.setVisibility(View.INVISIBLE);
                         emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                    } else if (!validEmail()) {
+                    } else if (!validEmail() && !emailAddressBox.getText().toString().equals("")) {
                         noEmailWarning.setVisibility(View.VISIBLE);
                         emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                    } else {
+                    } else if (!emailAddressBox.getText().toString().equals("")){
                         noEmailWarning.setVisibility(View.INVISIBLE);
                         emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
                         // check here to see if email is in database
                         // if it is in the database, do NOT show the confirm edit text
                         // if it is NOT in the database, show and request the user to confirm their email
-                        ObjectAnimator animationEditText = ObjectAnimator.ofFloat(phoneNumberBox, "translationY", 120f);
+                        ObjectAnimator animationEditText = ObjectAnimator.ofFloat(phoneNumberBox, "translationY", 165f);
                         animationEditText.setDuration(1000);
                         animationEditText.start();
-                        ObjectAnimator animationWarningText = ObjectAnimator.ofFloat(noPhoneNumberWarning, "translationY", 120f);
+                        ObjectAnimator animationWarningText = ObjectAnimator.ofFloat(noPhoneNumberWarning, "translationY", 165f);
                         animationWarningText.setDuration(1000);
                         animationWarningText.start();
                         confirmPhoneNumber.setVisibility(View.VISIBLE);
-                        ObjectAnimator animationConfirmPhone = ObjectAnimator.ofFloat(confirmPhoneNumber, "translationY", 240f);
+                        ObjectAnimator animationConfirmPhone = ObjectAnimator.ofFloat(confirmPhoneNumber, "translationY", 330f);
                         animationConfirmPhone.setDuration(1000);
                         animationConfirmPhone.start();
-                        ObjectAnimator animationNext = ObjectAnimator.ofFloat(nextBtn, "translationY", 200f);
+                        ObjectAnimator animationNext = ObjectAnimator.ofFloat(nextBtn, "translationY", 320f);
                         animationNext.setDuration(1000);
                         animationNext.start();
                         confirmEmailAddress.setVisibility(View.VISIBLE);
@@ -148,8 +150,10 @@ public class MainActivity extends AppCompatActivity {
                     if (!validNumber() && !phoneNumberBox.getText().toString().equals("")) {
                         noPhoneNumberWarning.setVisibility(View.VISIBLE);
                         phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                    } else {
+                        confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                    } else if (!phoneNumberBox.getText().toString().equals("") && validNumber()) {
                         noPhoneNumberWarning.setVisibility(View.INVISIBLE);
+                        phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                         // check here to see if phone number is in database
                         // if it is in the database, do NOT show the confirm edit text
                         // if it is NOT in the database, show and request the user to confirm their phone number
@@ -178,8 +182,38 @@ public class MainActivity extends AppCompatActivity {
                     animationConfirmPhone.setDuration(1000);
                     confirmEmailAddress.setVisibility(View.INVISIBLE);
                     animationConfirmPhone.start();
+                    noEmailWarning.setVisibility(View.INVISIBLE);
+                    noPhoneNumberWarning.setVisibility(View.INVISIBLE);
+                    unmatchingEmail.setVisibility(View.INVISIBLE);
+                    unmatchingPhone.setVisibility(View.INVISIBLE);
+                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
                 } else if (validEmail()) {
                     noEmailWarning.setVisibility(View.INVISIBLE);
+                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        phoneNumberBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (doesPhoneMatch() && validNumber()) {
+                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                    confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                    unmatchingPhone.setVisibility(View.INVISIBLE);
+                    noPhoneNumberWarning.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -200,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
                 if (emailAddressBox.getText().toString().equals(confirmEmailAddress.getText().toString())) {
                     emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                     confirmEmailAddress.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                    unmatchingEmail.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -232,6 +267,8 @@ public class MainActivity extends AppCompatActivity {
                 if (!hasFocus) {
                     if (!phoneNumberBox.getText().toString().equals(confirmPhoneNumber.getText().toString())) {
                         unmatchingPhone.setVisibility(View.VISIBLE);
+                        phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                        confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                     }
                 }
             }
@@ -248,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
                 if (confirmPhoneNumber.getText().toString().equals(phoneNumberBox.getText().toString())) {
                     phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                     confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                    unmatchingPhone.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -260,6 +298,10 @@ public class MainActivity extends AppCompatActivity {
     nextBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Display display = getWindowManager().getDefaultDisplay();
+            int width = display.getWidth();
+            int height = display.getHeight();
+            System.out.println(width + " x " + height);
             if (accountExists() && validNumber()) {
                 noEmailWarning.setVisibility(View.INVISIBLE);
                 noPhoneNumberWarning.setVisibility(View.INVISIBLE);
@@ -315,8 +357,13 @@ public class MainActivity extends AppCompatActivity {
                     noPhoneNumberWarning.setVisibility(View.INVISIBLE);
                 } else if (!doesPhoneMatch() && validNumber()) {
                     unmatchingPhone.setVisibility(View.VISIBLE);
+                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                    confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                 } else if (!doesEmailMatch() && validEmail()) {
                     unmatchingEmail.setVisibility(View.VISIBLE);
+                } else if(!doesPhoneMatch()) {
+                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                    confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                 } else {
                     noEmailWarning.setVisibility(View.VISIBLE);
                     noPhoneNumberWarning.setVisibility(View.VISIBLE);

@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Kiosk</string>
 
+    <string name="languageprompt">
+        <font size="70">
+            Language/Idioma/Langue
+        </font>
+    </string>
+
     <string name="yes">
         <font size="20">
             yes
