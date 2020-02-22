@@ -2,33 +2,21 @@
     <string name="app_name">Kiosk</string>
 
     <string name="yes">
-        <font size="30">
+        <font size="20">
             yes
         </font>
     </string>
 
     <string name="no">
-        <font size="30">
+        <font size="20">
             no
         </font>
     </string>
 
     <string name="confirm">
-        <front size="40">
+        <front size="30">
             confirm
         </front>
-    </string>
-
-    <string name="dialog_title">
-        <font size="40">
-            Multiple orders
-        </font>
-    </string>
-
-    <string name="dialog_message">
-        <font size="40">
-            Do you have another order to enter?
-        </font>
     </string>
 
     <string-array name="languages">
@@ -66,7 +54,6 @@
     </string-array>
 
     <string-array name="states">
-        <item>Select State</item>
         <item>Alabama</item>
         <item>Alaska</item>
         <item>Arizona</item>

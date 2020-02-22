@@ -28,7 +28,7 @@
         android:text="Welcome to D'Arrigo\nCalifornia"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#C9000000"
-        android:textSize="46sp"
+        android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -96,9 +96,9 @@ public class CreateAccount extends AppCompatActivity {
         setup();
 
         final Spinner stateSpinner = findViewById(R.id.StateSpinner);
-        final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.my_custom_spinner);
+        final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item);
         // SpinnerAdapter stateAdapter = new SpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.states));
-        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner.setAdapter(stateAdapter);
         // stateSpinner.setSelection(stateAdapter.getCount());
         stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -114,9 +114,9 @@ public class CreateAccount extends AppCompatActivity {
         });
 
         final Spinner stateSpinner2 = findViewById(R.id.StateSpinner2);
-        final ArrayAdapter<CharSequence> stateAdapter2 = ArrayAdapter.createFromResource(this, R.array.states, R.layout.my_custom_spinner);
+        final ArrayAdapter<CharSequence> stateAdapter2 = ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item);
         // SpinnerAdapter stateAdapter2 = new SpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.states));
-        // stateAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stateAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner2.setAdapter(stateAdapter2);
         // stateSpinner2.setSelection(stateAdapter.getCount() - 1);
         stateSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

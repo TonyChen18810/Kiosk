@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,10 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -27,7 +23,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Objects;
@@ -193,8 +188,8 @@ public class OrderInfo extends AppCompatActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(OrderInfo.this);
                 builder.setCancelable(true);
-                builder.setTitle(R.string.dialog_title);
-                builder.setMessage(R.string.dialog_message);
+                builder.setTitle("Multiple orders");
+                builder.setMessage("Do you have another order to enter?");
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -224,9 +219,7 @@ public class OrderInfo extends AppCompatActivity {
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-                dialog.getWindow().setLayout((int)(OrderInfo.this.getWindow().peekDecorView().getWidth()*0.8),(int) (OrderInfo.this.getWindow().peekDecorView().getHeight()*0.15));
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(TypedValue.COMPLEX_UNIT_SP, 40.0f);
-                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(TypedValue.COMPLEX_UNIT_SP, 40.0f);
+                nextBtn.setEnabled(false);
             }
         });
     }

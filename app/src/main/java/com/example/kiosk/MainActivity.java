@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Spinner languageSpinner = findViewById(R.id.LanguageSpinner);
-        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.languages, R.layout.my_custom_spinner);
-        // languageSpinner.setPrompt(getResources().getString(R.string.prompt));
+        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.languages, android.R.layout.simple_spinner_dropdown_item);
+        languageSpinner.setPrompt("Language/Idioma/Langue");
         languageSpinner.setAdapter(languageAdapter);
 
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -180,11 +180,6 @@ public class MainActivity extends AppCompatActivity {
                     animationConfirmPhone.setDuration(1000);
                     confirmEmailAddress.setVisibility(View.INVISIBLE);
                     animationConfirmPhone.start();
-                    ObjectAnimator animationNextBtn = ObjectAnimator.ofFloat(nextBtn, "translationY", -20f);
-                    animationNextBtn.setDuration(1000);
-                    animationNextBtn.start();
-                    unmatchingPhone.setVisibility(View.INVISIBLE);
-                    unmatchingEmail.setVisibility(View.INVISIBLE);
                 } else if (validEmail()) {
                     noEmailWarning.setVisibility(View.INVISIBLE);
                 }
@@ -255,7 +250,6 @@ public class MainActivity extends AppCompatActivity {
                 if (confirmPhoneNumber.getText().toString().equals(phoneNumberBox.getText().toString())) {
                     phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                     confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                    unmatchingPhone.setVisibility(View.INVISIBLE);
                 }
             }
 
