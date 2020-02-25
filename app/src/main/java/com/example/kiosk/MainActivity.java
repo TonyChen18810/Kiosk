@@ -10,9 +10,12 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -22,7 +25,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,13 +43,17 @@ public class MainActivity extends AppCompatActivity {
     private EditText confirmPhoneNumber;
     private TextView appointmentText;
     private TextView welcomeText;
-    private TextView loginText;
+    // private TextView loginText;
     private Button nextBtn;
     private TextView noEmailWarning;
     private TextView noPhoneNumberWarning;
     private TextView unmatchingEmail;
     private TextView unmatchingPhone;
     private boolean expanded = false;
+
+    private View englishCheckbox;
+    private View spanishCheckbox;
+    private View frenchCheckbox;
 
     private static Account currentAccount;
 
@@ -103,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        languageSpinner.setVisibility(View.INVISIBLE);
 
         confirmEmailAddress.setVisibility(View.INVISIBLE);
         confirmPhoneNumber.setVisibility(View.INVISIBLE);
@@ -151,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                         noPhoneNumberWarning.setVisibility(View.VISIBLE);
                         phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                         confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                    } else if (!phoneNumberBox.getText().toString().equals("") && validNumber()) {
+                    } else if (!phoneNumberBox.getText().toString().equals("") && validNumber() && doesPhoneMatch()) {
                         noPhoneNumberWarning.setVisibility(View.INVISIBLE);
                         phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                         // check here to see if phone number is in database
@@ -182,6 +189,10 @@ public class MainActivity extends AppCompatActivity {
                     animationConfirmPhone.setDuration(1000);
                     confirmEmailAddress.setVisibility(View.INVISIBLE);
                     animationConfirmPhone.start();
+                    ObjectAnimator animationNextBtn = ObjectAnimator.ofFloat(nextBtn, "translationY", -20f);
+                    animationNextBtn.setDuration(1000);
+                    animationNextBtn.start();
+
                     noEmailWarning.setVisibility(View.INVISIBLE);
                     noPhoneNumberWarning.setVisibility(View.INVISIBLE);
                     unmatchingEmail.setVisibility(View.INVISIBLE);
@@ -294,6 +305,44 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        englishCheckbox.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                spanishCheckbox.setPressed(false);
+                frenchCheckbox.setPressed(false);
+                englishCheckbox.setPressed(true);
+                currentLanguage = 0;
+                changeLanguage(currentLanguage);
+                return true;
+            }
+        });
+
+        spanishCheckbox.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                frenchCheckbox.setPressed(false);
+                englishCheckbox.setPressed(false);
+                spanishCheckbox.setPressed(true);
+                currentLanguage = 1;
+                changeLanguage(currentLanguage);
+                return true;
+            }
+        });
+
+        frenchCheckbox.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                spanishCheckbox.setPressed(false);
+                englishCheckbox.setPressed(false);
+                frenchCheckbox.setPressed(true);
+                currentLanguage = 2;
+                changeLanguage(currentLanguage);
+                return true;
+            }
+        });
+
+
 
     nextBtn.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -437,12 +486,22 @@ public class MainActivity extends AppCompatActivity {
         confirmPhoneNumber = findViewById(R.id.ConfirmPhoneNumber);
         appointmentText = findViewById(R.id.AppointmentText);
         welcomeText = findViewById(R.id.WelcomeText);
-        loginText = findViewById(R.id.LoginText);
+        // loginText = findViewById(R.id.LoginText);
         nextBtn = findViewById(R.id.NextBtn);
         noEmailWarning = findViewById(R.id.NoEmailWarning);
         noPhoneNumberWarning = findViewById(R.id.NoPhoneNumberWarning);
         unmatchingEmail = findViewById(R.id.UnmatchingEmail);
         unmatchingPhone = findViewById(R.id.UnmatchingPhone);
+
+        englishCheckbox = findViewById(R.id.EnglishCheckbox);
+        spanishCheckbox = findViewById(R.id.SpanishCheckbox);
+        frenchCheckbox = findViewById(R.id.FrenchCheckbox);
+
+
+        spanishCheckbox.setPressed(false);
+        frenchCheckbox.setPressed(false);
+        englishCheckbox.setPressed(true);
+        // englishCheckbox.performClick();
 
         noEmailWarning.setVisibility(View.INVISIBLE);
         noPhoneNumberWarning.setVisibility(View.INVISIBLE);
@@ -469,8 +528,13 @@ public class MainActivity extends AppCompatActivity {
                 noPhoneNumberWarning.setText("*Invalid phone number");
                 appointmentText.setText("*If your order requires an appointment please call 831-455-4305 to schedule an appointment");
                 welcomeText.setText("Welcome to D'Arrigo\nCalifornia");
-                loginText.setText("Log-in");
+                // loginText.setText("Log-in");
                 nextBtn.setText("Next");
+
+                emailAddressBox.setEms(10);
+                phoneNumberBox.setEms(10);
+                confirmEmailAddress.setEms(10);
+                confirmPhoneNumber.setEms(10);
                 break;
             case 1:
                 // Spanish
@@ -484,8 +548,13 @@ public class MainActivity extends AppCompatActivity {
                 noPhoneNumberWarning.setText("*Numero de telefono invalido");
                 appointmentText.setText("*Si su pedido requiere una cita, llame al 831-455-4305 para programar una cita");
                 welcomeText.setText("Bienvenido a D'Arrigo\nCalifornia");
-                loginText.setText("Iniciar sesión");
+                // loginText.setText("Iniciar sesión");
                 nextBtn.setText("Siguiente");
+
+                emailAddressBox.setEms(12);
+                phoneNumberBox.setEms(12);
+                confirmEmailAddress.setEms(12);
+                confirmPhoneNumber.setEms(12);
                 break;
             case 2:
                 // French
@@ -499,8 +568,12 @@ public class MainActivity extends AppCompatActivity {
                 noPhoneNumberWarning.setText("*Numéro de téléphone invalide");
                 appointmentText.setText("*Si votre commande nécessite un rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous");
                 welcomeText.setText("Bienvenue à D'Arrigo\nCalifornia");
-                loginText.setText("S'identifier");
+                // loginText.setText("S'identifier");
                 nextBtn.setText("Suivant");
+                emailAddressBox.setEms(12);
+                phoneNumberBox.setEms(12);
+                confirmEmailAddress.setEms(12);
+                confirmPhoneNumber.setEms(13);
                 break;
         }
     }

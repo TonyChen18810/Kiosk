@@ -3,24 +3,21 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:outlineProvider="bounds">
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/HeartOfTheCards"
-        android:layout_width="500dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clipToPadding="true"
         app:cardCornerRadius="7.5dp"
-        card_view:cardUseCompatPadding="true"
-        app:cardElevation="25dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
+        android:layout_margin="20dp"
         android:background="#cccf">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -29,16 +26,22 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:gravity="center"
-                android:paddingBottom="15dp"
                 android:text="Order Number"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textColor="#BA000000"
+                android:textSize="60sp" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:background="#C97A7171" />
 
             <TextView
@@ -46,17 +49,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="8dp"
                 android:text="Buyer Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textColor="#BA000000"
+                android:textSize="60sp" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:background="#C97A7171" />
 
             <TextView
@@ -64,12 +73,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:text="Destination"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textColor="#BA000000"
+                android:textSize="60sp" />
 
         </LinearLayout>
 

@@ -35,7 +35,8 @@ public class OrderInfo extends AppCompatActivity {
     private TextView pleaseEnterText;
     private TextView appointmentText;
     private TextView loggedInAsText;
-    private Button nextBtn;
+    private Button submitBtn;
+    private Button addOrderBtn;
 
     private static RecyclerViewHorizontalAdapter adapter;
     private static RecyclerView recyclerView;
@@ -84,10 +85,10 @@ public class OrderInfo extends AppCompatActivity {
         adapter = new RecyclerViewHorizontalAdapter(context, Order.getOrders());
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-       if (empty) {
+        if (empty) {
            recyclerView.setVisibility(View.INVISIBLE);
-      }
-/*
+        }
+        /*
         Order.addOrder(new Order("FF555", "Charlies", "Yuma, Arizona"));
         Order.addOrder(new Order("ASDA4", "Whole Foods", "Santa Cruz, California"));
         Order.addOrder(new Order("654FF", "Jonathon", "Denver, Colorado"));
@@ -97,7 +98,12 @@ public class OrderInfo extends AppCompatActivity {
         Order.addOrder(new Order("HGFF3", "Target", "Orlando, Florida"));
         Order.addOrder(new Order("XF2DX", "Costco", "Seattle, Washington"));
         Order.addOrder(new Order("54VVC", "Johnnie's Farm", "Houston, Texas"));
-*/
+
+        adapter.notifyDataSetChanged();
+        adapter.notifyItemInserted(adapter.getItemCount() - 1);
+        recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+        */
+
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +121,7 @@ public class OrderInfo extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0 && buyerName.length() != 0 && destination.length() != 0) {
-                    nextBtn.setEnabled(true);
+                    addOrderBtn.setEnabled(true);
                 }
             }
 
@@ -134,7 +140,7 @@ public class OrderInfo extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0 && orderNumber.length() != 0 && destination.length() != 0) {
-                    nextBtn.setEnabled(true);
+                    addOrderBtn.setEnabled(true);
                 }
             }
 
@@ -153,7 +159,7 @@ public class OrderInfo extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0 && buyerName.length() != 0 && orderNumber.length() != 0) {
-                    nextBtn.setEnabled(true);
+                    addOrderBtn.setEnabled(true);
                 }
             }
 
@@ -163,7 +169,15 @@ public class OrderInfo extends AppCompatActivity {
             }
         });
 
-        nextBtn.setOnClickListener(new View.OnClickListener() {
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OrderInfo.this, OrderSubmitted.class);
+                startActivity(intent);
+            }
+        });
+
+        addOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String orderNumberStr, buyerNameStr, destinationStr;
@@ -173,48 +187,37 @@ public class OrderInfo extends AppCompatActivity {
                 if (!recyclerView.isShown()) {
                     Order.getOrders().remove(0);
                     recyclerView.setVisibility(View.VISIBLE);
+                    Order.addOrder(new Order(orderNumberStr, buyerNameStr, destinationStr));
+                    empty = false;
+                } else {
+                    Order.addOrder(new Order(orderNumberStr, buyerNameStr, destinationStr));
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty = false;
                 }
-                Order.addOrder(new Order(orderNumberStr, buyerNameStr, destinationStr));
-                empty = false;
 
                 adapter.notifyDataSetChanged();
                 adapter.notifyItemInserted(adapter.getItemCount() - 1);
                 recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                recyclerView.scheduleLayoutAnimation();
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(OrderInfo.this);
-                builder.setCancelable(true);
-                builder.setTitle("Multiple orders");
-                builder.setMessage("Do you have another order to enter?");
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                orderNumber.setText("");
-                                buyerName.setText("");
-                                destination.setText("");
-
-                                Animation animation = new AlphaAnimation(1, 0.5f);
-                                animation.setDuration(500);
-                                animation.setInterpolator(new LinearInterpolator());
-                                animation.setRepeatCount(3);
-                                animation.setRepeatMode(Animation.REVERSE);
-                                View lastItemView = recyclerView.getLayoutManager().findViewByPosition(adapter.getItemCount() - 1);
-                                if (lastItemView != null) {
-                                    lastItemView.startAnimation(animation);
-                                }
-
-                                orderNumber.requestFocus();
-                            }
-                        });
-                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(OrderInfo.this, OrderSubmitted.class);
-                        startActivity(intent);
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                nextBtn.setEnabled(false);
+                orderNumber.setText("");
+                buyerName.setText("");
+                destination.setText("");
+/*
+                Animation animation = new AlphaAnimation(1, 0.5f);
+                animation.setDuration(500);
+                animation.setInterpolator(new LinearInterpolator());
+                animation.setRepeatCount(3);
+                animation.setRepeatMode(Animation.REVERSE);
+                View lastItemView = recyclerView.getLayoutManager().findViewByPosition(adapter.getItemCount() - 1);
+                if (lastItemView != null) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    recyclerView.requestLayout();
+                    recyclerView.startAnimation(animation);
+                }
+ */
+                orderNumber.requestFocus();
+                addOrderBtn.setEnabled(false);
             }
         });
     }
@@ -257,36 +260,39 @@ public class OrderInfo extends AppCompatActivity {
                 buyerName.setHint("Buyer name");
                 destination.setHint("Destination");
                 logoutBtn.setText("Logout");
-                pleaseEnterText.setText("Please enter order information");
+                pleaseEnterText.setText("Enter order information: ");
                 appointmentText.setText("If your order requires an appointment please call 831-455-4305 to schedule an appointment");
                 loggedInAsText.setText("You are logged in as: ");
-                nextBtn.setText("Next");
+                submitBtn.setText("Submit");
                 logoutBtn.setText("Logout");
+                addOrderBtn.setText("Add Order");
                 break;
             case 1:
                 // Spanish
-                orderNumber.setHint("El número de pedido");
+                orderNumber.setHint("Número de pedido");
                 buyerName.setHint("Nombre del comprador");
                 destination.setHint("Destino");
                 logoutBtn.setText("Logout");
-                pleaseEnterText.setText("Por favor, introduzca la información del pedido");
+                pleaseEnterText.setText("Ingrese la información del pedido");
                 appointmentText.setText("Si su pedido requiere una cita, llame al 831-455-4305 para programar una cita");
-                loggedInAsText.setText("Has iniciado sesión como: ");
-                nextBtn.setText("Próximo");
+                loggedInAsText.setText("Conectado como: ");
+                submitBtn.setText("Enviar");
                 logoutBtn.setText("Cerrar sesión");
+                addOrderBtn.setText("Añadir pedido");
                 break;
 
             case 2:
                 // French
-                orderNumber.setHint("Numéro de commande");
+                orderNumber.setHint("Numero de ordre");
                 buyerName.setHint("Nom de l'acheteur");
                 destination.setHint("Destination");
                 logoutBtn.setText("Logout");
-                pleaseEnterText.setText("Veuillez saisir les informations de commande");
+                pleaseEnterText.setText("Entrez les informations de la ordre");
                 appointmentText.setText("Si votre commande nécessite un rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous");
-                loggedInAsText.setText("Vous êtes connecté en tant que: ");
-                nextBtn.setText("Prochain");
+                loggedInAsText.setText("Connecté en tant que: ");
+                submitBtn.setText("Soumettre");
                 logoutBtn.setText("Se déconnecter");
+                addOrderBtn.setText("Ajouter ordre");
                 break;
         }
     }
@@ -302,11 +308,13 @@ public class OrderInfo extends AppCompatActivity {
         pleaseEnterText = findViewById(R.id.EnterInfoText);
         appointmentText = findViewById(R.id.AppointmentText);
         loggedInAsText = findViewById(R.id.LoggedInAsText);
-        nextBtn = findViewById(R.id.NextBtn);
+        submitBtn = findViewById(R.id.SubmitBtn);
+        addOrderBtn = findViewById(R.id.AddOrderBtn);
         showSoftKeyboard(orderNumber);
         Account currentAccount = MainActivity.getCurrentAccount();
         emailStr.setText(currentAccount.getEmail());
         phoneNumberStr.setText(formatPhoneNumber(currentAccount.getPhoneNumber()));
         truckNumberStr.setText(String.format("%s %s", currentAccount.getTruckName(), currentAccount.getTruckNumber()));
+        addOrderBtn.setEnabled(false);
     }
 }

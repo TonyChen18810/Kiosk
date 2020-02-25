@@ -30,10 +30,10 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            Order order = orders.get(position);
-            holder.orderNumber.setText(order.getOrderNumber());
-            holder.buyerName.setText(order.getBuyerName());
-            holder.destination.setText(order.getDestination());
+        Order order = orders.get(position);
+        holder.orderNumber.setText(order.getOrderNumber());
+        holder.buyerName.setText(order.getBuyerName());
+        holder.destination.setText(order.getDestination());
     }
 
     @Override

@@ -9,8 +9,9 @@
         android:id="@+id/HeartOfTheCards"
         android:layout_width="400dp"
         android:layout_height="250dp"
-        app:cardCornerRadius="12dp"
-        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="7.5dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
         android:background="#cccf">
 
         <LinearLayout
