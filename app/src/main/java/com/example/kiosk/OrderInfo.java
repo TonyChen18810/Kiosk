@@ -1,6 +1,5 @@
 package com.example.kiosk;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,9 +14,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -301,7 +296,7 @@ public class OrderInfo extends AppCompatActivity {
         orderNumber = findViewById(R.id.OrderNumberBox);
         buyerName = findViewById(R.id.BuyerNameBox);
         destination = findViewById(R.id.DestinationBox);
-        logoutBtn = findViewById(R.id.LogoutBtn);
+        logoutBtn = findViewById(R.id.LoginBtn);
         TextView emailStr = findViewById(R.id.EmailStr);
         TextView phoneNumberStr = findViewById(R.id.PhoneNumberStr);
         TextView truckNumberStr = findViewById(R.id.TruckNumberStr);

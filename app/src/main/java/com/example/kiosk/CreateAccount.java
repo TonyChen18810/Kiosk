@@ -1,16 +1,15 @@
 package com.example.kiosk;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.os.Bundle;
 
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,10 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,8 +30,7 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 public class CreateAccount extends AppCompatActivity {
 
     private String email, phone;
-    private Button homeBtn;
-    private Button submitBtn;
+    private Button logoutBtn, nextBtn;
     private TextView createAccount;
     private EditText truckName;
     private EditText truckNumber;
@@ -42,14 +38,20 @@ public class CreateAccount extends AppCompatActivity {
     private EditText driverLicense;
     private EditText driverName;
     private EditText dispatcherPhoneNumber;
+    private Spinner trailerStateSpinner, driverStateSpinner;
     private TextView verifyText;
-    private TextView selectRadioText;
-    private RadioButton radioTextMsg;
-    private RadioButton radioEmailMsg;
-    private RadioButton radioBothMsg;
     private TextView preferText;
     private ImageButton truckNameHelp, truckNumberHelp, trailerLicenseHelp,
             driverLicenseHelp, driverNameHelp, dispatcherPhoneNumberHelp;
+
+    private TextView txtText, emailText, bothText, selectText;
+    private View textCheckbox, emailCheckbox, bothCheckbox;
+
+    private Button selectState1, selectState2;
+    private boolean initialSelection1 = false;
+    private boolean initialSelection2 = false;
+
+    private int PREFERRED_COMMUNICATION = -1;
 
     private static Account currentAccount;
 
@@ -86,14 +88,18 @@ public class CreateAccount extends AppCompatActivity {
 
         setup();
 
-        final Spinner stateSpinner = findViewById(R.id.StateSpinner);
-        final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item);
-        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        stateSpinner.setAdapter(stateAdapter);
-        stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
+        stateAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        trailerStateSpinner.setAdapter(stateAdapter);
+        trailerStateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                if (initialSelection1) {
+                    selectState1.setText(getResources().getStringArray(R.array.states)[position]);
+                } else {
+                    initialSelection1 = true;
+                    selectState1.setText("Select State");
+                }
             }
 
             @Override
@@ -102,14 +108,18 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-        final Spinner stateSpinner2 = findViewById(R.id.StateSpinner2);
-        final ArrayAdapter<CharSequence> stateAdapter2 = ArrayAdapter.createFromResource(this, R.array.states, android.R.layout.simple_spinner_item);
-        stateAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        stateSpinner2.setAdapter(stateAdapter2);
-        stateSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final ArrayAdapter<CharSequence> stateAdapter2 = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
+        stateAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        driverStateSpinner.setAdapter(stateAdapter2);
+        driverStateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                if (initialSelection2) {
+                    selectState2.setText(getResources().getStringArray(R.array.states)[position]);
+                } else {
+                    initialSelection2 = true;
+                    selectState2.setText("Select State");
+                }
             }
 
             @Override
@@ -117,7 +127,7 @@ public class CreateAccount extends AppCompatActivity {
 
             }
         });
-
+/*
         truckNameHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,8 +229,8 @@ public class CreateAccount extends AppCompatActivity {
                 dialog.show();
             }
         });
-
-        homeBtn.setOnClickListener(new View.OnClickListener() {
+*/
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateAccount.this, MainActivity.class);
@@ -228,42 +238,132 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-        submitBtn.setOnClickListener(new View.OnClickListener() {
+        nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
-                truckNameStr = truckName.getText().toString();
-                truckNumberStr = truckNumber.getText().toString();
-                trailerLicenseStr = trailerLicense.getText().toString();
-                String trailerStateStr = stateSpinner.getSelectedItem().toString();
-                String driverStateStr = stateSpinner2.getSelectedItem().toString();
-                driverLicenseStr = driverLicense.getText().toString();
-                driverNameStr = driverName.getText().toString();
-                dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
-                Account account = new Account(email, phone, truckNameStr, truckNumberStr, trailerLicenseStr,
-                        trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
-                currentAccount = account;
-                Account.addAccount(account);
-                System.out.println("Currently registered accounts: ");
-                ArrayList<Account> temp = Account.getAccounts();
-                for (int i = 0; i < temp.size(); i++) {
-                    System.out.println("Email: " + temp.get(i).getEmail() + " | Phone number: " + temp.get(i).getPhoneNumber());
-                }
-                // such a waste - change to a view
-                startActivity(new Intent(CreateAccount.this, AccountCreatedMsg.class));
+                if (truckName.length() == 0 || truckNumber.length() == 0 || trailerLicense.length() == 0 || driverLicense.length() == 0 || driverName.length() == 0 || dispatcherPhoneNumber.length() == 0) {
 
-                if (radioTextMsg.isChecked()) {
-                    // send text message
-                    // start next activity
-                } else if (radioEmailMsg.isChecked()) {
-                    // send email message
-                    // start next activity
-                } else if (radioBothMsg.isChecked()) {
-                    // send text message AND email message
-                    // start next activity
+                } else if (PREFERRED_COMMUNICATION == -1) {
+                    selectText.setVisibility(View.VISIBLE);
                 } else {
-                    selectRadioText.setVisibility(View.VISIBLE);
+                    String truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
+                    truckNameStr = truckName.getText().toString();
+                    truckNumberStr = truckNumber.getText().toString();
+                    trailerLicenseStr = trailerLicense.getText().toString();
+                    String trailerStateStr = selectState1.getText().toString();
+                    String driverStateStr = selectState2.getText().toString();
+                    driverLicenseStr = driverLicense.getText().toString();
+                    driverNameStr = driverName.getText().toString();
+                    dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
+                    Account account = new Account(email, phone, truckNameStr, truckNumberStr, trailerLicenseStr,
+                            trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
+                    currentAccount = account;
+                    Account.addAccount(account);
+                    System.out.println("Currently registered accounts: ");
+                    ArrayList<Account> temp = Account.getAccounts();
+                    for (int i = 0; i < temp.size(); i++) {
+                        System.out.println("Email: " + temp.get(i).getEmail() + " | Phone number: " + temp.get(i).getPhoneNumber());
+                    }
+                    selectText.setVisibility(View.INVISIBLE);
+                    if (PREFERRED_COMMUNICATION == 0) {
+
+                    } else if (PREFERRED_COMMUNICATION == 1) {
+
+                    } else if (PREFERRED_COMMUNICATION == 2) {
+
+                    }
+                    selectText.setVisibility(View.GONE);
+                    // such a waste - change to a view
+                    setContentView(R.layout.account_created_message);
+                    findViewById(R.id.LoginBtn).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Account.clearAccounts();
+                            Order.clearOrders();
+                            startActivity(new Intent(CreateAccount.this, MainActivity.class));
+                        }
+                    });
                 }
+            }
+        });
+
+        textCheckbox.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                emailCheckbox.setPressed(false);
+                bothCheckbox.setPressed(false);
+                textCheckbox.setPressed(true);
+                PREFERRED_COMMUNICATION = 0;
+                return true;
+            }
+        });
+
+        emailCheckbox.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                bothCheckbox.setPressed(false);
+                textCheckbox.setPressed(false);
+                emailCheckbox.setPressed(true);
+                PREFERRED_COMMUNICATION = 1;
+                return true;
+            }
+        });
+
+        bothCheckbox.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                textCheckbox.setPressed(false);
+                emailCheckbox.setPressed(false);
+                bothCheckbox.setPressed(true);
+                PREFERRED_COMMUNICATION = 2;
+                return true;
+            }
+        });
+
+        findViewById(R.id.Text).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                emailCheckbox.setPressed(false);
+                bothCheckbox.setPressed(false);
+                textCheckbox.setPressed(true);
+                PREFERRED_COMMUNICATION = 0;
+                return true;
+            }
+        });
+
+        findViewById(R.id.Email).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                bothCheckbox.setPressed(false);
+                textCheckbox.setPressed(false);
+                emailCheckbox.setPressed(true);
+                PREFERRED_COMMUNICATION = 1;
+                return true;
+            }
+        });
+
+        findViewById(R.id.Both).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                textCheckbox.setPressed(false);
+                emailCheckbox.setPressed(false);
+                bothCheckbox.setPressed(true);
+                PREFERRED_COMMUNICATION = 2;
+                return true;
+            }
+        });
+
+        selectState1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trailerStateSpinner.performClick();
+            }
+        });
+
+        selectState2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                driverStateSpinner.performClick();
             }
         });
     }
@@ -293,8 +393,8 @@ public class CreateAccount extends AppCompatActivity {
         switch(val) {
             case 0:
                 //English
-                homeBtn.setText("Return to login");
-                submitBtn.setText("Submit");
+                logoutBtn.setText("Logout");
+                nextBtn.setText("Next");
                 createAccount.setText("Create Account");
                 // emailAddress.setHint("Email address");
                 // phoneNumber.setHint("Phone number");
@@ -304,19 +404,17 @@ public class CreateAccount extends AppCompatActivity {
                 driverLicense.setHint("Driver license number");
                 driverName.setHint("Driver's name");
                 dispatcherPhoneNumber.setHint("Dispatcher's phone number");
-                verifyText.setText("*By clicking 'Submit' I verify that all information is correct and accurate");
+                verifyText.setText("*By clicking 'Next' I verify that all\ninformation is correct and accurate");
                 preferText.setText("How would you prefer communication?");
-                radioTextMsg.setText("Text message");
-                radioEmailMsg.setText("Email");
-                radioBothMsg.setText("Text message and email");
-                selectRadioText.setText("*Please select one");
-                verifyText.setText("*By clicking 'Submit' I verify that all information is correct and accurate");
-                submitBtn.setText("Submit");
+                txtText.setText("Text message");
+                emailText.setText("Email");
+                bothText.setText("Text message and email");
+                selectText.setText("*Please select one");
                 break;
             case 1:
                 //Spanish
-                homeBtn.setText("Regresar al inicio de sesión");
-                submitBtn.setText("Enviar");
+                logoutBtn.setText("Cerrar sesión");
+                nextBtn.setText("Próximo");
                 createAccount.setText("Crear una cuenta");
                 // emailAddress.setHint("Dirección de correo electrónico");
                 // phoneNumber.setHint("Número de teléfono");
@@ -326,19 +424,17 @@ public class CreateAccount extends AppCompatActivity {
                 driverLicense.setHint("Número de licencia de conducir");
                 driverName.setHint("Nombre del conductor");
                 dispatcherPhoneNumber.setHint("Número de teléfono del despachador");
-                verifyText.setText("*Al hacer clic en 'Enviar' verifico que toda la información es correcta y precisa");
+                verifyText.setText("*Al hacer clic en 'Próximo' verifico que\ntoda la información es correcta y precisa");
                 preferText.setText("¿Cómo preferirías la comunicación?");
-                radioTextMsg.setText("Mensaje de texto");
-                radioEmailMsg.setText("Correo electrónico");
-                radioBothMsg.setText("Mensaje de texto y correo electrónico");
-                selectRadioText.setText("*Por favor, seleccione uno");
-                verifyText.setText("*Al hacer clic en 'Enviar' verifico que toda la información es correcta y precisa");
-                submitBtn.setText("Enviar");
+                txtText.setText("Mensaje de texto");
+                emailText.setText("Correo electrónico");
+                bothText.setText("Mensaje de texto y correo electrónico");
+                selectText.setText("*Por favor, seleccione uno");
                 break;
             case 2:
                 //French
-                homeBtn.setText("Retour à la connexion");
-                submitBtn.setText("Soumettre");
+                logoutBtn.setText("Se déconnecter");
+                nextBtn.setText("Prochain");
                 createAccount.setText("Créer un compte");
                 // emailAddress.setHint("Adresse électronique");
                 // phoneNumber.setHint("Numéro de téléphone");
@@ -348,22 +444,20 @@ public class CreateAccount extends AppCompatActivity {
                 driverLicense.setHint("Numéro de permis de conduire");
                 driverName.setHint("Nom du conducteur");
                 dispatcherPhoneNumber.setHint("Numéro de téléphone du répartiteur");
-                verifyText.setText("*En cliquant sur 'Soumettre', je vérifie que toutes les informations sont correctes et exactes");
+                verifyText.setText("*En cliquant sur 'Prochain', je vérifie que\ntoutes les informations sont correctes et exactes");
                 preferText.setText("Comment préférez-vous la communication?");
-                radioTextMsg.setText("Message texte");
-                radioEmailMsg.setText("email");
-                radioBothMsg.setText("Message texte et email");
-                selectRadioText.setText("*S'il vous plait sélectionner en un");
-                verifyText.setText("En cliquant sur «Soumettre», je vérifie que toutes les informations sont correctes et exactes");
-                submitBtn.setText("Soumettre");
+                txtText.setText("Message texte");
+                emailText.setText("email");
+                bothText.setText("Message texte et email");
+                selectText.setText("*S'il vous plait sélectionner en un");
                 break;
         }
     }
 
     private void setup() {
 
-        homeBtn = findViewById(R.id.HomeBtn);
-        submitBtn = findViewById(R.id.SubmitBtn);
+        logoutBtn = findViewById(R.id.LoginBtn);
+        nextBtn = findViewById(R.id.NextBtn);
         createAccount = findViewById(R.id.CreateAccountText);
         EditText emailAddress = findViewById(R.id.EmailAddressBox);
         EditText phoneNumber = findViewById(R.id.PhoneNumberBox);
@@ -374,19 +468,33 @@ public class CreateAccount extends AppCompatActivity {
         driverName = findViewById(R.id.DriverNameBox);
         dispatcherPhoneNumber = findViewById(R.id.DispatcherPhoneNumberBox);
         verifyText = findViewById(R.id.VerifyText);
-        radioTextMsg = findViewById(R.id.TextMsg);
-        radioEmailMsg = findViewById(R.id.EmailMsg);
-        radioBothMsg = findViewById(R.id.BothMsg);
-        selectRadioText = findViewById(R.id.PleaseSelectOne);
-        preferText = findViewById(R.id.PreferInfoText);
         truckNameHelp = findViewById(R.id.TruckNameHelp);
         truckNumberHelp = findViewById(R.id.TruckNumberHelp);
         trailerLicenseHelp = findViewById(R.id.TrailerLicenseHelp);
         driverLicenseHelp = findViewById(R.id.DriverLicenseHelp);
         driverNameHelp = findViewById(R.id.DriverNameHelp);
         dispatcherPhoneNumberHelp = findViewById(R.id.DispatcherPhoneNumberHelp);
+        trailerStateSpinner = findViewById(R.id.StateSpinner);
+        driverStateSpinner = findViewById(R.id.StateSpinner2);
 
-        selectRadioText.setVisibility(View.INVISIBLE);
+        trailerStateSpinner.setVisibility(View.INVISIBLE);
+        driverStateSpinner.setVisibility(View.INVISIBLE);
+
+        txtText = findViewById(R.id.Text);
+        emailText = findViewById(R.id.Email);
+        bothText = findViewById(R.id.Both);
+        textCheckbox = findViewById(R.id.TextCheckbox);
+        emailCheckbox = findViewById(R.id.EmailCheckbox);
+        bothCheckbox = findViewById(R.id.BothCheckbox);
+        selectText = findViewById(R.id.SelectText);
+        preferText = findViewById(R.id.PreferInfoText);
+
+        selectText.setVisibility(View.GONE);
+
+        selectState1 = findViewById(R.id.StateButton1);
+        selectState2 = findViewById(R.id.StateButton2);
+        selectState1.setText("Select state");
+        selectState2.setText("Select state");
 
         changeLanguage(MainActivity.getCurrentLanguage());
 

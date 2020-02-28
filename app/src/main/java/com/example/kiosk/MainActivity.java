@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
                     ObjectAnimator animationNextBtn = ObjectAnimator.ofFloat(nextBtn, "translationY", -20f);
                     animationNextBtn.setDuration(1000);
                     animationNextBtn.start();
+                    expanded = false;
 
                     noEmailWarning.setVisibility(View.INVISIBLE);
                     noPhoneNumberWarning.setVisibility(View.INVISIBLE);
@@ -259,14 +260,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    if (!emailAddressBox.getText().toString().equals(confirmEmailAddress.getText().toString())) {
+                    if (!emailAddressBox.getText().toString().equals(confirmEmailAddress.getText().toString()) && emailAddressBox.length() != 0 && confirmEmailAddress.length() != 0) {
                         unmatchingEmail.setVisibility(View.VISIBLE);
                         emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                         confirmEmailAddress.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                    } else {
-                        unmatchingEmail.setVisibility(View.INVISIBLE);
-                        emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                        confirmEmailAddress.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                     }
                 }
             }
@@ -276,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    if (!phoneNumberBox.getText().toString().equals(confirmPhoneNumber.getText().toString())) {
+                    if (!phoneNumberBox.getText().toString().equals(confirmPhoneNumber.getText().toString()) && confirmPhoneNumber.length() != 0 && phoneNumberBox.length() != 0) {
                         unmatchingPhone.setVisibility(View.VISIBLE);
                         phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
                         confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
@@ -342,8 +339,108 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.EnglishText).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                spanishCheckbox.setPressed(false);
+                frenchCheckbox.setPressed(false);
+                englishCheckbox.setPressed(true);
+                currentLanguage = 0;
+                changeLanguage(currentLanguage);
+                return true;
+            }
+        });
 
+        findViewById(R.id.SpanishText).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                frenchCheckbox.setPressed(false);
+                englishCheckbox.setPressed(false);
+                spanishCheckbox.setPressed(true);
+                currentLanguage = 1;
+                changeLanguage(currentLanguage);
+                return true;
+            }
+        });
 
+        findViewById(R.id.FrenchText).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                spanishCheckbox.setPressed(false);
+                englishCheckbox.setPressed(false);
+                frenchCheckbox.setPressed(true);
+                currentLanguage = 2;
+                changeLanguage(currentLanguage);
+                return true;
+            }
+        });
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (accountExists() && validNumber() && !expanded) {
+                    noEmailWarning.setVisibility(View.INVISIBLE);
+                    noPhoneNumberWarning.setVisibility(View.INVISIBLE);
+                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                    nextBtn.setEnabled(false);
+                    Intent intent = new Intent(MainActivity.this, LoggedIn.class);
+                    intent.putExtra("Email Address", currentAccount.getEmail());
+                    intent.putExtra("Phone Number", currentAccount.getPhoneNumber());
+                    intent.putExtra("Truck Name", currentAccount.getTruckName());
+                    intent.putExtra("Truck Number", currentAccount.getTruckNumber());
+                    intent.putExtra("Trailer License", currentAccount.getTrailerLicense());
+                    intent.putExtra("Trailer State", currentAccount.getTrailerState());
+                    intent.putExtra("Driver License", currentAccount.getDriverLicense());
+                    intent.putExtra("Driver State", currentAccount.getDriverState());
+                    intent.putExtra("Driver Name", currentAccount.getDriverName());
+                    intent.putExtra("Dispatcher's Phone Number", currentAccount.getDispatcherPhoneNumber());
+                    startActivity(intent);
+                } else {
+                    if (!expanded && !accountExists()) {
+                        noEmailWarning.setVisibility(View.VISIBLE);
+                        emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                    }
+                    if (!expanded && !validNumber()) {
+                        noPhoneNumberWarning.setVisibility(View.VISIBLE);
+                        phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                    }
+                    if (expanded && !validEmail()) {
+                        noEmailWarning.setVisibility(View.VISIBLE);
+                        emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                    }
+                    if (expanded && !validNumber()) {
+                        phoneNumberBox.setVisibility(View.VISIBLE);
+                        phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                    }
+                    if (expanded && !doesEmailMatch()) {
+                        unmatchingEmail.setVisibility(View.VISIBLE);
+                        emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                        confirmEmailAddress.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                    }
+                    if (expanded && !doesPhoneMatch()) {
+                        unmatchingPhone.setVisibility(View.VISIBLE);
+                        phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                        confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+                    }
+                    if (validEmail() && validNumber() && doesEmailMatch() && doesPhoneMatch()) {
+                        nextBtn.setEnabled(false);
+                        phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                        confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                        noEmailWarning.setVisibility(View.INVISIBLE);
+                        noPhoneNumberWarning.setVisibility(View.INVISIBLE);
+                        unmatchingEmail.setVisibility(View.INVISIBLE);
+                        unmatchingPhone.setVisibility(View.INVISIBLE);
+                        Intent createAccountIntent = new Intent(MainActivity.this, CreateAccount.class);
+                        createAccountIntent.putExtra("Email Address", emailAddressBox.getText().toString());
+                        createAccountIntent.putExtra("Phone Number", phoneNumberBox.getText().toString());
+                        startActivity(createAccountIntent);
+                    }
+                }
+            }
+        });
+
+/*
     nextBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -420,6 +517,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     });
+    */
 
     }
     public static int getCurrentLanguage() {
@@ -485,7 +583,7 @@ public class MainActivity extends AppCompatActivity {
         confirmEmailAddress = findViewById(R.id.ConfirmEmailAddress);
         confirmPhoneNumber = findViewById(R.id.ConfirmPhoneNumber);
         appointmentText = findViewById(R.id.AppointmentText);
-        welcomeText = findViewById(R.id.WelcomeText);
+        // welcomeText = findViewById(R.id.WelcomeText);
         // loginText = findViewById(R.id.LoginText);
         nextBtn = findViewById(R.id.NextBtn);
         noEmailWarning = findViewById(R.id.NoEmailWarning);
@@ -527,7 +625,7 @@ public class MainActivity extends AppCompatActivity {
                 noEmailWarning.setText("*Invalid email address");
                 noPhoneNumberWarning.setText("*Invalid phone number");
                 appointmentText.setText("*If your order requires an appointment please call 831-455-4305 to schedule an appointment");
-                welcomeText.setText("Welcome to D'Arrigo\nCalifornia");
+                // welcomeText.setText("Welcome to D'Arrigo\nCalifornia");
                 // loginText.setText("Log-in");
                 nextBtn.setText("Next");
 
@@ -547,7 +645,7 @@ public class MainActivity extends AppCompatActivity {
                 noEmailWarning.setText("*Dirección de correo electrónico no válida");
                 noPhoneNumberWarning.setText("*Numero de telefono invalido");
                 appointmentText.setText("*Si su pedido requiere una cita, llame al 831-455-4305 para programar una cita");
-                welcomeText.setText("Bienvenido a D'Arrigo\nCalifornia");
+                // welcomeText.setText("Bienvenido a D'Arrigo\nCalifornia");
                 // loginText.setText("Iniciar sesión");
                 nextBtn.setText("Siguiente");
 
@@ -567,7 +665,7 @@ public class MainActivity extends AppCompatActivity {
                 noEmailWarning.setText("*Adresse e-mail invalide");
                 noPhoneNumberWarning.setText("*Numéro de téléphone invalide");
                 appointmentText.setText("*Si votre commande nécessite un rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous");
-                welcomeText.setText("Bienvenue à D'Arrigo\nCalifornia");
+                // welcomeText.setText("Bienvenue à D'Arrigo\nCalifornia");
                 // loginText.setText("S'identifier");
                 nextBtn.setText("Suivant");
                 emailAddressBox.setEms(12);

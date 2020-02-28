@@ -266,7 +266,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/LogoutBtn"
+        android:id="@+id/LoginBtn"
         style="@android:style/Widget.Button.Small"
         android:layout_width="110dp"
         android:layout_height="60dp"
