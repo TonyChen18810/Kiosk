@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,8 +16,10 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
 
     private List<Order> orders;
     private LayoutInflater mInflater;
+    private Context context;
 
     RecyclerViewHorizontalAdapter(Context context, List<Order> orders) {
+        this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.orders = orders;
     }
@@ -34,6 +37,7 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
         holder.orderNumber.setText(order.getOrderNumber());
         holder.buyerName.setText(order.getBuyerName());
         holder.destination.setText(order.getDestination());
+        holder.appointment.setText(order.getAppointmentTime());
     }
 
     @Override
@@ -41,17 +45,28 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
         return orders.size();
     }
 
-    static class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView orderNumber;
         TextView buyerName;
         TextView destination;
+        TextView appointment;
+        Button deleteBtn;
 
-        MyViewHolder(@NonNull View itemView) {
+        MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             this.orderNumber = itemView.findViewById(R.id.OrderNum);
             this.buyerName = itemView.findViewById(R.id.BuyerName);
             this.destination = itemView.findViewById(R.id.Destination);
+            this.appointment = itemView.findViewById(R.id.AppointmentTime);
+            this.deleteBtn = itemView.findViewById(R.id.DeleteBtn);
+
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderEntry.confirmMsg(itemView, context);
+                }
+            });
         }
     }
 }

@@ -83,6 +83,57 @@
                 android:textColor="#BA000000"
                 android:textSize="60sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/AppointmentTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="5:00P.M."
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#BA000000"
+                android:textSize="60sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="#C97A7171" />
+
+            <Button
+                android:id="@+id/DeleteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#A6CC0000"
+                android:layout_gravity="center"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:clickable="true"
+                android:elevation="15dp"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="Delete"
+                android:textColor="@color/white"
+                android:textSize="70sp" />
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

@@ -12,25 +12,27 @@
         android:layout_height="wrap_content"
         android:text="Please confirm the following orders: "
         android:textColor="@color/andy_accent"
-        android:textSize="46sp"
+        android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.036" />
+        app:layout_constraintVertical_bias="0.089" />
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Confirmation number: "
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="40sp"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.413"
+        app:layout_constraintHorizontal_bias="0.409"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.125" />
+        app:layout_constraintVertical_bias="0.158" />
 
     <TextView
         android:id="@+id/confirm"
@@ -38,213 +40,238 @@
         android:layout_height="wrap_content"
         android:text="0000"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="40sp"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintHorizontal_bias="0.676"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.125" />
+        app:layout_constraintVertical_bias="0.158" />
 
-    <TextView
-        android:id="@+id/BuyerName"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/OrderSummaryCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingTop="15dp"
-        android:paddingBottom="8dp"
-        android:text="Buyer Name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/Destination"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.099"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/OrderNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingBottom="15dp"
-        android:text="Order Number"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/BuyerName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.101"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/EstWeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:text="Est. Weight"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="40sp"
+        android:layout_margin="20dp"
+        android:background="#cccf"
+        app:cardCornerRadius="7.5dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.49" />
+        app:layout_constraintVertical_bias="0.348">
 
-    <TextView
-        android:id="@+id/EstPallets"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:text="Est.Pallets"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/EstWeight"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.097"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:padding="30dp">
 
-    <TextView
-        android:id="@+id/AptTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:text="Apt. Time"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/EstPallets"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.095"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+            <TextView
+                android:id="@+id/OrderNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingBottom="15dp"
+                android:text="Order Number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@+id/BuyerName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.037"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
 
-    <TextView
-        android:id="@+id/Destination"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:text="Destination"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/AptTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/BuyerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingTop="15dp"
+                android:paddingBottom="8dp"
+                android:text="Buyer Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@+id/Destination"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.039"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/EstPallets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Est.Pallets"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@+id/EstWeight"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.038"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/AptTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Apt. Time"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@+id/EstPallets"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.038"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/Destination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Destination"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@+id/AptTime"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.038"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.998" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/EstWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Est. Weight"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.038"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.49" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/OrdersView"
-        android:layout_width="579dp"
-        android:layout_height="462dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.956"
-        app:layout_constraintStart_toEndOf="@+id/AptTime"
+        app:layout_constraintHorizontal_bias="0.144"
+        app:layout_constraintStart_toEndOf="@+id/OrderSummaryCard"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.361">
+        app:layout_constraintVertical_bias="0.344">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="249dp"
-        android:layout_height="105dp"
-        android:layout_marginTop="764dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.315">
-
-        <RadioButton
-            android:id="@+id/TextMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Text message"
-            android:textSize="16sp" />
-
-        <RadioButton
-            android:id="@+id/EmailMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email"
-            android:textSize="16sp" />
-
-        <RadioButton
-            android:id="@+id/BothMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Text message and email"
-            android:textSize="16sp" />
-
-    </RadioGroup>
-
     <Button
         android:id="@+id/ConfirmBtn"
-        android:layout_width="120dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/mybutton"
         android:foreground="?android:attr/selectableItemBackground"
+        android:padding="20dp"
         android:text="Confirm"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="70sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
-    <TextView
-        android:id="@+id/PreferInfoText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Please select how you would like to receive information:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.993" />
+        app:layout_constraintVertical_bias="0.758" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/PreferInfoText"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.98">
+        app:layout_constraintVertical_bias="0.67">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="15dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -301,11 +328,5 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-    <View
-        android:layout_width="1092dp"
-        android:layout_height="1065dp"
-        tools:layout_editor_absoluteX="348dp"
-        tools:layout_editor_absoluteY="1495dp"></View>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

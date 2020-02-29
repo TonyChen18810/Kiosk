@@ -19,7 +19,7 @@
         <activity android:name=".OrderSummary" />
         <activity android:name=".AccountCreatedMsg" />
         <activity android:name=".OrderSubmitted" />
-        <activity android:name=".OrderInfo" />
+        <activity android:name=".OrderEntry" />
         <activity android:name=".LoggedIn" />
         <activity
             android:name=".CreateAccount"

@@ -45,7 +45,7 @@ public class OrderSummary extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setContentView(R.layout.final_screen);
-                findViewById(R.id.LoginBtn).setOnClickListener(new View.OnClickListener() {
+                findViewById(R.id.LogoutBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         /*

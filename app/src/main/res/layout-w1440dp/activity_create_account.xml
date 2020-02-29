@@ -105,14 +105,14 @@
                 <Button
                     android:id="@+id/StateButton1"
                     style="@style/Widget.AppCompat.Button.Small"
-                    android:layout_width="150dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@color/andy_accent"
                     android:padding="7dp"
-                    android:text="Select State"
+                    android:text="State"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/white"
-                    android:textSize="26sp" />
+                    android:textSize="40sp" />
 
             </LinearLayout>
 
@@ -135,14 +135,14 @@
 
                 <Button
                     android:id="@+id/StateButton2"
-                    android:layout_width="150dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@color/andy_accent"
                     android:padding="7dp"
-                    android:text="Select State"
+                    android:text="State"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/white"
-                    android:textSize="26sp" />
+                    android:textSize="40sp" />
 
             </LinearLayout>
 
@@ -344,7 +344,7 @@
         app:layout_constraintVertical_bias="0.59" />
 
     <Button
-        android:id="@+id/LoginBtn"
+        android:id="@+id/LogoutBtn"
         style="@android:style/Widget.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

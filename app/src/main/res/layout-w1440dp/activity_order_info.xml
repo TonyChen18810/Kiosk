@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/OrderInfoLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:card_view="http://schemas.android.com/tools"
-    tools:context=".OrderInfo">
+    tools:context=".OrderEntry">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -14,12 +15,10 @@
         app:cardCornerRadius="7.5dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toTopOf="@+id/EnterInfoText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.284">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/AppointmentText"
@@ -37,7 +36,7 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/LoginBtn"
+        android:id="@+id/LogoutBtn"
         style="@android:style/Widget.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,33 +49,150 @@
         android:text="Logout"
         android:textColor="@color/white"
         android:textSize="48sp"
-        app:layout_constraintBottom_toTopOf="@+id/AccountInfo"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintHorizontal_bias="0.958"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.918" />
+        app:layout_constraintVertical_bias="0.072" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/OrdersView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:fadeScrollbars="false"
+        android:orientation="horizontal"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        android:scrollbarSize="30dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CurrentlyEntered"
+        app:layout_constraintVertical_bias="0.094" />
 
     <TextView
-        android:id="@+id/EnterInfoText"
+        android:id="@+id/CurrentlyEntered"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="217dp"
         android:gravity="center"
-        android:text="Enter order information: "
-        android:textColor="#C9000000"
-        android:textSize="46sp"
-        app:layout_constraintBottom_toTopOf="@+id/OrderInfo"
+        android:text="You have entered information for the following orders:"
+        android:textColor="@color/andy_accent"
+        android:textSize="44sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintStart_toStartOf="@+id/OrderInfo"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OrderInfo" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/OrderInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="true"
+        app:cardCornerRadius="7.5dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.919" />
+        app:layout_constraintVertical_bias="0.254"
+        card_view:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="50dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/OrderNumberBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/edit_text"
+                    android:ems="10"
+                    android:hint="Order Number"
+                    android:inputType="textEmailAddress"
+                    android:textSize="80sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.182"
+                    tools:ignore="TextFields" />
+
+                <ImageButton
+                    android:id="@+id/CheckOrderBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/arrow_right"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ErrorMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Error message"
+                android:textColor="@color/error"
+                android:textSize="60sp" />
+
+            <TextView
+                android:id="@+id/BuyerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Buyer Name"
+                android:textSize="80sp" />
+
+            <Button
+                android:id="@+id/SelectDestinationBtn"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:background="@color/andy_accent"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:paddingLeft="60dp"
+                android:paddingTop="30dp"
+                android:paddingRight="60dp"
+                android:paddingBottom="30dp"
+                android:text="Select destination"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#FFFFFF"
+                android:textSize="80sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.317" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/SubmitBtn"
         style="@android:style/Widget.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="160dp"
         android:background="@drawable/mybutton"
         android:clickable="true"
@@ -89,10 +205,10 @@
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.902"
+        app:layout_constraintHorizontal_bias="0.97"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.479" />
+        app:layout_constraintTop_toBottomOf="@+id/OrderInfo"
+        app:layout_constraintVertical_bias="0.023" />
 
     <Button
         android:id="@+id/AddOrderBtn"
@@ -110,214 +226,118 @@
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.204"
+        app:layout_constraintHorizontal_bias="0.252"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.479" />
+        app:layout_constraintTop_toBottomOf="@+id/OrderInfo"
+        app:layout_constraintVertical_bias="0.041" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/OrdersView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="516dp"
-        android:clipToPadding="false"
-        android:fadeScrollbars="false"
-        android:orientation="horizontal"
-        android:scrollbarAlwaysDrawHorizontalTrack="true"
-        android:scrollbarSize="30dp"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbars="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.913" />
-
-    <TextView
-        android:id="@+id/CurrentlyEntered"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="You have entered information for the following orders:"
-        android:textColor="@color/andy_accent"
-        android:textSize="44sp"
-        app:layout_constraintBottom_toTopOf="@+id/OrdersView"
+        app:cardCornerRadius="7.5dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SubmitBtn"
-        app:layout_constraintVertical_bias="0.775" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/OrderInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clipToPadding="true"
-        app:cardCornerRadius="7.5dp"
-        app:cardElevation="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.933"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.224"
-        card_view:cardUseCompatPadding="true">
+        app:layout_constraintVertical_bias="0.134">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="50dp">
-
-            <EditText
-                android:id="@+id/OrderNumberBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:ems="10"
-                android:hint="Order Number"
-                android:inputType="textEmailAddress"
-                android:textSize="70sp"
-                android:background="@drawable/edit_text"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.182"
-                tools:ignore="TextFields" />
-
-            <EditText
-                android:id="@+id/BuyerNameBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:ems="10"
-                android:hint="Buyer/Customer Name"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="5dp"
-                android:textSize="70sp"
-                android:background="@drawable/edit_text"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.251" />
-
-            <EditText
-                android:id="@+id/DestinationBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:ems="10"
-                android:hint="Destination"
-                android:inputType="textEmailAddress"
-                android:textSize="70sp"
-                android:background="@drawable/edit_text"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.317" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/AccountInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clipToPadding="true"
-        app:cardCornerRadius="7.5dp"
-        app:cardElevation="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.229"
-        card_view:cardUseCompatPadding="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="30dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/LoggedInAsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:gravity="center"
-                android:text="You are logged in as: "
+                android:layout_margin="10dp"
+                android:layout_marginTop="28dp"
+                android:gravity="center_vertical"
+                android:text="You are logged in as "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/andy_accent"
-                android:textSize="40sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#C97A7171"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="15dp" />
+                android:textSize="36sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.264"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083" />
 
             <TextView
                 android:id="@+id/EmailStr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:gravity="center"
-                android:text="someone@mail.com"
+                android:layout_margin="10dp"
+                android:layout_marginTop="28dp"
+                android:gravity="center_vertical"
+                android:text="example@gmail.com"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="36sp" />
+                android:textColor="#C9000000"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.718"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083" />
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#C97A7171"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp" />
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="#C9000000" />
 
             <TextView
                 android:id="@+id/PhoneNumberStr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:gravity="center"
-                android:text="(123)-456-7890"
+                android:layout_margin="10dp"
+                android:layout_marginTop="28dp"
+                android:gravity="center_vertical"
+                android:paddingTop="-500dp"
+                android:text="1234567890"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="40sp" />
+                android:textColor="#C9000000"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.718"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083" />
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#C97A7171"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp" />
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="#C9000000" />
 
             <TextView
                 android:id="@+id/TruckNumberStr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:gravity="center"
-                android:text="Truck #"
+                android:layout_margin="10dp"
+                android:layout_marginTop="28dp"
+                android:gravity="center_vertical"
+                android:paddingTop="-500dp"
+                android:text="Truck 000"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="40sp" />
+                android:textColor="#C9000000"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.718"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -332,5 +352,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AccountInfo"
         app:layout_constraintVertical_bias="0.025" />
+
+    <Spinner
+        android:id="@+id/DestinationSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:dropDownWidth="50dp"
+        android:spinnerMode="dialog">
+
+    </Spinner>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

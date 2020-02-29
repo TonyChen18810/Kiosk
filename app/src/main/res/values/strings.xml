@@ -8,14 +8,20 @@
     </string>
 
     <string name="yes">
-        <font size="20">
+        <font size="80">
             yes
         </font>
     </string>
 
     <string name="no">
-        <font size="20">
+        <font size="80">
             no
+        </font>
+    </string>
+
+    <string name="customer">
+        <font size="80">
+            Correct Customer?
         </font>
     </string>
 

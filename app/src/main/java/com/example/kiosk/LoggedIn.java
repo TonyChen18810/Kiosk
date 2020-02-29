@@ -281,7 +281,7 @@ public class LoggedIn extends AppCompatActivity {
                     dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
                     Account account = new Account(emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
                             trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
-                    Intent intent = new Intent(LoggedIn.this, OrderInfo.class);
+                    Intent intent = new Intent(LoggedIn.this, OrderEntry.class);
                     startActivity(intent);
                 }
             }
@@ -464,7 +464,7 @@ public class LoggedIn extends AppCompatActivity {
 
     private void setup() {
 
-        logoutBtn = findViewById(R.id.LoginBtn);
+        logoutBtn = findViewById(R.id.LogoutBtn);
         nextBtn = findViewById(R.id.NextBtn);
         loggedInText = findViewById(R.id.LoggedInText);
         emailAddress = findViewById(R.id.EmailAddressBox);

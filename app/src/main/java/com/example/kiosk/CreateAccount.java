@@ -9,6 +9,7 @@ import android.content.Intent;
 
 import android.os.Bundle;
 
+import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -98,7 +99,16 @@ public class CreateAccount extends AppCompatActivity {
                     selectState1.setText(getResources().getStringArray(R.array.states)[position]);
                 } else {
                     initialSelection1 = true;
-                    selectState1.setText("Select State");
+                    switch(MainActivity.getCurrentLanguage()) {
+                        case 0:
+                            selectState1.setText("State");
+                        case 1:
+                            selectState1.setText("Estado");
+                        case 2:
+                            selectState1.setText("État");
+                        default:
+                            selectState1.setText("State");
+                    }
                 }
             }
 
@@ -118,7 +128,16 @@ public class CreateAccount extends AppCompatActivity {
                     selectState2.setText(getResources().getStringArray(R.array.states)[position]);
                 } else {
                     initialSelection2 = true;
-                    selectState2.setText("Select State");
+                    switch(MainActivity.getCurrentLanguage()) {
+                        case 0:
+                            selectState2.setText("State");
+                        case 1:
+                            selectState2.setText("Estado");
+                        case 2:
+                            selectState2.setText("État");
+                        default:
+                            selectState2.setText("State");
+                    }
                 }
             }
 
@@ -274,8 +293,27 @@ public class CreateAccount extends AppCompatActivity {
                     }
                     selectText.setVisibility(View.GONE);
                     // such a waste - change to a view
-                    setContentView(R.layout.account_created_message);
-                    findViewById(R.id.LoginBtn).setOnClickListener(new View.OnClickListener() {
+                    setContentView(R.layout.account_created_msg);
+
+                    TextView userEmail = findViewById(R.id.emailAddress);
+                    TextView userNumber = findViewById(R.id.phoneNumber);
+                    TextView userTruckName = findViewById(R.id.truckName);
+                    TextView userTruckNumber = findViewById(R.id.truckNumber);
+                    TextView userTrailerLicense = findViewById(R.id.trailerLicense);
+                    TextView userDriverLicense = findViewById(R.id.driverLicense);
+                    TextView userDriverName = findViewById(R.id.driverName);
+                    TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
+
+                    userEmail.setText(Html.fromHtml("Email address: " + "<b>" + currentAccount.getEmail() + "<b>"));
+                    userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + currentAccount.getPhoneNumber() + "<b>"));
+                    userTruckName.setText(Html.fromHtml("Current truck name: " + "<b>" + currentAccount.getTruckName() + "<b>"));
+                    userTruckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + currentAccount.getTruckNumber() + "<b>"));
+                    userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
+                    userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
+                    userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + currentAccount.getDriverName() + "<b>"));
+                    userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + currentAccount.getDispatcherPhoneNumber() + "<b>"));
+
+                    findViewById(R.id.LogoutBtn).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Account.clearAccounts();
@@ -410,6 +448,8 @@ public class CreateAccount extends AppCompatActivity {
                 emailText.setText("Email");
                 bothText.setText("Text message and email");
                 selectText.setText("*Please select one");
+                selectState1.setText("State");
+                selectState2.setText("State");
                 break;
             case 1:
                 //Spanish
@@ -430,6 +470,8 @@ public class CreateAccount extends AppCompatActivity {
                 emailText.setText("Correo electrónico");
                 bothText.setText("Mensaje de texto y correo electrónico");
                 selectText.setText("*Por favor, seleccione uno");
+                selectState1.setText("Estado");
+                selectState2.setText("Estado");
                 break;
             case 2:
                 //French
@@ -450,13 +492,15 @@ public class CreateAccount extends AppCompatActivity {
                 emailText.setText("email");
                 bothText.setText("Message texte et email");
                 selectText.setText("*S'il vous plait sélectionner en un");
+                selectState1.setText("État");
+                selectState2.setText("État");
                 break;
         }
     }
 
     private void setup() {
 
-        logoutBtn = findViewById(R.id.LoginBtn);
+        logoutBtn = findViewById(R.id.LogoutBtn);
         nextBtn = findViewById(R.id.NextBtn);
         createAccount = findViewById(R.id.CreateAccountText);
         EditText emailAddress = findViewById(R.id.EmailAddressBox);
