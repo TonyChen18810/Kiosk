@@ -15,12 +15,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/CorrectCustomer"
+                android:id="@+id/HelpText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:text="Are you sure you want to delete this order?"
+                android:text="Help information text"
                 android:padding="20dp"
                 android:textAlignment="center"
                 android:textSize="80sp" />
@@ -32,33 +32,17 @@
                 android:orientation="horizontal" >
 
                 <Button
-                    android:id="@+id/btn_yes"
+                    android:id="@+id/btn_confirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="200dp"
                     android:layout_marginBottom="15dp"
                     android:background="@color/andy_accent"
+                    android:layout_gravity="center"
                     android:clickable="true"
                     android:focusable="true"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:text="Yes"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@color/white"
-                    android:textSize="80sp" />
-
-                <Button
-                    android:id="@+id/btn_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="200dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@color/andy_accent"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="No"
+                    android:text="Confirm"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/white"
                     android:textSize="80sp" />

@@ -23,7 +23,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -31,16 +30,15 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class OrderEntry extends AppCompatActivity {
 
+    private int currentLanguage = Language.getCurrentLanguage();
+
     private EditText orderNumber;
-    private TextView buyerName;
-    private Button logoutBtn;
-    private TextView errorMessage;
-    private TextView appointmentText;
-    private TextView loggedInAsText;
-    private Button submitBtn;
-    private Button addOrderBtn;
+    private TextView buyerName, errorMessage, appointmentText, loggedInAsText, currentlyEntered;
+    private Button logoutBtn, submitBtn, addOrderBtn, selectDestinationBtn;
     private ImageButton checkOrderBtn;
-    private Button selectDestinationBtn;
+
+    // Rules and Regulations page
+    private TextView line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13;
 
     private static Order currentOrder;
 
@@ -61,7 +59,7 @@ public class OrderEntry extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_info);
+        setContentView(R.layout.activity_order_entry);
 
         View decorView = getWindow().getDecorView();
 
@@ -76,7 +74,6 @@ public class OrderEntry extends AppCompatActivity {
 
         setup();
 
-        changeLanguage(MainActivity.getCurrentLanguage());
         context = this;
 
         if (Order.getSize() == 0) {
@@ -108,13 +105,48 @@ public class OrderEntry extends AppCompatActivity {
                         addOrderBtn.setEnabled(true);
                         selectDestinationBtn.clearAnimation();
                         addOrderBtn.startAnimation(AnimationUtils.loadAnimation(OrderEntry.this, R.anim.fade));
-                        DESTINATION_ATTEMPTS++;
+                        DESTINATION_ATTEMPTS = 0;
+                        selectDestinationBtn.setEnabled(false);
                     } else {
-                        Toast.makeText(OrderEntry.this, "Incorrect destination", Toast.LENGTH_LONG).show();
+                        DESTINATION_ATTEMPTS++;
+                        System.out.println("Destination Attempts: " + DESTINATION_ATTEMPTS);
+                        if (DESTINATION_ATTEMPTS >= 2) {
+                            String message = null;
+                            if (currentLanguage == 0) {
+                                message = "Maximum destination attempts exceeded, please try another order number or contact your dispatcher.";
+                            } else if (currentLanguage == 1) {
+                                message = "Se excedieron los intentos de destino máximos, intente con otro número de pedido o comuníquese con su despachador.";
+                            } else if (currentLanguage == 2) {
+                                message = "Nombre maximal de tentatives de destination dépassé, veuillez essayer un autre numéro de ordre ou contacter votre répartiteur.";
+                            }
+                            HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
+                            dialog.show();
+                            orderNumber.setText("");
+                            buyerName.setVisibility(View.GONE);
+                            selectDestinationBtn.setVisibility(View.GONE);
+                            // initialSelection = false;
+
+                            showSoftKeyboard(orderNumber);
+                            orderNumber.setFocusable(true);
+                            orderNumber.requestFocus();
+                            checkOrderBtn.setEnabled(true);
+                            addOrderBtn.setEnabled(false);
+                            DESTINATION_ATTEMPTS = 0;
+                        } else {
+                            String message = null;
+                            if (currentLanguage == 0) {
+                                message = "Incorrect destination for the entered order number, you have one attempt remaining.";
+                            } else if (currentLanguage == 1) {
+                                message = "Destino incorrecto para el número de pedido ingresado, le queda un intento.";
+                            } else if (currentLanguage == 2) {
+                                message = "Destination incorrecte pour le numéro de ordre saisi, il vous reste un tentative";
+                            }
+                            HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
+                            dialog.show();
+                        }
                     }
                 } else {
                     initialSelection = true;
-                    selectDestinationBtn.setText("Select Destination");
                 }
             }
 
@@ -149,8 +181,29 @@ public class OrderEntry extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OrderEntry.this, OrderSummary.class);
-                startActivity(intent);
+                System.out.println("Number of orders: " + Order.getSize());
+                if (Order.getOrders().get(0).getOrderNumber().length() > 1) {
+                    setContentView(R.layout.rules_regulations);
+
+                    findViewById(R.id.SubmitBtn2).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(OrderEntry.this, OrderSummary.class);
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    String message = null;
+                    if (currentLanguage == 0) {
+                        message = "No orders have been added. Please add an order before submitting.";
+                    } else if (currentLanguage == 1) {
+                        message = "No se han agregado pedidos. Agregue un pedido antes de enviarlo.";
+                    } else if (currentLanguage == 2) {
+                        message = "Aucune commande n'a été ajoutée. Veuillez ajouter une ordre avant de la soumettre.";
+                    }
+                    HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
+                    dialog.show();
+                }
             }
         });
 
@@ -181,9 +234,10 @@ public class OrderEntry extends AppCompatActivity {
 
                 orderNumber.setText("");
                 buyerName.setText("");
-                selectDestinationBtn.setText("Select Destination");
+                selectDestinationBtn.setText("");
                 buyerName.setVisibility(View.GONE);
                 selectDestinationBtn.setVisibility(View.GONE);
+                selectDestinationBtn.setEnabled(true);
                 initialSelection = false;
 
                 showSoftKeyboard(orderNumber);
@@ -191,6 +245,8 @@ public class OrderEntry extends AppCompatActivity {
                 orderNumber.requestFocus();
                 checkOrderBtn.setEnabled(true);
                 addOrderBtn.setEnabled(false);
+                submitBtn.setEnabled(true);
+                currentlyEntered.setVisibility(View.VISIBLE);
             }
         });
 
@@ -205,6 +261,7 @@ public class OrderEntry extends AppCompatActivity {
                 if (orderNumber.length() == 0) {
                     checkOrderBtn.setBackgroundResource(R.drawable.arrow_right);
                     selectDestinationBtn.setVisibility(View.GONE);
+                    checkOrderBtn.setEnabled(true);
                 }
             }
 
@@ -303,36 +360,52 @@ public class OrderEntry extends AppCompatActivity {
             case 0:
                 // English
                 orderNumber.setHint("Order number");
-                selectDestinationBtn.setText("Select Destination");
                 logoutBtn.setText("Logout");
                 appointmentText.setText("If your order requires an appointment please call 831-455-4305 to schedule an appointment");
                 loggedInAsText.setText("You are logged in as: ");
                 submitBtn.setText("Submit Orders");
                 logoutBtn.setText("Logout");
                 addOrderBtn.setText("Add Order");
+                currentlyEntered.setText("You have entered information for the following orders:");
+/*
+                line1.setText("&#8226; Your trailer temperature must be set to 34&#176;F continuously and pre-cooled prior to loading.");
+                line2.setText("&#8226; Your trailer must be in sanitary condition to transport human food.");
+                line3.setText("&#8226; Trailers are to be cleaned prior to loading, no cleaning on the premises.");
+                line4.setText("&#8226; You must slide your tandems to the back prior to loading.");
+                line5.setText("&#8226; You are responsible for your own load locks. You are expected to remove your load locks prior to loading and secure your load after loading.");
+                line6.setText("&#8226; All drivers are expected to be present while being loaded.");
+                line7.setText("&#8226; All drivers are to stand in designated areas at all times.");
+                line8.setText("&#8226; Absolutely no minors allowed on the dock. No exceptions!");
+                line9.setText("&#8226; No food or drinks allowed inside the cold box.");
+                line10.setText("&#8226; Do not operate doors or dock plates.");
+                line11.setText("&#8226; Be extremely cautious of wet, slippery floors as well as moving forklifts.");
+                line12.setText("&#8226; Cash transactions and/or gratuities of any kind are strictly prohibited.");
+                line13.setText("&#8226; Be advised that video surveillance is capturing your actions 24 hours a day.");
+
+ */
                 break;
             case 1:
                 // Spanish
                 orderNumber.setHint("Número de pedido");
-                selectDestinationBtn.setText("Seleccione Destino");
                 logoutBtn.setText("Logout");
                 appointmentText.setText("Si su pedido requiere una cita, llame al 831-455-4305 para programar una cita");
                 loggedInAsText.setText("Conectado como: ");
                 submitBtn.setText("Enviar pedidos");
                 logoutBtn.setText("Cerrar sesión");
                 addOrderBtn.setText("Añadir pedido");
+                currentlyEntered.setText("Ha ingresado información para los siguientes pedidos:");
                 break;
 
             case 2:
                 // French
                 orderNumber.setHint("Numero de ordre");
-                selectDestinationBtn.setText("Sélectionner Destination");
                 logoutBtn.setText("Logout");
                 appointmentText.setText("Si votre commande nécessite un rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous");
                 loggedInAsText.setText("Connecté en tant que: ");
                 submitBtn.setText("Soumettre ordres");
                 logoutBtn.setText("Se déconnecter");
                 addOrderBtn.setText("Ajouter ordre");
+                currentlyEntered.setText("Vous avez entré des informations pour les commandes suivantes:");
                 break;
         }
     }
@@ -345,7 +418,7 @@ public class OrderEntry extends AppCompatActivity {
         TextView truckNumberStr = findViewById(R.id.TruckNumberStr);
         appointmentText = findViewById(R.id.AppointmentText);
         loggedInAsText = findViewById(R.id.LoggedInAsText);
-        submitBtn = findViewById(R.id.SubmitBtn);
+        submitBtn = findViewById(R.id.SubmitBtn2);
         addOrderBtn = findViewById(R.id.AddOrderBtn);
         checkOrderBtn = findViewById(R.id.CheckOrderBtn);
         selectDestinationBtn = findViewById(R.id.SelectDestinationBtn);
@@ -356,6 +429,22 @@ public class OrderEntry extends AppCompatActivity {
         buyerName.setVisibility(View.GONE);
         errorMessage = findViewById(R.id.ErrorMessage);
         errorMessage.setVisibility(View.GONE);
+        currentlyEntered = findViewById(R.id.CurrentlyEntered);
+        currentlyEntered.setVisibility(View.INVISIBLE);
+
+        line1 = findViewById(R.id.line1);
+        line2 = findViewById(R.id.line2);
+        line3 = findViewById(R.id.line3);
+        line4 = findViewById(R.id.line4);
+        line5 = findViewById(R.id.line5);
+        line6 = findViewById(R.id.line6);
+        line7 = findViewById(R.id.line7);
+        line8 = findViewById(R.id.line8);
+        line9 = findViewById(R.id.line9);
+        line10 = findViewById(R.id.line10);
+        line11 = findViewById(R.id.line11);
+        line12 = findViewById(R.id.line12);
+        line13 = findViewById(R.id.line13);
 
         possibleOrders.add(new Order("FF555", "Charlies", "Arizona", "5:00pm"));
         possibleOrders.add(new Order("BB222", "John","California","6:30pm"));
@@ -366,5 +455,7 @@ public class OrderEntry extends AppCompatActivity {
         phoneNumberStr.setText(formatPhoneNumber(currentAccount.getPhoneNumber()));
         truckNumberStr.setText(String.format("%s %s", currentAccount.getTruckName(), currentAccount.getTruckNumber()));
         addOrderBtn.setEnabled(false);
+        submitBtn.setEnabled(false);
+        changeLanguage(currentLanguage);
     }
 }

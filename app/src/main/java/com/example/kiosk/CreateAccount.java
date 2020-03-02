@@ -32,7 +32,7 @@ public class CreateAccount extends AppCompatActivity {
 
     private String email, phone;
     private Button logoutBtn, nextBtn;
-    private TextView createAccount;
+    private TextView createAccount, verifyText, preferText, helpText;
     private EditText truckName;
     private EditText truckNumber;
     private EditText trailerLicense;
@@ -40,8 +40,6 @@ public class CreateAccount extends AppCompatActivity {
     private EditText driverName;
     private EditText dispatcherPhoneNumber;
     private Spinner trailerStateSpinner, driverStateSpinner;
-    private TextView verifyText;
-    private TextView preferText;
     private ImageButton truckNameHelp, truckNumberHelp, trailerLicenseHelp,
             driverLicenseHelp, driverNameHelp, dispatcherPhoneNumberHelp;
 
@@ -55,6 +53,8 @@ public class CreateAccount extends AppCompatActivity {
     private int PREFERRED_COMMUNICATION = -1;
 
     private static Account currentAccount;
+
+    private static int currentLanguage = Language.getCurrentLanguage();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,15 +99,13 @@ public class CreateAccount extends AppCompatActivity {
                     selectState1.setText(getResources().getStringArray(R.array.states)[position]);
                 } else {
                     initialSelection1 = true;
-                    switch(MainActivity.getCurrentLanguage()) {
+                    switch(currentLanguage) {
                         case 0:
                             selectState1.setText("State");
                         case 1:
                             selectState1.setText("Estado");
                         case 2:
                             selectState1.setText("État");
-                        default:
-                            selectState1.setText("State");
                     }
                 }
             }
@@ -128,15 +126,13 @@ public class CreateAccount extends AppCompatActivity {
                     selectState2.setText(getResources().getStringArray(R.array.states)[position]);
                 } else {
                     initialSelection2 = true;
-                    switch(MainActivity.getCurrentLanguage()) {
+                    switch(currentLanguage) {
                         case 0:
                             selectState2.setText("State");
                         case 1:
                             selectState2.setText("Estado");
                         case 2:
                             selectState2.setText("État");
-                        default:
-                            selectState2.setText("State");
                     }
                 }
             }
@@ -146,54 +142,19 @@ public class CreateAccount extends AppCompatActivity {
 
             }
         });
-/*
-        truckNameHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CreateAccount.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter the name of your truck/truck company");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
 
-        truckNumberHelp.setOnClickListener(new View.OnClickListener() {
+        driverNameHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CreateAccount.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter the number of your truck (NOT your license plate number)");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-
-        trailerLicenseHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CreateAccount.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter the license plate number of your trailer");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter your first and last name.";
+                } else if (currentLanguage == 1) {
+                    message = "Por favor introduce tu primer nombre y apellido.";
+                } else if (currentLanguage == 2) {
+                    message = "S'il-vous-plaît, entrer votre prénom et votre nom.";
+                }
+                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
                 dialog.show();
             }
         });
@@ -201,33 +162,63 @@ public class CreateAccount extends AppCompatActivity {
         driverLicenseHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CreateAccount.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter your driver's license number");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter your driver license number";
+                } else if (currentLanguage == 1) {
+                    message = "Por favor ingrese su número de licencia de conducir";
+                } else if (currentLanguage == 2) {
+                    message = "Veuillez entrer votre numéro de permis de conduire";
+                }
+                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
                 dialog.show();
             }
         });
 
-        driverNameHelp.setOnClickListener(new View.OnClickListener() {
+        truckNameHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CreateAccount.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter your name");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter the company name of your truck (NOT the make/model)";
+                } else if (currentLanguage == 1) {
+                    message = "Ingrese el nombre de la compañía de su camión (NO la marca / modelo)";
+                } else if (currentLanguage == 2) {
+                    message = "Veuillez saisir le nom de l'entreprise de votre camion (PAS la marque / le modèle)";
+                }
+                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
+                dialog.show();
+            }
+        });
+
+        truckNumberHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter the number of your truck";
+                } else if (currentLanguage == 1) {
+                    message = "Por favor ingrese el número de su camión";
+                } else if (currentLanguage == 2) {
+                    message = "Veuillez entrer le numéro de votre camion";
+                }
+                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
+                dialog.show();
+            }
+        });
+
+        trailerLicenseHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter the license plate number of your trailer";
+                } else if (currentLanguage == 1) {
+                    message = "Ingrese el número de placa de su remolque";
+                } else if (currentLanguage == 2) {
+                    message = "Veuillez entrer le numéro de plaque d'immatriculation de votre remorque";
+                }
+                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
                 dialog.show();
             }
         });
@@ -235,20 +226,19 @@ public class CreateAccount extends AppCompatActivity {
         dispatcherPhoneNumberHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CreateAccount.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter your dispatcher's phone number");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter the phone number of your current dispatcher";
+                } else if (currentLanguage == 1) {
+                    message = "Ingrese el número de teléfono de su despachador actual";
+                } else if (currentLanguage == 2) {
+                    message = "Veuillez entrer le numéro de téléphone de votre répartiteur actuel";
+                }
+                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
                 dialog.show();
             }
         });
-*/
+
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -408,16 +398,11 @@ public class CreateAccount extends AppCompatActivity {
 
     public void showSoftKeyboard(View view) {
         if (view.requestFocus()) {
-            InputMethodManager imm = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.showSoftInput(view, SHOW_IMPLICIT);
             }
         }
-    }
-
-    public static Account getCurrentAccount() {
-        return currentAccount;
     }
 
     @SuppressLint("SetTextI18n")
@@ -436,6 +421,7 @@ public class CreateAccount extends AppCompatActivity {
                 createAccount.setText("Create Account");
                 // emailAddress.setHint("Email address");
                 // phoneNumber.setHint("Phone number");
+                helpText.setText("Select icon for help");
                 truckName.setHint("Truck name");
                 truckNumber.setHint("Truck number");
                 trailerLicense.setHint("Trailer license number");
@@ -458,6 +444,7 @@ public class CreateAccount extends AppCompatActivity {
                 createAccount.setText("Crear una cuenta");
                 // emailAddress.setHint("Dirección de correo electrónico");
                 // phoneNumber.setHint("Número de teléfono");
+                helpText.setText("Seleccionar icono para ayuda");
                 truckName.setHint("Nombre del camión");
                 truckNumber.setHint("Numero de camión");
                 trailerLicense.setHint("Número de licencia de remolque");
@@ -480,6 +467,7 @@ public class CreateAccount extends AppCompatActivity {
                 createAccount.setText("Créer un compte");
                 // emailAddress.setHint("Adresse électronique");
                 // phoneNumber.setHint("Numéro de téléphone");
+                helpText.setText("Sélectionnez l'icône pour obtenir de l'aide");
                 truckName.setHint("Nom du camion");
                 truckNumber.setHint("Numéro de camion");
                 trailerLicense.setHint("Numéro de licence de la remorque");
@@ -520,6 +508,7 @@ public class CreateAccount extends AppCompatActivity {
         dispatcherPhoneNumberHelp = findViewById(R.id.DispatcherPhoneNumberHelp);
         trailerStateSpinner = findViewById(R.id.StateSpinner);
         driverStateSpinner = findViewById(R.id.StateSpinner2);
+        helpText = findViewById(R.id.HelpText);
 
         trailerStateSpinner.setVisibility(View.INVISIBLE);
         driverStateSpinner.setVisibility(View.INVISIBLE);
@@ -540,8 +529,6 @@ public class CreateAccount extends AppCompatActivity {
         selectState1.setText("Select state");
         selectState2.setText("Select state");
 
-        changeLanguage(MainActivity.getCurrentLanguage());
-
         showSoftKeyboard(truckName);
         dispatcherPhoneNumber.setOnEditorActionListener(new KeyboardListener());
 
@@ -549,5 +536,7 @@ public class CreateAccount extends AppCompatActivity {
         phoneNumber.setText(phone);
         emailAddress.setTextColor(getResources().getColor(R.color.black));
         phoneNumber.setTextColor(getResources().getColor(R.color.black));
+
+        changeLanguage(currentLanguage);
     }
 }

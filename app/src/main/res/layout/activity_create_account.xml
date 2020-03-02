@@ -244,7 +244,7 @@
         tools:ignore="HardcodedText" />
 
     <Button
-        android:id="@+id/SubmitBtn"
+        android:id="@+id/SubmitBtn2"
         style="@android:style/Widget.Button.Small"
         android:layout_width="110dp"
         android:layout_height="60dp"
@@ -380,7 +380,7 @@
         app:srcCompat="@drawable/info" />
 
     <TextView
-        android:id="@+id/helpText"
+        android:id="@+id/HelpText"
         android:layout_width="123dp"
         android:layout_height="25dp"
         android:layout_marginStart="12dp"

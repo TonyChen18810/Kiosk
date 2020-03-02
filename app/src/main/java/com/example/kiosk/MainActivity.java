@@ -35,15 +35,13 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int currentLanguage = 0;
+    private static int currentLanguage = Language.getCurrentLanguage();
 
     private EditText emailAddressBox;
     private EditText phoneNumberBox;
     private EditText confirmEmailAddress;
     private EditText confirmPhoneNumber;
     private TextView appointmentText;
-    private TextView welcomeText;
-    // private TextView loginText;
     private Button nextBtn;
     private TextView noEmailWarning;
     private TextView noPhoneNumberWarning;
@@ -51,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView unmatchingPhone;
     private boolean expanded = false;
 
-    private View englishCheckbox;
-    private View spanishCheckbox;
-    private View frenchCheckbox;
+    private View englishCheckbox, spanishCheckbox, frenchCheckbox;
 
     private static Account currentAccount;
 
@@ -101,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentLanguage = parent.getSelectedItemPosition();
+                Language.setCurrentLanguage(currentLanguage);
                 changeLanguage(currentLanguage);
             }
 
@@ -309,8 +306,8 @@ public class MainActivity extends AppCompatActivity {
                 spanishCheckbox.setPressed(false);
                 frenchCheckbox.setPressed(false);
                 englishCheckbox.setPressed(true);
-                currentLanguage = 0;
-                changeLanguage(currentLanguage);
+                Language.setCurrentLanguage(0);
+                changeLanguage(Language.getCurrentLanguage());
                 return true;
             }
         });
@@ -321,8 +318,8 @@ public class MainActivity extends AppCompatActivity {
                 frenchCheckbox.setPressed(false);
                 englishCheckbox.setPressed(false);
                 spanishCheckbox.setPressed(true);
-                currentLanguage = 1;
-                changeLanguage(currentLanguage);
+                Language.setCurrentLanguage(1);
+                changeLanguage(Language.getCurrentLanguage());
                 return true;
             }
         });
@@ -333,8 +330,8 @@ public class MainActivity extends AppCompatActivity {
                 spanishCheckbox.setPressed(false);
                 englishCheckbox.setPressed(false);
                 frenchCheckbox.setPressed(true);
-                currentLanguage = 2;
-                changeLanguage(currentLanguage);
+                Language.setCurrentLanguage(2);
+                changeLanguage(Language.getCurrentLanguage());
                 return true;
             }
         });
@@ -345,8 +342,8 @@ public class MainActivity extends AppCompatActivity {
                 spanishCheckbox.setPressed(false);
                 frenchCheckbox.setPressed(false);
                 englishCheckbox.setPressed(true);
-                currentLanguage = 0;
-                changeLanguage(currentLanguage);
+                Language.setCurrentLanguage(0);
+                changeLanguage(Language.getCurrentLanguage());
                 return true;
             }
         });
@@ -357,8 +354,8 @@ public class MainActivity extends AppCompatActivity {
                 frenchCheckbox.setPressed(false);
                 englishCheckbox.setPressed(false);
                 spanishCheckbox.setPressed(true);
-                currentLanguage = 1;
-                changeLanguage(currentLanguage);
+                Language.setCurrentLanguage(1);
+                changeLanguage(Language.getCurrentLanguage());
                 return true;
             }
         });
@@ -369,8 +366,8 @@ public class MainActivity extends AppCompatActivity {
                 spanishCheckbox.setPressed(false);
                 englishCheckbox.setPressed(false);
                 frenchCheckbox.setPressed(true);
-                currentLanguage = 2;
-                changeLanguage(currentLanguage);
+                Language.setCurrentLanguage(2);
+                changeLanguage(Language.getCurrentLanguage());
                 return true;
             }
         });
@@ -440,88 +437,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-/*
-    nextBtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Display display = getWindowManager().getDefaultDisplay();
-            int width = display.getWidth();
-            int height = display.getHeight();
-            System.out.println(width + " x " + height);
-            if (accountExists() && validNumber()) {
-                noEmailWarning.setVisibility(View.INVISIBLE);
-                noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-                phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                nextBtn.setEnabled(false);
-                Intent intent = new Intent(MainActivity.this, LoggedIn.class);
-                intent.putExtra("Email Address", currentAccount.getEmail());
-                intent.putExtra("Phone Number", currentAccount.getPhoneNumber());
-                intent.putExtra("Truck Name", currentAccount.getTruckName());
-                intent.putExtra("Truck Number", currentAccount.getTruckNumber());
-                intent.putExtra("Trailer License", currentAccount.getTrailerLicense());
-                intent.putExtra("Trailer State", currentAccount.getTrailerState());
-                intent.putExtra("Driver License", currentAccount.getDriverLicense());
-                intent.putExtra("Driver State", currentAccount.getDriverState());
-                intent.putExtra("Driver Name", currentAccount.getDriverName());
-                intent.putExtra("Dispatcher's Phone Number", currentAccount.getDispatcherPhoneNumber());
-                startActivity(intent);
-            } else {
-                if (emailAddressBox.getText().toString().equals("") && phoneNumberBox.getText().toString().equals("")) {
-                    noEmailWarning.setVisibility(View.VISIBLE);
-                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                    noPhoneNumberWarning.setVisibility(View.VISIBLE);
-                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                } else if (phoneNumberBox.getText().toString().equals("")) {
-                    noPhoneNumberWarning.setVisibility(View.VISIBLE);
-                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                    noEmailWarning.setVisibility(View.INVISIBLE);
-                } else if (emailAddressBox.getText().toString().equals("")) {
-                    noEmailWarning.setVisibility(View.VISIBLE);
-                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                    noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-                } else if (validEmail() && validNumber() && doesEmailMatch() && doesPhoneMatch()) {
-                    nextBtn.setEnabled(false);
-                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                    confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                    noEmailWarning.setVisibility(View.INVISIBLE);
-                    noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-                    unmatchingEmail.setVisibility(View.INVISIBLE);
-                    unmatchingPhone.setVisibility(View.INVISIBLE);
-                    Intent createAccountIntent = new Intent(MainActivity.this, CreateAccount.class);
-                    createAccountIntent.putExtra("Email Address", emailAddressBox.getText().toString());
-                    createAccountIntent.putExtra("Phone Number", phoneNumberBox.getText().toString());
-                    startActivity(createAccountIntent);
-                } else if (!doesEmailMatch() && !doesPhoneMatch() && validEmail() && validNumber()) {
-                    unmatchingEmail.setVisibility(View.VISIBLE);
-                    unmatchingPhone.setVisibility(View.VISIBLE);
-                } else if (validEmail() && !validNumber()) {
-                    noPhoneNumberWarning.setVisibility(View.VISIBLE);
-                    noEmailWarning.setVisibility(View.INVISIBLE);
-                } else if (!validEmail() && validNumber()) {
-                    noEmailWarning.setVisibility(View.VISIBLE);
-                    noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-                } else if (!doesPhoneMatch() && validNumber()) {
-                    unmatchingPhone.setVisibility(View.VISIBLE);
-                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                    confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                } else if (!doesEmailMatch() && validEmail()) {
-                    unmatchingEmail.setVisibility(View.VISIBLE);
-                } else if(!doesPhoneMatch()) {
-                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                    confirmPhoneNumber.getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
-                } else {
-                    noEmailWarning.setVisibility(View.VISIBLE);
-                    noPhoneNumberWarning.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-    });
-    */
-
-    }
-    public static int getCurrentLanguage() {
-        return currentLanguage;
     }
 
     private boolean doesEmailMatch() {
@@ -609,7 +524,6 @@ public class MainActivity extends AppCompatActivity {
         showSoftKeyboard(emailAddressBox);
     }
 
-    @SuppressLint("SetTextI18n")
     private void changeLanguage(int val) {
         emailAddressBox.setHintTextColor(getResources().getColor(R.color.dark_gray));
         phoneNumberBox.setHintTextColor(getResources().getColor(R.color.dark_gray));

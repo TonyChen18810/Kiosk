@@ -42,7 +42,24 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         Button yes = findViewById(R.id.btn_yes);
         Button no = findViewById(R.id.btn_no);
         TextView customerName = findViewById(R.id.CustomerName);
+        TextView correctCustomer = findViewById(R.id.CorrectCustomer);
         customerName.setText(customerNameStr);
+        if (Language.getCurrentLanguage() == 0) {
+            correctCustomer.setText("Is this the correct customer for this order number?");
+            destination.setText("Select destination");
+            yes.setText("Yes");
+            no.setText("No");
+        } else if (Language.getCurrentLanguage() == 1) {
+            correctCustomer.setText("¿Es este el cliente correcto para este número de pedido?");
+            destination.setText("Seleccione destino");
+            yes.setText("Sí");
+            no.setText("No");
+        } else if (Language.getCurrentLanguage() == 2) {
+            correctCustomer.setText("Est-ce le bon client pour ce numéro de commande?");
+            destination.setText("Sélectionner la destination");
+            yes.setText("Oui");
+            no.setText("Non");
+        }
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
 

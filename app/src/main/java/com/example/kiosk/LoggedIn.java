@@ -25,6 +25,8 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class LoggedIn extends AppCompatActivity {
 
+    private int currentLanguage = Language.getCurrentLanguage();
+
     private Button logoutBtn;
     private Button nextBtn;
     private TextView loggedInText;
@@ -103,8 +105,6 @@ public class LoggedIn extends AppCompatActivity {
             // phone = (String) savedInstanceState.getSerializable("Phone Number");
         }
 
-        changeLanguage(MainActivity.getCurrentLanguage());
-
         ActivityCompat.requestPermissions(LoggedIn.this, new String[]{Manifest.permission.SEND_SMS}, 0);
 
         final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
@@ -147,55 +147,18 @@ public class LoggedIn extends AppCompatActivity {
             }
         });
 
-        /*
-
-        truckNameHelp.setOnClickListener(new View.OnClickListener() {
+        driverNameHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter the name of your truck/truck company");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-
-        truckNumberHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter the number of your truck (NOT your license plate number)");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-
-        trailerLicenseHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter the license plate number of your trailer");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter your first and last name.";
+                } else if (currentLanguage == 1) {
+                    message = "Por favor introduce tu primer nombre y apellido.";
+                } else if (currentLanguage == 2) {
+                    message = "S'il-vous-plaît, entrer votre prénom et votre nom.";
+                }
+                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
                 dialog.show();
             }
         });
@@ -203,33 +166,63 @@ public class LoggedIn extends AppCompatActivity {
         driverLicenseHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter your driver's license number");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter your driver license number";
+                } else if (currentLanguage == 1) {
+                    message = "Por favor ingrese su número de licencia de conducir";
+                } else if (currentLanguage == 2) {
+                    message = "Veuillez entrer votre numéro de permis de conduire";
+                }
+                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
                 dialog.show();
             }
         });
 
-        driverNameHelp.setOnClickListener(new View.OnClickListener() {
+        truckNameHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter your name");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter the company name of your truck (NOT the make/model)";
+                } else if (currentLanguage == 1) {
+                    message = "Ingrese el nombre de la compañía de su camión (NO la marca / modelo)";
+                } else if (currentLanguage == 2) {
+                    message = "Veuillez saisir le nom de l'entreprise de votre camion (PAS la marque / le modèle)";
+                }
+                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
+                dialog.show();
+            }
+        });
+
+        truckNumberHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter the number of your truck";
+                } else if (currentLanguage == 1) {
+                    message = "Por favor ingrese el número de su camión";
+                } else if (currentLanguage == 2) {
+                    message = "Veuillez entrer le numéro de votre camion";
+                }
+                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
+                dialog.show();
+            }
+        });
+
+        trailerLicenseHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter the license plate number of your trailer";
+                } else if (currentLanguage == 1) {
+                    message = "Ingrese el número de placa de su remolque";
+                } else if (currentLanguage == 2) {
+                    message = "Veuillez entrer le numéro de plaque d'immatriculation de votre remorque";
+                }
+                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
                 dialog.show();
             }
         });
@@ -237,21 +230,18 @@ public class LoggedIn extends AppCompatActivity {
         dispatcherPhoneNumberHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoggedIn.this);
-                builder.setCancelable(true);
-                builder.setTitle("Help information");
-                builder.setMessage("Please enter your dispatcher's phone number");
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog dialog = builder.create();
+                String message = null;
+                if (currentLanguage == 0) {
+                    message = "Please enter the phone number of your current dispatcher";
+                } else if (currentLanguage == 1) {
+                    message = "Ingrese el número de teléfono de su despachador actual";
+                } else if (currentLanguage == 2) {
+                    message = "Veuillez entrer le numéro de téléphone de votre répartiteur actuel";
+                }
+                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
                 dialog.show();
             }
         });
-
-         */
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -484,21 +474,18 @@ public class LoggedIn extends AppCompatActivity {
         bothCheckbox = findViewById(R.id.BothCheckbox);
         select = findViewById(R.id.SelectText);
         preferText = findViewById(R.id.PreferInfoText);
-        /*
         truckNameHelp = findViewById(R.id.TruckNameHelp);
         truckNumberHelp = findViewById(R.id.TruckNumberHelp);
         trailerLicenseHelp = findViewById(R.id.TrailerLicenseHelp);
         driverLicenseHelp = findViewById(R.id.DriverLicenseHelp);
         driverNameHelp = findViewById(R.id.DriverNameHelp);
         dispatcherPhoneNumberHelp = findViewById(R.id.DispatcherPhoneNumberHelp);
-
-         */
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
         selectState1.setText("Select state");
         selectState2.setText("Select state");
 
-        selectIconText = findViewById(R.id.helpText);
+        selectIconText = findViewById(R.id.HelpText);
 
         userEmail = findViewById(R.id.UserEmail);
         userPhone = findViewById(R.id.UserPhone);
@@ -522,5 +509,7 @@ public class LoggedIn extends AppCompatActivity {
         phoneNumber.setText(emailAddress.getText().toString());
         emailAddress.setTextColor(getResources().getColor(R.color.black));
         phoneNumber.setTextColor(getResources().getColor(R.color.black));
+
+        changeLanguage(currentLanguage);
     }
 }

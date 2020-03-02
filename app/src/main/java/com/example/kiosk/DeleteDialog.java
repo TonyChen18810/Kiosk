@@ -28,16 +28,19 @@ public class DeleteDialog extends Dialog implements android.view.View.OnClickLis
         setContentView(R.layout.custom_dialog_delete);
         Button yes = findViewById(R.id.btn_yes);
         Button no = findViewById(R.id.btn_no);
-        TextView deleteOrder = findViewById(R.id.DeleteOrder);
-        switch(MainActivity.getCurrentLanguage()) {
-            case 0:
-                deleteOrder.setText("Are you sure you want to delete order " + orderNumberStr + "?");
-            case 1:
-                deleteOrder.setText("¿Estás seguro de que quieres eliminar el pedido: " + orderNumberStr + "?");
-            case 2:
-                deleteOrder.setText("Voulez-vous vraiment supprimer la ordre " + orderNumberStr + "?");
-            default:
-                deleteOrder.setText("Are you sure you want to delete order " + orderNumberStr + "?");
+        TextView deleteOrder = findViewById(R.id.CorrectCustomer);
+        if (Language.getCurrentLanguage() == 0) {
+            deleteOrder.setText("Are you sure you want to delete order: " + orderNumberStr + "?");
+            yes.setText("Yes");
+            no.setText("No");
+        } else if (Language.getCurrentLanguage() == 1) {
+            deleteOrder.setText("¿Estás seguro de que quieres eliminar el pedido: " + orderNumberStr + "?");
+            yes.setText("Sí");
+            no.setText("No");
+        } else if (Language.getCurrentLanguage() == 2) {
+            deleteOrder.setText("Voulez-vous vraiment supprimer la ordre: " + orderNumberStr + "?");
+            yes.setText("Oui");
+            no.setText("Non");
         }
         yes.setOnClickListener(this);
         no.setOnClickListener(this);

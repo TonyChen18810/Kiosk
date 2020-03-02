@@ -188,7 +188,7 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/SubmitBtn"
+        android:id="@+id/SubmitBtn2"
         style="@android:style/Widget.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

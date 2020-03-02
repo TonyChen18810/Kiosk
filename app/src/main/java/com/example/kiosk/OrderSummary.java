@@ -15,6 +15,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderSummary extends AppCompatActivity {
 
+    private int currentLanguage = Language.getCurrentLanguage();
+
     private final int CONFIRMATION_NUMBER = ThreadLocalRandom.current().nextInt(1000, 9999 + 1);
 
     @Override

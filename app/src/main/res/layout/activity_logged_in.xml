@@ -383,7 +383,7 @@
         app:srcCompat="@drawable/info" />
 
     <TextView
-        android:id="@+id/helpText"
+        android:id="@+id/HelpText"
         android:layout_width="203dp"
         android:layout_height="55dp"
         android:layout_marginStart="12dp"
