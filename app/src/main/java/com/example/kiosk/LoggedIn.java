@@ -368,7 +368,6 @@ public class LoggedIn extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private void changeLanguage(int val) {
         truckName.setHintTextColor(getResources().getColor(R.color.dark_gray));
         truckNumber.setHintTextColor(getResources().getColor(R.color.dark_gray));
@@ -379,75 +378,66 @@ public class LoggedIn extends AppCompatActivity {
         switch(val) {
             case 0:
                 //English
-                logoutBtn.setText("Logout");
-                nextBtn.setText("Next");
-                loggedInText.setText("Logged in as: ");
-                // emailAddress.setHint("Email address");
-                // phoneNumber.setHint("Phone number");
+                logoutBtn.setText(R.string.logout_eng);
+                nextBtn.setText(R.string.next_eng);
+                loggedInText.setText(R.string.logged_in_as_eng);
                 truckName.setHint("Truck name");
                 truckNumber.setHint("Truck number");
                 trailerLicense.setHint("Trailer license number");
                 driverLicense.setHint("Driver license number");
                 driverName.setHint("Driver's name");
                 dispatcherPhoneNumber.setHint("Dispatcher's phone number");
-                verifyText.setText("*By clicking 'Submit' I verify that all\ninformation is correct and accurate");
-                preferText.setText("How would you prefer communication?");
-                text.setText("Text message");
-                email.setText("Email");
-                both.setText("Text message and email");
-                select.setText("*Please select one");
-                selectIconText.setText("Select icon for help");
-
-                selectState1.setText("Select state");
-                selectState2.setText("Select state");
+                verifyText.setText(R.string.verify_submit_eng);
+                preferText.setText(R.string.comm_preference_eng);
+                text.setText(R.string.text_msg_eng);
+                email.setText(R.string.email_eng);
+                both.setText(R.string.text_and_email_eng);
+                select.setText(R.string.select_one_eng);
+                selectIconText.setText(R.string.select_help_icon_eng);
+                selectState1.setText(R.string.state_eng);
+                selectState2.setText(R.string.state_eng);
                 break;
             case 1:
                 //Spanish
-                logoutBtn.setText("Cerrar sesión");
-                nextBtn.setText("Próximo");
-                loggedInText.setText("Conectado como: ");
-                // emailAddress.setHint("Dirección de correo electrónico");
-                // phoneNumber.setHint("Número de teléfono");
+                logoutBtn.setText(R.string.logout_sp);
+                nextBtn.setText(R.string.next_sp);
+                loggedInText.setText(R.string.logged_in_as_sp);
                 truckName.setHint("Nombre del camión");
                 truckNumber.setHint("Numero de camión");
                 trailerLicense.setHint("Número de licencia de remolque");
                 driverLicense.setHint("Número de licencia de conducir");
                 driverName.setHint("Nombre del conductor");
                 dispatcherPhoneNumber.setHint("Número de teléfono del despachador");
-                verifyText.setText("*Al hacer clic en 'Enviar' verifico que\ntoda la información es correcta y precisa");
-                preferText.setText("¿Cómo preferirías la comunicación?");
-                text.setText("Mensaje de texto");
-                email.setText("Correo electrónico");
-                both.setText("Mensaje de texto y correo electrónico");
-                select.setText("*Por favor, seleccione uno");
-                selectIconText.setText("Seleccionar icono para ayuda");
-
-                selectState1.setText("Select state");
-                selectState2.setText("Select state");
+                verifyText.setText(R.string.verify_submit_sp);
+                preferText.setText(R.string.comm_preference_sp);
+                text.setText(R.string.text_msg_sp);
+                email.setText(R.string.email_sp);
+                both.setText(R.string.text_and_email_sp);
+                select.setText(R.string.select_one_sp);
+                selectIconText.setText(R.string.select_help_icon_sp);
+                selectState1.setText(R.string.state_sp);
+                selectState2.setText(R.string.state_sp);
                 break;
             case 2:
                 //French
-                logoutBtn.setText("Se déconnecter");
-                nextBtn.setText("Prochain");
-                loggedInText.setText("Connecté en tant que: ");
-                // emailAddress.setHint("Adresse électronique");
-                // phoneNumber.setHint("Numéro de téléphone");
+                logoutBtn.setText(R.string.logout_fr);
+                nextBtn.setText(R.string.next_fr);
+                loggedInText.setText(R.string.logged_in_as_fr);
                 truckName.setHint("Nom du camion");
                 truckNumber.setHint("Numéro de camion");
                 trailerLicense.setHint("Numéro de licence de la remorque");
                 driverLicense.setHint("Numéro de permis de conduire");
                 driverName.setHint("Nom du conducteur");
                 dispatcherPhoneNumber.setHint("Numéro de téléphone du répartiteur");
-                verifyText.setText("*En cliquant sur 'Soumettre', je vérifie quetoutes\nles informations sont correctes et exactes");
-                preferText.setText("Comment préférez-vous la communication?");
-                text.setText("Message texte");
-                email.setText("email");
-                both.setText("Message texte et email");
-                select.setText("*S'il vous plait sélectionner en un");
-                selectIconText.setText("Sélectionnez l'icône pour obtenir de l'aide");
-
-                selectState1.setText("Select state");
-                selectState2.setText("Select state");
+                verifyText.setText(R.string.verify_submit_fr);
+                preferText.setText(R.string.comm_preference_fr);
+                text.setText(R.string.text_msg_fr);
+                email.setText(R.string.email_fr);
+                both.setText(R.string.text_and_email_fr);
+                select.setText(R.string.select_one_fr);
+                selectIconText.setText(R.string.select_help_icon_fr);
+                selectState1.setText(R.string.state_fr);
+                selectState2.setText(R.string.state_fr);
                 break;
         }
     }
@@ -482,8 +472,6 @@ public class LoggedIn extends AppCompatActivity {
         dispatcherPhoneNumberHelp = findViewById(R.id.DispatcherPhoneNumberHelp);
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
-        selectState1.setText("Select state");
-        selectState2.setText("Select state");
 
         selectIconText = findViewById(R.id.HelpText);
 
@@ -492,7 +480,7 @@ public class LoggedIn extends AppCompatActivity {
         userTruck = findViewById(R.id.UserTruck);
         userEmail.setText(MainActivity.getCurrentAccount().getEmail());
         userPhone.setText(MainActivity.getCurrentAccount().getPhoneNumber());
-        userTruck.setText(MainActivity.getCurrentAccount().getTruckName() + " " + MainActivity.getCurrentAccount().getTruckNumber());
+        userTruck.setText(String.format("%s %s", MainActivity.getCurrentAccount().getTruckName(), MainActivity.getCurrentAccount().getTruckNumber()));
 
         select.setVisibility(View.GONE);
 

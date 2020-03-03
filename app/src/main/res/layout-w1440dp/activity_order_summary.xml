@@ -7,7 +7,7 @@
     tools:context=".OrderSummary">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/ConfirmOrders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Please confirm the following orders: "
@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.089" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/ConfirmationNumberText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Confirmation number: "
@@ -43,10 +43,10 @@
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.676"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintStart_toEndOf="@+id/ConfirmationNumberText"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.158" />
+        app:layout_constraintVertical_bias="0.157" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/OrderSummaryCard"
@@ -283,7 +283,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/totalPalletText"
+                    android:id="@+id/TotalPalletText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Total pallet count: "
@@ -291,7 +291,7 @@
                     android:textSize="40sp" />
 
                 <TextView
-                    android:id="@+id/totalWeightText"
+                    android:id="@+id/TotalWeightText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

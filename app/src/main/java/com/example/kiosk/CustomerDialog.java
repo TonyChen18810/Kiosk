@@ -19,17 +19,15 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
     private EditText orderNumber;
     private TextView customer;
     private Button destination;
-    private TextView errorMessage;
     private ImageButton checkOrderBtn;
     private Context context;
 
-    CustomerDialog(Activity a, EditText orderNumber, String customerName, TextView customer, Button destination, TextView errorMessage, ImageButton checkOrderBtn, Context context) {
+    CustomerDialog(Activity a, EditText orderNumber, String customerName, TextView customer, Button destination, ImageButton checkOrderBtn, Context context) {
         super(a);
         this.customerNameStr = customerName;
         this.customer = customer;
         this.destination = destination;
         this.orderNumber = orderNumber;
-        this.errorMessage = errorMessage;
         this.checkOrderBtn = checkOrderBtn;
         this.context = context;
     }
@@ -45,20 +43,20 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         TextView correctCustomer = findViewById(R.id.CorrectCustomer);
         customerName.setText(customerNameStr);
         if (Language.getCurrentLanguage() == 0) {
-            correctCustomer.setText("Is this the correct customer for this order number?");
-            destination.setText("Select destination");
-            yes.setText("Yes");
-            no.setText("No");
+            correctCustomer.setText(R.string.correct_customer_eng);
+            destination.setText(R.string.select_destination_eng);
+            yes.setText(R.string.yes_eng);
+            no.setText(R.string.no_eng);
         } else if (Language.getCurrentLanguage() == 1) {
-            correctCustomer.setText("¿Es este el cliente correcto para este número de pedido?");
-            destination.setText("Seleccione destino");
-            yes.setText("Sí");
-            no.setText("No");
+            correctCustomer.setText(R.string.correct_customer_sp);
+            destination.setText(R.string.select_destination_sp);
+            yes.setText(R.string.yes_sp);
+            no.setText(R.string.no_sp);
         } else if (Language.getCurrentLanguage() == 2) {
-            correctCustomer.setText("Est-ce le bon client pour ce numéro de commande?");
-            destination.setText("Sélectionner la destination");
-            yes.setText("Oui");
-            no.setText("Non");
+            correctCustomer.setText(R.string.correct_customer_fr);
+            destination.setText(R.string.select_destination_fr);
+            yes.setText(R.string.yes_fr);
+            no.setText(R.string.no_fr);
         }
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
@@ -69,7 +67,6 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_yes:
-                errorMessage.setVisibility(View.GONE);
                 customer.setVisibility(View.VISIBLE);
                 customer.setText(customerNameStr);
                 destination.setVisibility(View.VISIBLE);
@@ -77,7 +74,6 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
                 dismiss();
                 break;
             case R.id.btn_no:
-                // errorMessage.setText();
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setText("");
                 orderNumber.setFocusable(true);

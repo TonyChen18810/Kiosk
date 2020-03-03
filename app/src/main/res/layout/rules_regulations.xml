@@ -232,7 +232,7 @@
         app:layout_constraintVertical_bias="0.148" />
 
     <TextView
-        android:id="@+id/bottomText"
+        android:id="@+id/BottomText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your cooperation will ensure faster and safer loading."
@@ -247,7 +247,7 @@
         app:layout_constraintVertical_bias="0.823" />
 
     <TextView
-        android:id="@+id/selectText"
+        android:id="@+id/SelectText"
         android:layout_width="535dp"
         android:layout_height="113dp"
         android:text="*By selecting “Submit” below, you are agreeing that you read and understand the protocol set forth by the facility and that all information previously entered is true and correct."

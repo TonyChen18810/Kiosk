@@ -147,14 +147,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/ErrorMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Error message"
-                android:textColor="@color/error"
-                android:textSize="60sp" />
-
-            <TextView
                 android:id="@+id/BuyerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

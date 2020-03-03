@@ -9,11 +9,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderSummary extends AppCompatActivity {
+
+    TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight, totalPallets, totalWeight;
+    Button confirmBtn;
 
     private int currentLanguage = Language.getCurrentLanguage();
 
@@ -34,6 +38,8 @@ public class OrderSummary extends AppCompatActivity {
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
+        setup();
+
         RecyclerView recyclerView = findViewById(R.id.OrdersView);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(OrderSummary.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
@@ -47,15 +53,25 @@ public class OrderSummary extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setContentView(R.layout.final_screen);
-                findViewById(R.id.LogoutBtn).setOnClickListener(new View.OnClickListener() {
+                TextView tv1 = findViewById(R.id.textView1);
+                TextView tv2 = findViewById(R.id.textView2);
+                Button logoutBtn = findViewById(R.id.LogoutBtn);
+                if (currentLanguage == 0) {
+                    tv1.setText(R.string.thanks_bye_eng);
+                    tv2.setText(R.string.please_logout_eng);
+                    logoutBtn.setText(R.string.logout_eng);
+                } else if (currentLanguage == 1) {
+                    tv1.setText(R.string.thanks_bye_sp);
+                    tv2.setText(R.string.please_logout_sp);
+                    logoutBtn.setText(R.string.logout_sp);
+                } else if (currentLanguage == 2) {
+                    tv1.setText(R.string.thanks_bye_fr);
+                    tv2.setText(R.string.please_logout_fr);
+                    logoutBtn.setText(R.string.logout_fr);
+                }
+                logoutBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /*
-                        ConstraintLayout final_screen = findViewById(R.id.finalScreenLayout);
-                        final_screen.setVisibility(View.GONE);
-                        ConstraintLayout rules_regulations = findViewById(R.id.RulesRegulations);
-                        rules_regulations.setVisibility(View.GONE);
-                         */
                         Account.clearAccounts();
                         Order.clearOrders();
                         startActivity(new Intent(OrderSummary.this, MainActivity.class));
@@ -63,5 +79,57 @@ public class OrderSummary extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    public void setup() {
+        confirmOrders = findViewById(R.id.ConfirmOrders);
+        confirmationNumberText = findViewById(R.id.ConfirmationNumberText);
+        orderNumber = findViewById(R.id.OrderNum);
+        buyerName = findViewById(R.id.BuyerName);
+        estPallets = findViewById(R.id.EstPallets);
+        aptTime = findViewById(R.id.AptTime);
+        destination = findViewById(R.id.Destination);
+        estWeight = findViewById(R.id.EstWeight);
+        totalPallets = findViewById(R.id.TotalPalletText);
+        totalWeight = findViewById(R.id.TotalWeightText);
+        confirmBtn = findViewById(R.id.ConfirmBtn);
+
+        if (currentLanguage == 0) {
+            confirmOrders.setText(R.string.confirm_orders_eng);
+            confirmationNumberText.setText(R.string.confirmation_num_eng);
+            orderNumber.setText(R.string.order_number_eng);
+            buyerName.setText(R.string.buyer_name_eng);
+            estPallets.setText(R.string.est_pallets_eng);
+            aptTime.setText(R.string.apt_time_eng);
+            destination.setText(R.string.destination_eng);
+            estWeight.setText(R.string.est_weight_eng);
+            totalPallets.setText(R.string.pallet_count_eng);
+            totalWeight.setText(R.string.total_weight_eng);
+            confirmBtn.setText(R.string.confirm_eng);
+        } else if (currentLanguage == 1) {
+            confirmOrders.setText(R.string.confirm_orders_sp);
+            confirmationNumberText.setText(R.string.confirmation_num_sp);
+            orderNumber.setText(R.string.order_number_sp);
+            buyerName.setText(R.string.buyer_name_sp);
+            estPallets.setText(R.string.est_pallets_sp);
+            aptTime.setText(R.string.apt_time_sp);
+            destination.setText(R.string.destination_sp);
+            estWeight.setText(R.string.est_weight_sp);
+            totalPallets.setText(R.string.pallet_count_sp);
+            totalWeight.setText(R.string.total_weight_sp);
+            confirmBtn.setText(R.string.confirm_sp);
+        } else if (currentLanguage == 2) {
+            confirmOrders.setText(R.string.confirm_orders_fr);
+            confirmationNumberText.setText(R.string.confirmation_num_fr);
+            orderNumber.setText(R.string.order_number_fr);
+            buyerName.setText(R.string.buyer_name_fr);
+            estPallets.setText(R.string.est_pallets_fr);
+            aptTime.setText(R.string.apt_time_fr);
+            destination.setText(R.string.destination_fr);
+            estWeight.setText(R.string.est_weight_fr);
+            totalPallets.setText(R.string.pallet_count_fr);
+            totalWeight.setText(R.string.total_weight_fr);
+            confirmBtn.setText(R.string.confirm_fr);
+        }
     }
 }

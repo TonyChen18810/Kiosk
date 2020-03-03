@@ -62,11 +62,11 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
             this.deleteBtn = itemView.findViewById(R.id.DeleteBtn);
 
             if (Language.getCurrentLanguage() == 0) {
-                deleteBtn.setText("Delete");
+                deleteBtn.setText(R.string.delete_eng);
             } else if (Language.getCurrentLanguage() == 1) {
-                deleteBtn.setText("Eliminar ");
+                deleteBtn.setText(R.string.delete_sp);
             } else if (Language.getCurrentLanguage() == 2) {
-                deleteBtn.setText("Supprimer");
+                deleteBtn.setText(R.string.delete_fr);
             }
 
             deleteBtn.setOnClickListener(new View.OnClickListener() {

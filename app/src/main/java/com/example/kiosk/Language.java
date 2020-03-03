@@ -8,7 +8,7 @@ public class Language {
         return currentLanguage;
     }
 
-    public static void setCurrentLanguage(int language) {
+    static void setCurrentLanguage(int language) {
         currentLanguage = language;
     }
 }

@@ -31,16 +31,16 @@ public class DeleteDialog extends Dialog implements android.view.View.OnClickLis
         TextView deleteOrder = findViewById(R.id.CorrectCustomer);
         if (Language.getCurrentLanguage() == 0) {
             deleteOrder.setText("Are you sure you want to delete order: " + orderNumberStr + "?");
-            yes.setText("Yes");
-            no.setText("No");
+            yes.setText(R.string.yes_eng);
+            no.setText(R.string.no_eng);
         } else if (Language.getCurrentLanguage() == 1) {
             deleteOrder.setText("¿Estás seguro de que quieres eliminar el pedido: " + orderNumberStr + "?");
-            yes.setText("Sí");
-            no.setText("No");
+            yes.setText(R.string.yes_sp);
+            no.setText(R.string.no_sp);
         } else if (Language.getCurrentLanguage() == 2) {
             deleteOrder.setText("Voulez-vous vraiment supprimer la ordre: " + orderNumberStr + "?");
-            yes.setText("Oui");
-            no.setText("Non");
+            yes.setText(R.string.yes_fr);
+            no.setText(R.string.yes_fr);
         }
         yes.setOnClickListener(this);
         no.setOnClickListener(this);

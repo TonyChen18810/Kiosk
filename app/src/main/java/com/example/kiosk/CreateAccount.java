@@ -101,11 +101,11 @@ public class CreateAccount extends AppCompatActivity {
                     initialSelection1 = true;
                     switch(currentLanguage) {
                         case 0:
-                            selectState1.setText("State");
+                            selectState1.setText(R.string.state_eng);
                         case 1:
-                            selectState1.setText("Estado");
+                            selectState1.setText(R.string.state_sp);
                         case 2:
-                            selectState1.setText("État");
+                            selectState1.setText(R.string.state_fr);
                     }
                 }
             }
@@ -128,11 +128,11 @@ public class CreateAccount extends AppCompatActivity {
                     initialSelection2 = true;
                     switch(currentLanguage) {
                         case 0:
-                            selectState2.setText("State");
+                            selectState2.setText(R.string.state_eng);
                         case 1:
-                            selectState2.setText("Estado");
+                            selectState2.setText(R.string.state_sp);
                         case 2:
-                            selectState2.setText("État");
+                            selectState2.setText(R.string.state_fr);
                     }
                 }
             }
@@ -268,11 +268,6 @@ public class CreateAccount extends AppCompatActivity {
                             trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
                     currentAccount = account;
                     Account.addAccount(account);
-                    System.out.println("Currently registered accounts: ");
-                    ArrayList<Account> temp = Account.getAccounts();
-                    for (int i = 0; i < temp.size(); i++) {
-                        System.out.println("Email: " + temp.get(i).getEmail() + " | Phone number: " + temp.get(i).getPhoneNumber());
-                    }
                     selectText.setVisibility(View.INVISIBLE);
                     if (PREFERRED_COMMUNICATION == 0) {
 
@@ -405,7 +400,6 @@ public class CreateAccount extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private void changeLanguage(int val) {
         truckName.setHintTextColor(getResources().getColor(R.color.dark_gray));
         truckNumber.setHintTextColor(getResources().getColor(R.color.dark_gray));
@@ -416,72 +410,66 @@ public class CreateAccount extends AppCompatActivity {
         switch(val) {
             case 0:
                 //English
-                logoutBtn.setText("Logout");
-                nextBtn.setText("Next");
-                createAccount.setText("Create Account");
-                // emailAddress.setHint("Email address");
-                // phoneNumber.setHint("Phone number");
-                helpText.setText("Select icon for help");
+                logoutBtn.setText(R.string.logout_eng);
+                nextBtn.setText(R.string.next_eng);
+                createAccount.setText(R.string.create_account_eng);
+                helpText.setText(R.string.select_help_icon_eng);
                 truckName.setHint("Truck name");
                 truckNumber.setHint("Truck number");
                 trailerLicense.setHint("Trailer license number");
                 driverLicense.setHint("Driver license number");
                 driverName.setHint("Driver's name");
                 dispatcherPhoneNumber.setHint("Dispatcher's phone number");
-                verifyText.setText("*By clicking 'Next' I verify that all\ninformation is correct and accurate");
-                preferText.setText("How would you prefer communication?");
-                txtText.setText("Text message");
-                emailText.setText("Email");
-                bothText.setText("Text message and email");
-                selectText.setText("*Please select one");
-                selectState1.setText("State");
-                selectState2.setText("State");
+                verifyText.setText(R.string.verify_next_eng);
+                preferText.setText(R.string.comm_preference_eng);
+                txtText.setText(R.string.text_msg_eng);
+                emailText.setText(R.string.email_eng);
+                bothText.setText(R.string.text_and_email_eng);
+                selectText.setText(R.string.select_one_eng);
+                selectState1.setText(R.string.state_eng);
+                selectState2.setText(R.string.state_eng);
                 break;
             case 1:
                 //Spanish
-                logoutBtn.setText("Cerrar sesión");
-                nextBtn.setText("Próximo");
-                createAccount.setText("Crear una cuenta");
-                // emailAddress.setHint("Dirección de correo electrónico");
-                // phoneNumber.setHint("Número de teléfono");
-                helpText.setText("Seleccionar icono para ayuda");
+                logoutBtn.setText(R.string.logout_sp);
+                nextBtn.setText(R.string.next_sp);
+                createAccount.setText(R.string.create_account_sp);
+                helpText.setText(R.string.select_help_icon_sp);
                 truckName.setHint("Nombre del camión");
                 truckNumber.setHint("Numero de camión");
                 trailerLicense.setHint("Número de licencia de remolque");
                 driverLicense.setHint("Número de licencia de conducir");
                 driverName.setHint("Nombre del conductor");
                 dispatcherPhoneNumber.setHint("Número de teléfono del despachador");
-                verifyText.setText("*Al hacer clic en 'Próximo' verifico que\ntoda la información es correcta y precisa");
-                preferText.setText("¿Cómo preferirías la comunicación?");
-                txtText.setText("Mensaje de texto");
-                emailText.setText("Correo electrónico");
-                bothText.setText("Mensaje de texto y correo electrónico");
-                selectText.setText("*Por favor, seleccione uno");
-                selectState1.setText("Estado");
-                selectState2.setText("Estado");
+                verifyText.setText(R.string.verify_next_sp);
+                preferText.setText(R.string.comm_preference_sp);
+                txtText.setText(R.string.text_msg_sp);
+                emailText.setText(R.string.email_sp);
+                bothText.setText(R.string.text_and_email_sp);
+                selectText.setText(R.string.select_one_sp);
+                selectState1.setText(R.string.state_sp);
+                selectState2.setText(R.string.state_sp);
                 break;
             case 2:
                 //French
-                logoutBtn.setText("Se déconnecter");
-                nextBtn.setText("Prochain");
-                createAccount.setText("Créer un compte");
-                // emailAddress.setHint("Adresse électronique");
-                // phoneNumber.setHint("Numéro de téléphone");
-                helpText.setText("Sélectionnez l'icône pour obtenir de l'aide");
+                logoutBtn.setText(R.string.logout_fr);
+                nextBtn.setText(R.string.next_fr);
+                createAccount.setText(R.string.create_account_fr);
+                helpText.setText(R.string.select_help_icon_fr);
                 truckName.setHint("Nom du camion");
                 truckNumber.setHint("Numéro de camion");
                 trailerLicense.setHint("Numéro de licence de la remorque");
                 driverLicense.setHint("Numéro de permis de conduire");
                 driverName.setHint("Nom du conducteur");
                 dispatcherPhoneNumber.setHint("Numéro de téléphone du répartiteur");
-                verifyText.setText("*En cliquant sur 'Prochain', je vérifie que\ntoutes les informations sont correctes et exactes");
-                preferText.setText("Comment préférez-vous la communication?");
-                txtText.setText("Message texte");
-                emailText.setText("email");
-                bothText.setText("Message texte et email");
-                selectText.setText("*S'il vous plait sélectionner en un");
-                selectState1.setText("État");
-                selectState2.setText("État");
+                verifyText.setText(R.string.verify_next_fr);
+                preferText.setText(R.string.comm_preference_fr);
+                txtText.setText(R.string.text_msg_fr);
+                emailText.setText(R.string.email_fr);
+                bothText.setText(R.string.text_and_email_fr);
+                selectText.setText(R.string.select_one_fr);
+                selectState1.setText(R.string.state_fr);
+                selectState2.setText(R.string.state_fr);
                 break;
         }
     }
@@ -526,8 +514,6 @@ public class CreateAccount extends AppCompatActivity {
 
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
-        selectState1.setText("Select state");
-        selectState2.setText("Select state");
 
         showSoftKeyboard(truckName);
         dispatcherPhoneNumber.setOnEditorActionListener(new KeyboardListener());
