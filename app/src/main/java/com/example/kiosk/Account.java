@@ -15,11 +15,12 @@ public class Account {
     private String driverName;
     private String dispatcherPhoneNumber;
 
+    private static Account currentAccount;
+
     private static ArrayList<Account> accounts = new ArrayList<>();
 
-    Account(String email, String phoneNumber, String truckName, String truckNumber,
-                   String trailerLicense, String trailerState, String driverLicense,
-                   String driverState, String driverName, String dispatcherPhoneNumber) {
+    Account(String email, String phoneNumber, String truckName, String truckNumber, String trailerLicense,
+            String trailerState, String driverLicense, String driverState, String driverName, String dispatcherPhoneNumber) {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.truckName = truckName;
@@ -76,5 +77,13 @@ public class Account {
 
     static void clearAccounts() {
         accounts.clear();
+    }
+
+    static Account getCurrentAccount() {
+        return currentAccount;
+    }
+
+    static void setCurrentAccount(Account account) {
+        currentAccount = account;
     }
 }

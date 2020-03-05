@@ -9,6 +9,8 @@ class Order {
     private String destination;
     private String appointmentTime;
 
+    // private static int orderCount;
+
     private static ArrayList<Order> orders = new ArrayList<>();
 
     Order(String orderNumber, String buyerName, String destination, String appointmentTime) {
@@ -53,4 +55,17 @@ class Order {
     static void clearOrders() {
         orders.clear();
     }
+/**
+    static void incrementOrderCount() {
+        orderCount++;
+    }
+
+    static void decrementOrderCount() {
+        orderCount--;
+    }
+
+    static int getOrderCount() {
+        return orderCount;
+    }
+ */
 }

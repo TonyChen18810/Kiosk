@@ -27,12 +27,22 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Order order = orders.get(position);
+        String buyerNameEdit, buyerStr = order.getBuyerName();
+        char[] buyerChar = buyerStr.toCharArray();
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < buyerStr.length(); i++) {
+            str.append(buyerChar[i]);
+            if (buyerChar[i] == '/') {
+                str.append("\n");
+            }
+        }
+        buyerNameEdit = str.toString();
         holder.orderNumber.setText(order.getOrderNumber());
-        holder.buyerName.setText(order.getBuyerName());
+        holder.buyerName.setText(buyerNameEdit);
         holder.destination.setText(order.getDestination());
-        holder.aptTime.setText("---");
-        holder.estPallets.setText("---");
-        holder.estWeight.setText("--- lbs");
+        holder.aptTime.setText("5:30PM");
+        holder.estPallets.setText("30");
+        holder.estWeight.setText("15000 lbs");
     }
 
     @Override
@@ -47,7 +57,7 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
 
         MyViewHolder(@NonNull final View itemView) {
             super(itemView);
-            this.orderNumber = itemView.findViewById(R.id.OrderNum);
+            this.orderNumber = itemView.findViewById(R.id.OrderNumber);
             this.buyerName = itemView.findViewById(R.id.BuyerName);
             this.destination = itemView.findViewById(R.id.Destination);
             this.aptTime = itemView.findViewById(R.id.AptTime);

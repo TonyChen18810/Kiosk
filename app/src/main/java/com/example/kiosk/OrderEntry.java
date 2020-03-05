@@ -218,6 +218,7 @@ public class OrderEntry extends AppCompatActivity {
                     Order.addOrder(new Order(orderNumberStr, buyerNameStr, destinationStr, "5:00pm"));
                     listener.setValue(false);
                 }
+                // Time.incrementOrderCount();
 
                 destinationSpinner.setSelection(0);
                 adapter.notifyDataSetChanged();
@@ -314,6 +315,7 @@ public class OrderEntry extends AppCompatActivity {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
 
         Order.removeOrder(selectedItemPosition);
+        // Time.decrementOrderCount();
         adapter.notifyItemRemoved(selectedItemPosition);
 
         if (Order.getSize() == 0) {
@@ -407,8 +409,8 @@ public class OrderEntry extends AppCompatActivity {
         currentlyEntered = findViewById(R.id.CurrentlyEntered);
         currentlyEntered.setVisibility(View.INVISIBLE);
 
-        possibleOrders.add(new Order("FF555", "Charlies", "Arizona", "5:00pm"));
-        possibleOrders.add(new Order("BB222", "John","California","6:30pm"));
+        possibleOrders.add(new Order("FF555", "Charlies" + "/" + "Consignee", "Arizona", "5:00pm"));
+        possibleOrders.add(new Order("BB222", "John" + "/" + "Consignee","California","6:30pm"));
 
         showSoftKeyboard(orderNumber);
         Account currentAccount = MainActivity.getCurrentAccount();

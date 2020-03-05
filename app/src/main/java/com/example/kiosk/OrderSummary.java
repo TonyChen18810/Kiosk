@@ -6,22 +6,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderSummary extends AppCompatActivity {
 
-    TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight, totalPallets, totalWeight;
+    TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight, totalOrders, totalPallets, totalWeight;
     Button confirmBtn;
 
     private int currentLanguage = Language.getCurrentLanguage();
 
     private final int CONFIRMATION_NUMBER = ThreadLocalRandom.current().nextInt(1000, 9999 + 1);
+
+    private int counter;
+    CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +44,13 @@ public class OrderSummary extends AppCompatActivity {
         setup();
 
         RecyclerView recyclerView = findViewById(R.id.OrdersView);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(OrderSummary.this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManager);
+        LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(OrderSummary.this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(verticalLayoutManager);
         RecyclerViewSummaryAdapter adapter = new RecyclerViewSummaryAdapter(Order.getOrders());
         recyclerView.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
+        recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
 
         TextView confirmationNum = findViewById(R.id.confirm);
         confirmationNum.setText(String.valueOf(CONFIRMATION_NUMBER));
@@ -53,19 +59,45 @@ public class OrderSummary extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setContentView(R.layout.final_screen);
+
+                final Button logoutBtn = findViewById(R.id.LogoutBtn);
+                final TextView textView = findViewById(R.id.textView);
+
+                timer = new CountDownTimer(60000, 1000){
+                    public void onTick(long millisUntilFinished){
+                        counter++;
+                        textView.setText(String.valueOf(counter));
+                    }
+                    public void onFinish(){
+                        textView.setText("done");
+                        logoutBtn.performClick();
+                    }
+                }.start();
+
                 TextView tv1 = findViewById(R.id.textView1);
                 TextView tv2 = findViewById(R.id.textView2);
-                Button logoutBtn = findViewById(R.id.LogoutBtn);
                 if (currentLanguage == 0) {
-                    tv1.setText(R.string.thanks_bye_eng);
+                    if (Order.getSize() > 1) {
+                        tv1.setText(R.string.thanks_bye_eng);
+                    } else {
+                        tv1.setText(R.string.thanks_bye2_eng);
+                    }
                     tv2.setText(R.string.please_logout_eng);
                     logoutBtn.setText(R.string.logout_eng);
                 } else if (currentLanguage == 1) {
-                    tv1.setText(R.string.thanks_bye_sp);
+                    if (Order.getSize() > 1) {
+                        tv1.setText(R.string.thanks_bye_sp);
+                    } else {
+                        tv1.setText(R.string.thanks_bye2_sp);
+                    }
                     tv2.setText(R.string.please_logout_sp);
                     logoutBtn.setText(R.string.logout_sp);
                 } else if (currentLanguage == 2) {
-                    tv1.setText(R.string.thanks_bye_fr);
+                    if (Order.getSize() > 1) {
+                        tv1.setText(R.string.thanks_bye_fr);
+                    } else {
+                        tv1.setText(R.string.thanks_bye2_fr);
+                    }
                     tv2.setText(R.string.please_logout_fr);
                     logoutBtn.setText(R.string.logout_fr);
                 }
@@ -74,6 +106,8 @@ public class OrderSummary extends AppCompatActivity {
                     public void onClick(View v) {
                         Account.clearAccounts();
                         Order.clearOrders();
+                        timer.cancel();
+                        System.out.println("done");
                         startActivity(new Intent(OrderSummary.this, MainActivity.class));
                     }
                 });
@@ -90,6 +124,7 @@ public class OrderSummary extends AppCompatActivity {
         aptTime = findViewById(R.id.AptTime);
         destination = findViewById(R.id.Destination);
         estWeight = findViewById(R.id.EstWeight);
+        totalOrders = findViewById(R.id.TotalOrderCount);
         totalPallets = findViewById(R.id.TotalPalletText);
         totalWeight = findViewById(R.id.TotalWeightText);
         confirmBtn = findViewById(R.id.ConfirmBtn);
@@ -103,6 +138,7 @@ public class OrderSummary extends AppCompatActivity {
             aptTime.setText(R.string.apt_time_eng);
             destination.setText(R.string.destination_eng);
             estWeight.setText(R.string.est_weight_eng);
+            totalOrders.setText(R.string.total_orders_eng);
             totalPallets.setText(R.string.pallet_count_eng);
             totalWeight.setText(R.string.total_weight_eng);
             confirmBtn.setText(R.string.confirm_eng);
@@ -115,6 +151,7 @@ public class OrderSummary extends AppCompatActivity {
             aptTime.setText(R.string.apt_time_sp);
             destination.setText(R.string.destination_sp);
             estWeight.setText(R.string.est_weight_sp);
+            totalOrders.setText(R.string.total_orders_sp);
             totalPallets.setText(R.string.pallet_count_sp);
             totalWeight.setText(R.string.total_weight_sp);
             confirmBtn.setText(R.string.confirm_sp);
@@ -127,6 +164,7 @@ public class OrderSummary extends AppCompatActivity {
             aptTime.setText(R.string.apt_time_fr);
             destination.setText(R.string.destination_fr);
             estWeight.setText(R.string.est_weight_fr);
+            totalOrders.setText(R.string.total_orders_fr);
             totalPallets.setText(R.string.pallet_count_fr);
             totalWeight.setText(R.string.total_weight_fr);
             confirmBtn.setText(R.string.confirm_fr);

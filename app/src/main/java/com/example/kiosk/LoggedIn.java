@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -17,9 +19,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -42,9 +46,6 @@ public class LoggedIn extends AppCompatActivity {
     private EditText dispatcherPhoneNumber;
     private TextView verifyText;
     private TextView preferText;
-    private TextView selectIconText;
-    private ImageButton truckNameHelp, truckNumberHelp, trailerLicenseHelp,
-            driverLicenseHelp, driverNameHelp, dispatcherPhoneNumberHelp;
     private TextView text, email, both, select, userEmail, userPhone, userTruck;
     private View textCheckbox, emailCheckbox, bothCheckbox;
 
@@ -54,6 +55,7 @@ public class LoggedIn extends AppCompatActivity {
     private boolean initialSelection2 = false;
 
     private int PREFERRED_COMMUNICATION = -1;
+    private Account currentAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +102,12 @@ public class LoggedIn extends AppCompatActivity {
                 state1 = extras.getString("Trailer State");
                 state2 = extras.getString("Driver State");
             }
-        } else {
-            // email = (String) savedInstanceState.getSerializable("Email Address");
-            // phone = (String) savedInstanceState.getSerializable("Phone Number");
         }
-
-        ActivityCompat.requestPermissions(LoggedIn.this, new String[]{Manifest.permission.SEND_SMS}, 0);
+        // Account currentAccount = new Account(emailAddress.getText().toString(), phoneNumber.getText().toString(), truckName.getText().toString(),
+                // truckNumber.getText().toString(), trailerLicense.getText().toString(), state1, driverLicense.getText().toString(),
+                // state2, driverName.getText().toString(), dispatcherPhoneNumber.getText().toString(), currentTime);
+        // Account.setCurrentAccount(currentAccount);
+        Time.setTime();
 
         final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
         stateAdapter.setDropDownViewResource(R.layout.spinner_layout);
@@ -147,101 +149,7 @@ public class LoggedIn extends AppCompatActivity {
             }
         });
 
-        driverNameHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter your first and last name.";
-                } else if (currentLanguage == 1) {
-                    message = "Por favor introduce tu primer nombre y apellido.";
-                } else if (currentLanguage == 2) {
-                    message = "S'il-vous-plaît, entrer votre prénom et votre nom.";
-                }
-                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
-                dialog.show();
-            }
-        });
-
-        driverLicenseHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter your driver license number";
-                } else if (currentLanguage == 1) {
-                    message = "Por favor ingrese su número de licencia de conducir";
-                } else if (currentLanguage == 2) {
-                    message = "Veuillez entrer votre numéro de permis de conduire";
-                }
-                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
-                dialog.show();
-            }
-        });
-
-        truckNameHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter the company name of your truck (NOT the make/model)";
-                } else if (currentLanguage == 1) {
-                    message = "Ingrese el nombre de la compañía de su camión (NO la marca / modelo)";
-                } else if (currentLanguage == 2) {
-                    message = "Veuillez saisir le nom de l'entreprise de votre camion (PAS la marque / le modèle)";
-                }
-                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
-                dialog.show();
-            }
-        });
-
-        truckNumberHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter the number of your truck";
-                } else if (currentLanguage == 1) {
-                    message = "Por favor ingrese el número de su camión";
-                } else if (currentLanguage == 2) {
-                    message = "Veuillez entrer le numéro de votre camion";
-                }
-                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
-                dialog.show();
-            }
-        });
-
-        trailerLicenseHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter the license plate number of your trailer";
-                } else if (currentLanguage == 1) {
-                    message = "Ingrese el número de placa de su remolque";
-                } else if (currentLanguage == 2) {
-                    message = "Veuillez entrer le numéro de plaque d'immatriculation de votre remorque";
-                }
-                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
-                dialog.show();
-            }
-        });
-
-        dispatcherPhoneNumberHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter the phone number of your current dispatcher";
-                } else if (currentLanguage == 1) {
-                    message = "Ingrese el número de teléfono de su despachador actual";
-                } else if (currentLanguage == 2) {
-                    message = "Veuillez entrer le numéro de téléphone de votre répartiteur actuel";
-                }
-                HelpDialog dialog = new HelpDialog(message, LoggedIn.this);
-                dialog.show();
-            }
-        });
+        System.out.println(driverLicense.getText().toString());
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,6 +179,7 @@ public class LoggedIn extends AppCompatActivity {
                     dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
                     Account account = new Account(emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
                             trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
+                    Account.setCurrentAccount(account);
                     Intent intent = new Intent(LoggedIn.this, OrderEntry.class);
                     startActivity(intent);
                 }
@@ -393,7 +302,6 @@ public class LoggedIn extends AppCompatActivity {
                 email.setText(R.string.email_eng);
                 both.setText(R.string.text_and_email_eng);
                 select.setText(R.string.select_one_eng);
-                selectIconText.setText(R.string.select_help_icon_eng);
                 selectState1.setText(R.string.state_eng);
                 selectState2.setText(R.string.state_eng);
                 break;
@@ -414,7 +322,6 @@ public class LoggedIn extends AppCompatActivity {
                 email.setText(R.string.email_sp);
                 both.setText(R.string.text_and_email_sp);
                 select.setText(R.string.select_one_sp);
-                selectIconText.setText(R.string.select_help_icon_sp);
                 selectState1.setText(R.string.state_sp);
                 selectState2.setText(R.string.state_sp);
                 break;
@@ -435,7 +342,6 @@ public class LoggedIn extends AppCompatActivity {
                 email.setText(R.string.email_fr);
                 both.setText(R.string.text_and_email_fr);
                 select.setText(R.string.select_one_fr);
-                selectIconText.setText(R.string.select_help_icon_fr);
                 selectState1.setText(R.string.state_fr);
                 selectState2.setText(R.string.state_fr);
                 break;
@@ -452,7 +358,10 @@ public class LoggedIn extends AppCompatActivity {
         truckName = findViewById(R.id.TruckNameBox);
         truckNumber = findViewById(R.id.TruckNumberBox);
         trailerLicense = findViewById(R.id.TrailerLicenseBox);
+
         driverLicense = findViewById(R.id.DriverLicenseBox);
+        driverLicense.setTransformationMethod(new LicenseTransformationMethod());
+
         driverName = findViewById(R.id.DriverNameBox);
         dispatcherPhoneNumber = findViewById(R.id.DispatcherPhoneNumberBox);
         verifyText = findViewById(R.id.VerifyText);
@@ -464,16 +373,8 @@ public class LoggedIn extends AppCompatActivity {
         bothCheckbox = findViewById(R.id.BothCheckbox);
         select = findViewById(R.id.SelectText);
         preferText = findViewById(R.id.PreferInfoText);
-        truckNameHelp = findViewById(R.id.TruckNameHelp);
-        truckNumberHelp = findViewById(R.id.TruckNumberHelp);
-        trailerLicenseHelp = findViewById(R.id.TrailerLicenseHelp);
-        driverLicenseHelp = findViewById(R.id.DriverLicenseHelp);
-        driverNameHelp = findViewById(R.id.DriverNameHelp);
-        dispatcherPhoneNumberHelp = findViewById(R.id.DispatcherPhoneNumberHelp);
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
-
-        selectIconText = findViewById(R.id.HelpText);
 
         userEmail = findViewById(R.id.UserEmail);
         userPhone = findViewById(R.id.UserPhone);

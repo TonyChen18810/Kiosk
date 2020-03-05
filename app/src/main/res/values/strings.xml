@@ -166,15 +166,17 @@
     <string name="submit_eng">Submit</string>
     <string name="confirm_orders_eng">Please confirm the following orders:</string>
     <string name="confirmation_num_eng">Confirmation number:</string>
-    <string name="order_number_eng">Order Number</string>
-    <string name="buyer_name_eng">Buyer Name</string>
-    <string name="est_pallets_eng">Est. Pallets</string>
-    <string name="apt_time_eng">Apt. Time</string>
+    <string name="order_number_eng">Order\nNumber</string>
+    <string name="buyer_name_eng">Buyer\nName</string>
+    <string name="est_pallets_eng">Est.\nPallets</string>
+    <string name="apt_time_eng">Apt.\nTime</string>
     <string name="destination_eng">Destination</string>
-    <string name="est_weight_eng">Est. Weight</string>
+    <string name="est_weight_eng">Est.\nWeight</string>
+    <string name="total_orders_eng">Total order count:</string>
     <string name="pallet_count_eng">Total pallet count:</string>
-    <string name="total_weight_eng">Total weight</string>
+    <string name="total_weight_eng">Total weight:</string>
     <string name="thanks_bye_eng">Thank you for submitting your orders. You will receive a notification once orders have been approved by a D’Arrigo Representative.</string>
+    <string name="thanks_bye2_eng">Thank you for submitting your order. You will receive a notification once your order has been approved by a D’Arrigo Representative.</string>
     <string name="please_logout_eng">Please log-out when finished.</string>
 
     <!-- Spanish -->
@@ -223,15 +225,17 @@
     <string name="submit_sp">Enviar</string>
     <string name="confirm_orders_sp">Por favor confirme los siguientes pedidos:</string>
     <string name="confirmation_num_sp">Número de confirmación:</string>
-    <string name="order_number_sp">Número de orden</string>
-    <string name="buyer_name_sp">Nombre del comprador</string>
-    <string name="est_pallets_sp">Est. Paletas</string>
-    <string name="apt_time_sp">Apto. Hora</string>
+    <string name="order_number_sp">Número\nde orden</string>
+    <string name="buyer_name_sp">Nombre\ndel comprador</string>
+    <string name="est_pallets_sp">Est.\nPaletas</string>
+    <string name="apt_time_sp">Apto.\nHora</string>
     <string name="destination_sp">Destino</string>
-    <string name="est_weight_sp">Est. Peso</string>
+    <string name="est_weight_sp">Est.\nPeso</string>
+    <string name="total_orders_sp">Recuento total de pedidos:</string>
     <string name="pallet_count_sp">Recuento total de palets:</string>
-    <string name="total_weight_sp">Peso total</string>
+    <string name="total_weight_sp">Peso total:</string>
     <string name="thanks_bye_sp">Gracias por enviar sus pedidos. Recibirá una notificación una vez que los pedidos hayan sido aprobados por un representante de D’Arrigo.</string>
+    <string name="thanks_bye2_sp">Gracias por enviar sus pedido. Recibirá una notificación una vez que el pedido hayan sido aprobados por un representante de D’Arrigo.</string>
     <string name="please_logout_sp">Cierre sesión cuando haya terminado.</string>
 
     <!-- French -->
@@ -283,16 +287,18 @@
     <string name="verify_read_fr">*En sélectionnant \"Soumettre\" ci-dessous, vous acceptez de lire et de comprendre le protocole établi par l\'établissement et que toutes les informations précédemment saisies sont véridiques et correctes.</string>
     <string name="submit_fr">Soumettre</string>
     <string name="confirm_orders_fr">Veuillez confirmer les ordres suivantes:</string>
-    <string name="confirmation_num_fr">Numéro de confirmation:</string>
-    <string name="order_number_fr">Numéro de ordre</string>
-    <string name="buyer_name_fr">Nom de l\'acheteur</string>
-    <string name="est_pallets_fr">Est. Palettes</string>
-    <string name="apt_time_fr">Apte. Temps</string>
+    <string name="confirmation_num_fr">Numéro de\nconfirmation:</string>
+    <string name="order_number_fr">Numéro\nde ordre</string>
+    <string name="buyer_name_fr">Nom de\nl\'acheteur</string>
+    <string name="est_pallets_fr">Est.\nPalettes</string>
+    <string name="apt_time_fr">Apte.\nTemps</string>
     <string name="destination_fr">Destination</string>
-    <string name="est_weight_fr">Est. Poids</string>
+    <string name="est_weight_fr">Est.\nPoids</string>
+    <string name="total_orders_fr">Nombre total de commandes:</string>
     <string name="pallet_count_fr">Nombre total de palettes:</string>
-    <string name="total_weight_fr">Poids total</string>
-    <string name="thanks_bye_fr">Merci d\'avoir soumis vos commandes. Vous recevrez une notification une fois que les commandes auront été approuvées par un représentant D’Arrigo.</string>
+    <string name="total_weight_fr">Poids total:</string>
+    <string name="thanks_bye_fr">Merci d\'avoir soumis vos ordres. Vous recevrez une notification une fois que les ordres auront été approuvées par un représentant D’Arrigo.</string>
+    <string name="thanks_bye2_fr">Merci d\'avoir soumis vos ordre. Vous recevrez une notification une fois que le ordre auront été approuvées par un représentant D’Arrigo.</string>
     <string name="please_logout_fr">Veuillez vous déconnecter lorsque vous avez terminé.</string>
 
 

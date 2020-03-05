@@ -26,6 +26,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.kiosk.DBCRepository.GetTruckerAccount;
+import com.example.kiosk.DBCRepository.TruckerTestAccount;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean expanded = false;
 
     private View englishCheckbox, spanishCheckbox, frenchCheckbox;
+
+
+    private List<TruckerTestAccount> truckerList;
 
     private static Account currentAccount;
 
@@ -81,6 +87,19 @@ public class MainActivity extends AppCompatActivity {
                 "Arizona", "Bob John", "4083675954");
         Account.addAccount(kyleAccount);
         Account.addAccount(testAccount);
+
+        new GetTruckerAccount().execute();
+        final String str = GetTruckerAccount.getResult();
+
+        Button button = findViewById(R.id.Button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GetTruckerAccount().execute();
+                final String str = GetTruckerAccount.getResult();
+                System.out.println(str);
+            }
+        });
 
         ArrayList<Account> temp;
         temp = Account.getAccounts();

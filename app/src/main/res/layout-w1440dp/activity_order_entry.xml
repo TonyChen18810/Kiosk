@@ -150,7 +150,7 @@
                 android:id="@+id/BuyerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Buyer Name"
+                android:text="Buyer Name/Consignee"
                 android:textSize="80sp" />
 
             <Button

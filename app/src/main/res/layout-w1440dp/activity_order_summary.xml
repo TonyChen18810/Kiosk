@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.089" />
+        app:layout_constraintVertical_bias="0.03" />
 
     <TextView
         android:id="@+id/ConfirmationNumberText"
@@ -29,10 +29,9 @@
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.409"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.158" />
+        app:layout_constraintVertical_bias="0.075" />
 
     <TextView
         android:id="@+id/confirm"
@@ -43,185 +42,146 @@
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintHorizontal_bias="0.029"
         app:layout_constraintStart_toEndOf="@+id/ConfirmationNumberText"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.157" />
+        app:layout_constraintVertical_bias="0.076" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/OrderSummaryCard"
+        android:id="@+id/CardField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="#cccf"
         app:cardCornerRadius="7.5dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
+        android:padding="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348">
+        app:layout_constraintTop_toBottomOf="@+id/ConfirmationNumberText"
+        app:layout_constraintVertical_bias="0.021">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            android:padding="30dp">
+            android:gravity="center"
+            android:padding="5dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/OrderNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center"
-                android:paddingBottom="15dp"
-                android:text="Order Number"
+                android:text="Order\nNumber"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="@+id/BuyerName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.037"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                android:textSize="50sp" />
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:background="#C97A7171" />
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="#C97A7171"
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/BuyerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="8dp"
-                android:text="Buyer Name"
+                android:text="Buyer\nName"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="@+id/Destination"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.039"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                android:textSize="50sp" />
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:background="#C97A7171" />
-
-            <TextView
-                android:id="@+id/EstPallets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:text="Est.Pallets"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="@+id/EstWeight"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.038"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                android:layout_margin="10dp"
+                android:background="#C97A7171"
+                android:gravity="center" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:background="#C97A7171" />
 
             <TextView
                 android:id="@+id/AptTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:text="Apt. Time"
+                android:text="Apt.Time"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="@+id/EstPallets"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.038"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                android:textSize="50sp" />
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:background="#C97A7171" />
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="#C97A7171"
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/Destination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:text="Destination"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="@+id/AptTime"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.038"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.998" />
+                android:textSize="50sp" />
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:background="#C97A7171" />
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="#C97A7171"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/EstPallets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:text="Est.\nPallets"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="50sp" />
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="#C97A7171"
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/EstWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:maxLines="2"
                 android:gravity="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:text="Est. Weight"
+                android:text="Est.\nWeight"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="60sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.038"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.49" />
+                android:textSize="50sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -229,16 +189,118 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/OrdersView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="1271dp"
+        android:clipToPadding="false"
+        android:fadeScrollbars="false"
+        android:orientation="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarSize="50dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.144"
-        app:layout_constraintStart_toEndOf="@+id/OrderSummaryCard"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.344">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CardField"
+        app:layout_constraintVertical_bias="0.009" />
 
-    </androidx.recyclerview.widget.RecyclerView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#cccf"
+        app:cardCornerRadius="7.5dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OrdersView"
+        app:layout_constraintVertical_bias="0.017">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/TotalOrderCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Total order count: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="50sp" />
+
+                <TextView
+                    android:id="@+id/OrdersCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:text="3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="50sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/TotalPalletText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Total pallets count: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="50sp" />
+
+                <TextView
+                    android:id="@+id/PalletCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:text="35"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="50sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/TotalWeightText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Total pallets count: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="50sp" />
+
+                <TextView
+                    android:id="@+id/TotalWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:text="20000lbs"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="50sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/ConfirmBtn"
@@ -247,86 +309,14 @@
         android:background="@drawable/mybutton"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="20dp"
-        android:text="Confirm"
+        android:text="@string/confirm_eng"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/white"
-        android:textSize="70sp"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.758" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.67">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="15dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/TotalPalletText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Total pallet count: "
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="40sp" />
-
-                <TextView
-                    android:id="@+id/TotalWeightText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Total weight: "
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="40sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/palletCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="---"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="40sp" />
-
-                <TextView
-                    android:id="@+id/totalWeight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="--- lbs"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="40sp" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toBottomOf="@+id/cardView7"
+        app:layout_constraintVertical_bias="0.126" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
