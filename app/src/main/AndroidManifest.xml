@@ -16,17 +16,17 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysVisible"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".OrderSummary" />
+        <activity android:name=".Screens.OrderSummary" />
         <activity android:name=".AccountCreatedMsg" />
         <activity android:name=".OrderSubmitted" />
-        <activity android:name=".OrderEntry" />
-        <activity android:name=".LoggedIn" />
+        <activity android:name=".Screens.OrderEntry" />
+        <activity android:name=".Screens.LoggedIn" />
         <activity
-            android:name=".CreateAccount"
+            android:name=".Screens.CreateAccount"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Screens.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
             <intent-filter>
@@ -35,6 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

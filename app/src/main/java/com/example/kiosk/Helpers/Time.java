@@ -1,16 +1,16 @@
-package com.example.kiosk;
+package com.example.kiosk.Helpers;
 
 import java.util.Calendar;
 
-class Time {
+public class Time {
 
     private static String currentTime;
 
-    static void setTime() {
+    public static void setTime() {
         currentTime = Calendar.getInstance().getTime().toString();
     }
 
-    static String getCurrentTime() {
+    public static String getCurrentTime() {
         return currentTime;
     }
 

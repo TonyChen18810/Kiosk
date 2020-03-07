@@ -1,4 +1,4 @@
-package com.example.kiosk;
+package com.example.kiosk.Helpers;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,13 +7,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.kiosk.Order;
+import com.example.kiosk.R;
+
 import java.util.List;
 
 public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerViewSummaryAdapter.MyViewHolder> {
 
     private List<Order> orders;
 
-    RecyclerViewSummaryAdapter(List<Order> orders) {
+    public RecyclerViewSummaryAdapter(List<Order> orders) {
         this.orders = orders;
     }
 

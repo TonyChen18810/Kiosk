@@ -1,4 +1,4 @@
-package com.example.kiosk;
+package com.example.kiosk.Helpers;
 
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;

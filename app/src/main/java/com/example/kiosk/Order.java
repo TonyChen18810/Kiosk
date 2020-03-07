@@ -2,7 +2,7 @@ package com.example.kiosk;
 
 import java.util.ArrayList;
 
-class Order {
+public class Order {
 
     private String orderNumber;
     private String buyerName;
@@ -13,22 +13,22 @@ class Order {
 
     private static ArrayList<Order> orders = new ArrayList<>();
 
-    Order(String orderNumber, String buyerName, String destination, String appointmentTime) {
+    public Order(String orderNumber, String buyerName, String destination, String appointmentTime) {
         this.orderNumber = orderNumber;
         this.buyerName = buyerName;
         this.destination = destination;
         this.appointmentTime = appointmentTime;
     }
 
-    String getOrderNumber() {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
-    String getBuyerName() {
+    public String getBuyerName() {
         return buyerName;
     }
 
-    String getAppointmentTime() {
+    public String getAppointmentTime() {
         return appointmentTime;
     }
 
@@ -36,23 +36,23 @@ class Order {
         return destination;
     }
 
-    static ArrayList<Order> getOrders() {
+    public static ArrayList<Order> getOrders() {
         return orders;
     }
 
-    static void addOrder(Order order) {
+    public static void addOrder(Order order) {
         orders.add(order);
     }
 
-    static void removeOrder(int i) {
+    public static void removeOrder(int i) {
         orders.remove(i);
     }
 
-    static int getSize() {
+    public static int getSize() {
         return orders.size();
     }
 
-    static void clearOrders() {
+    public static void clearOrders() {
         orders.clear();
     }
 /**

@@ -19,7 +19,7 @@ public class Account {
 
     private static ArrayList<Account> accounts = new ArrayList<>();
 
-    Account(String email, String phoneNumber, String truckName, String truckNumber, String trailerLicense,
+    public Account(String email, String phoneNumber, String truckName, String truckNumber, String trailerLicense,
             String trailerState, String driverLicense, String driverState, String driverName, String dispatcherPhoneNumber) {
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -37,53 +37,53 @@ public class Account {
         return email;
     }
 
-    String getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    String getTruckName() {
+    public String getTruckName() {
         return truckName;
     }
 
-    String getTruckNumber() {
+    public String getTruckNumber() {
         return truckNumber;
     }
 
-    String getTrailerLicense() { return trailerLicense; }
+    public String getTrailerLicense() { return trailerLicense; }
 
-    String getTrailerState() { return trailerState; }
+    public String getTrailerState() { return trailerState; }
 
-    String getDriverLicense() {
+    public String getDriverLicense() {
         return driverLicense;
     }
 
-    String getDriverState() { return driverState; }
+    public String getDriverState() { return driverState; }
 
-    String getDriverName() {
+    public String getDriverName() {
         return driverName;
     }
 
-    String getDispatcherPhoneNumber() {
+    public String getDispatcherPhoneNumber() {
         return dispatcherPhoneNumber;
     }
 
-    static ArrayList<Account> getAccounts() {
+    public static ArrayList<Account> getAccounts() {
         return accounts;
     }
 
-    static void addAccount(Account account) {
+    public static void addAccount(Account account) {
         accounts.add(account);
     }
 
-    static void clearAccounts() {
+    public static void clearAccounts() {
         accounts.clear();
     }
 
-    static Account getCurrentAccount() {
+    public static Account getCurrentAccount() {
         return currentAccount;
     }
 
-    static void setCurrentAccount(Account account) {
+    public static void setCurrentAccount(Account account) {
         currentAccount = account;
     }
 }

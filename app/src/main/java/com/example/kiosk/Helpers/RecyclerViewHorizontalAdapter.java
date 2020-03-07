@@ -1,4 +1,4 @@
-package com.example.kiosk;
+package com.example.kiosk.Helpers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kiosk.Dialogs.DeleteDialog;
+import com.example.kiosk.Order;
+import com.example.kiosk.Screens.OrderEntry;
+import com.example.kiosk.R;
 import java.util.List;
 
 public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<RecyclerViewHorizontalAdapter.MyViewHolder> {
@@ -18,7 +22,7 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
     private LayoutInflater mInflater;
     private Context context;
 
-    RecyclerViewHorizontalAdapter(Context context, List<Order> orders) {
+    public RecyclerViewHorizontalAdapter(Context context, List<Order> orders) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.orders = orders;

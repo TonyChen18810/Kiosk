@@ -1,4 +1,4 @@
-package com.example.kiosk;
+package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +24,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.example.kiosk.Account;
+import com.example.kiosk.Dialogs.CustomerDialog;
+import com.example.kiosk.Dialogs.DeleteDialog;
+import com.example.kiosk.Dialogs.HelpDialog;
+import com.example.kiosk.Dialogs.LogoutDialog;
+import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
+import com.example.kiosk.Order;
+import com.example.kiosk.R;
 
 import java.util.ArrayList;
 
@@ -182,8 +191,10 @@ public class OrderEntry extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OrderEntry.this, MainActivity.class);
-                startActivity(intent);
+                LogoutDialog dialog = new LogoutDialog(OrderEntry.this, v);
+                dialog.show();
+                // Intent intent = new Intent(OrderEntry.this, MainActivity.class);
+                // startActivity(intent);
             }
         });
 
@@ -409,8 +420,10 @@ public class OrderEntry extends AppCompatActivity {
         currentlyEntered = findViewById(R.id.CurrentlyEntered);
         currentlyEntered.setVisibility(View.INVISIBLE);
 
-        possibleOrders.add(new Order("FF555", "Charlies" + "/" + "Consignee", "Arizona", "5:00pm"));
-        possibleOrders.add(new Order("BB222", "John" + "/" + "Consignee","California","6:30pm"));
+        possibleOrders.add(new Order("FF555", "Charlies" + "/" + "Consignee Co.", "San Jose, California", "5:00pm"));
+        possibleOrders.add(new Order("BB222", "John" + "/" + "Jonathon","Santa Cruz, California","6:30pm"));
+        possibleOrders.add(new Order("00000", "Starbucks" + "/" + "Bob's","Seattle, Washington","1:00pm"));
+        possibleOrders.add(new Order("11111", "Safeway" + "/" + "Vans","Yuma, Arizona","9:00am"));
 
         showSoftKeyboard(orderNumber);
         Account currentAccount = MainActivity.getCurrentAccount();

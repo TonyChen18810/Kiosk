@@ -1,4 +1,4 @@
-package com.example.kiosk;
+package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +12,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.kiosk.Account;
+import com.example.kiosk.Dialogs.LogoutDialog;
+import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Helpers.RecyclerViewSummaryAdapter;
+import com.example.kiosk.Order;
+import com.example.kiosk.R;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderSummary extends AppCompatActivity {
@@ -22,6 +30,8 @@ public class OrderSummary extends AppCompatActivity {
     private int currentLanguage = Language.getCurrentLanguage();
 
     private final int CONFIRMATION_NUMBER = ThreadLocalRandom.current().nextInt(1000, 9999 + 1);
+
+    private Button logoutBtn;
 
     private int counter;
     CountDownTimer timer;
@@ -54,6 +64,14 @@ public class OrderSummary extends AppCompatActivity {
 
         TextView confirmationNum = findViewById(R.id.confirm);
         confirmationNum.setText(String.valueOf(CONFIRMATION_NUMBER));
+
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogoutDialog dialog = new LogoutDialog(OrderSummary.this, v);
+                dialog.show();
+            }
+        });
 
         findViewById(R.id.ConfirmBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +146,7 @@ public class OrderSummary extends AppCompatActivity {
         totalPallets = findViewById(R.id.TotalPalletText);
         totalWeight = findViewById(R.id.TotalWeightText);
         confirmBtn = findViewById(R.id.ConfirmBtn);
+        logoutBtn = findViewById(R.id.LogoutBtn);
 
         if (currentLanguage == 0) {
             confirmOrders.setText(R.string.confirm_orders_eng);
@@ -142,6 +161,7 @@ public class OrderSummary extends AppCompatActivity {
             totalPallets.setText(R.string.pallet_count_eng);
             totalWeight.setText(R.string.total_weight_eng);
             confirmBtn.setText(R.string.confirm_eng);
+            logoutBtn.setText(R.string.logout_eng);
         } else if (currentLanguage == 1) {
             confirmOrders.setText(R.string.confirm_orders_sp);
             confirmationNumberText.setText(R.string.confirmation_num_sp);
@@ -155,6 +175,7 @@ public class OrderSummary extends AppCompatActivity {
             totalPallets.setText(R.string.pallet_count_sp);
             totalWeight.setText(R.string.total_weight_sp);
             confirmBtn.setText(R.string.confirm_sp);
+            logoutBtn.setText(R.string.logout_sp);
         } else if (currentLanguage == 2) {
             confirmOrders.setText(R.string.confirm_orders_fr);
             confirmationNumberText.setText(R.string.confirmation_num_fr);
@@ -168,6 +189,7 @@ public class OrderSummary extends AppCompatActivity {
             totalPallets.setText(R.string.pallet_count_fr);
             totalWeight.setText(R.string.total_weight_fr);
             confirmBtn.setText(R.string.confirm_fr);
+            logoutBtn.setText(R.string.logout_fr);
         }
     }
 }

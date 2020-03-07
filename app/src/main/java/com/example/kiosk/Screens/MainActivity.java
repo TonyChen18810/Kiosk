@@ -1,21 +1,18 @@
-package com.example.kiosk;
+package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -26,8 +23,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.kiosk.DBCRepository.GetTruckerAccount;
-import com.example.kiosk.DBCRepository.TruckerTestAccount;
+import com.example.kiosk.Account;
+import com.example.kiosk.Helpers.KeyboardListener;
+import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Order;
+import com.example.kiosk.R;
+import com.example.kiosk.Webservices.GetAccountInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,9 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean expanded = false;
 
     private View englishCheckbox, spanishCheckbox, frenchCheckbox;
-
-
-    private List<TruckerTestAccount> truckerList;
 
     private static Account currentAccount;
 
@@ -87,19 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 "Arizona", "Bob John", "4083675954");
         Account.addAccount(kyleAccount);
         Account.addAccount(testAccount);
-
-        new GetTruckerAccount().execute();
-        final String str = GetTruckerAccount.getResult();
-
-        Button button = findViewById(R.id.Button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new GetTruckerAccount().execute();
-                final String str = GetTruckerAccount.getResult();
-                System.out.println(str);
-            }
-        });
 
         ArrayList<Account> temp;
         temp = Account.getAccounts();
@@ -391,6 +376,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Typeface font = Typeface.createFromAsset(getAssets(), "fonts/MinionPro-Regular.otf");
+        // nextBtn.setTypeface(font);
+
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -411,6 +399,8 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("Driver State", currentAccount.getDriverState());
                     intent.putExtra("Driver Name", currentAccount.getDriverName());
                     intent.putExtra("Dispatcher's Phone Number", currentAccount.getDispatcherPhoneNumber());
+                    GetAccountInfo accountInfo = new GetAccountInfo(MainActivity.this);
+                    accountInfo.execute();
                     startActivity(intent);
                 } else {
                     if (!expanded && !accountExists()) {

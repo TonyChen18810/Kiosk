@@ -1,4 +1,4 @@
-package com.example.kiosk;
+package com.example.kiosk.Dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.R;
+
 public class CustomerDialog extends Dialog implements android.view.View.OnClickListener {
 
     public Dialog d;
@@ -22,7 +25,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
     private ImageButton checkOrderBtn;
     private Context context;
 
-    CustomerDialog(Activity a, EditText orderNumber, String customerName, TextView customer, Button destination, ImageButton checkOrderBtn, Context context) {
+    public CustomerDialog(Activity a, EditText orderNumber, String customerName, TextView customer, Button destination, ImageButton checkOrderBtn, Context context) {
         super(a);
         this.customerNameStr = customerName;
         this.customer = customer;

@@ -1,4 +1,4 @@
-package com.example.kiosk;
+package com.example.kiosk.Dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,11 +8,14 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.R;
+
 public class HelpDialog extends Dialog implements android.view.View.OnClickListener {
 
     private String helpText;
 
-    HelpDialog(String helpText, Context context) {
+    public HelpDialog(String helpText, Context context) {
         super(context);
         this.helpText = helpText;
     }

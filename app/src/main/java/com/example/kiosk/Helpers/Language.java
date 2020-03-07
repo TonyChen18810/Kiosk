@@ -1,14 +1,14 @@
-package com.example.kiosk;
+package com.example.kiosk.Helpers;
 
 public class Language {
 
     private static int currentLanguage = 0;
 
-    static int getCurrentLanguage() {
+    public static int getCurrentLanguage() {
         return currentLanguage;
     }
 
-    static void setCurrentLanguage(int language) {
+    public static void setCurrentLanguage(int language) {
         currentLanguage = language;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.kiosk;
+package com.example.kiosk.Helpers;
 
 import android.content.Context;
 import android.view.KeyEvent;

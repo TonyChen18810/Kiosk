@@ -1,15 +1,9 @@
-package com.example.kiosk;
+package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -22,8 +16,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.example.kiosk.Account;
+import com.example.kiosk.Dialogs.LogoutDialog;
+import com.example.kiosk.Helpers.KeyboardListener;
+import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Helpers.LicenseTransformationMethod;
+import com.example.kiosk.Helpers.Time;
+import com.example.kiosk.R;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -75,6 +74,7 @@ public class LoggedIn extends AppCompatActivity {
         String[] states = getResources().getStringArray(R.array.states);
         setup();
 
+        // instead, use Account.getCurrentAccount().getEmail ... etc. to fill out account info
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -154,8 +154,10 @@ public class LoggedIn extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoggedIn.this, MainActivity.class);
-                startActivity(intent);
+                LogoutDialog dialog = new LogoutDialog(LoggedIn.this, v);
+                dialog.show();
+                // Intent intent = new Intent(LoggedIn.this, MainActivity.class);
+                // startActivity(intent);
             }
         });
 

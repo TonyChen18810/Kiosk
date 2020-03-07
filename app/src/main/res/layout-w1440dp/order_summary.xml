@@ -8,8 +8,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/HeartOfTheCards"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_width="1400dp"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="7.5dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:gravity="center"
             android:background="#1E04B486"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -27,8 +27,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:layout_margin="10dp"
+                android:gravity="center"
                 android:text="Order\nNumber"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="50sp" />
@@ -47,10 +47,10 @@
             <TextView
                 android:id="@+id/BuyerName"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:layout_margin="15dp"
+                android:gravity="center"
                 android:text="Customer\nConsignee"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="50sp" />
@@ -72,8 +72,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:layout_margin="10dp"
+                android:gravity="center"
                 android:text="Apt.\nTime"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="50sp" />
@@ -91,11 +91,11 @@
 
             <TextView
                 android:id="@+id/Destination"
-                android:layout_width="wrap_content"
-                android:layout_height="160dp"
+                android:layout_width="275dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:layout_margin="10dp"
+                android:gravity="center"
                 android:text="Destination"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="50sp" />
@@ -114,10 +114,10 @@
             <TextView
                 android:id="@+id/EstPallets"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:layout_margin="30dp"
+                android:gravity="center"
                 android:text="Est.\nPallets"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="50sp" />
@@ -136,10 +136,10 @@
             <TextView
                 android:id="@+id/EstWeight"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:layout_margin="10dp"
+                android:gravity="center"
                 android:text="Est.\nWeight"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="50sp" />

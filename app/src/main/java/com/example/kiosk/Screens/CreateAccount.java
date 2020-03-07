@@ -1,9 +1,8 @@
-package com.example.kiosk;
+package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
@@ -24,7 +23,13 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.example.kiosk.Account;
+import com.example.kiosk.Dialogs.HelpDialog;
+import com.example.kiosk.Dialogs.LogoutDialog;
+import com.example.kiosk.Helpers.KeyboardListener;
+import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Order;
+import com.example.kiosk.R;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -49,6 +54,7 @@ public class CreateAccount extends AppCompatActivity {
     private Button selectState1, selectState2;
     private boolean initialSelection1 = false;
     private boolean initialSelection2 = false;
+    private boolean clicked1 = false, clicked2 = false;
 
     private int PREFERRED_COMMUNICATION = -1;
 
@@ -97,15 +103,15 @@ public class CreateAccount extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (initialSelection1) {
                     selectState1.setText(getResources().getStringArray(R.array.states)[position]);
+                    clicked1 = true;
                 } else {
                     initialSelection1 = true;
-                    switch(currentLanguage) {
-                        case 0:
-                            selectState1.setText(R.string.state_eng);
-                        case 1:
-                            selectState1.setText(R.string.state_sp);
-                        case 2:
-                            selectState1.setText(R.string.state_fr);
+                    if (currentLanguage == 0) {
+                        selectState1.setText(R.string.state_eng);
+                    } else if (currentLanguage == 1) {
+                        selectState1.setText(R.string.state_sp);
+                    } else if (currentLanguage == 2) {
+                        selectState1.setText(R.string.state_fr);
                     }
                 }
             }
@@ -124,15 +130,15 @@ public class CreateAccount extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (initialSelection2) {
                     selectState2.setText(getResources().getStringArray(R.array.states)[position]);
+                    clicked2 = true;
                 } else {
                     initialSelection2 = true;
-                    switch(currentLanguage) {
-                        case 0:
-                            selectState2.setText(R.string.state_eng);
-                        case 1:
-                            selectState2.setText(R.string.state_sp);
-                        case 2:
-                            selectState2.setText(R.string.state_fr);
+                    if (currentLanguage == 0) {
+                        selectState2.setText(R.string.state_eng);
+                    } else if (currentLanguage == 1) {
+                        selectState2.setText(R.string.state_sp);
+                    } else if (currentLanguage == 2) {
+                        selectState2.setText(R.string.state_fr);
                     }
                 }
             }
@@ -242,15 +248,17 @@ public class CreateAccount extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CreateAccount.this, MainActivity.class);
-                startActivity(intent);
+                LogoutDialog dialog = new LogoutDialog(CreateAccount.this, v);
+                dialog.show();
+                // Intent intent = new Intent(CreateAccount.this, MainActivity.class);
+                // startActivity(intent);
             }
         });
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (truckName.length() == 0 || truckNumber.length() == 0 || trailerLicense.length() == 0 || driverLicense.length() == 0 || driverName.length() == 0 || dispatcherPhoneNumber.length() == 0) {
+                if (truckName.length() == 0 || truckNumber.length() == 0 || trailerLicense.length() == 0 || driverLicense.length() == 0 || driverName.length() == 0 || dispatcherPhoneNumber.length() == 0 || !clicked1 || !clicked2) {
 
                 } else if (PREFERRED_COMMUNICATION == -1) {
                     selectText.setVisibility(View.VISIBLE);
