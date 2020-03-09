@@ -63,7 +63,6 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         }
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
-
     }
 
     @Override

@@ -15,7 +15,7 @@ public class Account {
     private String driverName;
     private String dispatcherPhoneNumber;
 
-    private static Account currentAccount;
+    private static Account CURRENT_ACCOUNT;
 
     private static ArrayList<Account> accounts = new ArrayList<>();
 
@@ -80,10 +80,10 @@ public class Account {
     }
 
     public static Account getCurrentAccount() {
-        return currentAccount;
+        return CURRENT_ACCOUNT;
     }
 
     public static void setCurrentAccount(Account account) {
-        currentAccount = account;
+        CURRENT_ACCOUNT = account;
     }
 }

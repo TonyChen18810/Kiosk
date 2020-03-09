@@ -149,172 +149,145 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-        driverNameHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter your first and last name.";
-                } else if (currentLanguage == 1) {
-                    message = "Por favor introduce tu primer nombre y apellido.";
-                } else if (currentLanguage == 2) {
-                    message = "S'il-vous-plaît, entrer votre prénom et votre nom.";
-                }
-                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-                dialog.show();
+        driverNameHelp.setOnClickListener(v -> {
+            String message = null;
+            if (currentLanguage == 0) {
+                message = "Please enter your first and last name.";
+            } else if (currentLanguage == 1) {
+                message = "Por favor introduce tu primer nombre y apellido.";
+            } else if (currentLanguage == 2) {
+                message = "S'il-vous-plaît, entrer votre prénom et votre nom.";
             }
+            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
+            dialog.show();
         });
 
-        driverLicenseHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter your driver license number";
-                } else if (currentLanguage == 1) {
-                    message = "Por favor ingrese su número de licencia de conducir";
-                } else if (currentLanguage == 2) {
-                    message = "Veuillez entrer votre numéro de permis de conduire";
-                }
-                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-                dialog.show();
+        driverLicenseHelp.setOnClickListener(v -> {
+            String message = null;
+            if (currentLanguage == 0) {
+                message = "Please enter your driver license number";
+            } else if (currentLanguage == 1) {
+                message = "Por favor ingrese su número de licencia de conducir";
+            } else if (currentLanguage == 2) {
+                message = "Veuillez entrer votre numéro de permis de conduire";
             }
+            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
+            dialog.show();
         });
 
-        truckNameHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter the company name of your truck (NOT the make/model)";
-                } else if (currentLanguage == 1) {
-                    message = "Ingrese el nombre de la compañía de su camión (NO la marca / modelo)";
-                } else if (currentLanguage == 2) {
-                    message = "Veuillez saisir le nom de l'entreprise de votre camion (PAS la marque / le modèle)";
-                }
-                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-                dialog.show();
+        truckNameHelp.setOnClickListener(v -> {
+            String message = null;
+            if (currentLanguage == 0) {
+                message = "Please enter the company name of your truck (NOT the make/model)";
+            } else if (currentLanguage == 1) {
+                message = "Ingrese el nombre de la compañía de su camión (NO la marca / modelo)";
+            } else if (currentLanguage == 2) {
+                message = "Veuillez saisir le nom de l'entreprise de votre camion (PAS la marque / le modèle)";
             }
+            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
+            dialog.show();
         });
 
-        truckNumberHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter the number of your truck";
-                } else if (currentLanguage == 1) {
-                    message = "Por favor ingrese el número de su camión";
-                } else if (currentLanguage == 2) {
-                    message = "Veuillez entrer le numéro de votre camion";
-                }
-                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-                dialog.show();
+        truckNumberHelp.setOnClickListener(v -> {
+            String message = null;
+            if (currentLanguage == 0) {
+                message = "Please enter the number of your truck";
+            } else if (currentLanguage == 1) {
+                message = "Por favor ingrese el número de su camión";
+            } else if (currentLanguage == 2) {
+                message = "Veuillez entrer le numéro de votre camion";
             }
+            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
+            dialog.show();
         });
 
-        trailerLicenseHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter the license plate number of your trailer";
-                } else if (currentLanguage == 1) {
-                    message = "Ingrese el número de placa de su remolque";
-                } else if (currentLanguage == 2) {
-                    message = "Veuillez entrer le numéro de plaque d'immatriculation de votre remorque";
-                }
-                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-                dialog.show();
+        trailerLicenseHelp.setOnClickListener(v -> {
+            String message = null;
+            if (currentLanguage == 0) {
+                message = "Please enter the license plate number of your trailer";
+            } else if (currentLanguage == 1) {
+                message = "Ingrese el número de placa de su remolque";
+            } else if (currentLanguage == 2) {
+                message = "Veuillez entrer le numéro de plaque d'immatriculation de votre remorque";
             }
+            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
+            dialog.show();
         });
 
-        dispatcherPhoneNumberHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = null;
-                if (currentLanguage == 0) {
-                    message = "Please enter the phone number of your current dispatcher";
-                } else if (currentLanguage == 1) {
-                    message = "Ingrese el número de teléfono de su despachador actual";
-                } else if (currentLanguage == 2) {
-                    message = "Veuillez entrer le numéro de téléphone de votre répartiteur actuel";
-                }
-                HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-                dialog.show();
+        dispatcherPhoneNumberHelp.setOnClickListener(v -> {
+            String message = null;
+            if (currentLanguage == 0) {
+                message = "Please enter the phone number of your current dispatcher";
+            } else if (currentLanguage == 1) {
+                message = "Ingrese el número de teléfono de su despachador actual";
+            } else if (currentLanguage == 2) {
+                message = "Veuillez entrer le numéro de téléphone de votre répartiteur actuel";
             }
+            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
+            dialog.show();
         });
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogoutDialog dialog = new LogoutDialog(CreateAccount.this, v);
-                dialog.show();
-                // Intent intent = new Intent(CreateAccount.this, MainActivity.class);
-                // startActivity(intent);
-            }
+        logoutBtn.setOnClickListener(v -> {
+            LogoutDialog dialog = new LogoutDialog(CreateAccount.this, v);
+            dialog.show();
+            // Intent intent = new Intent(CreateAccount.this, MainActivity.class);
+            // startActivity(intent);
         });
 
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (truckName.length() == 0 || truckNumber.length() == 0 || trailerLicense.length() == 0 || driverLicense.length() == 0 || driverName.length() == 0 || dispatcherPhoneNumber.length() == 0 || !clicked1 || !clicked2) {
+        nextBtn.setOnClickListener(v -> {
+            if (truckName.length() == 0 || truckNumber.length() == 0 || trailerLicense.length() == 0 || driverLicense.length() == 0 || driverName.length() == 0 || dispatcherPhoneNumber.length() == 0 || !clicked1 || !clicked2) {
 
-                } else if (PREFERRED_COMMUNICATION == -1) {
-                    selectText.setVisibility(View.VISIBLE);
-                } else {
-                    String truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
-                    truckNameStr = truckName.getText().toString();
-                    truckNumberStr = truckNumber.getText().toString();
-                    trailerLicenseStr = trailerLicense.getText().toString();
-                    String trailerStateStr = selectState1.getText().toString();
-                    String driverStateStr = selectState2.getText().toString();
-                    driverLicenseStr = driverLicense.getText().toString();
-                    driverNameStr = driverName.getText().toString();
-                    dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
-                    Account account = new Account(email, phone, truckNameStr, truckNumberStr, trailerLicenseStr,
-                            trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
-                    currentAccount = account;
-                    Account.addAccount(account);
-                    selectText.setVisibility(View.INVISIBLE);
-                    if (PREFERRED_COMMUNICATION == 0) {
-
-                    } else if (PREFERRED_COMMUNICATION == 1) {
-
-                    } else if (PREFERRED_COMMUNICATION == 2) {
-
-                    }
-                    selectText.setVisibility(View.GONE);
-                    // such a waste - change to a view
-                    setContentView(R.layout.account_created_msg);
-
-                    TextView userEmail = findViewById(R.id.emailAddress);
-                    TextView userNumber = findViewById(R.id.phoneNumber);
-                    TextView userTruckName = findViewById(R.id.truckName);
-                    TextView userTruckNumber = findViewById(R.id.truckNumber);
-                    TextView userTrailerLicense = findViewById(R.id.trailerLicense);
-                    TextView userDriverLicense = findViewById(R.id.driverLicense);
-                    TextView userDriverName = findViewById(R.id.driverName);
-                    TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
-
-                    userEmail.setText(Html.fromHtml("Email address: " + "<b>" + currentAccount.getEmail() + "<b>"));
-                    userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + currentAccount.getPhoneNumber() + "<b>"));
-                    userTruckName.setText(Html.fromHtml("Current truck name: " + "<b>" + currentAccount.getTruckName() + "<b>"));
-                    userTruckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + currentAccount.getTruckNumber() + "<b>"));
-                    userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
-                    userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
-                    userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + currentAccount.getDriverName() + "<b>"));
-                    userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + currentAccount.getDispatcherPhoneNumber() + "<b>"));
-
-                    findViewById(R.id.LogoutBtn).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Account.clearAccounts();
-                            Order.clearOrders();
-                            startActivity(new Intent(CreateAccount.this, MainActivity.class));
-                        }
-                    });
+            } else if (PREFERRED_COMMUNICATION == -1) {
+                selectText.setVisibility(View.VISIBLE);
+            } else {
+                String truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
+                truckNameStr = truckName.getText().toString();
+                truckNumberStr = truckNumber.getText().toString();
+                trailerLicenseStr = trailerLicense.getText().toString();
+                String trailerStateStr = selectState1.getText().toString();
+                String driverStateStr = selectState2.getText().toString();
+                driverLicenseStr = driverLicense.getText().toString();
+                driverNameStr = driverName.getText().toString();
+                dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
+                Account account = new Account(email, phone, truckNameStr, truckNumberStr, trailerLicenseStr,
+                        trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
+                currentAccount = account;
+                Account.addAccount(account);
+                selectText.setVisibility(View.INVISIBLE);
+                if (PREFERRED_COMMUNICATION == 0) {
+                    textCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+                } else if (PREFERRED_COMMUNICATION == 1) {
+                    emailCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+                } else if (PREFERRED_COMMUNICATION == 2) {
+                    bothCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
                 }
+                selectText.setVisibility(View.GONE);
+                // such a waste - change to a view
+                setContentView(R.layout.account_created_msg);
+
+                TextView userEmail = findViewById(R.id.emailAddress);
+                TextView userNumber = findViewById(R.id.phoneNumber);
+                TextView userTruckName = findViewById(R.id.truckName);
+                TextView userTruckNumber = findViewById(R.id.truckNumber);
+                TextView userTrailerLicense = findViewById(R.id.trailerLicense);
+                TextView userDriverLicense = findViewById(R.id.driverLicense);
+                TextView userDriverName = findViewById(R.id.driverName);
+                TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
+
+                userEmail.setText(Html.fromHtml("Email address: " + "<b>" + currentAccount.getEmail() + "<b>"));
+                userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + currentAccount.getPhoneNumber() + "<b>"));
+                userTruckName.setText(Html.fromHtml("Current truck name: " + "<b>" + currentAccount.getTruckName() + "<b>"));
+                userTruckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + currentAccount.getTruckNumber() + "<b>"));
+                userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
+                userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
+                userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + currentAccount.getDriverName() + "<b>"));
+                userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + currentAccount.getDispatcherPhoneNumber() + "<b>"));
+
+                findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
+                    Account.clearAccounts();
+                    Order.clearOrders();
+                    startActivity(new Intent(CreateAccount.this, MainActivity.class));
+                });
             }
         });
 
@@ -384,19 +357,9 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-        selectState1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                trailerStateSpinner.performClick();
-            }
-        });
+        selectState1.setOnClickListener(v -> trailerStateSpinner.performClick());
 
-        selectState2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                driverStateSpinner.performClick();
-            }
-        });
+        selectState2.setOnClickListener(v -> driverStateSpinner.performClick());
     }
 
     public void showSoftKeyboard(View view) {

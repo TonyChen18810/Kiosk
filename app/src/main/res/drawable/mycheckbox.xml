@@ -8,7 +8,7 @@
                 android:right="2dp"
                 android:bottom="2dp" />
             <corners android:radius="5dp" />
-            <solid android:color="@color/andy_primary" />
+            <solid android:color="@color/andy_accent" />
         </shape>
     </item>
     <item android:state_focused="true">
@@ -19,7 +19,7 @@
                 android:right="2dp"
                 android:bottom="2dp" />
             <corners android:radius="5dp" />
-            <solid android:color="@color/andy_primary" />
+            <solid android:color="@color/andy_accent" />
         </shape>
     </item>
     <item android:state_checked="true">
@@ -30,7 +30,7 @@
                 android:right="2dp"
                 android:bottom="2dp" />
             <corners android:radius="5dp" />
-            <solid android:color="@color/andy_primary" />
+            <solid android:color="@color/andy_accent" />
         </shape>
     </item>
     <item>

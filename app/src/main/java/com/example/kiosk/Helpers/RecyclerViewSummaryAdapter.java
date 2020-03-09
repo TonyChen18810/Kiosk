@@ -44,9 +44,9 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
         holder.orderNumber.setText(order.getOrderNumber());
         holder.buyerName.setText(buyerNameEdit);
         holder.destination.setText(order.getDestination());
-        holder.aptTime.setText("5:30PM");
-        holder.estPallets.setText("30");
-        holder.estWeight.setText("15000 lbs");
+        holder.aptTime.setText(order.getAppointmentTime());
+        holder.estPallets.setText(Integer.toString(order.getPalletCount()));
+        holder.estWeight.setText(Integer.toString(order.getWeight()));
     }
 
     @Override

@@ -3,132 +3,148 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="10dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/OrderSummaryCard"
-        android:layout_width="220dp"
-        android:layout_height="350dp"
-        android:clipToPadding="true"
+        android:id="@+id/HeartOfTheCards"
+        android:layout_width="1400dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="7.5dp"
         app:cardElevation="5dp"
-        android:layout_gravity="center">
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:background="#1E04B486"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/OrderNum"
+                android:id="@+id/OrderNumber"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="13dp"
-                android:text="Order Number"
+                android:text="Order\nNumber"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp" />
+                android:textSize="50sp" />
 
             <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="#C97A7171" />
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="40dp"
+                android:background="#C97A7171"
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/BuyerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="15dp"
                 android:gravity="center"
-                android:layout_marginTop="13dp"
-                android:layout_marginBottom="13dp"
-                android:text="Buyer Name"
+                android:text="Customer\nConsignee"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp" />
+                android:textSize="50sp" />
 
             <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="#C97A7171" />
-
-            <TextView
-                android:id="@+id/Destination"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginTop="13dp"
-                android:layout_marginBottom="13dp"
-                android:text="Destination"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp" />
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="40dp"
+                android:background="#C97A7171"
+                android:gravity="center" />
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="#C97A7171" />
 
             <TextView
                 android:id="@+id/AptTime"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:gravity="center"
-                android:layout_marginTop="13dp"
-                android:layout_marginBottom="13dp"
-                android:text="Apt. Time"
+                android:text="Apt.\nTime"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp" />
+                android:textSize="50sp" />
 
             <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="#C97A7171" />
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="40dp"
+                android:background="#C97A7171"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/Destination"
+                android:layout_width="275dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="Destination"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="50sp" />
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="40dp"
+                android:background="#C97A7171"
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/EstPallets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="30dp"
                 android:gravity="center"
-                android:layout_marginTop="13dp"
-                android:layout_marginBottom="13dp"
-                android:text="Est.Pallets"
+                android:text="Est.\nPallets"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp" />
+                android:textSize="50sp" />
 
             <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="#C97A7171" />
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="40dp"
+                android:background="#C97A7171"
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/EstWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:gravity="center"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:text="Est. Weight"
+                android:text="Est.\nWeight"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp" />
+                android:textSize="50sp" />
 
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

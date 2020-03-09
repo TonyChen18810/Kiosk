@@ -30,6 +30,7 @@ import com.example.kiosk.Dialogs.CustomerDialog;
 import com.example.kiosk.Dialogs.DeleteDialog;
 import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
+import com.example.kiosk.Dialogs.SubmitDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.Order;
@@ -48,7 +49,7 @@ public class OrderEntry extends AppCompatActivity {
     private Button logoutBtn, submitBtn, addOrderBtn, selectDestinationBtn;
     private ImageButton checkOrderBtn;
 
-    private static Order currentOrder;
+    private static Order CURRENT_ORDER;
 
     private Spinner destinationSpinner;
     private boolean initialSelection = false;
@@ -59,6 +60,7 @@ public class OrderEntry extends AppCompatActivity {
     private static ArrayList<Order> possibleOrders = new ArrayList<>();
 
     private static MutableLiveData<Boolean> listener = null;
+    private static MutableLiveData<Boolean> dialogListener = null;
 
     private static int DESTINATION_ATTEMPTS = 0;
 
@@ -78,28 +80,44 @@ public class OrderEntry extends AppCompatActivity {
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
+        System.out.println("Total weight: " + Order.getTotalWeight());
+
         listener = new MutableLiveData<>();
         listener.setValue(true);
 
-        listener.observe(OrderEntry.this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean empty) {
-                if (empty) {
-                    recyclerView.setVisibility(View.INVISIBLE);
-                    currentlyEntered.setVisibility(View.INVISIBLE);
-                    submitBtn.setEnabled(false);
-                } else {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    currentlyEntered.setVisibility(View.VISIBLE);
-                    submitBtn.setEnabled(true);
-                }
+        dialogListener = new MutableLiveData<>();
+        dialogListener.setValue(false);
+
+        listener.observe(OrderEntry.this, empty -> {
+            if (empty) {
+                recyclerView.setVisibility(View.INVISIBLE);
+                currentlyEntered.setVisibility(View.INVISIBLE);
+                submitBtn.setEnabled(false);
+            } else {
+                recyclerView.setVisibility(View.VISIBLE);
+                currentlyEntered.setVisibility(View.VISIBLE);
+                submitBtn.setEnabled(true);
+            }
+        });
+
+        dialogListener.observe(OrderEntry.this, dialogChoice -> {
+            if (dialogChoice) {
+                setContentView(R.layout.rules_regulations);
+                rulesRegulationsSetup();
+                findViewById(R.id.SubmitBtn2).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(OrderEntry.this, OrderSummary.class);
+                        startActivity(intent);
+                    }
+                });
             }
         });
 
         setup();
 
         if (Order.getSize() == 0) {
-            Order.addOrder(new Order("","","", ""));
+            Order.addOrder(new Order("","","", "", 0, 0));
             listener.setValue(true);
         }
 
@@ -119,7 +137,7 @@ public class OrderEntry extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] statesArray = getResources().getStringArray(R.array.states);
                 if (initialSelection) {
-                    if (statesArray[position].equals(currentOrder.getDestination())) {
+                    if (statesArray[position].equals(CURRENT_ORDER.getDestination())) {
                         selectDestinationBtn.setText(getResources().getStringArray(R.array.states)[position]);
                         addOrderBtn.setEnabled(true);
                         selectDestinationBtn.clearAnimation();
@@ -188,69 +206,56 @@ public class OrderEntry extends AppCompatActivity {
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogoutDialog dialog = new LogoutDialog(OrderEntry.this, v);
-                dialog.show();
-                // Intent intent = new Intent(OrderEntry.this, MainActivity.class);
-                // startActivity(intent);
-            }
+        logoutBtn.setOnClickListener(v -> {
+            LogoutDialog dialog = new LogoutDialog(OrderEntry.this, v);
+            dialog.show();
+            // Intent intent = new Intent(OrderEntry.this, MainActivity.class);
+            // startActivity(intent);
         });
 
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setContentView(R.layout.rules_regulations);
-                rulesRegulationsSetup();
-                findViewById(R.id.SubmitBtn2).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(OrderEntry.this, OrderSummary.class);
-                        startActivity(intent);
-                    }
-                });
-            }
+        submitBtn.setOnClickListener(v -> {
+            SubmitDialog dialog = new SubmitDialog(OrderEntry.this, v);
+            dialog.show();
         });
 
-        addOrderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addOrderBtn.clearAnimation();
-                String orderNumberStr, buyerNameStr, destinationStr;
-                orderNumberStr = orderNumber.getText().toString();
-                buyerNameStr = buyerName.getText().toString();
-                destinationStr = selectDestinationBtn.getText().toString();
-                if (!recyclerView.isShown()) {
-                    Order.getOrders().remove(0);
-                    Order.addOrder(new Order(orderNumberStr, buyerNameStr, destinationStr, "5:00pm"));
-                    listener.setValue(false);
-                } else {
-                    Order.addOrder(new Order(orderNumberStr, buyerNameStr, destinationStr, "5:00pm"));
-                    listener.setValue(false);
-                }
-                // Time.incrementOrderCount();
-
-                destinationSpinner.setSelection(0);
-                adapter.notifyDataSetChanged();
-                adapter.notifyItemInserted(adapter.getItemCount() - 1);
-                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-                recyclerView.scheduleLayoutAnimation();
-
-                orderNumber.setText("");
-                buyerName.setText("");
-                selectDestinationBtn.setText("");
-                buyerName.setVisibility(View.GONE);
-                selectDestinationBtn.setVisibility(View.GONE);
-                selectDestinationBtn.setEnabled(true);
-                initialSelection = false;
-
-                showSoftKeyboard(orderNumber);
-                orderNumber.setFocusable(true);
-                orderNumber.requestFocus();
-                checkOrderBtn.setEnabled(true);
-                addOrderBtn.setEnabled(false);
+        addOrderBtn.setOnClickListener(v -> {
+            addOrderBtn.clearAnimation();
+            String orderNumberStr, buyerNameStr, destinationStr;
+            int weight, palletCount;
+            orderNumberStr = orderNumber.getText().toString();
+            buyerNameStr = buyerName.getText().toString();
+            destinationStr = selectDestinationBtn.getText().toString();
+            if (!recyclerView.isShown()) {
+                Order.getOrders().remove(0);
+                // Order.addOrder(new Order(orderNumberStr, buyerNameStr, destinationStr, "5:00pm", 500, 5));
+                Order.addOrder(CURRENT_ORDER);
+                listener.setValue(false);
+            } else {
+                // Order.addOrder(new Order(orderNumberStr, buyerNameStr, destinationStr, "5:00pm", 500, 5));
+                Order.addOrder(CURRENT_ORDER);
+                listener.setValue(false);
             }
+
+            destinationSpinner.setSelection(0);
+            adapter.notifyDataSetChanged();
+            adapter.notifyItemInserted(adapter.getItemCount() - 1);
+            recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+            recyclerView.scheduleLayoutAnimation();
+
+            orderNumber.setText("");
+            buyerName.setText("");
+            selectDestinationBtn.setText("");
+            buyerName.setVisibility(View.GONE);
+            selectDestinationBtn.setVisibility(View.GONE);
+            selectDestinationBtn.setEnabled(true);
+            initialSelection = false;
+
+            orderNumber.setEnabled(true);
+            showSoftKeyboard(orderNumber);
+            orderNumber.setFocusable(true);
+            orderNumber.requestFocus();
+            checkOrderBtn.setEnabled(true);
+            addOrderBtn.setEnabled(false);
         });
 
         orderNumber.addTextChangedListener(new TextWatcher() {
@@ -274,46 +279,44 @@ public class OrderEntry extends AppCompatActivity {
             }
         });
 
-        checkOrderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentOrder = null;
-                boolean found = false;
-                for (int i = 0; i < possibleOrders.size(); i++) {
-                    if (possibleOrders.get(i).getOrderNumber().equals(orderNumber.getText().toString())) {
-                        currentOrder = possibleOrders.get(i);
-                        found = true;
-                        break;
-                    }
+        checkOrderBtn.setOnClickListener(v -> {
+            checkOrderBtn.setEnabled(false);
+            CURRENT_ORDER = null;
+            boolean found = false;
+            for (int i = 0; i < possibleOrders.size(); i++) {
+                if (possibleOrders.get(i).getOrderNumber().equals(orderNumber.getText().toString())) {
+                    CURRENT_ORDER = possibleOrders.get(i);
+                    found = true;
+                    break;
                 }
-                if (!found) {
-                    String message = null;
-                    if (Language.getCurrentLanguage() == 0) {
-                        message = "Invalid order number, please try again";
-                    } else if (Language.getCurrentLanguage() == 1) {
-                        message = "Número de pedido no válido, intente nuevamente";
-                    } else if (Language.getCurrentLanguage() == 2) {
-                        message = "Numéro de ordre non valide, veuillez réessayer";
-                    }
-                    HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
+            }
+            if (!found) {
+                checkOrderBtn.setEnabled(true);
+                String message = null;
+                if (Language.getCurrentLanguage() == 0) {
+                    message = "Invalid order number, please try again";
+                } else if (Language.getCurrentLanguage() == 1) {
+                    message = "Número de pedido no válido, intente nuevamente";
+                } else if (Language.getCurrentLanguage() == 2) {
+                    message = "Numéro de ordre non valide, veuillez réessayer";
+                }
+                HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
+                dialog.show();
+            } else {
+                if (orderNumber.getText().toString().equals(CURRENT_ORDER.getOrderNumber())) {
+                    // web service call, get order info
+                    // CURRENT_ORDER = new Order(order num, customer name, destination, weight, pallet count);
+                    orderNumber.setEnabled(false);
+                    checkOrderBtn.setEnabled(false);
+                    checkOrderBtn.setBackgroundResource(R.drawable.arrow_down);
+                    CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, CURRENT_ORDER.getBuyerName(), buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this);
+                    dialog.setCanceledOnTouchOutside(false);
                     dialog.show();
-                } else {
-                    if (orderNumber.getText().toString().equals(currentOrder.getOrderNumber())) {
-                        checkOrderBtn.setEnabled(false);
-                        checkOrderBtn.setBackgroundResource(R.drawable.arrow_down);
-                        CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, currentOrder.getBuyerName(), buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this);
-                        dialog.show();
-                    }
                 }
             }
         });
 
-        selectDestinationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                destinationSpinner.performClick();
-            }
-        });
+        selectDestinationBtn.setOnClickListener(v -> destinationSpinner.performClick());
     }
 
     public static void confirmMsg(final View v, Context context) {
@@ -326,11 +329,10 @@ public class OrderEntry extends AppCompatActivity {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
 
         Order.removeOrder(selectedItemPosition);
-        // Time.decrementOrderCount();
         adapter.notifyItemRemoved(selectedItemPosition);
 
         if (Order.getSize() == 0) {
-            Order.addOrder(new Order("","","", ""));
+            Order.addOrder(new Order("","","", "", 0, 0));
             listener.setValue(true);
         }
     }
@@ -343,6 +345,10 @@ public class OrderEntry extends AppCompatActivity {
                 imm.showSoftInput(view, SHOW_IMPLICIT);
             }
         }
+    }
+
+    public static void setDialogListener(Boolean b) {
+        dialogListener.setValue(b);
     }
 
     public String formatPhoneNumber(String number) {
@@ -420,10 +426,10 @@ public class OrderEntry extends AppCompatActivity {
         currentlyEntered = findViewById(R.id.CurrentlyEntered);
         currentlyEntered.setVisibility(View.INVISIBLE);
 
-        possibleOrders.add(new Order("FF555", "Charlies" + "/" + "Consignee Co.", "San Jose, California", "5:00pm"));
-        possibleOrders.add(new Order("BB222", "John" + "/" + "Jonathon","Santa Cruz, California","6:30pm"));
-        possibleOrders.add(new Order("00000", "Starbucks" + "/" + "Bob's","Seattle, Washington","1:00pm"));
-        possibleOrders.add(new Order("11111", "Safeway" + "/" + "Vans","Yuma, Arizona","9:00am"));
+        possibleOrders.add(new Order("FF555", "Charlies" + "/" + "Consignee Co.", "San Jose, California", "5:00pm", 1350, 5));
+        possibleOrders.add(new Order("BB222", "John" + "/" + "Jonathon","Santa Cruz, California","6:30pm", 500, 1));
+        possibleOrders.add(new Order("00000", "Starbucks" + "/" + "Bob's","Seattle, Washington","1:00pm", 1200, 5));
+        possibleOrders.add(new Order("11111", "Safeway" + "/" + "Vans","Yuma, Arizona","9:00am", 6000, 8));
 
         showSoftKeyboard(orderNumber);
         Account currentAccount = MainActivity.getCurrentAccount();

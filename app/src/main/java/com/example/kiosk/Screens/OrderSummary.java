@@ -24,7 +24,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderSummary extends AppCompatActivity {
 
-    TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight, totalOrders, totalPallets, totalWeight;
+    TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight,
+            totalOrders, totalPallets, totalWeight, ordersCount, totalPalletsCount, totalWeightCount;
     Button confirmBtn;
 
     private int currentLanguage = Language.getCurrentLanguage();
@@ -65,71 +66,60 @@ public class OrderSummary extends AppCompatActivity {
         TextView confirmationNum = findViewById(R.id.confirm);
         confirmationNum.setText(String.valueOf(CONFIRMATION_NUMBER));
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogoutDialog dialog = new LogoutDialog(OrderSummary.this, v);
-                dialog.show();
-            }
+        logoutBtn.setOnClickListener(v -> {
+            LogoutDialog dialog = new LogoutDialog(OrderSummary.this, v);
+            dialog.show();
         });
 
-        findViewById(R.id.ConfirmBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setContentView(R.layout.final_screen);
+        findViewById(R.id.ConfirmBtn).setOnClickListener(v -> {
+            setContentView(R.layout.final_screen);
 
-                final Button logoutBtn = findViewById(R.id.LogoutBtn);
-                final TextView textView = findViewById(R.id.textView);
+            final Button logoutBtn = findViewById(R.id.LogoutBtn);
+            final TextView textView = findViewById(R.id.textView);
 
-                timer = new CountDownTimer(60000, 1000){
-                    public void onTick(long millisUntilFinished){
-                        counter++;
-                        textView.setText(String.valueOf(counter));
-                    }
-                    public void onFinish(){
-                        textView.setText("done");
-                        logoutBtn.performClick();
-                    }
-                }.start();
-
-                TextView tv1 = findViewById(R.id.textView1);
-                TextView tv2 = findViewById(R.id.textView2);
-                if (currentLanguage == 0) {
-                    if (Order.getSize() > 1) {
-                        tv1.setText(R.string.thanks_bye_eng);
-                    } else {
-                        tv1.setText(R.string.thanks_bye2_eng);
-                    }
-                    tv2.setText(R.string.please_logout_eng);
-                    logoutBtn.setText(R.string.logout_eng);
-                } else if (currentLanguage == 1) {
-                    if (Order.getSize() > 1) {
-                        tv1.setText(R.string.thanks_bye_sp);
-                    } else {
-                        tv1.setText(R.string.thanks_bye2_sp);
-                    }
-                    tv2.setText(R.string.please_logout_sp);
-                    logoutBtn.setText(R.string.logout_sp);
-                } else if (currentLanguage == 2) {
-                    if (Order.getSize() > 1) {
-                        tv1.setText(R.string.thanks_bye_fr);
-                    } else {
-                        tv1.setText(R.string.thanks_bye2_fr);
-                    }
-                    tv2.setText(R.string.please_logout_fr);
-                    logoutBtn.setText(R.string.logout_fr);
+            timer = new CountDownTimer(60000, 1000){
+                public void onTick(long millisUntilFinished){
+                    counter++;
+                    textView.setText(String.valueOf(counter));
                 }
-                logoutBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Account.clearAccounts();
-                        Order.clearOrders();
-                        timer.cancel();
-                        System.out.println("done");
-                        startActivity(new Intent(OrderSummary.this, MainActivity.class));
-                    }
-                });
+                public void onFinish(){
+                    textView.setText("done");
+                    logoutBtn.performClick();
+                }
+            }.start();
+
+            TextView tv1 = findViewById(R.id.textView1);
+            TextView tv2 = findViewById(R.id.textView2);
+            if (currentLanguage == 0) {
+                if (Order.getSize() > 1) {
+                    tv1.setText(R.string.thanks_bye_eng);
+                } else {
+                    tv1.setText(R.string.thanks_bye2_eng);
+                }
+                tv2.setText(R.string.please_logout_eng);
+                logoutBtn.setText(R.string.logout_eng);
+            } else if (currentLanguage == 1) {
+                if (Order.getSize() > 1) {
+                    tv1.setText(R.string.thanks_bye_sp);
+                } else {
+                    tv1.setText(R.string.thanks_bye2_sp);
+                }
+                tv2.setText(R.string.please_logout_sp);
+                logoutBtn.setText(R.string.logout_sp);
+            } else if (currentLanguage == 2) {
+                if (Order.getSize() > 1) {
+                    tv1.setText(R.string.thanks_bye_fr);
+                } else {
+                    tv1.setText(R.string.thanks_bye2_fr);
+                }
+                tv2.setText(R.string.please_logout_fr);
+                logoutBtn.setText(R.string.logout_fr);
             }
+            logoutBtn.setOnClickListener(v1 -> {
+                timer.cancel();
+                System.out.println("done");
+                startActivity(new Intent(OrderSummary.this, MainActivity.class));
+            });
         });
     }
 
@@ -147,6 +137,13 @@ public class OrderSummary extends AppCompatActivity {
         totalWeight = findViewById(R.id.TotalWeightText);
         confirmBtn = findViewById(R.id.ConfirmBtn);
         logoutBtn = findViewById(R.id.LogoutBtn);
+        ordersCount = findViewById(R.id.OrdersCount);
+        totalPalletsCount = findViewById(R.id.PalletCount);
+        totalWeightCount = findViewById(R.id.TotalWeight);
+
+        ordersCount.setText(Integer.toString(Order.getSize()));
+        totalPalletsCount.setText(Integer.toString(Order.getTotalPalletCount()));
+        totalWeightCount.setText(Integer.toString(Order.getTotalWeight()));
 
         if (currentLanguage == 0) {
             confirmOrders.setText(R.string.confirm_orders_eng);

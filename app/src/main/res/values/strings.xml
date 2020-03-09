@@ -256,7 +256,7 @@
     <string name="verify_next_fr">*En cliquant sur \'Prochain\', je vérifie que toutes \n les informations sont correctes et exactes</string>
     <string name="comm_preference_fr">Comment préférez-vous la communication?</string>
     <string name="text_msg_fr">Message texte</string>
-    <string name="email_fr">email</string>
+    <string name="email_fr">Email</string>
     <string name="text_and_email_fr">Message texte et email</string>
     <string name="select_one_fr">*S\'il vous plait sélectionner en un</string>
     <string name="logged_in_as_fr">Connecté en tant que:</string>

@@ -54,7 +54,7 @@ public class LoggedIn extends AppCompatActivity {
     private boolean initialSelection2 = false;
 
     private int PREFERRED_COMMUNICATION = -1;
-    private Account currentAccount;
+    private Account CURRENT_ACCOUNT = Account.getCurrentAccount();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,40 +151,39 @@ public class LoggedIn extends AppCompatActivity {
 
         System.out.println(driverLicense.getText().toString());
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogoutDialog dialog = new LogoutDialog(LoggedIn.this, v);
-                dialog.show();
-                // Intent intent = new Intent(LoggedIn.this, MainActivity.class);
-                // startActivity(intent);
-            }
+        logoutBtn.setOnClickListener(v -> {
+            LogoutDialog dialog = new LogoutDialog(LoggedIn.this, v);
+            dialog.show();
         });
 
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PREFERRED_COMMUNICATION == -1) {
-                    select.setVisibility(View.VISIBLE);
-                } else {
-                    select.setVisibility(View.GONE);
-                    String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
-                    emailStr = emailAddress.getText().toString();
-                    phoneStr = phoneNumber.getText().toString();
-                    truckNameStr = truckName.getText().toString();
-                    truckNumberStr = truckNumber.getText().toString();
-                    trailerLicenseStr = trailerLicense.getText().toString();
-                    String trailerStateStr = trailerStateSpinner.getSelectedItem().toString();
-                    String driverStateStr = driverStateSpinner.getSelectedItem().toString();
-                    driverLicenseStr = driverLicense.getText().toString();
-                    driverNameStr = driverName.getText().toString();
-                    dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
-                    Account account = new Account(emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
-                            trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
-                    Account.setCurrentAccount(account);
-                    Intent intent = new Intent(LoggedIn.this, OrderEntry.class);
-                    startActivity(intent);
+        nextBtn.setOnClickListener(v -> {
+            if (PREFERRED_COMMUNICATION == -1) {
+                select.setVisibility(View.VISIBLE);
+            } else {
+                if (PREFERRED_COMMUNICATION == 0) {
+                    textCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+                } else if (PREFERRED_COMMUNICATION == 1) {
+                    emailCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+                } else if (PREFERRED_COMMUNICATION == 2) {
+                    bothCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
                 }
+                select.setVisibility(View.GONE);
+                String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
+                emailStr = emailAddress.getText().toString();
+                phoneStr = phoneNumber.getText().toString();
+                truckNameStr = truckName.getText().toString();
+                truckNumberStr = truckNumber.getText().toString();
+                trailerLicenseStr = trailerLicense.getText().toString();
+                String trailerStateStr = trailerStateSpinner.getSelectedItem().toString();
+                String driverStateStr = driverStateSpinner.getSelectedItem().toString();
+                driverLicenseStr = driverLicense.getText().toString();
+                driverNameStr = driverName.getText().toString();
+                dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
+                Account account = new Account(emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
+                        trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
+                Account.setCurrentAccount(account);
+                Intent intent = new Intent(LoggedIn.this, OrderEntry.class);
+                startActivity(intent);
             }
         });
 
@@ -254,19 +253,9 @@ public class LoggedIn extends AppCompatActivity {
             }
         });
 
-        selectState1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                trailerStateSpinner.performClick();
-            }
-        });
+        selectState1.setOnClickListener(v -> trailerStateSpinner.performClick());
 
-        selectState2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                driverStateSpinner.performClick();
-            }
-        });
+        selectState2.setOnClickListener(v -> driverStateSpinner.performClick());
     }
 
     public void showSoftKeyboard(View view) {

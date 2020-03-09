@@ -2,20 +2,16 @@ package com.example.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-
-import com.example.kiosk.Account;
-
+import com.example.kiosk.Screens.MainActivity;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 import java.lang.ref.WeakReference;
 
-public class GetAccountInfo extends AsyncTask<Void, Void, Account> {
+public class GetAccountInfo extends AsyncTask<Void, Void, String> {
 
-    private static String truckerID;
-    private static Account result;
+    private static String email;
     private WeakReference<Activity> mWeakActivity;
 
     public GetAccountInfo(Activity activity) {
@@ -23,41 +19,33 @@ public class GetAccountInfo extends AsyncTask<Void, Void, Account> {
 
     }
 
-    static Account getResult() {
-        return result;
-    }
-
-    static void setTruckerID(String ID) {
-        truckerID = ID;
+    public static String getEmail() {
+        return email;
     }
 
     @Override
-    protected Account doInBackground(Void... voids) {
+    protected String doInBackground(Void... voids) {
         String namespace = "http://tempuri.org/";
-        String method = "GetTruckDrivers";
-        String soapAction = "http://tempuri.org/GetTruckDrivers";
+        String method = "GetShippingTruckDriver";
+        String soapAction = "http://tempuri.org/GetShippingTruckDriver";
         String URL = "http://green.darrigo.com/DBCWebService/DBCWebService.asmx";
 
-        SoapObject soap = new SoapObject(namespace, method);
-        SoapSerializationEnvelope sEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        sEnvelope.dotNet = true;
-        sEnvelope.setOutputSoapObject(soap);
+        SoapObject request = new SoapObject(namespace, method);
+        request.addProperty("inEmail", "test@gmail.com");
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.dotNet = true;
+        envelope.setOutputSoapObject(request);
+
         HttpTransportSE transport = new HttpTransportSE(URL);
 
         try {
-            transport.call(soapAction, sEnvelope);
-            SoapObject response = (SoapObject) sEnvelope.getResponse();
+            transport.call(soapAction, envelope);
+            SoapObject response = (SoapObject) envelope.getResponse();
 
-            for (int i = 0; i < response.getPropertyCount(); i++) {
-                if (((SoapObject) (response.getProperty(i))).getProperty(0).toString().equals(truckerID)) {
-                    // result = new TruckerTestAccount(((SoapObject) (response.getProperty(i))).getProperty(0).toString(), ((SoapObject) (response.getProperty(i))).getProperty(1).toString(),
-                            // ((SoapObject) (response.getProperty(i))).getProperty(2).toString(), ((SoapObject) (response.getProperty(i))).getProperty(3).toString());
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+        return email;
     }
 
     @Override
@@ -66,12 +54,19 @@ public class GetAccountInfo extends AsyncTask<Void, Void, Account> {
     }
 
     @Override
-    protected void onPostExecute(Account account) {
-        super.onPostExecute(account);
+    protected void onPostExecute(String email) {
+        super.onPostExecute(email);
+        if (email != null) {
+            if (email.length() > 0) {
+                MainActivity.accountCheck.setValue(true);
+            } else {
+                MainActivity.accountCheck.setValue(false);
+            }
+        }
         // dataSendToActivity.sendData(account);
         Activity activity = mWeakActivity.get();
         if (activity != null) {
-            Account.setCurrentAccount(account);
+            // Account.setCurrentAccount(account);
             /*
             TextView id = activity.findViewById(R.id.ID);
             TextView first = activity.findViewById(R.id.FirstName);
