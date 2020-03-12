@@ -2,7 +2,6 @@ package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +36,7 @@ import com.example.kiosk.Order;
 import com.example.kiosk.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -49,7 +49,7 @@ public class OrderEntry extends AppCompatActivity {
     private Button logoutBtn, submitBtn, addOrderBtn, selectDestinationBtn;
     private ImageButton checkOrderBtn;
 
-    private static Order CURRENT_ORDER;
+    private Order CURRENT_ORDER;
 
     private Spinner destinationSpinner;
     private boolean initialSelection = false;
@@ -62,7 +62,7 @@ public class OrderEntry extends AppCompatActivity {
     private static MutableLiveData<Boolean> listener = null;
     private static MutableLiveData<Boolean> dialogListener = null;
 
-    private static int DESTINATION_ATTEMPTS = 0;
+    private int DESTINATION_ATTEMPTS = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +129,9 @@ public class OrderEntry extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+        List<String> possibleCustomerDestinations;
+
+        // create from resource (R.array.states -> own list populated by web service call)
         final ArrayAdapter<CharSequence> destinationAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
         destinationAdapter.setDropDownViewResource(R.layout.spinner_layout);
         destinationSpinner.setAdapter(destinationAdapter);
@@ -432,10 +435,9 @@ public class OrderEntry extends AppCompatActivity {
         possibleOrders.add(new Order("11111", "Safeway" + "/" + "Vans","Yuma, Arizona","9:00am", 6000, 8));
 
         showSoftKeyboard(orderNumber);
-        Account currentAccount = MainActivity.getCurrentAccount();
-        emailStr.setText(currentAccount.getEmail());
-        phoneNumberStr.setText(formatPhoneNumber(currentAccount.getPhoneNumber()));
-        truckNumberStr.setText(String.format("%s %s", currentAccount.getTruckName(), currentAccount.getTruckNumber()));
+        emailStr.setText(Account.getCurrentAccount().getEmail());
+        phoneNumberStr.setText(formatPhoneNumber(Account.getCurrentAccount().getPhoneNumber()));
+        truckNumberStr.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
         addOrderBtn.setEnabled(false);
         submitBtn.setEnabled(false);
         changeLanguage(currentLanguage);

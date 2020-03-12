@@ -19,22 +19,26 @@ public class Account {
 
     private static ArrayList<Account> accounts = new ArrayList<>();
 
-    public Account(String email, String phoneNumber, String truckName, String truckNumber, String trailerLicense,
-            String trailerState, String driverLicense, String driverState, String driverName, String dispatcherPhoneNumber) {
+    public Account(String email, String driverName, String phoneNumber, String truckName, String truckNumber,
+                   String driverLicense, String driverState, String trailerLicense, String trailerState, String dispatcherPhoneNumber) {
         this.email = email;
+        this.driverName = driverName;
         this.phoneNumber = phoneNumber;
         this.truckName = truckName;
         this.truckNumber = truckNumber;
-        this.trailerLicense = trailerLicense;
-        this.trailerState = trailerState;
         this.driverLicense = driverLicense;
         this.driverState = driverState;
-        this.driverName = driverName;
+        this.trailerLicense = trailerLicense;
+        this.trailerState = trailerState;
         this.dispatcherPhoneNumber = dispatcherPhoneNumber;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public String getDriverName() {
+        return driverName;
     }
 
     public String getPhoneNumber() {
@@ -49,19 +53,15 @@ public class Account {
         return truckNumber;
     }
 
-    public String getTrailerLicense() { return trailerLicense; }
-
-    public String getTrailerState() { return trailerState; }
-
     public String getDriverLicense() {
         return driverLicense;
     }
 
     public String getDriverState() { return driverState; }
 
-    public String getDriverName() {
-        return driverName;
-    }
+    public String getTrailerLicense() { return trailerLicense; }
+
+    public String getTrailerState() { return trailerState; }
 
     public String getDispatcherPhoneNumber() {
         return dispatcherPhoneNumber;
@@ -84,6 +84,20 @@ public class Account {
     }
 
     public static void setCurrentAccount(Account account) {
+
         CURRENT_ACCOUNT = account;
+        /*
+        System.out.println(CURRENT_ACCOUNT.email);
+        System.out.println(CURRENT_ACCOUNT.driverName);
+        System.out.println(CURRENT_ACCOUNT.phoneNumber);
+        System.out.println(CURRENT_ACCOUNT.truckName);
+        System.out.println(CURRENT_ACCOUNT.truckNumber);
+        System.out.println(CURRENT_ACCOUNT.driverLicense);
+        System.out.println(CURRENT_ACCOUNT.driverState);
+        System.out.println(CURRENT_ACCOUNT.trailerLicense);
+        System.out.println(CURRENT_ACCOUNT.trailerState);
+        System.out.println(CURRENT_ACCOUNT.dispatcherPhoneNumber);
+
+         */
     }
 }

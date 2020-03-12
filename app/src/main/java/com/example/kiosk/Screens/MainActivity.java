@@ -11,7 +11,6 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,18 +19,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.kiosk.Account;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Helpers.States;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
-import com.example.kiosk.Webservices.GetAccountInfo;
-
-import java.util.ArrayList;
+import com.example.kiosk.Webservices.GetShippingTruckDriver;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 import static java.util.Arrays.asList;
@@ -50,12 +52,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView unmatchingEmail;
     private TextView unmatchingPhone;
     private boolean expanded = false;
+    public static ProgressBar progressBar;
 
-    public static MutableLiveData<Boolean> accountCheck;
+    public static MutableLiveData<Boolean> accountExists;
 
     private View englishCheckbox, spanishCheckbox, frenchCheckbox;
-
-    private static Account currentAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +88,16 @@ public class MainActivity extends AppCompatActivity {
         Account.addAccount(kyleAccount);
         Account.addAccount(testAccount);
 
-        accountCheck = new MutableLiveData<>();
-        accountCheck.setValue(false);
+        accountExists = new MutableLiveData<>();
+        accountExists.setValue(false);
 
-        accountCheck.observe(MainActivity.this, new Observer<Boolean>() {
+        accountExists.observe(MainActivity.this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean finishedCheckingAccount) {
                 if (finishedCheckingAccount) {
-                    if (GetAccountInfo.getEmail() != null) {
-                        System.out.println(GetAccountInfo.getEmail());
+                    if (GetShippingTruckDriver.getEmail() != null) {
+                        existingAccount();
+                        // System.out.println(GetShippingTruckDriver.getEmail());
                     }
                 }
             }
@@ -126,31 +128,12 @@ public class MainActivity extends AppCompatActivity {
 
         emailAddressBox.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                new GetAccountInfo(MainActivity.this).execute();
-                if (accountExists()) {
-                    setStatus(1, asList(emailAddressBox), asList(noEmailWarning));
-                } else if (!validEmail() && !emailAddressBox.getText().toString().equals("")) {
-                    setStatus(0, asList(emailAddressBox), asList(noEmailWarning));
-                } else if (!emailAddressBox.getText().toString().equals("")){
-                    setStatus(-1, asList(emailAddressBox), asList(noEmailWarning));
-                    // check here to see if email is in database
-                    // if it is in the database, do NOT show the confirm edit text
-                    // if it is NOT in the database, show and request the user to confirm their email
-                    ObjectAnimator animationEditText = ObjectAnimator.ofFloat(phoneNumberBox, "translationY", 165f);
-                    animationEditText.setDuration(1000);
-                    animationEditText.start();
-                    ObjectAnimator animationWarningText = ObjectAnimator.ofFloat(noPhoneNumberWarning, "translationY", 165f);
-                    animationWarningText.setDuration(1000);
-                    animationWarningText.start();
-                    confirmPhoneNumber.setVisibility(View.VISIBLE);
-                    ObjectAnimator animationConfirmPhone = ObjectAnimator.ofFloat(confirmPhoneNumber, "translationY", 330f);
-                    animationConfirmPhone.setDuration(1000);
-                    animationConfirmPhone.start();
-                    ObjectAnimator animationNext = ObjectAnimator.ofFloat(nextBtn, "translationY", 320f);
-                    animationNext.setDuration(1000);
-                    animationNext.start();
-                    confirmEmailAddress.setVisibility(View.VISIBLE);
-                    expanded = true;
+                if (validEmail()) {
+                    try {
+                        new GetShippingTruckDriver(MainActivity.this).get(1000, TimeUnit.MILLISECONDS);
+                    } catch (ExecutionException | InterruptedException | TimeoutException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -158,12 +141,9 @@ public class MainActivity extends AppCompatActivity {
         phoneNumberBox.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 if (!validNumber() && !phoneNumberBox.getText().toString().equals("")) {
-                    setStatus(0, asList(phoneNumberBox, confirmPhoneNumber), asList(noPhoneNumberWarning));
+                    setStatus(0, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(noPhoneNumberWarning));
                 } else if (!phoneNumberBox.getText().toString().equals("") && validNumber() && doesPhoneMatch()) {
-                    setStatus(1, asList(phoneNumberBox), asList(noPhoneNumberWarning));
-                    // check here to see if phone number is in database
-                    // if it is in the database, do NOT show the confirm edit text
-                    // if it is NOT in the database, show and request the user to confirm their phone number
+                    setStatus(1, Collections.singletonList(phoneNumberBox), Collections.singletonList(noPhoneNumberWarning));
                 }
             }
         });
@@ -176,24 +156,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (accountExists() && expanded) {
-                    ObjectAnimator animationEditText = ObjectAnimator.ofFloat(phoneNumberBox, "translationY", -10f);
-                    animationEditText.setDuration(1000);
-                    animationEditText.start();
-                    ObjectAnimator animationWarningText = ObjectAnimator.ofFloat(noPhoneNumberWarning, "translationY", -10f);
-                    animationWarningText.setDuration(1000);
-                    animationWarningText.start();
+                if (accountExists.getValue() && expanded) {
+                    animation(phoneNumberBox, "translationY", -10f);
+                    animation(noPhoneNumberWarning, "translationY", -10f);
                     ObjectAnimator animationConfirmPhone = ObjectAnimator.ofFloat(confirmPhoneNumber, "translationY", -20f);
                     animationConfirmPhone.setDuration(1000);
                     animationConfirmPhone.start();
-                    ObjectAnimator animationNextBtn = ObjectAnimator.ofFloat(nextBtn, "translationY", -20f);
-                    animationNextBtn.setDuration(1000);
-                    animationNextBtn.start();
+                    animation(confirmPhoneNumber, "translationY", -20f);
+                    animation(nextBtn, "translationY", -20f);
                     expanded = false;
                     setStatus(-1, asList(emailAddressBox, phoneNumberBox), asList(confirmPhoneNumber, confirmEmailAddress, confirmPhoneNumber,
                             confirmEmailAddress, noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone));
                 } else if (validEmail()) {
-                    setStatus(-1, asList(emailAddressBox, phoneNumberBox), asList(noEmailWarning));
+                    setStatus(-1, asList(emailAddressBox, phoneNumberBox), Collections.singletonList(noEmailWarning));
                 }
             }
 
@@ -213,6 +188,12 @@ public class MainActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (doesPhoneMatch() && validNumber()) {
                     setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), asList(unmatchingPhone, noPhoneNumberWarning));
+                } else if (count == 10) {
+                    if (phoneNumberBox.getText().toString().equals(Account.getCurrentAccount().getPhoneNumber())) {
+                        setStatus(1, asList(phoneNumberBox, emailAddressBox), Collections.singletonList(noPhoneNumberWarning));
+                    } else {
+                        setStatus(0, asList(phoneNumberBox, emailAddressBox), Collections.singletonList(noPhoneNumberWarning));
+                    }
                 }
             }
 
@@ -231,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (emailAddressBox.getText().toString().equals(confirmEmailAddress.getText().toString())) {
-                    setStatus(1, asList(emailAddressBox, confirmEmailAddress), asList(unmatchingEmail));
+                    setStatus(1, asList(emailAddressBox, confirmEmailAddress), Collections.singletonList(unmatchingEmail));
                 }
             }
 
@@ -244,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         confirmEmailAddress.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 if (!emailAddressBox.getText().toString().equals(confirmEmailAddress.getText().toString()) && emailAddressBox.length() != 0 && confirmEmailAddress.length() != 0) {
-                    setStatus(0, asList(emailAddressBox, confirmEmailAddress), asList(unmatchingEmail));
+                    setStatus(0, asList(emailAddressBox, confirmEmailAddress), Collections.singletonList(unmatchingEmail));
                 }
             }
         });
@@ -252,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         confirmPhoneNumber.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 if (!phoneNumberBox.getText().toString().equals(confirmPhoneNumber.getText().toString()) && confirmPhoneNumber.length() != 0 && phoneNumberBox.length() != 0) {
-                    setStatus(0, asList(phoneNumberBox, confirmPhoneNumber), asList(unmatchingPhone));
+                    setStatus(0, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(unmatchingPhone));
                 }
             }
         });
@@ -266,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (confirmPhoneNumber.getText().toString().equals(phoneNumberBox.getText().toString())) {
-                    setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), asList(unmatchingPhone));
+                    setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(unmatchingPhone));
                 }
             }
 
@@ -276,80 +257,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        englishCheckbox.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                spanishCheckbox.setPressed(false);
-                frenchCheckbox.setPressed(false);
-                englishCheckbox.setPressed(true);
-                Language.setCurrentLanguage(0);
-                changeLanguage(Language.getCurrentLanguage());
-                return true;
-            }
+        englishCheckbox.setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
+            return true;
         });
 
-        spanishCheckbox.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                frenchCheckbox.setPressed(false);
-                englishCheckbox.setPressed(false);
-                spanishCheckbox.setPressed(true);
-                Language.setCurrentLanguage(1);
-                changeLanguage(Language.getCurrentLanguage());
-                return true;
-            }
+        findViewById(R.id.EnglishText).setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
+            return true;
         });
 
-        frenchCheckbox.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                spanishCheckbox.setPressed(false);
-                englishCheckbox.setPressed(false);
-                frenchCheckbox.setPressed(true);
-                Language.setCurrentLanguage(2);
-                changeLanguage(Language.getCurrentLanguage());
-                return true;
-            }
+        spanishCheckbox.setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(frenchCheckbox, englishCheckbox, spanishCheckbox);
+            return true;
         });
 
-        findViewById(R.id.EnglishText).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                spanishCheckbox.setPressed(false);
-                frenchCheckbox.setPressed(false);
-                englishCheckbox.setPressed(true);
-                Language.setCurrentLanguage(0);
-                changeLanguage(Language.getCurrentLanguage());
-                return true;
-            }
+        findViewById(R.id.SpanishText).setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(frenchCheckbox, englishCheckbox, spanishCheckbox);
+            return true;
         });
 
-        findViewById(R.id.SpanishText).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                frenchCheckbox.setPressed(false);
-                englishCheckbox.setPressed(false);
-                spanishCheckbox.setPressed(true);
-                Language.setCurrentLanguage(1);
-                changeLanguage(Language.getCurrentLanguage());
-                return true;
-            }
+        frenchCheckbox.setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
+            return true;
         });
 
-        findViewById(R.id.FrenchText).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                spanishCheckbox.setPressed(false);
-                englishCheckbox.setPressed(false);
-                frenchCheckbox.setPressed(true);
-                Language.setCurrentLanguage(2);
-                changeLanguage(Language.getCurrentLanguage());
-                return true;
-            }
+        findViewById(R.id.FrenchText).setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
+            return true;
         });
 
         nextBtn.setOnClickListener(v -> {
-            if (accountExists() && validNumber() && !expanded) {
+            if (accountExists.getValue() && validNumber() && !expanded) {
                 if (Language.getCurrentLanguage() == 0) {
                     englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
                 } else if (Language.getCurrentLanguage() == 1) {
@@ -363,39 +308,25 @@ public class MainActivity extends AppCompatActivity {
                 emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                 nextBtn.setEnabled(false);
                 Intent intent = new Intent(MainActivity.this, LoggedIn.class);
-                intent.putExtra("Email Address", currentAccount.getEmail());
-                intent.putExtra("Phone Number", currentAccount.getPhoneNumber());
-                intent.putExtra("Truck Name", currentAccount.getTruckName());
-                intent.putExtra("Truck Number", currentAccount.getTruckNumber());
-                intent.putExtra("Trailer License", currentAccount.getTrailerLicense());
-                intent.putExtra("Trailer State", currentAccount.getTrailerState());
-                intent.putExtra("Driver License", currentAccount.getDriverLicense());
-                intent.putExtra("Driver State", currentAccount.getDriverState());
-                intent.putExtra("Driver Name", currentAccount.getDriverName());
-                intent.putExtra("Dispatcher's Phone Number", currentAccount.getDispatcherPhoneNumber());
-                // GetAccountInfo accountInfo = new GetAccountInfo(MainActivity.this);
-                // accountInfo.execute();
-                // Account CURRENT_ACCOUNT = new Account();
-                // Account.setCurrentAccount(CURRENT_ACCOUNT);
                 startActivity(intent);
             } else {
-                if (!expanded && !accountExists()) {
-                    setStatus(0, asList(emailAddressBox), asList(noEmailWarning));
+                if (!expanded && !accountExists.getValue()) {
+                    setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
                 }
                 if (!expanded && !validNumber()) {
-                    setStatus(0, asList(phoneNumberBox), asList(noPhoneNumberWarning));
+                    setStatus(0, Collections.singletonList(phoneNumberBox), Collections.singletonList(noPhoneNumberWarning));
                 }
                 if (expanded && !validEmail()) {
-                    setStatus(0, asList(emailAddressBox), asList(noEmailWarning));
+                    setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
                 }
                 if (expanded && !validNumber()) {
-                    setStatus(0, asList(phoneNumberBox), asList(phoneNumberBox));
+                    setStatus(0, Collections.singletonList(phoneNumberBox), Collections.singletonList(phoneNumberBox));
                 }
                 if (expanded && !doesEmailMatch()) {
-                    setStatus(0, asList(emailAddressBox, confirmEmailAddress), asList(unmatchingEmail));
+                    setStatus(0, asList(emailAddressBox, confirmEmailAddress), Collections.singletonList(unmatchingEmail));
                 }
                 if (expanded && !doesPhoneMatch()) {
-                    setStatus(0, asList(phoneNumberBox, confirmPhoneNumber), asList(unmatchingPhone));
+                    setStatus(0, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(unmatchingPhone));
                 }
                 if (validEmail() && validNumber() && doesEmailMatch() && doesPhoneMatch()) {
                     if (Language.getCurrentLanguage() == 0) {
@@ -438,6 +369,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setChecked(View... checkBox) {
+        for (int i = 0; i < checkBox.length; i++) {
+            if (i == checkBox.length-1) {
+                checkBox[i].setPressed(true);
+            } else {
+                checkBox[i].setPressed(false);
+            }
+        }
+        if (checkBox[checkBox.length-1] == englishCheckbox) {
+            Language.setCurrentLanguage(0);
+        } else if (checkBox[checkBox.length-1] == spanishCheckbox) {
+            Language.setCurrentLanguage(1);
+        } else if (checkBox[checkBox.length-1] == frenchCheckbox) {
+            Language.setCurrentLanguage(2);
+        }
+        changeLanguage(Language.getCurrentLanguage());
+    }
+
+    private void animation(Object obj, String propertyName, float value) {
+        ObjectAnimator animationEditText = ObjectAnimator.ofFloat(obj, propertyName, value);
+        animationEditText.setDuration(1000);
+        animationEditText.start();
+    }
+
+    public void existingAccount() {
+        if (!validEmail() && !emailAddressBox.getText().toString().equals("")) {
+            setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
+        } else if (!emailAddressBox.getText().toString().equals("")){
+            setStatus(-1, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
+            animation(phoneNumberBox, "translationY", 165f);
+            animation(noPhoneNumberWarning, "translationY", 165f);
+            animation(confirmPhoneNumber, "translationY", 330f);
+            animation(nextBtn, "translationY", 320f);
+            confirmPhoneNumber.setVisibility(View.VISIBLE);
+            confirmEmailAddress.setVisibility(View.VISIBLE);
+            expanded = true;
+        } else {
+            setStatus(1, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
+        }
+    }
+
     private boolean doesEmailMatch() {
         return emailAddressBox.getText().toString().equals(confirmEmailAddress.getText().toString());
     }
@@ -462,22 +434,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean validNumber() {
         String number = phoneNumberBox.getText().toString();
         return (number.length() == 10);
-    }
-
-    private boolean accountExists() {
-        String email = emailAddressBox.getText().toString();
-        ArrayList<Account> temp = Account.getAccounts();
-        for (int i = 0; i < temp.size(); i++) {
-            if (temp.get(i).getEmail().equals(email)) {
-                currentAccount = temp.get(i);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static Account getCurrentAccount() {
-        return currentAccount;
     }
 
     private void showSoftKeyboard(View view) {
@@ -506,10 +462,13 @@ public class MainActivity extends AppCompatActivity {
         spanishCheckbox = findViewById(R.id.SpanishCheckbox);
         frenchCheckbox = findViewById(R.id.FrenchCheckbox);
 
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         spanishCheckbox.setPressed(false);
         frenchCheckbox.setPressed(false);
         englishCheckbox.setPressed(true);
+        States.setSates(MainActivity.this);
         // englishCheckbox.performClick();
 /*
         noEmailWarning.setVisibility(View.INVISIBLE);
