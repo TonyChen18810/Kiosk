@@ -2,7 +2,6 @@ package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -31,9 +30,6 @@ import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetShippingTruckDriver;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 import static java.util.Arrays.asList;
@@ -52,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView unmatchingEmail;
     private TextView unmatchingPhone;
     private boolean expanded = false;
-    public static ProgressBar progressBar;
+    public ProgressBar progressBar;
 
     public static MutableLiveData<Boolean> accountExists;
 
@@ -79,26 +75,23 @@ public class MainActivity extends AppCompatActivity {
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-        Account kyleAccount = new Account("kyle@gmail.com", "8315885534", "Kyle's Truck",
-                "57", "5WHA67V", "California", "F3342376",
-                "Arizona", "Kyle Gilbert", "4083675954");
-        Account testAccount = new Account("bob@gmail.com", "8319345883", "Bob's Truck",
-                "57", "5WHA67V", "California", "F3342376",
-                "Arizona", "Bob John", "4083675954");
-        Account.addAccount(kyleAccount);
-        Account.addAccount(testAccount);
-
         accountExists = new MutableLiveData<>();
-        accountExists.setValue(false);
 
-        accountExists.observe(MainActivity.this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean finishedCheckingAccount) {
-                if (finishedCheckingAccount) {
-                    if (GetShippingTruckDriver.getEmail() != null) {
-                        existingAccount();
-                        // System.out.println(GetShippingTruckDriver.getEmail());
-                    }
+        accountExists.observe(MainActivity.this, accountExists -> {
+            if (!accountExists) {
+                newAccount();
+            } else {
+                if (expanded) {
+                    animation(phoneNumberBox, "translationY", -10f);
+                    animation(noPhoneNumberWarning, "translationY", -10f);
+                    animation(confirmPhoneNumber, "translationY", -20f);
+                    animation(nextBtn, "translationY", -20f);
+                    expanded = false;
+                    setStatus(-1, asList(emailAddressBox, phoneNumberBox), asList(confirmPhoneNumber, confirmEmailAddress, confirmPhoneNumber,
+                            confirmEmailAddress, noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone));
+                    setStatus(1, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
+                } else {
+                    setStatus(1, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
                 }
             }
         });
@@ -129,11 +122,8 @@ public class MainActivity extends AppCompatActivity {
         emailAddressBox.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 if (validEmail()) {
-                    try {
-                        new GetShippingTruckDriver(MainActivity.this).get(1000, TimeUnit.MILLISECONDS);
-                    } catch (ExecutionException | InterruptedException | TimeoutException e) {
-                        e.printStackTrace();
-                    }
+                    progressBar.setVisibility(View.VISIBLE);
+                    new GetShippingTruckDriver(MainActivity.this, emailAddressBox.getText().toString()).execute();
                 }
             }
         });
@@ -149,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         emailAddressBox.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -156,20 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (accountExists.getValue() && expanded) {
-                    animation(phoneNumberBox, "translationY", -10f);
-                    animation(noPhoneNumberWarning, "translationY", -10f);
-                    ObjectAnimator animationConfirmPhone = ObjectAnimator.ofFloat(confirmPhoneNumber, "translationY", -20f);
-                    animationConfirmPhone.setDuration(1000);
-                    animationConfirmPhone.start();
-                    animation(confirmPhoneNumber, "translationY", -20f);
-                    animation(nextBtn, "translationY", -20f);
-                    expanded = false;
-                    setStatus(-1, asList(emailAddressBox, phoneNumberBox), asList(confirmPhoneNumber, confirmEmailAddress, confirmPhoneNumber,
-                            confirmEmailAddress, noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone));
-                } else if (validEmail()) {
-                    setStatus(-1, asList(emailAddressBox, phoneNumberBox), Collections.singletonList(noEmailWarning));
-                }
+                setStatus(-1, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
             }
 
             @Override
@@ -294,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         nextBtn.setOnClickListener(v -> {
-            if (accountExists.getValue() && validNumber() && !expanded) {
+            if (validNumber() && Account.getCurrentAccount().getPhoneNumber().equals(phoneNumberBox.getText().toString()) && !expanded) {
                 if (Language.getCurrentLanguage() == 0) {
                     englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
                 } else if (Language.getCurrentLanguage() == 1) {
@@ -307,13 +285,14 @@ public class MainActivity extends AppCompatActivity {
                 phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                 emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                 nextBtn.setEnabled(false);
-                Intent intent = new Intent(MainActivity.this, LoggedIn.class);
+                // Intent intent = new Intent(MainActivity.this, LoggedIn.class);
+                Intent intent = new Intent(MainActivity.this, OrderEntry.class);
                 startActivity(intent);
             } else {
                 if (!expanded && !accountExists.getValue()) {
                     setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
                 }
-                if (!expanded && !validNumber()) {
+                if (!expanded && !validNumber() || !Account.getCurrentAccount().getPhoneNumber().equals(phoneNumberBox.getText().toString())) {
                     setStatus(0, Collections.singletonList(phoneNumberBox), Collections.singletonList(noPhoneNumberWarning));
                 }
                 if (expanded && !validEmail()) {
@@ -393,7 +372,9 @@ public class MainActivity extends AppCompatActivity {
         animationEditText.start();
     }
 
-    public void existingAccount() {
+    public void newAccount() {
+        // System.out.println("validEmail(): " + validEmail());
+        // System.out.println(Account.getCurrentAccount().getEmail());
         if (!validEmail() && !emailAddressBox.getText().toString().equals("")) {
             setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
         } else if (!emailAddressBox.getText().toString().equals("")){

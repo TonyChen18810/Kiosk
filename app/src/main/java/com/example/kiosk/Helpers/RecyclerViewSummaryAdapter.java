@@ -8,17 +8,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.kiosk.Order;
+import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
 
 import java.util.List;
 
 public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerViewSummaryAdapter.MyViewHolder> {
 
-    private List<Order> orders;
+    // private List<Order> orders;
+    private List<MasterOrder> masterOrders;
 
-    public RecyclerViewSummaryAdapter(List<Order> orders) {
-        this.orders = orders;
+    public RecyclerViewSummaryAdapter(List<MasterOrder> masterOrders) {
+        this.masterOrders = masterOrders;
     }
 
     @NonNull
@@ -30,8 +31,9 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Order order = orders.get(position);
-        String buyerNameEdit, buyerStr = order.getBuyerName();
+        // Order order = orders.get(position);
+        MasterOrder masterOrder = masterOrders.get(position);
+        String buyerNameEdit, buyerStr = masterOrder.getCustomerName();
         char[] buyerChar = buyerStr.toCharArray();
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < buyerStr.length(); i++) {
@@ -41,17 +43,17 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
             }
         }
         buyerNameEdit = str.toString();
-        holder.orderNumber.setText(order.getOrderNumber());
+        holder.orderNumber.setText(masterOrder.getSOPNumber());
         holder.buyerName.setText(buyerNameEdit);
-        holder.destination.setText(order.getDestination());
-        holder.aptTime.setText(order.getAppointmentTime());
-        holder.estPallets.setText(Integer.toString(order.getPalletCount()));
-        holder.estWeight.setText(Integer.toString(order.getWeight()));
+        holder.destination.setText(masterOrder.getDestination());
+        holder.aptTime.setText(masterOrder.getAppointmentTime());
+        holder.estPallets.setText(Double.toString(masterOrder.getEstimatedPallets()));
+        holder.estWeight.setText(Double.toString(masterOrder.getEstimatedWeight()));
     }
 
     @Override
     public int getItemCount() {
-        return orders.size();
+        return masterOrders.size();
     }
 
 

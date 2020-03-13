@@ -45,7 +45,10 @@ public class LoggedIn extends AppCompatActivity {
     private EditText dispatcherPhoneNumber;
     private TextView verifyText;
     private TextView preferText;
-    private TextView text, email, both, select, userEmail, userPhone, userTruck;
+    private TextView text;
+    private TextView email;
+    private TextView both;
+    private TextView select;
     private View textCheckbox, emailCheckbox, bothCheckbox;
 
     private Button selectState1, selectState2;
@@ -320,9 +323,9 @@ public class LoggedIn extends AppCompatActivity {
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
 
-        userEmail = findViewById(R.id.UserEmail);
-        userPhone = findViewById(R.id.UserPhone);
-        userTruck = findViewById(R.id.UserTruck);
+        TextView userEmail = findViewById(R.id.UserEmail);
+        TextView userPhone = findViewById(R.id.UserPhone);
+        TextView userTruck = findViewById(R.id.UserTruck);
         userEmail.setText(Account.getCurrentAccount().getEmail());
         userPhone.setText(Account.getCurrentAccount().getPhoneNumber());
         userTruck.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
@@ -337,10 +340,7 @@ public class LoggedIn extends AppCompatActivity {
 
         showSoftKeyboard(truckName);
         dispatcherPhoneNumber.setOnEditorActionListener(new KeyboardListener());
-/**
-        emailAddress.setText(emailAddress.getText().toString());
-        phoneNumber.setText(emailAddress.getText().toString());
- */
+
         emailAddress.setTextColor(getResources().getColor(R.color.black));
         phoneNumber.setTextColor(getResources().getColor(R.color.black));
 

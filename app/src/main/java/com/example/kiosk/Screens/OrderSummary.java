@@ -17,6 +17,7 @@ import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewSummaryAdapter;
+import com.example.kiosk.MasterOrder;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 
@@ -57,7 +58,7 @@ public class OrderSummary extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.OrdersView);
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(OrderSummary.this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(verticalLayoutManager);
-        RecyclerViewSummaryAdapter adapter = new RecyclerViewSummaryAdapter(Order.getOrders());
+        RecyclerViewSummaryAdapter adapter = new RecyclerViewSummaryAdapter(MasterOrder.getMasterOrdersList());
         recyclerView.setAdapter(adapter);
 
         adapter.notifyDataSetChanged();

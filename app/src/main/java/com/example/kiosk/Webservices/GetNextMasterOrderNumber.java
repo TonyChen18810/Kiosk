@@ -8,29 +8,36 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-public class GetLabelText extends AsyncTask<Void, Void, Void> {
+public class GetNextMasterOrderNumber extends AsyncTask<Void, Void, Void> {
+
+    private static String nextMasterNumber;
+
     @Override
     protected Void doInBackground(Void... voids) {
         String namespace = "http://tempuri.org/";
-        String method = "GetLabelText";
-        String soapAction = "http://tempuri.org/GetLabelText";
-        String URL = "http://green.darrigo.com/DBCWebService/DBCWebService.asmx";
+        String method = "GetNextMasterOrderNumber";
+        String soapAction = "http://tempuri.org/GetNextMasterOrderNumber";
+        String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
 
         SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("inLabelType", "1");
-        request.addProperty("inDPI", "203");
-
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
         envelope.setOutputSoapObject(request);
-        HttpTransportSE transport = new HttpTransportSE(URL);
+        HttpTransportSE transportSE = new HttpTransportSE(URL);
+
         try {
-            transport.call(soapAction, envelope);
+            transportSE.call(soapAction, envelope);
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
-            System.out.println(response.toString());
+            nextMasterNumber = response.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        GetMasterOrderDetails.setNewMasterNumber(nextMasterNumber);
     }
 }

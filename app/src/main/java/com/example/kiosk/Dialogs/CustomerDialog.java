@@ -13,11 +13,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
+import com.example.kiosk.Screens.OrderEntry;
+import com.example.kiosk.Webservices.GetPossibleShipTos;
 
 public class CustomerDialog extends Dialog implements android.view.View.OnClickListener {
 
     public Dialog d;
+    private Activity a;
     private String customerNameStr;
     private EditText orderNumber;
     private TextView customer;
@@ -27,6 +31,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
 
     public CustomerDialog(Activity a, EditText orderNumber, String customerName, TextView customer, Button destination, ImageButton checkOrderBtn, Context context) {
         super(a);
+        this.a = a;
         this.customerNameStr = customerName;
         this.customer = customer;
         this.destination = destination;
@@ -69,6 +74,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_yes:
+                new GetPossibleShipTos(a, MasterOrder.getCurrentMasterOrder().getSOPNumber()).execute();
                 customer.setVisibility(View.VISIBLE);
                 customer.setText(customerNameStr);
                 destination.setVisibility(View.VISIBLE);

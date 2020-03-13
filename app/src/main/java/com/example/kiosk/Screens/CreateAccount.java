@@ -30,6 +30,7 @@ import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
+import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -57,8 +58,6 @@ public class CreateAccount extends AppCompatActivity {
     private boolean clicked1 = false, clicked2 = false;
 
     private int PREFERRED_COMMUNICATION = -1;
-
-    private static Account currentAccount;
 
     private static int currentLanguage = Language.getCurrentLanguage();
 
@@ -236,8 +235,10 @@ public class CreateAccount extends AppCompatActivity {
 
         nextBtn.setOnClickListener(v -> {
             if (truckName.length() == 0 || truckNumber.length() == 0 || trailerLicense.length() == 0 || driverLicense.length() == 0 || driverName.length() == 0 || dispatcherPhoneNumber.length() == 0 || !clicked1 || !clicked2) {
+                // alert dialog - empty fields
+            } else
 
-            } else if (PREFERRED_COMMUNICATION == -1) {
+                if (PREFERRED_COMMUNICATION == -1) {
                 selectText.setVisibility(View.VISIBLE);
             } else {
                 String truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
@@ -249,10 +250,7 @@ public class CreateAccount extends AppCompatActivity {
                 driverLicenseStr = driverLicense.getText().toString();
                 driverNameStr = driverName.getText().toString();
                 dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
-                Account account = new Account(email, phone, truckNameStr, truckNumberStr, trailerLicenseStr,
-                        trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
-                currentAccount = account;
-                Account.addAccount(account);
+
                 selectText.setVisibility(View.INVISIBLE);
                 if (PREFERRED_COMMUNICATION == 0) {
                     textCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
@@ -262,7 +260,6 @@ public class CreateAccount extends AppCompatActivity {
                     bothCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
                 }
                 selectText.setVisibility(View.GONE);
-                // such a waste - change to a view
                 setContentView(R.layout.account_created_msg);
 
                 TextView userEmail = findViewById(R.id.emailAddress);
@@ -274,14 +271,17 @@ public class CreateAccount extends AppCompatActivity {
                 TextView userDriverName = findViewById(R.id.driverName);
                 TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
 
-                userEmail.setText(Html.fromHtml("Email address: " + "<b>" + currentAccount.getEmail() + "<b>"));
-                userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + currentAccount.getPhoneNumber() + "<b>"));
-                userTruckName.setText(Html.fromHtml("Current truck name: " + "<b>" + currentAccount.getTruckName() + "<b>"));
-                userTruckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + currentAccount.getTruckNumber() + "<b>"));
-                userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
-                userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + currentAccount.getTrailerLicense() + "<b>"));
-                userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + currentAccount.getDriverName() + "<b>"));
-                userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + currentAccount.getDispatcherPhoneNumber() + "<b>"));
+                new UpdateShippingTruckDriver(CreateAccount.this, email, driverNameStr, phone, truckNameStr, truckNumberStr,
+                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, dispatcherNumberStr).execute();
+
+                userEmail.setText(Html.fromHtml("Email address: " + "<b>" + Account.getCurrentAccount().getEmail() + "<b>"));
+                userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + Account.getCurrentAccount().getPhoneNumber() + "<b>"));
+                userTruckName.setText(Html.fromHtml("Current truck name: " + "<b>" + Account.getCurrentAccount().getTruckName() + "<b>"));
+                userTruckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + Account.getCurrentAccount().getTruckNumber() + "<b>"));
+                userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + Account.getCurrentAccount().getTrailerLicense() + "<b>"));
+                userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + Account.getCurrentAccount().getTrailerLicense() + "<b>"));
+                userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + Account.getCurrentAccount().getDriverName() + "<b>"));
+                userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + Account.getCurrentAccount().getDispatcherPhoneNumber() + "<b>"));
 
                 findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                     Account.clearAccounts();
@@ -291,75 +291,62 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-        textCheckbox.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                emailCheckbox.setPressed(false);
-                bothCheckbox.setPressed(false);
-                textCheckbox.setPressed(true);
-                PREFERRED_COMMUNICATION = 0;
-                return true;
-            }
+        textCheckbox.setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(emailCheckbox, bothCheckbox, textCheckbox);
+            return true;
         });
 
-        emailCheckbox.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                bothCheckbox.setPressed(false);
-                textCheckbox.setPressed(false);
-                emailCheckbox.setPressed(true);
-                PREFERRED_COMMUNICATION = 1;
-                return true;
-            }
+        findViewById(R.id.Text).setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(emailCheckbox, bothCheckbox, textCheckbox);
+            return true;
         });
 
-        bothCheckbox.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                textCheckbox.setPressed(false);
-                emailCheckbox.setPressed(false);
-                bothCheckbox.setPressed(true);
-                PREFERRED_COMMUNICATION = 2;
-                return true;
-            }
+        emailCheckbox.setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(bothCheckbox, textCheckbox, emailCheckbox);
+            return true;
         });
 
-        findViewById(R.id.Text).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                emailCheckbox.setPressed(false);
-                bothCheckbox.setPressed(false);
-                textCheckbox.setPressed(true);
-                PREFERRED_COMMUNICATION = 0;
-                return true;
-            }
+        findViewById(R.id.Email).setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(bothCheckbox, textCheckbox, emailCheckbox);
+            return true;
         });
 
-        findViewById(R.id.Email).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                bothCheckbox.setPressed(false);
-                textCheckbox.setPressed(false);
-                emailCheckbox.setPressed(true);
-                PREFERRED_COMMUNICATION = 1;
-                return true;
-            }
+        bothCheckbox.setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(textCheckbox, emailCheckbox, bothCheckbox);
+            return true;
         });
 
-        findViewById(R.id.Both).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                textCheckbox.setPressed(false);
-                emailCheckbox.setPressed(false);
-                bothCheckbox.setPressed(true);
-                PREFERRED_COMMUNICATION = 2;
-                return true;
-            }
+        findViewById(R.id.Both).setOnTouchListener((v, event) -> {
+            v.performClick();
+            setChecked(textCheckbox, emailCheckbox, bothCheckbox);
+            return true;
         });
 
         selectState1.setOnClickListener(v -> trailerStateSpinner.performClick());
 
         selectState2.setOnClickListener(v -> driverStateSpinner.performClick());
+    }
+
+    private void setChecked(View... checkBox) {
+        for (int i = 0; i < checkBox.length; i++) {
+            if (i == checkBox.length-1) {
+                checkBox[i].setPressed(true);
+            } else {
+                checkBox[i].setPressed(false);
+            }
+        }
+        if (checkBox[checkBox.length-1] == textCheckbox) {
+            PREFERRED_COMMUNICATION = 0;
+        } else if (checkBox[checkBox.length-1] == emailCheckbox) {
+            PREFERRED_COMMUNICATION = 1;
+        } else if (checkBox[checkBox.length-1] == bothCheckbox) {
+            PREFERRED_COMMUNICATION = 2;
+        }
     }
 
     public void showSoftKeyboard(View view) {

@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.kiosk.MasterOrder;
 import com.example.kiosk.Order;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.R;
@@ -16,14 +18,14 @@ import java.util.List;
 
 public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<RecyclerViewHorizontalAdapter.MyViewHolder> {
 
-    private List<Order> orders;
+    private List<MasterOrder> masterOrders;
     private LayoutInflater mInflater;
     private Context context;
 
-    public RecyclerViewHorizontalAdapter(Context context, List<Order> orders) {
+    public RecyclerViewHorizontalAdapter(Context context, List<MasterOrder> masterOrders) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
-        this.orders = orders;
+        this.masterOrders = masterOrders;
     }
 
     @Override
@@ -35,16 +37,17 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Order order = orders.get(position);
-        holder.orderNumber.setText(order.getOrderNumber());
-        holder.buyerName.setText(order.getBuyerName());
-        holder.destination.setText(order.getDestination());
-        holder.appointment.setText(order.getAppointmentTime());
+        // Order order = orders.get(position);
+        MasterOrder masterOrder = masterOrders.get(position);
+        holder.orderNumber.setText(masterOrder.getSOPNumber());
+        holder.buyerName.setText(masterOrder.getCustomerName());
+        holder.destination.setText(masterOrder.getDestination());
+        holder.appointment.setText(masterOrder.getAppointmentTime());
     }
 
     @Override
     public int getItemCount() {
-        return orders.size();
+        return masterOrders.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
