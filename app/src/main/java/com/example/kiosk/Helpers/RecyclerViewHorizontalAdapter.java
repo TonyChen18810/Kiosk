@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kiosk.MasterOrder;
-import com.example.kiosk.Order;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.R;
 import java.util.List;

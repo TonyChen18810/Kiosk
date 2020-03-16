@@ -3,7 +3,6 @@ package com.example.kiosk.Screens;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -12,15 +11,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewSummaryAdapter;
 import com.example.kiosk.MasterOrder;
-import com.example.kiosk.Order;
 import com.example.kiosk.R;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderSummary extends AppCompatActivity {
@@ -92,7 +87,7 @@ public class OrderSummary extends AppCompatActivity {
             TextView tv1 = findViewById(R.id.textView1);
             TextView tv2 = findViewById(R.id.textView2);
             if (currentLanguage == 0) {
-                if (Order.getSize() > 1) {
+                if (MasterOrder.getMasterOrdersList().size() > 1) {
                     tv1.setText(R.string.thanks_bye_eng);
                 } else {
                     tv1.setText(R.string.thanks_bye2_eng);
@@ -100,7 +95,7 @@ public class OrderSummary extends AppCompatActivity {
                 tv2.setText(R.string.please_logout_eng);
                 logoutBtn.setText(R.string.logout_eng);
             } else if (currentLanguage == 1) {
-                if (Order.getSize() > 1) {
+                if (MasterOrder.getMasterOrdersList().size() > 1) {
                     tv1.setText(R.string.thanks_bye_sp);
                 } else {
                     tv1.setText(R.string.thanks_bye2_sp);
@@ -108,7 +103,7 @@ public class OrderSummary extends AppCompatActivity {
                 tv2.setText(R.string.please_logout_sp);
                 logoutBtn.setText(R.string.logout_sp);
             } else if (currentLanguage == 2) {
-                if (Order.getSize() > 1) {
+                if (MasterOrder.getMasterOrdersList().size() > 1) {
                     tv1.setText(R.string.thanks_bye_fr);
                 } else {
                     tv1.setText(R.string.thanks_bye2_fr);
@@ -142,9 +137,9 @@ public class OrderSummary extends AppCompatActivity {
         totalPalletsCount = findViewById(R.id.PalletCount);
         totalWeightCount = findViewById(R.id.TotalWeight);
 
-        ordersCount.setText(Integer.toString(Order.getSize()));
-        totalPalletsCount.setText(Integer.toString(Order.getTotalPalletCount()));
-        totalWeightCount.setText(Integer.toString(Order.getTotalWeight()));
+        ordersCount.setText(Integer.toString(MasterOrder.getMasterOrdersList().size()));
+        totalPalletsCount.setText(Integer.toString(MasterOrder.getMasterOrdersList().size()));
+        totalWeightCount.setText(Integer.toString(MasterOrder.getMasterOrdersList().size()));
 
         if (currentLanguage == 0) {
             confirmOrders.setText(R.string.confirm_orders_eng);

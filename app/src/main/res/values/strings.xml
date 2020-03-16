@@ -354,5 +354,8 @@
     <string name="thanks_bye2_fr">Merci d\'avoir soumis vos ordre. Vous recevrez une notification une fois que le ordre auront été approuvées par un représentant D’Arrigo.</string>
     <string name="please_logout_fr">Veuillez vous déconnecter lorsque vous avez terminé.</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

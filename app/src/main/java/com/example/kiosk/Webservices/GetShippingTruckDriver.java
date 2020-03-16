@@ -11,7 +11,6 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 import java.lang.ref.WeakReference;
 
 public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
@@ -24,8 +23,8 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         this.enteredEmail = enteredEmail;
     }
 
-    private static String email = "", driverName = "", phone = "", truckName = "", truckNumber = "", driversLicense = "",
-            driversLicenseState = "", trailerLicense = "", trailerLicenseState = "", dispatcherPhone = "";
+    private static String email = "", driverName = "", phone = "", truckName = "", truckNumber = "", driversLicense = "", driversLicenseState = "",
+            trailerLicense = "", trailerLicenseState = "", dispatcherPhone = "", languagePreference = "", communicationPreference = "";
 
     static public String getEmail() {
         return email;
@@ -69,12 +68,14 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                 trailerLicense = ((SoapObject) (response.getProperty(0))).getProperty(7).toString();
                 trailerLicenseState = ((SoapObject) (response.getProperty(0))).getProperty(8).toString();
                 dispatcherPhone = ((SoapObject) (response.getProperty(0))).getProperty(9).toString();
+                languagePreference = ((SoapObject) (response.getProperty(0))).getProperty(10).toString();
+                communicationPreference = ((SoapObject) (response.getProperty(0))).getProperty(11).toString();
                 Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
-                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone);
+                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, communicationPreference);
                 Account.setCurrentAccount(account);
             } else {
                 Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
-                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone);
+                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, communicationPreference);
                 Account.setCurrentAccount(account);
             }
 
@@ -88,18 +89,14 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         Activity activity = mWeakActivity.get();
-        System.out.println(getEmail());
-        System.out.println(getEmail().length());
         if (activity != null) {
             ProgressBar progressBar = activity.findViewById(R.id.progressBar);
             progressBar.setVisibility(View.GONE);
         }
         if (getEmail().length() == 0) {
-            System.out.println("yo it's null");
             MainActivity.accountExists.setValue(false);
         } else {
             MainActivity.accountExists.setValue(true);
-            System.out.println("not null, account exists");
         }
         // reset in case of different login attempt
         email = "";

@@ -96,12 +96,19 @@ public class MasterOrder {
         return Double.parseDouble(estimatedPallets);
     }
 
-    public double getTotalWeight() {
+    public static double getTotalWeight() {
         return totalWeight;
     }
 
-    public double getTotalPalletCount() {
+    public static double getTotalPalletCount() {
         return totalPalletCount;
+    }
+
+    public static void reset() {
+        totalWeight = 0;
+        totalPalletCount = 0;
+        possibleMasterOrdersList.clear();
+        masterOrdersList.clear();
     }
 
     public static List<MasterOrder> getMasterOrdersList() {

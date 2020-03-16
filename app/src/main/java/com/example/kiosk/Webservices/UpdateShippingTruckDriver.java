@@ -17,11 +17,11 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<Activity> mWeakActivity;
     private String email, driverName, phone, truckName, truckNumber, driversLicense,
-            driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone;
+            driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, commmunicationPreference;
 
     public UpdateShippingTruckDriver(Activity activity, String email, String driverName, String phone, String truckName, String truckNumber, String driversLicense,
-                                     String driversLicenseState, String trailerLicense, String trailerLicenseState, String dispatcherPhone) {
-        mWeakActivity = new WeakReference<Activity>(activity);
+                                     String driversLicenseState, String trailerLicense, String trailerLicenseState, String dispatcherPhone, String languagePreference, String commmunicationPreference) {
+        mWeakActivity = new WeakReference<>(activity);
         this.email = email;
         this.driverName = driverName;
         this.phone = phone;
@@ -32,6 +32,8 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         this.trailerLicense = trailerLicense;
         this.trailerLicenseState = trailerLicenseState;
         this.dispatcherPhone = dispatcherPhone;
+        this.languagePreference = languagePreference;
+        this.commmunicationPreference = commmunicationPreference;
     }
 
     @Override
@@ -53,6 +55,8 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         request.addProperty("inTrailerLicense", trailerLicense);
         request.addProperty("inTrailerLicenseState", trailerLicenseState);
         request.addProperty("inDispatcherPhone", dispatcherPhone);
+        request.addProperty("inLanguagePreference", languagePreference);
+        request.addProperty("inContactPreference", commmunicationPreference);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
@@ -74,12 +78,14 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                 trailerLicense = ((SoapObject) (response.getProperty(0))).getProperty(7).toString();
                 trailerLicenseState = ((SoapObject) (response.getProperty(0))).getProperty(8).toString();
                 dispatcherPhone = ((SoapObject) (response.getProperty(0))).getProperty(9).toString();
+                languagePreference = ((SoapObject) (response.getProperty(0))).getProperty(10).toString();
+                commmunicationPreference = ((SoapObject) (response.getProperty(0))).getProperty(11).toString();
                 Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
-                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone);
+                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, commmunicationPreference);
                 Account.setCurrentAccount(account);
             } else {
                 Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
-                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone);
+                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, commmunicationPreference);
                 Account.setCurrentAccount(account);
             }
 

@@ -1,13 +1,21 @@
 package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -30,12 +38,12 @@ import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Dialogs.SubmitDialog;
 import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Helpers.RecyclerViewAssociatedAdapter;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
+import com.example.kiosk.Helpers.RecyclerViewSummaryAdapter;
 import com.example.kiosk.MasterOrder;
-import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetMasterOrderDetails;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +74,7 @@ public class OrderEntry extends AppCompatActivity {
 
     private int DESTINATION_ATTEMPTS = 0;
 
+    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +91,7 @@ public class OrderEntry extends AppCompatActivity {
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-        System.out.println("Total weight: " + Order.getTotalWeight());
+        System.out.println("Total weight: " + MasterOrder.getTotalWeight());
 
         listener = new MutableLiveData<>();
         listener.setValue(true);
@@ -268,6 +277,35 @@ public class OrderEntry extends AppCompatActivity {
             selectDestinationBtn.setEnabled(true);
             initialSelection = false;
 
+            setContentView(R.layout.connected_orders);
+            MasterOrder test = new MasterOrder("F0WADA","OWAW99W0","01","San Jose, California","Driscolls","Fulfilled",
+                    "Loblaw Companies Inc.","true","true","03/13/2020","16:00:00", "3600.000","1.67000");
+            MasterOrder test2 = new MasterOrder("LOPS0L","XCW245R","01","Santa Cruz, California","Charlies","Fulfilled",
+                    "Johnson Farms Inc.","true","true","03/13/2020","16:00:00", "3600.000","1.67000");
+            MasterOrder test3 = new MasterOrder("30I34I","AWD0IOS","01","Yuma, Arizona","Johnnies","Fulfilled",
+                    "Gabriel Companies Inc.","true","true","03/13/2020","16:00:00", "3600.000","1.67000");
+
+            ArrayList<MasterOrder> connectedOrders = new ArrayList<>();
+            connectedOrders.add(test);
+            connectedOrders.add(test2);
+            connectedOrders.add(test3);
+
+            RecyclerView recyclerView = findViewById(R.id.AssociatedOrdersView);
+            LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(OrderEntry.this, LinearLayoutManager.VERTICAL, false);
+            recyclerView.setLayoutManager(verticalLayoutManager);
+            RecyclerViewAssociatedAdapter adapter = new RecyclerViewAssociatedAdapter(connectedOrders);
+            recyclerView.setAdapter(adapter);
+
+            findViewById(R.id.btn_add).setOnClickListener(v1 -> {
+                List<MasterOrder> selectedOrders = RecyclerViewAssociatedAdapter.getSelectedOrders();
+                for (int i = 0; i < selectedOrders.size(); i++) {
+                    MasterOrder.addMasterOrderToList(selectedOrders.get(i));
+                }
+                setContentView(R.layout.activity_order_entry);
+            });
+
+            findViewById(R.id.btn_cancel).setOnClickListener(v12 -> setContentView(R.layout.activity_order_entry));
+
             orderNumber.setEnabled(true);
             showSoftKeyboard(orderNumber);
             orderNumber.setFocusable(true);
@@ -329,7 +367,7 @@ public class OrderEntry extends AppCompatActivity {
 
     public static void confirmMsg(final View v, Context context) {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
-        DeleteDialog dialog = new DeleteDialog(Order.getOrders().get(selectedItemPosition).getOrderNumber(), context, v);
+        DeleteDialog dialog = new DeleteDialog(MasterOrder.getMasterOrdersList().get(selectedItemPosition).getSOPNumber(), context, v);
         dialog.show();
     }
 
@@ -339,7 +377,7 @@ public class OrderEntry extends AppCompatActivity {
         MasterOrder.removeMasterOrderFromList(selectedItemPosition);
         adapter.notifyItemRemoved(selectedItemPosition);
 
-        if (Order.getSize() == 0) {
+        if (MasterOrder.getMasterOrdersList().size() == 0) {
             // Order.addOrder(new Order("","","", "", 0, 0));
             MasterOrder.addMasterOrderToList(new MasterOrder("","","",
                     "","","","","","",

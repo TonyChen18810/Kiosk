@@ -2,7 +2,6 @@ package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
-
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
@@ -22,18 +21,18 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.kiosk.Account;
+import com.example.kiosk.Dialogs.ConnectedOrders;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.States;
-import com.example.kiosk.Order;
+import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetShippingTruckDriver;
+
 import java.util.Collections;
 import java.util.List;
-
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 import static java.util.Arrays.asList;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,9 +59,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Account.clearAccounts();
-        Order.clearOrders();
         Account.setCurrentAccount(null);
-        Order.resetTotals();
+        MasterOrder.reset();
+
+        Account testAccount = new Account("bob@gmail.com","Bob","1234567890","Johnnies","23",
+                "5KVILK6","CA","02LSOPX","WY","4089197623","0","0");
+        Account.setCurrentAccount(testAccount);
+        ConnectedOrders dialog = new ConnectedOrders(MainActivity.this);
+        dialog.setCancelable(false);
+        dialog.show();
 
         View decorView = getWindow().getDecorView();
 
@@ -79,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         accountExists.observe(MainActivity.this, accountExists -> {
             if (!accountExists) {
-                newAccount();
+                newAccountExpand();
             } else {
                 if (expanded) {
                     animation(phoneNumberBox, "translationY", -10f);
@@ -372,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
         animationEditText.start();
     }
 
-    public void newAccount() {
+    public void newAccountExpand() {
         // System.out.println("validEmail(): " + validEmail());
         // System.out.println(Account.getCurrentAccount().getEmail());
         if (!validEmail() && !emailAddressBox.getText().toString().equals("")) {

@@ -5,15 +5,11 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import android.text.Html;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,16 +18,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
-import com.example.kiosk.Order;
+import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
-
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class CreateAccount extends AppCompatActivity {
@@ -272,7 +266,7 @@ public class CreateAccount extends AppCompatActivity {
                 TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
 
                 new UpdateShippingTruckDriver(CreateAccount.this, email, driverNameStr, phone, truckNameStr, truckNumberStr,
-                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, dispatcherNumberStr).execute();
+                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, dispatcherNumberStr,"0", Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
 
                 userEmail.setText(Html.fromHtml("Email address: " + "<b>" + Account.getCurrentAccount().getEmail() + "<b>"));
                 userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + Account.getCurrentAccount().getPhoneNumber() + "<b>"));
@@ -285,7 +279,8 @@ public class CreateAccount extends AppCompatActivity {
 
                 findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                     Account.clearAccounts();
-                    Order.clearOrders();
+                    // Order.clearOrders();
+                    MasterOrder.reset();
                     startActivity(new Intent(CreateAccount.this, MainActivity.class));
                 });
             }

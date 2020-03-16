@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -118,8 +117,6 @@ public class LoggedIn extends AppCompatActivity {
             }
         });
 
-        System.out.println(driverLicense.getText().toString());
-
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(LoggedIn.this, v);
             dialog.show();
@@ -149,7 +146,7 @@ public class LoggedIn extends AppCompatActivity {
                 driverNameStr = driverName.getText().toString();
                 dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
                 Account account = new Account(emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
-                        trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr);
+                        trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr, "0", Integer.toString(PREFERRED_COMMUNICATION+1));
                 Account.setCurrentAccount(account);
                 Intent intent = new Intent(LoggedIn.this, OrderEntry.class);
                 startActivity(intent);
