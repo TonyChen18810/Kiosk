@@ -22,6 +22,7 @@ import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.LicenseTransformationMethod;
 import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.R;
+import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -84,7 +85,15 @@ public class LoggedIn extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (initialSelection1) {
-                    selectState1.setText(getResources().getStringArray(R.array.states)[position]);
+                    state1 = getResources().getStringArray(R.array.states_abbreviated)[position];
+                    selectState1.setText(state1);
+                    if (PREFERRED_COMMUNICATION == 0) {
+                        setChecked(bothCheckbox, emailCheckbox, textCheckbox);
+                    } else if (PREFERRED_COMMUNICATION == 1) {
+                        setChecked(bothCheckbox, textCheckbox, emailCheckbox);
+                    } else if (PREFERRED_COMMUNICATION == 2) {
+                        setChecked(emailCheckbox, textCheckbox, bothCheckbox);
+                    }
                 } else {
                     initialSelection1 = true;
                     selectState1.setText(state1);
@@ -104,7 +113,15 @@ public class LoggedIn extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (initialSelection2) {
-                    selectState2.setText(getResources().getStringArray(R.array.states)[position]);
+                    state2 = getResources().getStringArray(R.array.states_abbreviated)[position];
+                    selectState2.setText(state2);
+                    if (PREFERRED_COMMUNICATION == 0) {
+                        setChecked(bothCheckbox, emailCheckbox, textCheckbox);
+                    } else if (PREFERRED_COMMUNICATION == 1) {
+                        setChecked(bothCheckbox, textCheckbox, emailCheckbox);
+                    } else if (PREFERRED_COMMUNICATION == 2) {
+                        setChecked(emailCheckbox, textCheckbox, bothCheckbox);
+                    }
                 } else {
                     initialSelection2 = true;
                     selectState2.setText(state2);
@@ -140,14 +157,19 @@ public class LoggedIn extends AppCompatActivity {
                 truckNameStr = truckName.getText().toString();
                 truckNumberStr = truckNumber.getText().toString();
                 trailerLicenseStr = trailerLicense.getText().toString();
-                String trailerStateStr = trailerStateSpinner.getSelectedItem().toString();
-                String driverStateStr = driverStateSpinner.getSelectedItem().toString();
+                // String trailerStateStr = trailerStateSpinner.getSelectedItem().toString();
+                // String driverStateStr = driverStateSpinner.getSelectedItem().toString();
                 driverLicenseStr = driverLicense.getText().toString();
                 driverNameStr = driverName.getText().toString();
                 dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
-                Account account = new Account(emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
-                        trailerStateStr, driverLicenseStr, driverStateStr, driverNameStr, dispatcherNumberStr, "0", Integer.toString(PREFERRED_COMMUNICATION+1));
+                new UpdateShippingTruckDriver(LoggedIn.this, Account.getCurrentAccount().getEmail(), emailStr, driverNameStr,
+                        phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, state1, trailerLicenseStr, state2,
+                        dispatcherNumberStr, "0", Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
+                /*
+                Account account = new Account(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
+                        trailerStateStr, driverLicenseStr, driverStateStr, dispatcherNumberStr, "0", Integer.toString(PREFERRED_COMMUNICATION+1));
                 Account.setCurrentAccount(account);
+                 */
                 Intent intent = new Intent(LoggedIn.this, OrderEntry.class);
                 startActivity(intent);
             }
@@ -192,6 +214,20 @@ public class LoggedIn extends AppCompatActivity {
         selectState1.setOnClickListener(v -> trailerStateSpinner.performClick());
 
         selectState2.setOnClickListener(v -> driverStateSpinner.performClick());
+
+        System.out.println("COMMUNICATION PREFERENCE: " + Account.getCurrentAccount().getCommunicationPreference());
+
+        switch (Account.getCurrentAccount().getCommunicationPreference()) {
+            case "1":
+                setChecked(emailCheckbox, bothCheckbox, textCheckbox);
+                break;
+            case "2":
+                setChecked(textCheckbox, bothCheckbox, emailCheckbox);
+                break;
+            case "3":
+                setChecked(emailCheckbox, textCheckbox, bothCheckbox);
+                break;
+        }
     }
 
     private void setChecked(View... checkBox) {
@@ -319,6 +355,9 @@ public class LoggedIn extends AppCompatActivity {
         preferText = findViewById(R.id.PreferInfoText);
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
+
+        String commPreference = Account.getCurrentAccount().getCommunicationPreference();
+        System.out.println("commPreference: " + commPreference);
 
         TextView userEmail = findViewById(R.id.UserEmail);
         TextView userPhone = findViewById(R.id.UserPhone);

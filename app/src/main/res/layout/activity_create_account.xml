@@ -17,11 +17,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23">
+        app:layout_constraintVertical_bias="0.148">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="20dp"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="20dp">
@@ -30,40 +31,40 @@
                 android:id="@+id/EmailAddressBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text"
-                android:ems="14"
+                android:ems="12"
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
-                android:textSize="60sp"
-                android:layout_gravity="left" />
+                android:textSize="60sp" />
 
             <EditText
                 android:id="@+id/PhoneNumberBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text"
-                android:ems="14"
+                android:ems="12"
                 android:inputType="phone"
                 android:textColor="#C9000000"
-                android:textSize="60sp"
-                android:layout_gravity="left"/>
+                android:textSize="60sp" />
 
             <EditText
                 android:id="@+id/DriverNameBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text"
-                android:ems="14"
+                android:ems="12"
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
-                android:textSize="60sp"
-                android:layout_gravity="left"/>
+                android:textSize="60sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -78,13 +79,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:background="@drawable/edit_text"
-                    android:ems="13"
+                    android:ems="11"
                     android:inputType="textEmailAddress"
                     android:textSize="60sp" />
 
                 <Button
                     android:id="@+id/StateButton2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="match_parent"
                     android:background="@color/andy_accent"
                     android:padding="7dp"
@@ -99,27 +100,27 @@
                 android:id="@+id/TruckNameBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text"
-                android:ems="14"
+                android:ems="12"
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
-                android:textSize="60sp"
-                android:layout_gravity="left"/>
+                android:textSize="60sp" />
 
             <EditText
                 android:id="@+id/TruckNumberBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text"
-                android:ems="14"
+                android:ems="12"
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
                 android:textSize="60sp"
-                android:layout_gravity="left"
                 tools:ignore="TextFields" />
 
             <LinearLayout
@@ -135,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:background="@drawable/edit_text"
-                    android:ems="13"
+                    android:ems="11"
                     android:inputType="textEmailAddress"
                     android:textColor="#C9000000"
                     android:textSize="60sp" />
@@ -143,7 +144,7 @@
                 <Button
                     android:id="@+id/StateButton1"
                     style="@style/Widget.AppCompat.Button.Small"
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="match_parent"
                     android:background="@color/andy_accent"
                     android:padding="7dp"
@@ -158,16 +159,106 @@
                 android:id="@+id/DispatcherPhoneNumberBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text"
-                android:ems="14"
+                android:ems="12"
                 android:inputType="phone"
-                android:textSize="60sp"
-                android:layout_gravity="left"/>
+                android:textSize="60sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/DriverNameHelp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="#00FFFFFF"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cardView4"
+        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.243"
+        app:srcCompat="@drawable/help" />
+
+    <ImageButton
+        android:id="@+id/DispatcherPhoneNumberHelp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="#00FFFFFF"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cardView4"
+        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.486"
+        app:srcCompat="@drawable/help" />
+
+    <ImageButton
+        android:id="@+id/DriverLicenseHelp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="#00FFFFFF"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cardView4"
+        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.289"
+        app:srcCompat="@drawable/help" />
+
+    <ImageButton
+        android:id="@+id/TrailerLicenseHelp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="#00FFFFFF"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cardView4"
+        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.433"
+        app:srcCompat="@drawable/help" />
+
+    <ImageButton
+        android:id="@+id/TruckNumberHelp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="#00FFFFFF"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cardView4"
+        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.382"
+        app:srcCompat="@drawable/help" />
+
+    <ImageButton
+        android:id="@+id/TruckNameHelp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="#00FFFFFF"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cardView4"
+        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.334"
+        app:srcCompat="@drawable/help" />
 
     <Spinner
         android:id="@+id/StateSpinner"
@@ -192,8 +283,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.613">
+        app:layout_constraintTop_toBottomOf="@+id/cardView4"
+        app:layout_constraintVertical_bias="0.022">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -301,41 +392,53 @@
         android:id="@+id/VerifyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1772dp"
         android:layout_marginRight="10dp"
         android:lineSpacingExtra="8sp"
         android:text="*By clicking 'Next' I verify that\nall information is correct and accurate"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/andy_accent"
         android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/NextBtn"
-        app:layout_constraintHorizontal_bias="0.874"
+        app:layout_constraintHorizontal_bias="0.863"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CommunicationCard"
+        app:layout_constraintVertical_bias="0.078"
+        tools:ignore="HardcodedText" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.911"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
+        app:layout_constraintVertical_bias="0.597" />
 
     <Button
         android:id="@+id/NextBtn"
         style="@android:style/Widget.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="784dp"
-        android:layout_marginEnd="308dp"
+        android:layout_marginEnd="268dp"
         android:background="@drawable/mybutton2"
         android:clickable="true"
         android:focusable="true"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
         android:paddingLeft="40dp"
+        android:paddingTop="20dp"
         android:paddingRight="40dp"
+        android:paddingBottom="20dp"
         android:text="Next"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/white"
         android:textSize="64sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.59" />
+        app:layout_constraintTop_toBottomOf="@+id/CommunicationCard"
+        app:layout_constraintVertical_bias="0.091" />
 
     <Button
         android:id="@+id/LogoutBtn"
@@ -367,10 +470,10 @@
         app:cardElevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintHorizontal_bias="0.035"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.014">
+        app:layout_constraintVertical_bias="0.019">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -414,100 +517,10 @@
         android:layout_height="wrap_content"
         android:text="Create Account"
         android:textSize="60sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cardView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.083" />
-
-    <ImageButton
-        android:id="@+id/DriverNameHelp"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:background="#00FFFFFF"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardView4"
-        app:layout_constraintHorizontal_bias="0.883"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.266"
-        app:srcCompat="@drawable/help" />
-
-    <ImageButton
-        android:id="@+id/TruckNumberHelp"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:background="#00FFFFFF"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardView4"
-        app:layout_constraintHorizontal_bias="0.883"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.406"
-        app:srcCompat="@drawable/help" />
-
-    <ImageButton
-        android:id="@+id/TrailerLicenseHelp"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:background="#00FFFFFF"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardView4"
-        app:layout_constraintHorizontal_bias="0.883"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.452"
-        app:srcCompat="@drawable/help" />
-
-    <ImageButton
-        android:id="@+id/DispatcherPhoneNumberHelp"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:background="#00FFFFFF"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardView4"
-        app:layout_constraintHorizontal_bias="0.883"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.496"
-        app:srcCompat="@drawable/help" />
-
-    <ImageButton
-        android:id="@+id/DriverLicenseHelp"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:background="#00FFFFFF"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardView4"
-        app:layout_constraintHorizontal_bias="0.883"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.313"
-        app:srcCompat="@drawable/help" />
-
-    <ImageButton
-        android:id="@+id/TruckNameHelp"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:background="#00FFFFFF"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardView4"
-        app:layout_constraintHorizontal_bias="0.883"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.357"
-        app:srcCompat="@drawable/help" />
+        app:layout_constraintVertical_bias="0.793" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

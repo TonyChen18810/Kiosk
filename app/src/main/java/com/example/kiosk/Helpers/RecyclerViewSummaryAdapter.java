@@ -15,7 +15,6 @@ import java.util.List;
 
 public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerViewSummaryAdapter.MyViewHolder> {
 
-    // private List<Order> orders;
     private List<MasterOrder> masterOrders;
 
     public RecyclerViewSummaryAdapter(List<MasterOrder> masterOrders) {
@@ -44,11 +43,21 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
         }
         buyerNameEdit = str.toString();
         holder.orderNumber.setText(masterOrder.getSOPNumber());
+        if (buyerNameEdit.length() > 10) {
+            StringBuilder buyerNameStrBuilder = new StringBuilder();
+            for (char c: buyerNameEdit.toCharArray()) {
+                buyerNameStrBuilder.append(c);
+                if (c == ' ') {
+                    buyerNameStrBuilder.append('\n');
+                }
+            }
+            buyerNameEdit = buyerNameStrBuilder.toString();
+        }
         holder.buyerName.setText(buyerNameEdit);
         holder.destination.setText(masterOrder.getDestination());
         holder.aptTime.setText(masterOrder.getAppointmentTime());
-        holder.estPallets.setText(Double.toString(masterOrder.getEstimatedPallets()));
-        holder.estWeight.setText(Double.toString(masterOrder.getEstimatedWeight()));
+        holder.estPallets.setText(Double.toString((int)masterOrder.getEstimatedPallets()));
+        holder.estWeight.setText(Double.toString((int)masterOrder.getEstimatedWeight()));
     }
 
     @Override

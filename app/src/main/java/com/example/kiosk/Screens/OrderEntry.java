@@ -1,21 +1,13 @@
 package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -40,7 +32,6 @@ import com.example.kiosk.Dialogs.SubmitDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewAssociatedAdapter;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
-import com.example.kiosk.Helpers.RecyclerViewSummaryAdapter;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetMasterOrderDetails;
@@ -60,7 +51,7 @@ public class OrderEntry extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private Spinner destinationSpinner;
-    private boolean initialSelection = false;
+    public static boolean initialSelection = false;
 
     private static RecyclerViewHorizontalAdapter adapter;
     private static RecyclerView recyclerView;
@@ -69,38 +60,21 @@ public class OrderEntry extends AppCompatActivity {
 
     private static MutableLiveData<Boolean> listener = null;
     private static MutableLiveData<Boolean> dialogListener = null;
-    public static MutableLiveData<Boolean> validOrderNumber = null;
+    public static MutableLiveData<Integer> validOrderNumber = null;
     public static MutableLiveData<Boolean> listListener = null;
 
-    private int DESTINATION_ATTEMPTS = 0;
+    public static int DESTINATION_ATTEMPTS = 0;
 
-    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_entry);
 
-        View decorView = getWindow().getDecorView();
-
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        Window w = getWindow();
-        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
-        System.out.println("Total weight: " + MasterOrder.getTotalWeight());
-
         listener = new MutableLiveData<>();
         listener.setValue(true);
-
         dialogListener = new MutableLiveData<>();
         dialogListener.setValue(false);
-
         validOrderNumber = new MutableLiveData<>();
-
         listListener = new MutableLiveData<>();
 
         listener.observe(OrderEntry.this, empty -> {
@@ -111,6 +85,7 @@ public class OrderEntry extends AppCompatActivity {
             } else {
                 recyclerView.setVisibility(View.VISIBLE);
                 currentlyEntered.setVisibility(View.VISIBLE);
+                // initialSelection = false;
                 submitBtn.setEnabled(true);
             }
         });
@@ -127,7 +102,8 @@ public class OrderEntry extends AppCompatActivity {
         });
 
         validOrderNumber.observe(OrderEntry.this, valid -> {
-            if (!valid) {
+            // non-existing order
+            if (valid == 0) {
                 checkOrderBtn.setEnabled(true);
                 String message = null;
                 if (Language.getCurrentLanguage() == 0) {
@@ -139,7 +115,8 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                 dialog.show();
-            } else {
+                // good order
+            } else if (valid == 1){
                 orderNumber.setEnabled(false);
                 checkOrderBtn.setEnabled(false);
                 checkOrderBtn.setBackgroundResource(R.drawable.arrow_down);
@@ -147,6 +124,21 @@ public class OrderEntry extends AppCompatActivity {
                         buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
+                // order needs to schedule appointment
+            } else if (valid == 2) {
+                checkOrderBtn.setEnabled(true);
+                String message = null;
+                if (Language.getCurrentLanguage() == 0) {
+                    message = "Order #" + MasterOrder.getCurrentMasterOrder().getSOPNumber() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
+                } else if (Language.getCurrentLanguage() == 1) {
+                    message = "Pedido #" + MasterOrder.getCurrentMasterOrder().getSOPNumber() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
+                } else if (Language.getCurrentLanguage() == 2) {
+                    message = "Ordre #" + MasterOrder.getCurrentMasterOrder().getSOPNumber() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
+                }
+                HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
+                dialog.show();
+                orderNumber.setText("");
+                showSoftKeyboard(orderNumber);
             }
         });
 
@@ -179,18 +171,22 @@ public class OrderEntry extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // String[] statesArray = getResources().getStringArray(R.array.states);
-                String[] destinationsArray = possibleCustomerDestinations.toArray(new String[possibleCustomerDestinations.size()]);
+                String[] destinationsArray = possibleCustomerDestinations.toArray(new String[0]);
+                System.out.println("---------------------------CLICKED--------------------------------!");
                 if (initialSelection) {
+                    System.out.println("Initial Selection true");
                     if (destinationsArray[position].equals(MasterOrder.getCurrentMasterOrder().getDestination())) {
+                        System.out.println("Selected: " + destinationsArray[position]);
                         selectDestinationBtn.setText(destinationsArray[position]);
-                        addOrderBtn.setEnabled(true);
                         selectDestinationBtn.clearAnimation();
+                        destinationSpinner.setSelection(0);
+                        selectDestinationBtn.setEnabled(false);
+                        addOrderBtn.setEnabled(true);
                         addOrderBtn.startAnimation(AnimationUtils.loadAnimation(OrderEntry.this, R.anim.fade));
                         DESTINATION_ATTEMPTS = 0;
-                        selectDestinationBtn.setEnabled(false);
+                        initialSelection = false;
                     } else {
                         DESTINATION_ATTEMPTS++;
-                        System.out.println("Destination Attempts: " + DESTINATION_ATTEMPTS);
                         if (DESTINATION_ATTEMPTS >= 2) {
                             String message = null;
                             if (currentLanguage == 0) {
@@ -206,9 +202,9 @@ public class OrderEntry extends AppCompatActivity {
                             buyerName.setVisibility(View.GONE);
                             selectDestinationBtn.setVisibility(View.GONE);
 
-                            showSoftKeyboard(orderNumber);
                             orderNumber.setFocusable(true);
                             orderNumber.requestFocus();
+                            showSoftKeyboard(orderNumber);
                             checkOrderBtn.setEnabled(true);
                             addOrderBtn.setEnabled(false);
                             DESTINATION_ATTEMPTS = 0;
@@ -226,7 +222,9 @@ public class OrderEntry extends AppCompatActivity {
                         }
                     }
                 } else {
+                    System.out.println("initialSelection was not true");
                     initialSelection = true;
+                    // destinationSpinner.performClick();
                 }
             }
 
@@ -243,8 +241,6 @@ public class OrderEntry extends AppCompatActivity {
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(OrderEntry.this, v);
             dialog.show();
-            // Intent intent = new Intent(OrderEntry.this, MainActivity.class);
-            // startActivity(intent);
         });
 
         submitBtn.setOnClickListener(v -> {
@@ -260,7 +256,7 @@ public class OrderEntry extends AppCompatActivity {
                 listener.setValue(false);
             } else {
                 MasterOrder.addMasterOrderToList(MasterOrder.getCurrentMasterOrder());
-                // listener.setValue(false);
+                listener.setValue(false);
             }
 
             destinationSpinner.setSelection(0);
@@ -277,41 +273,40 @@ public class OrderEntry extends AppCompatActivity {
             selectDestinationBtn.setEnabled(true);
             initialSelection = false;
 
-            setContentView(R.layout.connected_orders);
-            MasterOrder test = new MasterOrder("F0WADA","OWAW99W0","01","San Jose, California","Driscolls","Fulfilled",
-                    "Loblaw Companies Inc.","true","true","03/13/2020","16:00:00", "3600.000","1.67000");
-            MasterOrder test2 = new MasterOrder("LOPS0L","XCW245R","01","Santa Cruz, California","Charlies","Fulfilled",
-                    "Johnson Farms Inc.","true","true","03/13/2020","16:00:00", "3600.000","1.67000");
-            MasterOrder test3 = new MasterOrder("30I34I","AWD0IOS","01","Yuma, Arizona","Johnnies","Fulfilled",
-                    "Gabriel Companies Inc.","true","true","03/13/2020","16:00:00", "3600.000","1.67000");
+            try {
+                new GetMasterOrderDetails(OrderEntry.this, MasterOrder.getCurrentMasterOrder().getSOPNumber(), true).execute();
 
-            ArrayList<MasterOrder> connectedOrders = new ArrayList<>();
-            connectedOrders.add(test);
-            connectedOrders.add(test2);
-            connectedOrders.add(test3);
+                ArrayList<MasterOrder> connectedOrders = new ArrayList<>(MasterOrder.getAssociatedMasterOrdersList());
 
-            RecyclerView recyclerView = findViewById(R.id.AssociatedOrdersView);
-            LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(OrderEntry.this, LinearLayoutManager.VERTICAL, false);
-            recyclerView.setLayoutManager(verticalLayoutManager);
-            RecyclerViewAssociatedAdapter adapter = new RecyclerViewAssociatedAdapter(connectedOrders);
-            recyclerView.setAdapter(adapter);
+                if (connectedOrders.size() > 0) {
+                    RecyclerView recyclerView = findViewById(R.id.AssociatedOrdersView);
+                    LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(OrderEntry.this, LinearLayoutManager.VERTICAL, false);
+                    recyclerView.setLayoutManager(verticalLayoutManager);
+                    RecyclerViewAssociatedAdapter adapter = new RecyclerViewAssociatedAdapter(connectedOrders);
+                    recyclerView.setAdapter(adapter);
 
-            findViewById(R.id.btn_add).setOnClickListener(v1 -> {
-                List<MasterOrder> selectedOrders = RecyclerViewAssociatedAdapter.getSelectedOrders();
-                for (int i = 0; i < selectedOrders.size(); i++) {
-                    MasterOrder.addMasterOrderToList(selectedOrders.get(i));
+                    findViewById(R.id.btn_add).setOnClickListener(v1 -> {
+                        List<MasterOrder> selectedOrders = RecyclerViewAssociatedAdapter.getSelectedOrders();
+                        for (int i = 0; i < selectedOrders.size(); i++) {
+                            MasterOrder.addMasterOrderToList(selectedOrders.get(i));
+                        }
+                        setContentView(R.layout.activity_order_entry);
+                    });
+
+                    findViewById(R.id.btn_cancel).setOnClickListener(v12 -> setContentView(R.layout.activity_order_entry));
+
+                    setContentView(R.layout.connected_orders);
                 }
-                setContentView(R.layout.activity_order_entry);
-            });
-
-            findViewById(R.id.btn_cancel).setOnClickListener(v12 -> setContentView(R.layout.activity_order_entry));
-
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             orderNumber.setEnabled(true);
             showSoftKeyboard(orderNumber);
             orderNumber.setFocusable(true);
             orderNumber.requestFocus();
             checkOrderBtn.setEnabled(true);
             addOrderBtn.setEnabled(false);
+            // initialSelection = false;
         });
 
         orderNumber.addTextChangedListener(new TextWatcher() {
@@ -324,6 +319,8 @@ public class OrderEntry extends AppCompatActivity {
                 if (orderNumber.length() == 0) {
                     checkOrderBtn.setBackgroundResource(R.drawable.arrow_right);
                     selectDestinationBtn.setVisibility(View.GONE);
+                    checkOrderBtn.setEnabled(false);
+                } else {
                     checkOrderBtn.setEnabled(true);
                 }
             }
@@ -336,6 +333,7 @@ public class OrderEntry extends AppCompatActivity {
 
         checkOrderBtn.setOnClickListener(v -> {
             checkOrderBtn.setEnabled(false);
+            // initialSelection = false;
             boolean added = false;
             for (int i = 0; i < MasterOrder.getMasterOrdersList().size(); i++) {
                 if (MasterOrder.getMasterOrdersList().get(i).getSOPNumber().equals(orderNumber.getText().toString())) {
@@ -355,10 +353,14 @@ public class OrderEntry extends AppCompatActivity {
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
                 orderNumber.setText("");
-                // showSoftKeyboard(orderNumber);
+                showSoftKeyboard(orderNumber);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
-                new GetMasterOrderDetails(OrderEntry.this, orderNumber.getText().toString()).execute();
+                try {
+                    new GetMasterOrderDetails(OrderEntry.this, orderNumber.getText().toString(), false).execute();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -378,7 +380,6 @@ public class OrderEntry extends AppCompatActivity {
         adapter.notifyItemRemoved(selectedItemPosition);
 
         if (MasterOrder.getMasterOrdersList().size() == 0) {
-            // Order.addOrder(new Order("","","", "", 0, 0));
             MasterOrder.addMasterOrderToList(new MasterOrder("","","",
                     "","","","","","",
                     "","","0","0"));
@@ -456,6 +457,14 @@ public class OrderEntry extends AppCompatActivity {
     }
 
     private void setup(){
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         orderNumber = findViewById(R.id.OrderNumberBox);
         logoutBtn = findViewById(R.id.LogoutBtn);
         TextView emailStr = findViewById(R.id.EmailStr);
@@ -487,12 +496,15 @@ public class OrderEntry extends AppCompatActivity {
 
         showSoftKeyboard(orderNumber);
         emailStr.setText(Account.getCurrentAccount().getEmail());
+        System.out.println("Email: " + Account.getCurrentAccount().getEmail());
+        System.out.println("Phone: " + Account.getCurrentAccount().getPhoneNumber());
+        System.out.println("Truck name and number: " + Account.getCurrentAccount().getTruckName() + " + " + Account.getCurrentAccount().getTruckNumber());
         phoneNumberStr.setText(formatPhoneNumber(Account.getCurrentAccount().getPhoneNumber()));
         truckNumberStr.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
         addOrderBtn.setEnabled(false);
         submitBtn.setEnabled(false);
         changeLanguage(currentLanguage);
-        findViewById(R.id.cardView3).setVisibility(View.INVISIBLE);
+        // findViewById(R.id.cardView3).setVisibility(View.INVISIBLE);
     }
 
     public void rulesRegulationsSetup() {

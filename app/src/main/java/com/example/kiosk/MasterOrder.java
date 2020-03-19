@@ -22,6 +22,7 @@ public class MasterOrder {
     private static MasterOrder CURRENT_MASTER_ORDER;
     private static ArrayList<MasterOrder> masterOrdersList = new ArrayList<>();
     private static ArrayList<MasterOrder> possibleMasterOrdersList = new ArrayList<>();
+    private static ArrayList<MasterOrder> associatedMasterOrdersList = new ArrayList<>();
     private static double totalWeight = 0;
     private static double totalPalletCount = 0;
 
@@ -115,6 +116,14 @@ public class MasterOrder {
         return masterOrdersList;
     }
 
+    public static List<MasterOrder> getPossibleMasterOrdersList() {
+        return possibleMasterOrdersList;
+    }
+
+    public static List<MasterOrder> getAssociatedMasterOrdersList() {
+        return associatedMasterOrdersList;
+    }
+
     public static MasterOrder getCurrentMasterOrder() {
         return CURRENT_MASTER_ORDER;
     }
@@ -126,12 +135,16 @@ public class MasterOrder {
     }
 
     public static void removeMasterOrderFromList(int i) {
-        totalWeight += masterOrdersList.get(i).getEstimatedWeight();
-        totalPalletCount += masterOrdersList.get(i).getEstimatedPallets();
+        totalWeight -= masterOrdersList.get(i).getEstimatedWeight();
+        totalPalletCount -= masterOrdersList.get(i).getEstimatedPallets();
         masterOrdersList.remove(i);
     }
 
     public static void addPossibleMasterOrderToList(MasterOrder masterOrder) {
         possibleMasterOrdersList.add(masterOrder);
+    }
+
+    public static void addAssociatedMasterOrderToList(MasterOrder masterOrder) {
+        associatedMasterOrdersList.add(masterOrder);
     }
 }

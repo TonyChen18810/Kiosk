@@ -138,8 +138,8 @@ public class OrderSummary extends AppCompatActivity {
         totalWeightCount = findViewById(R.id.TotalWeight);
 
         ordersCount.setText(Integer.toString(MasterOrder.getMasterOrdersList().size()));
-        totalPalletsCount.setText(Integer.toString(MasterOrder.getMasterOrdersList().size()));
-        totalWeightCount.setText(Integer.toString(MasterOrder.getMasterOrdersList().size()));
+        totalPalletsCount.setText(Double.toString((int)MasterOrder.getTotalPalletCount()));
+        totalWeightCount.setText((int)MasterOrder.getTotalWeight() + " lbs");
 
         if (currentLanguage == 0) {
             confirmOrders.setText(R.string.confirm_orders_eng);

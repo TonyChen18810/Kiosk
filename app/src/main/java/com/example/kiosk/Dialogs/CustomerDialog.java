@@ -11,11 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
-import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.Webservices.GetPossibleShipTos;
 
 public class CustomerDialog extends Dialog implements android.view.View.OnClickListener {

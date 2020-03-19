@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.kiosk.Account;
-import com.example.kiosk.Dialogs.ConnectedOrders;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.States;
@@ -61,14 +60,14 @@ public class MainActivity extends AppCompatActivity {
         Account.clearAccounts();
         Account.setCurrentAccount(null);
         MasterOrder.reset();
-
+/*
         Account testAccount = new Account("bob@gmail.com","Bob","1234567890","Johnnies","23",
                 "5KVILK6","CA","02LSOPX","WY","4089197623","0","0");
         Account.setCurrentAccount(testAccount);
         ConnectedOrders dialog = new ConnectedOrders(MainActivity.this);
         dialog.setCancelable(false);
         dialog.show();
-
+*/
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -290,8 +289,8 @@ public class MainActivity extends AppCompatActivity {
                 phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                 emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                 nextBtn.setEnabled(false);
-                // Intent intent = new Intent(MainActivity.this, LoggedIn.class);
-                Intent intent = new Intent(MainActivity.this, OrderEntry.class);
+                Intent intent = new Intent(MainActivity.this, LoggedIn.class);
+                // Intent intent = new Intent(MainActivity.this, OrderEntry.class);
                 startActivity(intent);
             } else {
                 if (!expanded && !accountExists.getValue()) {

@@ -8,18 +8,13 @@ import android.view.Window;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kiosk.Helpers.RecyclerViewAssociatedAdapter;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
-import com.example.kiosk.Screens.OrderEntry;
 
 import java.util.ArrayList;
 import java.util.List;

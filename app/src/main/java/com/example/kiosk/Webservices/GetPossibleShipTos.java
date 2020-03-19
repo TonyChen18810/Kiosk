@@ -49,8 +49,8 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
         try {
             transportSE.call(soapAction, envelope);
             SoapObject response = (SoapObject) envelope.getResponse();
+            possibleDestinations = new ArrayList<>();
             if (response.getPropertyCount() > 0) {
-                possibleDestinations = new ArrayList<>();
                 for (int i = 0; i < response.getPropertyCount(); i++) {
                     String SOPNumber = ((SoapObject) (response.getProperty(i))).getProperty(0).toString();
                     String coolerLocation = ((SoapObject) (response.getProperty(i))).getProperty(1).toString();

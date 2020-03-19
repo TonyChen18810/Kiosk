@@ -49,7 +49,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/CardField"
-        android:layout_width="1400dp"
+        android:layout_width="1250dp"
         android:layout_height="wrap_content"
         android:padding="40dp"
         app:cardCornerRadius="7.5dp"
@@ -79,7 +79,7 @@
                 android:gravity="center"
                 android:text="Order\nNumber"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <View
                 android:layout_width="4dp"
@@ -99,7 +99,7 @@
                 android:gravity="center"
                 android:text="Buyer\nName"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <View
                 android:layout_width="4dp"
@@ -120,7 +120,7 @@
                 android:gravity="center"
                 android:text="Apt.Time"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <View
                 android:layout_width="4dp"
@@ -140,7 +140,7 @@
                 android:gravity="center"
                 android:text="Destination"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <View
                 android:layout_width="4dp"
@@ -160,7 +160,7 @@
                 android:gravity="center"
                 android:text="Est.\nPallets"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <View
                 android:layout_width="4dp"
@@ -180,7 +180,7 @@
                 android:gravity="center"
                 android:text="Est.\nWeight"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

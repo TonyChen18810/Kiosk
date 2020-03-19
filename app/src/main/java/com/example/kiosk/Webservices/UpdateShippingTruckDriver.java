@@ -2,10 +2,7 @@ package com.example.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.ProgressBar;
 import com.example.kiosk.Account;
-import com.example.kiosk.R;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -16,12 +13,13 @@ import java.lang.ref.WeakReference;
 public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<Activity> mWeakActivity;
-    private String email, driverName, phone, truckName, truckNumber, driversLicense,
+    private String oldEmail, email, driverName, phone, truckName, truckNumber, driversLicense,
             driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, commmunicationPreference;
 
-    public UpdateShippingTruckDriver(Activity activity, String email, String driverName, String phone, String truckName, String truckNumber, String driversLicense,
+    public UpdateShippingTruckDriver(Activity activity, String oldEmail, String email, String driverName, String phone, String truckName, String truckNumber, String driversLicense,
                                      String driversLicenseState, String trailerLicense, String trailerLicenseState, String dispatcherPhone, String languagePreference, String commmunicationPreference) {
         mWeakActivity = new WeakReference<>(activity);
+        this.oldEmail = oldEmail;
         this.email = email;
         this.driverName = driverName;
         this.phone = phone;
@@ -44,7 +42,7 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
 
         SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("inOldEmail", email);
+        request.addProperty("inOldEmail", oldEmail);
         request.addProperty("inNewEmail", email);
         request.addProperty("inDriverName", driverName);
         request.addProperty("inDriverPhone", phone);
@@ -100,8 +98,8 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
         Activity activity = mWeakActivity.get();
         if (activity != null) {
-            ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.GONE);
+            // ProgressBar progressBar = activity.findViewById(R.id.progressBar);
+            // progressBar.setVisibility(View.GONE);
         }
         // reset
         email = "";

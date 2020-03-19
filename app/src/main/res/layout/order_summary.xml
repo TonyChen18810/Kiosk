@@ -8,7 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/HeartOfTheCards"
-        android:layout_width="1400dp"
+        android:layout_width="1200dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="7.5dp"
         app:cardElevation="5dp"
@@ -25,13 +25,13 @@
             <TextView
                 android:id="@+id/OrderNumber"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="Order\nNumber"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <View
                 android:layout_width="4dp"
@@ -53,7 +53,7 @@
                 android:gravity="center"
                 android:text="Customer\nConsignee"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <View
                 android:layout_width="4dp"
@@ -70,13 +70,13 @@
             <TextView
                 android:id="@+id/AptTime"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="Apt.\nTime"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <View
                 android:layout_width="4dp"
@@ -98,7 +98,7 @@
                 android:gravity="center"
                 android:text="Destination"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <View
                 android:layout_width="4dp"
@@ -120,7 +120,7 @@
                 android:gravity="center"
                 android:text="Est.\nPallets"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <View
                 android:layout_width="4dp"
@@ -142,7 +142,7 @@
                 android:gravity="center"
                 android:text="Est.\nWeight"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

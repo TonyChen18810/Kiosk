@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.kiosk.Account;
@@ -45,6 +46,8 @@ public class CreateAccount extends AppCompatActivity {
 
     private TextView txtText, emailText, bothText, selectText;
     private View textCheckbox, emailCheckbox, bothCheckbox;
+
+    private ProgressBar progressBar;
 
     private Button selectState1, selectState2;
     private boolean initialSelection1 = false;
@@ -95,7 +98,7 @@ public class CreateAccount extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (initialSelection1) {
-                    selectState1.setText(getResources().getStringArray(R.array.states)[position]);
+                    selectState1.setText(getResources().getStringArray(R.array.states_abbreviated)[position]);
                     clicked1 = true;
                 } else {
                     initialSelection1 = true;
@@ -122,7 +125,7 @@ public class CreateAccount extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (initialSelection2) {
-                    selectState2.setText(getResources().getStringArray(R.array.states)[position]);
+                    selectState2.setText(getResources().getStringArray(R.array.states_abbreviated)[position]);
                     clicked2 = true;
                 } else {
                     initialSelection2 = true;
@@ -265,7 +268,8 @@ public class CreateAccount extends AppCompatActivity {
                 TextView userDriverName = findViewById(R.id.driverName);
                 TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
 
-                new UpdateShippingTruckDriver(CreateAccount.this, email, driverNameStr, phone, truckNameStr, truckNumberStr,
+                progressBar.setVisibility(View.VISIBLE);
+                new UpdateShippingTruckDriver(CreateAccount.this, email, email, driverNameStr, phone, truckNameStr, truckNumberStr,
                         driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, dispatcherNumberStr,"0", Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
 
                 userEmail.setText(Html.fromHtml("Email address: " + "<b>" + Account.getCurrentAccount().getEmail() + "<b>"));
@@ -273,7 +277,7 @@ public class CreateAccount extends AppCompatActivity {
                 userTruckName.setText(Html.fromHtml("Current truck name: " + "<b>" + Account.getCurrentAccount().getTruckName() + "<b>"));
                 userTruckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + Account.getCurrentAccount().getTruckNumber() + "<b>"));
                 userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + Account.getCurrentAccount().getTrailerLicense() + "<b>"));
-                userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + Account.getCurrentAccount().getTrailerLicense() + "<b>"));
+                userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + Account.getCurrentAccount().getDriverLicense() + "<b>"));
                 userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + Account.getCurrentAccount().getDriverName() + "<b>"));
                 userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + Account.getCurrentAccount().getDispatcherPhoneNumber() + "<b>"));
 
@@ -450,6 +454,8 @@ public class CreateAccount extends AppCompatActivity {
         trailerStateSpinner = findViewById(R.id.StateSpinner);
         driverStateSpinner = findViewById(R.id.StateSpinner2);
         helpText = findViewById(R.id.HelpText);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         trailerStateSpinner.setVisibility(View.INVISIBLE);
         driverStateSpinner.setVisibility(View.INVISIBLE);

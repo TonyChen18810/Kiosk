@@ -8,19 +8,19 @@
     tools:context=".Screens.MainActivity">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
         android:clipToPadding="true"
         app:cardCornerRadius="4dp"
         app:cardElevation="10dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.01">
 
         <TextView
             android:id="@+id/AppointmentText"
@@ -94,13 +94,14 @@
 
     <ImageView
         android:id="@+id/andyBoyLogo"
-        android:layout_width="1000dp"
-        android:layout_height="675dp"
-        android:layout_marginBottom="1724dp"
+        android:layout_width="900dp"
+        android:layout_height="575dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.544"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView9"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/dab_logo" />
 
     <TextView
@@ -155,7 +156,7 @@
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.767"
+        app:layout_constraintHorizontal_bias="0.775"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.324" />
