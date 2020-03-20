@@ -1,5 +1,6 @@
 package com.example.kiosk.Helpers;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerViewSummaryAdapter.MyViewHolder> {
@@ -28,6 +30,7 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
         return new MyViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         // Order order = orders.get(position);
@@ -55,9 +58,20 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
         }
         holder.buyerName.setText(buyerNameEdit);
         holder.destination.setText(masterOrder.getDestination());
-        holder.aptTime.setText(masterOrder.getAppointmentTime());
-        holder.estPallets.setText(Double.toString((int)masterOrder.getEstimatedPallets()));
-        holder.estWeight.setText(Double.toString((int)masterOrder.getEstimatedWeight()));
+        if (masterOrder.getAppointmentTime().equals("00:00:00")) {
+            holder.aptTime.setText("N/A");
+        } else {
+            holder.aptTime.setText(masterOrder.getAppointmentTime());
+        }
+
+        DecimalFormat formatter = new DecimalFormat("#,###");
+
+        if (masterOrder.getEstimatedPallets() < 1) {
+            holder.estPallets.setText("1");
+        } else {
+            holder.estPallets.setText(Integer.toString((int) Math.round(masterOrder.getEstimatedPallets())));
+        }
+        holder.estWeight.setText(formatter.format(masterOrder.getEstimatedWeight()) + " lbs");
     }
 
     @Override

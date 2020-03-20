@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -356,6 +357,11 @@ public class LoggedIn extends AppCompatActivity {
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
 
+        emailAddress.setEnabled(false);
+        phoneNumber.setEnabled(false);
+        driverLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        trailerLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+
         String commPreference = Account.getCurrentAccount().getCommunicationPreference();
         System.out.println("commPreference: " + commPreference);
 
@@ -374,7 +380,7 @@ public class LoggedIn extends AppCompatActivity {
         trailerStateSpinner.setVisibility(View.INVISIBLE);
         driverStateSpinner.setVisibility(View.INVISIBLE);
 
-        showSoftKeyboard(truckName);
+        showSoftKeyboard(driverName);
         dispatcherPhoneNumber.setOnEditorActionListener(new KeyboardListener());
 
         emailAddress.setTextColor(getResources().getColor(R.color.black));

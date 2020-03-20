@@ -209,7 +209,7 @@
     <string name="line6_eng">&#8226; All drivers are expected to be present while being loaded.</string>
     <string name="line7_eng">&#8226; All drivers are to stand in designated areas at all times.</string>
     <string name="line8_eng">&#8226; Absolutely no minors allowed on the dock. No exceptions!</string>
-    <string name="line9_eng">&#8226; No food or drinks allowed inside the cold box.</string>
+    <string name="line9_eng">&#8226; Drivers are not allowed inside the cold box or on the loading dock.</string>
     <string name="line10_eng">&#8226; Do not operate doors or dock plates.</string>
     <string name="line11_eng">&#8226; Be extremely cautious of wet, slippery floors as well as moving forklifts.</string>
     <string name="line12_eng">&#8226; Cash transactions and/or gratuities of any kind are strictly prohibited.</string>
@@ -268,7 +268,7 @@
     <string name="line6_sp">&#8226; Se espera que todos los controladores están presentes mientras se cargan.</string>
     <string name="line7_sp">&#8226; Todos los conductores deben pararse en áreas designadas en todo momento.</string>
     <string name="line8_sp">&#8226; Absolutamente no se permiten menores en el muelle. ¡Sin excepciones!</string>
-    <string name="line9_sp">&#8226; No se permiten alimentos ni bebidas dentro de la caja fría.</string>
+    <string name="line9_sp">&#8226; No se permiten conductores dentro de la cámara fría o en el muelle de carga..</string>
     <string name="line10_sp">&#8226; No opere puertas o placas de muelle.</string>
     <string name="line11_sp">&#8226; Tenga mucho cuidado con los pisos mojados y resbaladizos, así como con los montacargas en movimiento.</string>
     <string name="line12_sp">&#8226; Cash transactions and/or gratuities of any kind are strictly prohibited.</string>
@@ -331,7 +331,7 @@
     <string name="line6_fr">&#8226; Tous les pilotes devraient être présents pendant le chargement.</string>
     <string name="line7_fr">&#8226; Tous les conducteurs doivent se tenir dans les zones désignées en tout temps.</string>
     <string name="line8_fr">&#8226; Absolument aucun mineur autorisé sur le quai. Aucune exception!</string>
-    <string name="line9_fr">&#8226; Aucune nourriture ou boisson autorisée à l\'intérieur de la glacière.</string>
+    <string name="line9_fr">&#8226; Les conducteurs ne sont pas autorisés à l\'intérieur de la glacière ou sur le quai de chargement.</string>
     <string name="line10_fr">&#8226; Ne faites pas fonctionner les portes ou les plaques de quai.</string>
     <string name="line11_fr">&#8226; Soyez extrêmement prudent avec les sols humides et glissants ainsi qu\'avec les chariots élévateurs mobiles.</string>
     <string name="line12_fr">&#8226; Les transactions en espèces et / ou les gratifications de toute nature sont strictement interdites.</string>

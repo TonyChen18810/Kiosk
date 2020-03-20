@@ -188,7 +188,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/OrdersView"
         android:layout_width="wrap_content"
-        android:layout_height="1271dp"
+        android:layout_height="1100dp"
         android:clipToPadding="false"
         android:fadeScrollbars="false"
         android:orientation="vertical"
@@ -212,9 +212,10 @@
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/OrdersView"
-        app:layout_constraintVertical_bias="0.017">
+        app:layout_constraintVertical_bias="0.117">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -307,10 +308,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/mybutton2"
         android:foreground="?android:attr/selectableItemBackground"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
         android:paddingLeft="40dp"
+        android:paddingTop="20dp"
         android:paddingRight="40dp"
+        android:paddingBottom="20dp"
         android:text="@string/confirm_eng"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/white"
@@ -319,7 +320,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView7"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintVertical_bias="0.305" />
 
     <Button
         android:id="@+id/LogoutBtn"
@@ -327,10 +328,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/mybutton2"
         android:foreground="?android:attr/selectableItemBackground"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
         android:paddingLeft="40dp"
+        android:paddingTop="20dp"
         android:paddingRight="40dp"
+        android:paddingBottom="20dp"
         android:text="Logout"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/white"

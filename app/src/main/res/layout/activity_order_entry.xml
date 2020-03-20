@@ -69,10 +69,10 @@
         android:textSize="56sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.967"
+        app:layout_constraintHorizontal_bias="0.986"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.104" />
+        app:layout_constraintVertical_bias="0.086" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/OrdersView"
@@ -232,19 +232,19 @@
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
         android:paddingLeft="40dp"
+        android:paddingTop="20dp"
         android:paddingRight="40dp"
+        android:paddingBottom="20dp"
         android:text="Add Order"
         android:textColor="@color/white"
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.252"
+        app:layout_constraintEnd_toStartOf="@+id/SubmitBtn2"
+        app:layout_constraintHorizontal_bias="0.714"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/OrderInfo"
-        app:layout_constraintVertical_bias="0.041" />
+        app:layout_constraintVertical_bias="0.039" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
@@ -252,12 +252,12 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="7.5dp"
         app:cardElevation="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/LogoutBtn"
-        app:layout_constraintHorizontal_bias="0.416"
+        app:layout_constraintBottom_toTopOf="@+id/OrderInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.11">
+        app:layout_constraintTop_toBottomOf="@+id/LogoutBtn"
+        app:layout_constraintVertical_bias="0.741">
 
         <LinearLayout
             android:layout_width="wrap_content"

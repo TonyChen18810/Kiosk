@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="1300dp"
-    android:layout_height="1700dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="1100dp"
+    android:layout_height="1600dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView6"
-        android:layout_width="wrap_content"
+        android:layout_width="1000dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
         android:clipToPadding="true"
@@ -16,7 +15,6 @@
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -54,7 +52,7 @@
         app:layout_constraintVertical_bias="0.076" />
 
     <Button
-        android:id="@+id/btn_add"
+        android:id="@+id/addBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/mybutton2"
@@ -69,14 +67,14 @@
         android:textColor="@color/white"
         android:textSize="80sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintEnd_toStartOf="@+id/cancelBtn"
+        app:layout_constraintHorizontal_bias="0.447"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AssociatedOrdersView"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.306" />
 
     <Button
-        android:id="@+id/btn_cancel"
+        android:id="@+id/cancelBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/mybutton2"
@@ -92,9 +90,9 @@
         android:textSize="80sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintHorizontal_bias="0.823"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AssociatedOrdersView"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.303" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,11 +11,18 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewSummaryAdapter;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
+import com.example.kiosk.Webservices.GetMasterOrderDetails;
+import com.example.kiosk.Webservices.UpdateMasterOrder;
+
+import java.text.DecimalFormat;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderSummary extends AppCompatActivity {
@@ -26,7 +33,7 @@ public class OrderSummary extends AppCompatActivity {
 
     private int currentLanguage = Language.getCurrentLanguage();
 
-    private final int CONFIRMATION_NUMBER = ThreadLocalRandom.current().nextInt(1000, 9999 + 1);
+    private final String CONFIRMATION_NUMBER = GetMasterOrderDetails.getMasterNumber();
 
     private Button logoutBtn;
 
@@ -60,7 +67,7 @@ public class OrderSummary extends AppCompatActivity {
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
 
         TextView confirmationNum = findViewById(R.id.confirm);
-        confirmationNum.setText(String.valueOf(CONFIRMATION_NUMBER));
+        confirmationNum.setText(CONFIRMATION_NUMBER);
 
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(OrderSummary.this, v);
@@ -68,6 +75,14 @@ public class OrderSummary extends AppCompatActivity {
         });
 
         findViewById(R.id.ConfirmBtn).setOnClickListener(v -> {
+            List<MasterOrder> orderList = MasterOrder.getMasterOrdersList();
+            for (int i = 0; i < orderList.size(); i++) {
+                if (i == orderList.size()-1) {
+                    new UpdateMasterOrder(orderList.get(i).getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), true).execute();
+                } else {
+                    new UpdateMasterOrder(orderList.get(i).getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), false).execute();
+                }
+            }
             setContentView(R.layout.final_screen);
 
             final Button logoutBtn = findViewById(R.id.LogoutBtn);
@@ -138,8 +153,13 @@ public class OrderSummary extends AppCompatActivity {
         totalWeightCount = findViewById(R.id.TotalWeight);
 
         ordersCount.setText(Integer.toString(MasterOrder.getMasterOrdersList().size()));
-        totalPalletsCount.setText(Double.toString((int)MasterOrder.getTotalPalletCount()));
-        totalWeightCount.setText((int)MasterOrder.getTotalWeight() + " lbs");
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        if (MasterOrder.getTotalPalletCount() < 1) {
+            totalPalletsCount.setText("1");
+        } else {
+            totalPalletsCount.setText(formatter.format(MasterOrder.getTotalPalletCount()));
+        }
+        totalWeightCount.setText(formatter.format(MasterOrder.getTotalWeight()) + " lbs");
 
         if (currentLanguage == 0) {
             confirmOrders.setText(R.string.confirm_orders_eng);

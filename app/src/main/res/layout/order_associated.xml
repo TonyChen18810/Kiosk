@@ -7,8 +7,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/HeartOfTheCards"
-        android:layout_width="1200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
         app:cardCornerRadius="7.5dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
@@ -38,9 +38,9 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="20dp"
                 android:background="#C97A7171"
                 android:gravity="center" />
 
@@ -49,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="15dp"
                 android:gravity="center"
                 android:text="Customer\nConsignee"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -60,9 +59,9 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="20dp"
                 android:background="#C97A7171"
                 android:gravity="center" />
 

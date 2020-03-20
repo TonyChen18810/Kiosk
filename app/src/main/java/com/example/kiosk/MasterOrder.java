@@ -1,5 +1,7 @@
 package com.example.kiosk;
 
+import com.example.kiosk.Webservices.GetMasterOrderDetails;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,10 @@ public class MasterOrder {
 
     public String getMasterNumber() {
         return masterNumber;
+    }
+
+    public void setMasterNumber(String masterNumber) {
+        this.masterNumber = masterNumber;
     }
 
     public String getSOPNumber() {
@@ -109,7 +115,9 @@ public class MasterOrder {
         totalWeight = 0;
         totalPalletCount = 0;
         possibleMasterOrdersList.clear();
+        associatedMasterOrdersList.clear();
         masterOrdersList.clear();
+        GetMasterOrderDetails.setNewMasterNumber(null);
     }
 
     public static List<MasterOrder> getMasterOrdersList() {

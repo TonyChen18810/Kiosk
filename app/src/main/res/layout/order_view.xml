@@ -38,8 +38,8 @@
                 android:layout_height="4dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
                 android:background="#C97A7171" />
 
             <TextView
@@ -59,8 +59,8 @@
                 android:layout_height="4dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
                 android:background="#C97A7171" />
 
             <TextView
@@ -80,8 +80,8 @@
                 android:layout_height="4dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
                 android:background="#C97A7171" />
 
             <TextView
@@ -101,8 +101,8 @@
                 android:layout_height="4dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
                 android:background="#C97A7171" />
 
             <Button

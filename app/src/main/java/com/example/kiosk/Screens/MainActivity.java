@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             if (!hasFocus) {
                 if (validEmail()) {
                     progressBar.setVisibility(View.VISIBLE);
-                    new GetShippingTruckDriver(MainActivity.this, emailAddressBox.getText().toString()).execute();
+                    new GetShippingTruckDriver(MainActivity.this, emailAddressBox.getText().toString().toLowerCase()).execute();
                 }
             }
         });

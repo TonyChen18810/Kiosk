@@ -82,6 +82,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
             case R.id.btn_no:
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setText("");
+                orderNumber.setEnabled(true);
                 orderNumber.setFocusable(true);
                 orderNumber.requestFocus();
                 dismiss();

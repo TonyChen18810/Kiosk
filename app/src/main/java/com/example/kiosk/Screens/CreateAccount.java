@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,6 +28,7 @@ import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
+
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class CreateAccount extends AppCompatActivity {
@@ -43,6 +45,8 @@ public class CreateAccount extends AppCompatActivity {
     private Spinner trailerStateSpinner, driverStateSpinner;
     private ImageButton truckNameHelp, truckNumberHelp, trailerLicenseHelp,
             driverLicenseHelp, driverNameHelp, dispatcherPhoneNumberHelp;
+
+    String truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
 
     private TextView txtText, emailText, bothText, selectText;
     private View textCheckbox, emailCheckbox, bothCheckbox;
@@ -86,9 +90,6 @@ public class CreateAccount extends AppCompatActivity {
             email = (String) savedInstanceState.getSerializable("Email Address");
             phone = (String) savedInstanceState.getSerializable("Phone Number");
         }
-
-        ActivityCompat.requestPermissions(CreateAccount.this, new String[]{Manifest.permission.SEND_SMS}, 0);
-
         setup();
 
         final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
@@ -238,7 +239,6 @@ public class CreateAccount extends AppCompatActivity {
                 if (PREFERRED_COMMUNICATION == -1) {
                 selectText.setVisibility(View.VISIBLE);
             } else {
-                String truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
                 truckNameStr = truckName.getText().toString();
                 truckNumberStr = truckNumber.getText().toString();
                 trailerLicenseStr = trailerLicense.getText().toString();
@@ -269,17 +269,18 @@ public class CreateAccount extends AppCompatActivity {
                 TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
 
                 progressBar.setVisibility(View.VISIBLE);
+                // pass a weak reference?
                 new UpdateShippingTruckDriver(CreateAccount.this, email, email, driverNameStr, phone, truckNameStr, truckNumberStr,
                         driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, dispatcherNumberStr,"0", Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
 
-                userEmail.setText(Html.fromHtml("Email address: " + "<b>" + Account.getCurrentAccount().getEmail() + "<b>"));
-                userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + Account.getCurrentAccount().getPhoneNumber() + "<b>"));
-                userTruckName.setText(Html.fromHtml("Current truck name: " + "<b>" + Account.getCurrentAccount().getTruckName() + "<b>"));
-                userTruckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + Account.getCurrentAccount().getTruckNumber() + "<b>"));
-                userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + Account.getCurrentAccount().getTrailerLicense() + "<b>"));
-                userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + Account.getCurrentAccount().getDriverLicense() + "<b>"));
-                userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + Account.getCurrentAccount().getDriverName() + "<b>"));
-                userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + Account.getCurrentAccount().getDispatcherPhoneNumber() + "<b>"));
+                userEmail.setText(Html.fromHtml("Email address: " + "<b>" + email + "<b>"));
+                userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + phone + "<b>"));
+                userTruckName.setText(Html.fromHtml("Current truck name: " + "<b>" + truckNameStr + "<b>"));
+                userTruckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + truckNumberStr + "<b>"));
+                userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + trailerLicenseStr + "<b>"));
+                userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + driverLicenseStr + "<b>"));
+                userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + driverNameStr + "<b>"));
+                userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + dispatcherNumberStr + "<b>"));
 
                 findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                     Account.clearAccounts();
@@ -460,6 +461,9 @@ public class CreateAccount extends AppCompatActivity {
         trailerStateSpinner.setVisibility(View.INVISIBLE);
         driverStateSpinner.setVisibility(View.INVISIBLE);
 
+        driverLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        trailerLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+
         txtText = findViewById(R.id.Text);
         emailText = findViewById(R.id.Email);
         bothText = findViewById(R.id.Both);
@@ -474,7 +478,7 @@ public class CreateAccount extends AppCompatActivity {
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
 
-        showSoftKeyboard(truckName);
+        showSoftKeyboard(driverName);
         dispatcherPhoneNumber.setOnEditorActionListener(new KeyboardListener());
 
         emailAddress.setText(email);

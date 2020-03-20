@@ -1,9 +1,12 @@
 package com.example.kiosk.Helpers;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -13,17 +16,21 @@ import com.example.kiosk.Dialogs.ConnectedOrders;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<RecyclerViewAssociatedAdapter.MyViewHolder> {
 
     private List<MasterOrder> associatedOrders;
+    private Button addBtn;
+
     private static List<MasterOrder> selectedOrders;
 
-    public RecyclerViewAssociatedAdapter(List<MasterOrder> associatedOrders) {
+    public RecyclerViewAssociatedAdapter(List<MasterOrder> associatedOrders, Button addBtn) {
         this.associatedOrders = associatedOrders;
         selectedOrders = new ArrayList<>();
+        this.addBtn = addBtn;
     }
 
     public static List<MasterOrder> getSelectedOrders() {
@@ -81,9 +88,11 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                     this.layout.setBackgroundColor(Color.parseColor("#1E04B486"));
                     selectedOrders.remove(associatedOrders.get(getAdapterPosition()));
                     if (selectedOrders.size() == 0) {
-                        ConnectedOrders.buttonListener.setValue(false);
+                        addBtn.setEnabled(false);
+                        // ConnectedOrders.buttonListener.setValue(false);
                     } else {
-                        ConnectedOrders.buttonListener.setValue(true);
+                        // ConnectedOrders.buttonListener.setValue(true);
+                        addBtn.setEnabled(true);
                     }
                     System.out.println("SELECTION REMOVED: ");
                     for (int i = 0; i < selectedOrders.size(); i++) {
@@ -94,7 +103,8 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                     this.isSelected = true;
                     this.layout.setBackgroundColor(Color.parseColor("#04B486"));
                     selectedOrders.add(associatedOrders.get(getAdapterPosition()));
-                    ConnectedOrders.buttonListener.setValue(true);
+                    addBtn.setEnabled(true);
+                    // ConnectedOrders.buttonListener.setValue(true);
                     System.out.println("SELECTION ADDED: ");
                     for (int i = 0; i < selectedOrders.size(); i++) {
                         System.out.println(selectedOrders.get(i));
