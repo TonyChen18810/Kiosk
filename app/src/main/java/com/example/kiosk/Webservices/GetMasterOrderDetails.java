@@ -139,7 +139,6 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
             progressBar.setVisibility(View.GONE);
         }
         if (propCount > -1) {
-            /*
             if (MasterOrder.getCurrentMasterOrder().getCheckedIn().equals("true")) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 0) {
@@ -151,9 +150,7 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, activity);
                 dialog.show();
-            } else
-                */
-            if (MasterOrder.getCurrentMasterOrder().getAppointment().equals("true")) {
+            } else if (MasterOrder.getCurrentMasterOrder().getAppointment().equals("true")) {
                 if (MasterOrder.getCurrentMasterOrder().getAppointmentTime().equals("00:00:00")) {
                     OrderEntry.validOrderNumber.setValue(2);
                 } else {

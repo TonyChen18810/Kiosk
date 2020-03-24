@@ -46,8 +46,10 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         Button yes = findViewById(R.id.btn_yes);
         Button no = findViewById(R.id.btn_no);
         TextView customerName = findViewById(R.id.CustomerName);
+        TextView congsigneeName = findViewById(R.id.ConsigneeName);
         TextView correctCustomer = findViewById(R.id.CorrectCustomer);
         customerName.setText(customerNameStr);
+        congsigneeName.setText(MasterOrder.getCurrentMasterOrder().getConsignee());
         if (Language.getCurrentLanguage() == 0) {
             correctCustomer.setText(R.string.correct_customer_eng);
             destination.setText(R.string.select_destination_eng);

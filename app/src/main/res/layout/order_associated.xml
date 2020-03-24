@@ -7,7 +7,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/HeartOfTheCards"
-        android:layout_width="wrap_content"
+        android:layout_width="1100dp"
         android:layout_height="250dp"
         app:cardCornerRadius="7.5dp"
         app:cardElevation="5dp"

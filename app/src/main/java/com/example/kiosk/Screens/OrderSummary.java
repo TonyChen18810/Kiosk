@@ -11,7 +11,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.Language;
@@ -20,10 +19,8 @@ import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetMasterOrderDetails;
 import com.example.kiosk.Webservices.UpdateMasterOrder;
-
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderSummary extends AppCompatActivity {
 
@@ -87,6 +84,7 @@ public class OrderSummary extends AppCompatActivity {
 
             final Button logoutBtn = findViewById(R.id.LogoutBtn);
             final TextView textView = findViewById(R.id.textView);
+            textView.setVisibility(View.INVISIBLE);
 
             timer = new CountDownTimer(60000, 1000){
                 public void onTick(long millisUntilFinished){

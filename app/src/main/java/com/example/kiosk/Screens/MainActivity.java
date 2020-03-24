@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -23,17 +26,20 @@ import android.widget.TextView;
 import com.example.kiosk.Account;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.States;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetShippingTruckDriver;
-
 import java.util.Collections;
 import java.util.List;
+
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 import static java.util.Arrays.asList;
 
 public class MainActivity extends AppCompatActivity {
+
+    public String version;
 
     private EditText emailAddressBox;
     private EditText phoneNumberBox;
@@ -60,14 +66,7 @@ public class MainActivity extends AppCompatActivity {
         Account.clearAccounts();
         Account.setCurrentAccount(null);
         MasterOrder.reset();
-/*
-        Account testAccount = new Account("bob@gmail.com","Bob","1234567890","Johnnies","23",
-                "5KVILK6","CA","02LSOPX","WY","4089197623","0","0");
-        Account.setCurrentAccount(testAccount);
-        ConnectedOrders dialog = new ConnectedOrders(MainActivity.this);
-        dialog.setCancelable(false);
-        dialog.show();
-*/
+
         View decorView = getWindow().getDecorView();
 
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -83,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
         accountExists.observe(MainActivity.this, accountExists -> {
             if (!accountExists) {
+                confirmEmailAddress.requestFocus();
                 newAccountExpand();
+                confirmEmailAddress.requestFocus();
             } else {
                 if (expanded) {
                     animation(phoneNumberBox, "translationY", -10f);
@@ -128,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
                 if (validEmail()) {
                     progressBar.setVisibility(View.VISIBLE);
                     new GetShippingTruckDriver(MainActivity.this, emailAddressBox.getText().toString().toLowerCase()).execute();
+                } else {
+                    setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
                 }
             }
         });
@@ -160,6 +163,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        phoneNumberBox.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        confirmPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
         phoneNumberBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -168,13 +174,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (doesPhoneMatch() && validNumber()) {
-                    setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), asList(unmatchingPhone, noPhoneNumberWarning));
-                } else if (count == 10) {
-                    if (phoneNumberBox.getText().toString().equals(Account.getCurrentAccount().getPhoneNumber())) {
-                        setStatus(1, asList(phoneNumberBox, emailAddressBox), Collections.singletonList(noPhoneNumberWarning));
-                    } else {
-                        setStatus(0, asList(phoneNumberBox, emailAddressBox), Collections.singletonList(noPhoneNumberWarning));
+                if (Account.getCurrentAccount() != null) {
+                    if (doesPhoneMatch() && validNumber()) {
+                        setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), asList(unmatchingPhone, noPhoneNumberWarning));
+                    } else if (count == 10) {
+                        if (PhoneNumberFormat.extract(phoneNumberBox.getText().toString()).equals(Account.getCurrentAccount().getPhoneNumber())) {
+                            setStatus(1, asList(phoneNumberBox, emailAddressBox), Collections.singletonList(noPhoneNumberWarning));
+                        } else {
+                            setStatus(0, asList(phoneNumberBox, emailAddressBox), Collections.singletonList(noPhoneNumberWarning));
+                        }
                     }
                 }
             }
@@ -228,8 +236,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (confirmPhoneNumber.getText().toString().equals(phoneNumberBox.getText().toString())) {
+                if (PhoneNumberFormat.extract(confirmPhoneNumber.getText().toString()).equals(PhoneNumberFormat.extract(phoneNumberBox.getText().toString()))
+                        && PhoneNumberFormat.extract(phoneNumberBox.getText().toString()).length() == 10) {
                     setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(unmatchingPhone));
+                } else if (PhoneNumberFormat.extract(confirmPhoneNumber.getText().toString()).length() > 10) {
+                    setStatus(0, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(unmatchingPhone));
                 }
             }
 
@@ -276,42 +287,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         nextBtn.setOnClickListener(v -> {
-            if (validNumber() && Account.getCurrentAccount().getPhoneNumber().equals(phoneNumberBox.getText().toString()) && !expanded) {
-                if (Language.getCurrentLanguage() == 0) {
-                    englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                } else if (Language.getCurrentLanguage() == 1) {
-                    spanishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                } else if (Language.getCurrentLanguage() == 2) {
-                    frenchCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                }
-                noEmailWarning.setVisibility(View.INVISIBLE);
-                noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-                phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
-                nextBtn.setEnabled(false);
-                Intent intent = new Intent(MainActivity.this, LoggedIn.class);
-                // Intent intent = new Intent(MainActivity.this, OrderEntry.class);
-                startActivity(intent);
-            } else {
-                if (!expanded && !accountExists.getValue()) {
-                    setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
-                }
-                if (!expanded && !validNumber() || !Account.getCurrentAccount().getPhoneNumber().equals(phoneNumberBox.getText().toString())) {
-                    setStatus(0, Collections.singletonList(phoneNumberBox), Collections.singletonList(noPhoneNumberWarning));
-                }
-                if (expanded && !validEmail()) {
-                    setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
-                }
-                if (expanded && !validNumber()) {
-                    setStatus(0, Collections.singletonList(phoneNumberBox), Collections.singletonList(phoneNumberBox));
-                }
-                if (expanded && !doesEmailMatch()) {
-                    setStatus(0, asList(emailAddressBox, confirmEmailAddress), Collections.singletonList(unmatchingEmail));
-                }
-                if (expanded && !doesPhoneMatch()) {
-                    setStatus(0, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(unmatchingPhone));
-                }
-                if (validEmail() && validNumber() && doesEmailMatch() && doesPhoneMatch()) {
+            // System.out.println(PhoneNumberFormat.extract(phoneNumberBox.getText().toString()));
+            if (Account.getCurrentAccount() != null) {
+                if (validNumber() && Account.getCurrentAccount().getPhoneNumber().equals(PhoneNumberFormat.extract(phoneNumberBox.getText().toString())) && !expanded) {
                     if (Language.getCurrentLanguage() == 0) {
                         englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
                     } else if (Language.getCurrentLanguage() == 1) {
@@ -319,12 +297,48 @@ public class MainActivity extends AppCompatActivity {
                     } else if (Language.getCurrentLanguage() == 2) {
                         frenchCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
                     }
+                    noEmailWarning.setVisibility(View.INVISIBLE);
+                    noPhoneNumberWarning.setVisibility(View.INVISIBLE);
+                    phoneNumberBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+                    emailAddressBox.getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
                     nextBtn.setEnabled(false);
-                    setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), asList(noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone));
-                    Intent createAccountIntent = new Intent(MainActivity.this, CreateAccount.class);
-                    createAccountIntent.putExtra("Email Address", emailAddressBox.getText().toString());
-                    createAccountIntent.putExtra("Phone Number", phoneNumberBox.getText().toString());
-                    startActivity(createAccountIntent);
+                    Intent intent = new Intent(MainActivity.this, LoggedIn.class);
+                    // Intent intent = new Intent(MainActivity.this, OrderEntry.class);
+                    startActivity(intent);
+                } else {
+                    if (!expanded && !accountExists.getValue()) {
+                        setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
+                    }
+                    if (!expanded && !validNumber() || !Account.getCurrentAccount().getPhoneNumber().equals(PhoneNumberFormat.extract(phoneNumberBox.getText().toString()))) {
+                        setStatus(0, Collections.singletonList(phoneNumberBox), Collections.singletonList(noPhoneNumberWarning));
+                    }
+                    if (expanded && !validEmail()) {
+                        setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
+                    }
+                    if (expanded && !validNumber()) {
+                        setStatus(0, Collections.singletonList(phoneNumberBox), Collections.singletonList(phoneNumberBox));
+                    }
+                    if (expanded && !doesEmailMatch()) {
+                        setStatus(0, asList(emailAddressBox, confirmEmailAddress), Collections.singletonList(unmatchingEmail));
+                    }
+                    if (expanded && !doesPhoneMatch()) {
+                        setStatus(0, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(unmatchingPhone));
+                    }
+                    if (validEmail() && validNumber() && doesEmailMatch() && doesPhoneMatch()) {
+                        if (Language.getCurrentLanguage() == 0) {
+                            englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+                        } else if (Language.getCurrentLanguage() == 1) {
+                            spanishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+                        } else if (Language.getCurrentLanguage() == 2) {
+                            frenchCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+                        }
+                        nextBtn.setEnabled(false);
+                        setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), asList(noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone));
+                        Intent createAccountIntent = new Intent(MainActivity.this, CreateAccount.class);
+                        createAccountIntent.putExtra("Email Address", emailAddressBox.getText().toString());
+                        createAccountIntent.putExtra("Phone Number", PhoneNumberFormat.extract(phoneNumberBox.getText().toString()));
+                        startActivity(createAccountIntent);
+                    }
                 }
             }
         });
@@ -377,8 +391,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void newAccountExpand() {
-        // System.out.println("validEmail(): " + validEmail());
-        // System.out.println(Account.getCurrentAccount().getEmail());
+        confirmEmailAddress.requestFocus();
         if (!validEmail() && !emailAddressBox.getText().toString().equals("")) {
             setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
         } else if (!emailAddressBox.getText().toString().equals("")){
@@ -400,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean doesPhoneMatch() {
-        return phoneNumberBox.getText().toString().equals(confirmPhoneNumber.getText().toString());
+        return PhoneNumberFormat.extract(phoneNumberBox.getText().toString()).equals(PhoneNumberFormat.extract(confirmPhoneNumber.getText().toString()));
     }
 
     private boolean validEmail() {
@@ -417,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean validNumber() {
-        String number = phoneNumberBox.getText().toString();
+        String number = PhoneNumberFormat.extract(phoneNumberBox.getText().toString());
         return (number.length() == 10);
     }
 
@@ -432,6 +445,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setup() {
+        try {
+            PackageInfo pInfo = MainActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        TextView versionText = findViewById(R.id.VersionText);
+        versionText.setText("Version: " + version);
         emailAddressBox = findViewById(R.id.EmailAddressBox);
         phoneNumberBox = findViewById(R.id.PhoneNumberBox);
         confirmEmailAddress = findViewById(R.id.ConfirmEmailAddress);
@@ -454,15 +475,7 @@ public class MainActivity extends AppCompatActivity {
         frenchCheckbox.setPressed(false);
         englishCheckbox.setPressed(true);
         States.setSates(MainActivity.this);
-        // englishCheckbox.performClick();
-/*
-        noEmailWarning.setVisibility(View.INVISIBLE);
-        noPhoneNumberWarning.setVisibility(View.INVISIBLE);
-        unmatchingEmail.setVisibility(View.INVISIBLE);
-        unmatchingPhone.setVisibility(View.INVISIBLE);
-        confirmEmailAddress.setVisibility(View.INVISIBLE);
-        confirmPhoneNumber.setVisibility(View.INVISIBLE);
-*/
+
         setStatus(1, Collections.emptyList(), asList(noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone, confirmEmailAddress, confirmPhoneNumber));
 
         showSoftKeyboard(emailAddressBox);

@@ -1,16 +1,18 @@
 package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Html;
 import android.text.InputFilter;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,9 +27,13 @@ import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -36,6 +42,8 @@ public class CreateAccount extends AppCompatActivity {
     private String email, phone;
     private Button logoutBtn, nextBtn;
     private TextView createAccount, verifyText, preferText, helpText;
+    private EditText emailAddress;
+    private EditText phoneNumber;
     private EditText truckName;
     private EditText truckNumber;
     private EditText trailerLicense;
@@ -46,7 +54,7 @@ public class CreateAccount extends AppCompatActivity {
     private ImageButton truckNameHelp, truckNumberHelp, trailerLicenseHelp,
             driverLicenseHelp, driverNameHelp, dispatcherPhoneNumberHelp;
 
-    String truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
+    String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
 
     private TextView txtText, emailText, bothText, selectText;
     private View textCheckbox, emailCheckbox, bothCheckbox;
@@ -100,6 +108,7 @@ public class CreateAccount extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (initialSelection1) {
                     selectState1.setText(getResources().getStringArray(R.array.states_abbreviated)[position]);
+                    selectState1.clearAnimation();
                     clicked1 = true;
                 } else {
                     initialSelection1 = true;
@@ -127,6 +136,7 @@ public class CreateAccount extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (initialSelection2) {
                     selectState2.setText(getResources().getStringArray(R.array.states_abbreviated)[position]);
+                    selectState2.clearAnimation();
                     clicked2 = true;
                 } else {
                     initialSelection2 = true;
@@ -224,6 +234,9 @@ public class CreateAccount extends AppCompatActivity {
             dialog.show();
         });
 
+        phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        dispatcherPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(CreateAccount.this, v);
             dialog.show();
@@ -232,13 +245,36 @@ public class CreateAccount extends AppCompatActivity {
         });
 
         nextBtn.setOnClickListener(v -> {
+            ArrayList<EditText> fields = new ArrayList<>();
+            fields.add(truckName);
+            fields.add(truckNumber);
+            fields.add(trailerLicense);
+            fields.add(driverLicense);
+            fields.add(driverName);
+            fields.add(dispatcherPhoneNumber);
+            List<EditText> errorFields = new ArrayList<>();
             if (truckName.length() == 0 || truckNumber.length() == 0 || trailerLicense.length() == 0 || driverLicense.length() == 0 || driverName.length() == 0 || dispatcherPhoneNumber.length() == 0 || !clicked1 || !clicked2) {
-                // alert dialog - empty fields
-            } else
-
+                for (int i = 0; i < fields.size(); i++) {
+                    if (fields.get(i).length() == 0) {
+                        errorFields.add(fields.get(i));
+                    }
+                }
+                setStatus(0, errorFields);
+                if (!clicked1) {
+                    selectState1.startAnimation(AnimationUtils.loadAnimation(CreateAccount.this, R.anim.fade_error));
+                }
+                if (!clicked2) {
+                    selectState2.startAnimation(AnimationUtils.loadAnimation(CreateAccount.this, R.anim.fade_error));
+                }
                 if (PREFERRED_COMMUNICATION == -1) {
-                selectText.setVisibility(View.VISIBLE);
+                    selectText.setVisibility(View.VISIBLE);
+                }
             } else {
+                fields.clear();
+                errorFields.clear();
+                setStatus(1, errorFields);
+                emailStr = emailAddress.getText().toString();
+                phoneStr = phoneNumber.getText().toString();
                 truckNameStr = truckName.getText().toString();
                 truckNumberStr = truckNumber.getText().toString();
                 trailerLicenseStr = trailerLicense.getText().toString();
@@ -270,8 +306,8 @@ public class CreateAccount extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
                 // pass a weak reference?
-                new UpdateShippingTruckDriver(CreateAccount.this, email, email, driverNameStr, phone, truckNameStr, truckNumberStr,
-                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, dispatcherNumberStr,"0", Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
+                new UpdateShippingTruckDriver(CreateAccount.this, emailStr, emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
+                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr),"0", Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
 
                 userEmail.setText(Html.fromHtml("Email address: " + "<b>" + email + "<b>"));
                 userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + phone + "<b>"));
@@ -280,7 +316,7 @@ public class CreateAccount extends AppCompatActivity {
                 userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + trailerLicenseStr + "<b>"));
                 userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + driverLicenseStr + "<b>"));
                 userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + driverNameStr + "<b>"));
-                userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>" + dispatcherNumberStr + "<b>"));
+                userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>\n" + dispatcherNumberStr + "<b>"));
 
                 findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                     Account.clearAccounts();
@@ -346,6 +382,18 @@ public class CreateAccount extends AppCompatActivity {
             PREFERRED_COMMUNICATION = 1;
         } else if (checkBox[checkBox.length-1] == bothCheckbox) {
             PREFERRED_COMMUNICATION = 2;
+        }
+    }
+
+    private void setStatus(int status, List<EditText> editTexts) {
+        for (int i = 0; i < editTexts.size(); i++) {
+            if (status == 1) {
+                editTexts.get(i).getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+            } else if (status == 0){
+                editTexts.get(i).getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+            } else if (status == -1){
+                editTexts.get(i).getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+            }
         }
     }
 
@@ -437,8 +485,8 @@ public class CreateAccount extends AppCompatActivity {
         logoutBtn = findViewById(R.id.LogoutBtn);
         nextBtn = findViewById(R.id.NextBtn);
         createAccount = findViewById(R.id.CreateAccountText);
-        EditText emailAddress = findViewById(R.id.EmailAddressBox);
-        EditText phoneNumber = findViewById(R.id.PhoneNumberBox);
+        emailAddress = findViewById(R.id.EmailAddressBox);
+        phoneNumber = findViewById(R.id.PhoneNumberBox);
         truckName = findViewById(R.id.TruckNameBox);
         truckNumber = findViewById(R.id.TruckNumberBox);
         trailerLicense = findViewById(R.id.TrailerLicenseBox);
@@ -482,7 +530,7 @@ public class CreateAccount extends AppCompatActivity {
         dispatcherPhoneNumber.setOnEditorActionListener(new KeyboardListener());
 
         emailAddress.setText(email);
-        phoneNumber.setText(phone);
+        phoneNumber.setText(PhoneNumberFormat.formatPhoneNumber(phone));
         emailAddress.setTextColor(getResources().getColor(R.color.black));
         phoneNumber.setTextColor(getResources().getColor(R.color.black));
 

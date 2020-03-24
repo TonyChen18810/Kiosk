@@ -95,6 +95,15 @@ public class MasterOrder {
         return appointmentTime;
     }
 
+    public static MasterOrder getOrderByOrderNumber(String SOPNumber) {
+        for (MasterOrder order : masterOrdersList) {
+            if (order.SOPNumber.equals(SOPNumber)) {
+                return order;
+            }
+        }
+        return null;
+    }
+
     public double getEstimatedWeight() {
         return Double.parseDouble(estimatedWeight);
     }
@@ -118,6 +127,10 @@ public class MasterOrder {
         associatedMasterOrdersList.clear();
         masterOrdersList.clear();
         GetMasterOrderDetails.setNewMasterNumber(null);
+    }
+
+    public static void clearAssociatedOrderList() {
+        associatedMasterOrdersList.clear();
     }
 
     public static List<MasterOrder> getMasterOrdersList() {

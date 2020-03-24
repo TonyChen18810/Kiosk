@@ -48,14 +48,6 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         try {
             transportSE.call(soapAction, envelope);
             SoapObject response = (SoapObject) envelope.getResponse();
-            /*
-            for (int i = 0; i < response.getPropertyCount(); i++) {
-                System.out.println(response.getProperty(i));
-            }
-            for (int i = 0; i < response.getPropertyCount(); i++) {
-                ((SoapObject) (response.getProperty(i))).getProperty(i).toString();
-            }
-            */
             if (response.getPropertyCount() > 0) {
                 // really don't need all this, just make the object?
                 email = ((SoapObject) (response.getProperty(0))).getProperty(0).toString();
@@ -81,6 +73,9 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
 
         } catch (Exception e) {
             e.printStackTrace();
+            Account account = new Account(null, null, null, null, null, null,
+                    null, null, null, null, null, null);
+            Account.setCurrentAccount(account);
         }
         return null;
     }

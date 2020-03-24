@@ -62,10 +62,12 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                 adapter.notifyItemInserted(adapter.getItemCount() - 1);
                 recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
                 recyclerView.scheduleLayoutAnimation();
+                MasterOrder.clearAssociatedOrderList();
                 dismiss();
                 break;
             case R.id.cancelBtn:
                 setContentView(R.layout.activity_order_entry);
+                MasterOrder.clearAssociatedOrderList();
                 dismiss();
                 break;
             default:

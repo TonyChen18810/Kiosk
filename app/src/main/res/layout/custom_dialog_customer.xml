@@ -34,6 +34,18 @@
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:textAlignment="center"
+                android:layout_marginBottom="25dp"/>
+
+            <TextView
+                android:id="@+id/ConsigneeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Consignee Name"
+                android:textColor="@color/black"
+                android:textSize="80sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:textAlignment="center"
                 android:layout_marginBottom="100dp"/>
 
             <LinearLayout

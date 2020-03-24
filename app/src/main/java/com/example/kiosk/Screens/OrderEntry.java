@@ -2,7 +2,6 @@ package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,7 +31,6 @@ import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Dialogs.SubmitDialog;
 import com.example.kiosk.Helpers.Language;
-import com.example.kiosk.Helpers.RecyclerViewAssociatedAdapter;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
@@ -292,12 +289,14 @@ public class OrderEntry extends AppCompatActivity {
             try {
                 // new GetMasterOrderDetails(OrderEntry.this, MasterOrder.getCurrentMasterOrder().getSOPNumber()).execute();
                 new GetOrderDetailsByMasterNumber(GetMasterOrderDetails.getMasterNumber()).execute();
-                if (GetOrderDetailsByMasterNumber.getPropertyCount() > 0) {
+                /*
+                if (GetOrderDetailsByMasterNumber.getPropertyCount() > -1) {
                     // setContentView(R.layout.connected_orders);
                     ConnectedOrders dialog = new ConnectedOrders(OrderEntry.this, recyclerView, adapter);
                     dialog.show();
                     dialog.setCancelable(false);
                 }
+                 */
 /**
                     ArrayList<MasterOrder> connectedOrders = new ArrayList<>(MasterOrder.getAssociatedMasterOrdersList());
 

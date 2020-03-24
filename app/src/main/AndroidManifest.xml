@@ -16,10 +16,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysVisible"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Webservices.TEST_"></activity>
         <activity android:name=".Screens.OrderSummary" />
-        <activity android:name=".AccountCreatedMsg" />
-        <activity android:name=".OrderSubmitted" />
         <activity android:name=".Screens.OrderEntry" />
         <activity android:name=".Screens.LoggedIn" />
         <activity

@@ -2,12 +2,16 @@ package com.example.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import com.example.kiosk.Account;
+import android.os.CountDownTimer;
+import android.os.Looper;
+
+import com.example.kiosk.Screens.CreateAccount;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 import java.lang.ref.WeakReference;
 
 public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
@@ -61,34 +65,31 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         envelope.setOutputSoapObject(request);
         HttpTransportSE transportSE = new HttpTransportSE(URL);
 
+        // this returns a 0 or non-zero... no account info being returned here
+
         try {
             transportSE.call(soapAction, envelope);
-            SoapObject response = (SoapObject) envelope.getResponse();
+            SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
 
-            if (response.getPropertyCount() > 0) {
-                email = ((SoapObject) (response.getProperty(0))).getProperty(0).toString();
-                driverName = ((SoapObject) (response.getProperty(0))).getProperty(1).toString();
-                phone = ((SoapObject) (response.getProperty(0))).getProperty(2).toString();
-                truckName = ((SoapObject) (response.getProperty(0))).getProperty(3).toString();
-                truckNumber = ((SoapObject) (response.getProperty(0))).getProperty(4).toString();
-                driversLicense = ((SoapObject) (response.getProperty(0))).getProperty(5).toString();
-                driversLicenseState = ((SoapObject) (response.getProperty(0))).getProperty(6).toString();
-                trailerLicense = ((SoapObject) (response.getProperty(0))).getProperty(7).toString();
-                trailerLicenseState = ((SoapObject) (response.getProperty(0))).getProperty(8).toString();
-                dispatcherPhone = ((SoapObject) (response.getProperty(0))).getProperty(9).toString();
-                languagePreference = ((SoapObject) (response.getProperty(0))).getProperty(10).toString();
-                commmunicationPreference = ((SoapObject) (response.getProperty(0))).getProperty(11).toString();
-                Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
-                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, commmunicationPreference);
-                Account.setCurrentAccount(account);
+            if (response.toString().equals("0")) {
+                System.out.println("Success, account created/updated");
             } else {
-                Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
-                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, commmunicationPreference);
-                Account.setCurrentAccount(account);
+                System.out.println("Failure, account was not created/updated");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Trying again...");
+            Thread thread = new Thread(() -> {
+                new UpdateShippingTruckDriver(mWeakActivity.get(), email, email, driverName, phone, truckName, truckNumber,
+                        driversLicense, driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone,"0", commmunicationPreference).execute();
+            });
+            try {
+                thread.start();
+                Thread.sleep(5000);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return null;
     }

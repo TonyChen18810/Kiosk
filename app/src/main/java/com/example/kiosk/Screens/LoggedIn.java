@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telecom.PhoneAccount;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.InputFilter;
 import android.view.View;
 import android.view.Window;
@@ -21,6 +23,7 @@ import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.LicenseTransformationMethod;
+import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
@@ -135,6 +138,9 @@ public class LoggedIn extends AppCompatActivity {
             }
         });
 
+        phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        dispatcherPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(LoggedIn.this, v);
             dialog.show();
@@ -164,8 +170,8 @@ public class LoggedIn extends AppCompatActivity {
                 driverNameStr = driverName.getText().toString();
                 dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
                 new UpdateShippingTruckDriver(LoggedIn.this, Account.getCurrentAccount().getEmail(), emailStr, driverNameStr,
-                        phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, state1, trailerLicenseStr, state2,
-                        dispatcherNumberStr, "0", Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
+                        PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr, driverLicenseStr, state1, trailerLicenseStr, state2,
+                        PhoneNumberFormat.extract(dispatcherNumberStr), "0", Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
                 /*
                 Account account = new Account(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
                         trailerStateStr, driverLicenseStr, driverStateStr, dispatcherNumberStr, "0", Integer.toString(PREFERRED_COMMUNICATION+1));
@@ -369,7 +375,7 @@ public class LoggedIn extends AppCompatActivity {
         TextView userPhone = findViewById(R.id.UserPhone);
         TextView userTruck = findViewById(R.id.UserTruck);
         userEmail.setText(Account.getCurrentAccount().getEmail());
-        userPhone.setText(Account.getCurrentAccount().getPhoneNumber());
+        userPhone.setText(PhoneNumberFormat.formatPhoneNumber(userPhone.getText().toString()));
         userTruck.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
 
         select.setVisibility(View.GONE);
@@ -387,7 +393,7 @@ public class LoggedIn extends AppCompatActivity {
         phoneNumber.setTextColor(getResources().getColor(R.color.black));
 
         emailAddress.setText(CURRENT_ACCOUNT.getEmail());
-        phoneNumber.setText(CURRENT_ACCOUNT.getPhoneNumber());
+        phoneNumber.setText(PhoneNumberFormat.formatPhoneNumber(CURRENT_ACCOUNT.getPhoneNumber()));
         truckName.setText(CURRENT_ACCOUNT.getTruckName());
         truckNumber.setText(CURRENT_ACCOUNT.getTruckNumber());
         trailerLicense.setText(CURRENT_ACCOUNT.getTrailerLicense());
@@ -395,7 +401,7 @@ public class LoggedIn extends AppCompatActivity {
         selectState2.setText(CURRENT_ACCOUNT.getTrailerState());
         driverLicense.setText(CURRENT_ACCOUNT.getDriverLicense());
         driverName.setText(CURRENT_ACCOUNT.getDriverName());
-        dispatcherPhoneNumber.setText(CURRENT_ACCOUNT.getDispatcherPhoneNumber());
+        dispatcherPhoneNumber.setText(PhoneNumberFormat.formatPhoneNumber(CURRENT_ACCOUNT.getDispatcherPhoneNumber()));
         state1 = CURRENT_ACCOUNT.getDriverState();
         state2 = CURRENT_ACCOUNT.getTrailerState();
 

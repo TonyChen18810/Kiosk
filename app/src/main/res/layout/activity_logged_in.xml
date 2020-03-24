@@ -45,7 +45,8 @@
                 android:ems="14"
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
-                android:textSize="60sp" />
+                android:textSize="50sp"
+                android:maxLength="50" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,8 +64,10 @@
                 android:background="@drawable/edit_text"
                 android:ems="14"
                 android:inputType="phone"
+                android:digits="1234567890+()-"
                 android:textColor="#C9000000"
-                android:textSize="60sp" />
+                android:textSize="50sp"
+                android:maxLength="20"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,7 +86,8 @@
                 android:ems="14"
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
-                android:textSize="60sp" />
+                android:textSize="50sp"
+                android:maxLength="30"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -108,7 +112,8 @@
                     android:ems="13"
                     android:inputType="textPassword"
                     android:textColor="#C9000000"
-                    android:textSize="60sp" />
+                    android:textSize="50sp"
+                    android:maxLength="20"/>
 
                 <Button
                     android:id="@+id/StateButton2"
@@ -139,7 +144,8 @@
                 android:ems="14"
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
-                android:textSize="60sp" />
+                android:textSize="50sp"
+                android:maxLength="20"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -158,8 +164,9 @@
                 android:ems="14"
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
-                android:textSize="60sp"
-                tools:ignore="TextFields" />
+                android:textSize="50sp"
+                tools:ignore="TextFields"
+                android:maxLength="20"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -184,7 +191,8 @@
                     android:ems="13"
                     android:inputType="textEmailAddress"
                     android:textColor="#C9000000"
-                    android:textSize="60sp" />
+                    android:textSize="50sp"
+                    android:maxLength="10"/>
 
                 <Button
                     android:id="@+id/StateButton1"
@@ -214,8 +222,10 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/edit_text"
                 android:ems="14"
+                android:digits="1234567890+()-"
                 android:inputType="phone"
-                android:textSize="60sp" />
+                android:textSize="50sp"
+                android:maxLength="20"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -245,7 +255,7 @@
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.063">
+        app:layout_constraintVertical_bias="0.089">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -308,6 +318,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="#C9000000"
                 android:textSize="36sp"
+                android:digits="1234567890+()-"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.718"
@@ -354,7 +365,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.674">
+        app:layout_constraintVertical_bias="0.654">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -393,6 +404,14 @@
                     android:text="Text message"
                     android:textColor="#C9000000"
                     android:textSize="36sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:text="*Standard messaging rates apply"
+                    android:textColor="@color/error"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -458,30 +477,13 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/VerifyText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:lineSpacingExtra="8sp"
-        android:text="*By clicking 'Next' I verify that\nall information is correct and accurate"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/andy_accent"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/NextBtn"
-        app:layout_constraintHorizontal_bias="0.941"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CommunicationCard"
-        app:layout_constraintVertical_bias="0.055"
-        tools:ignore="HardcodedText" />
-
     <Button
         android:id="@+id/NextBtn"
         style="@android:style/Widget.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="244dp"
+        android:layout_marginEnd="292dp"
+        android:layout_marginBottom="380dp"
         android:background="@drawable/mybutton2"
         android:clickable="true"
         android:focusable="true"
@@ -498,7 +500,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CommunicationCard"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.142" />
+
+    <TextView
+        android:id="@+id/VerifyText"
+        android:layout_width="550dp"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="8sp"
+        android:text="*By clicking 'Next' I verify that\nall information is correct and accurate"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/andy_accent"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/NextBtn"
+        app:layout_constraintHorizontal_bias="0.908"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CommunicationCard"
+        app:layout_constraintVertical_bias="0.059"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/LogoutBtn"
@@ -521,7 +541,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

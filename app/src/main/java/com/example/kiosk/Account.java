@@ -23,7 +23,11 @@ public class Account {
 
     public Account(String email, String driverName, String phoneNumber, String truckName, String truckNumber, String driverLicense, String driverState,
                    String trailerLicense, String trailerState, String dispatcherPhoneNumber, String languagePreference, String communicationPreference) {
-        this.email = email.toLowerCase();
+        if (email != null) {
+            this.email = email.toLowerCase();
+        } else {
+            this.email = email;
+        }
         this.driverName = driverName;
         this.phoneNumber = phoneNumber;
         this.truckName = truckName;

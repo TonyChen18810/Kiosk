@@ -116,6 +116,16 @@
         <item>West Virginia</item>
         <item>Wisconsin</item>
         <item>Wyoming</item>
+        <item>Toronto</item>
+        <item>Quebec</item>
+        <item>Nova Scotia</item>
+        <item>New Brunswick</item>
+        <item>Manitoba</item>
+        <item>British Columbia</item>
+        <item>Prince Edward Island</item>
+        <item>Saskatchewan</item>
+        <item>Alberta</item>
+        <item>Newfoundland and Labrador</item>
     </string-array>
 
     <string-array name="states_abbreviated">
@@ -169,6 +179,16 @@
         <item>WV</item>
         <item>WI</item>
         <item>WY</item>
+        <item>ON</item>
+        <item>QC</item>
+        <item>NS</item>
+        <item>NB</item>
+        <item>MB</item>
+        <item>BC</item>
+        <item>PE</item>
+        <item>SK</item>
+        <item>AB</item>
+        <item>NL</item>
     </string-array>
 
     <!-- English -->

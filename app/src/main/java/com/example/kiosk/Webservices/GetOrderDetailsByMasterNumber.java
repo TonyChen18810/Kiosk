@@ -44,7 +44,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             SoapObject response = (SoapObject) envelope.getResponse();
             propertyCount = response.getPropertyCount();
             System.out.println(propertyCount);
-            if (propertyCount < 0) {
+            if (propertyCount < -1) {
                 // empty list, no associated orders
                 System.out.println("No orders with matching master number");
             } else {
@@ -62,12 +62,28 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                     String appointmentTime = ((SoapObject) (response.getProperty(i))).getProperty(10).toString();
                     String estimatedWeight = ((SoapObject) (response.getProperty(i))).getProperty(11).toString();
                     String estimatedPallets = ((SoapObject) (response.getProperty(i))).getProperty(12).toString();
+                    boolean canBeInserted = true;
                     for (int j = 0; j < MasterOrder.getMasterOrdersList().size(); j++) {
-                        if (!MasterOrder.getMasterOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
-                            MasterOrder masterOrder = new MasterOrder(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
-                                    customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
-                            MasterOrder.addAssociatedMasterOrderToList(masterOrder);
+                        if (MasterOrder.getMasterOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
+                            canBeInserted = false;
                         }
+                    }
+                    for (int k = 0; k < MasterOrder.getPossibleMasterOrdersList().size(); k++) {
+                        if (MasterOrder.getPossibleMasterOrdersList().get(k).getSOPNumber().equals(SOPNumber)) {
+                            canBeInserted = false;
+                        }
+                    }
+
+                    for (int l = 0; l < MasterOrder.getAssociatedMasterOrdersList().size(); l++) {
+                        if (MasterOrder.getAssociatedMasterOrdersList().get(l).getSOPNumber().equals(SOPNumber)) {
+                            canBeInserted = false;
+                        }
+                    }
+
+                    if (canBeInserted) {
+                        MasterOrder masterOrder = new MasterOrder(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
+                                customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
+                        MasterOrder.addAssociatedMasterOrderToList(masterOrder);
                     }
                 }
             }
@@ -80,10 +96,10 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if (propertyCount < 1) {
+        if (propertyCount < 1 && MasterOrder.getAssociatedMasterOrdersList().size() < 1) {
             System.out.println("we printed false");
             OrderEntry.sharedMasterNumber.setValue(false);
-        } else {
+        } else if (MasterOrder.getAssociatedMasterOrdersList().size() > 0){
             System.out.println("we printed true");
             OrderEntry.sharedMasterNumber.setValue(true);
         }
