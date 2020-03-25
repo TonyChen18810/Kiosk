@@ -51,7 +51,6 @@
         android:id="@+id/CardField"
         android:layout_width="1250dp"
         android:layout_height="wrap_content"
-        android:padding="40dp"
         app:cardCornerRadius="7.5dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
@@ -65,18 +64,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/OrderNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:text="Order\nNumber"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="40sp" />
@@ -85,7 +81,8 @@
                 android:layout_width="4dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="25dp"
                 android:background="#C97A7171"
                 android:gravity="center" />
 
@@ -94,10 +91,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:gravity="center"
-                android:text="Buyer\nName"
+                android:text="Customer Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="40sp" />
 
@@ -105,7 +102,7 @@
                 android:layout_width="4dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:background="#C97A7171"
                 android:gravity="center" />
 
@@ -115,10 +112,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:gravity="center"
-                android:text="Apt.Time"
+                android:text="Apt. Time"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="40sp" />
 
@@ -126,7 +123,7 @@
                 android:layout_width="4dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:background="#C97A7171"
                 android:gravity="center" />
 
@@ -146,7 +143,7 @@
                 android:layout_width="4dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:background="#C97A7171"
                 android:gravity="center" />
 
@@ -155,8 +152,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:gravity="center"
                 android:text="Est.\nPallets"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -166,7 +163,7 @@
                 android:layout_width="4dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:background="#C97A7171"
                 android:gravity="center" />
 
@@ -174,11 +171,11 @@
                 android:id="@+id/EstWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center"
-                android:text="Est.\nWeight"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="-20dp"
+                android:gravity="end"
+                android:text="Est. Weight"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="40sp" />
 

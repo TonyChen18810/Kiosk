@@ -3,12 +3,8 @@ package com.example.kiosk.Webservices;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.os.health.SystemHealthManager;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import com.example.kiosk.Dialogs.HelpDialog;
-import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
@@ -19,10 +15,6 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
-import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.concurrent.ExecutionException;
 
 public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
 
@@ -111,8 +103,8 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
         Activity activity = mWeakActivity.get();
         boolean isGoodOrder = false;
 
-        if (propertyCount > 0) {
-            if (isCheckedIn.equals("false")) {
+        if (propertyCount > 0) {// get rid of TRUE part after some tests
+            if (isCheckedIn.equals("false")) { // || isCheckedIn.equals("true")) {
                 if (isAppointment.equals("true") && appointmentTime.equals("00:00:00")) {
                     System.out.println("Need to make appointment");
                     OrderEntry.validOrderNumber.setValue(2);
@@ -120,7 +112,13 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
                     System.out.println("Has an appointment, now check for late/early/on-time");
                     if (checkApppointmentTime(appointmentTime) == -1) {
                         System.out.println("You're early");
-                        isGoodOrder = true;
+                        if (MASTER_NUMBER == null) {
+                            if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
+                                System.out.println("We need a new master number...");
+                                new GetNextMasterOrderNumber().execute();
+                                isGoodOrder = true;
+                            }
+                        }
                         // OrderEntry.appointmentTimeListener.setValue(-1);
                     } else if (checkApppointmentTime(appointmentTime) == 1) {
                         System.out.println("You're late");
@@ -128,6 +126,13 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
                         OrderEntry.appointmentTimeListener.setValue(1);
                     } else if (checkApppointmentTime(appointmentTime) == 0){
                         System.out.println("On time");
+                        if (MASTER_NUMBER == null) {
+                            if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
+                                System.out.println("We need a new master number...");
+                                new GetNextMasterOrderNumber().execute();
+                                isGoodOrder = true;
+                            }
+                        }
                         isGoodOrder = true;
                     }
                 } else {
@@ -146,10 +151,13 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
                     }
                     // MasterOrder.addMasterOrderToList(masterOrder);
                 }
-            } else if (isCheckedIn.equals("true")){
+            }
+
+            else if (isCheckedIn.equals("true")){
                 System.out.println("Order already checked in");
                 OrderEntry.validOrderNumber.setValue(3);
             }
+
         } else {
             // Order doesn't exist, invalid
             OrderEntry.validOrderNumber.setValue(0);

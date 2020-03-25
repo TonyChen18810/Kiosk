@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kiosk.MasterOrder;
@@ -18,6 +20,7 @@ import java.util.List;
 public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerViewSummaryAdapter.MyViewHolder> {
 
     private List<MasterOrder> masterOrders;
+    private final static int minHeight = 190;
 
     public RecyclerViewSummaryAdapter(List<MasterOrder> masterOrders) {
         this.masterOrders = masterOrders;
@@ -33,31 +36,42 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        // Order order = orders.get(position);
         MasterOrder masterOrder = masterOrders.get(position);
         String buyerNameEdit, buyerStr = masterOrder.getCustomerName();
-        char[] buyerChar = buyerStr.toCharArray();
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < buyerStr.length(); i++) {
-            str.append(buyerChar[i]);
-            if (buyerChar[i] == '/') {
-                str.append("\n");
-            }
-        }
-        buyerNameEdit = str.toString();
         holder.orderNumber.setText(masterOrder.getSOPNumber());
-        if (buyerNameEdit.length() > 10) {
+        if (buyerStr.length() > 13) {
             StringBuilder buyerNameStrBuilder = new StringBuilder();
-            for (char c: buyerNameEdit.toCharArray()) {
-                buyerNameStrBuilder.append(c);
-                if (c == ' ') {
-                    buyerNameStrBuilder.append('\n');
+            char[] buyerNameCharArray = buyerStr.toCharArray();
+            for (int i = 0; i < buyerNameCharArray.length; i++) {
+                buyerNameStrBuilder.append(buyerNameCharArray[i]);
+                if ((i + 1) != buyerNameCharArray.length) {
+                    if (buyerNameCharArray[i] == ' ' || buyerNameCharArray[i+1] == '-') {
+                        buyerNameStrBuilder.append('\n');
+                    }
                 }
             }
             buyerNameEdit = buyerNameStrBuilder.toString();
+        } else {
+            buyerNameEdit = buyerStr;
         }
         holder.buyerName.setText(buyerNameEdit);
-        holder.destination.setText(masterOrder.getDestination());
+
+        if (masterOrder.getDestination().length() > 11) {
+            char[] destArray = masterOrder.getDestination().toCharArray();
+            StringBuilder destStrBuilder = new StringBuilder();
+            for (int i = 0; i < destArray.length; i++) {
+                destStrBuilder.append(destArray[i]);
+                if (destArray[i]== ',') {
+                    destStrBuilder.append('\n');
+                }
+            }
+            holder.destination.setText(destStrBuilder.toString());
+        } else {
+            holder.destination.setText(masterOrder.getDestination());
+        }
+
+
+        // holder.destination.setText(masterOrder.getDestination());
         if (masterOrder.getAppointmentTime().equals("00:00:00")) {
             holder.aptTime.setText("N/A");
         } else {
@@ -83,11 +97,23 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView orderNumber, buyerName, destination, aptTime, estPallets, estWeight;
+        CardView card;
+        LinearLayout linearLayout;
 
         MyViewHolder(@NonNull final View itemView) {
             super(itemView);
+            this.linearLayout = itemView.findViewById(R.id.LinearLayoutAboveCardView);
+            this.card = itemView.findViewById(R.id.HeartOfTheCards);
             this.orderNumber = itemView.findViewById(R.id.OrderNumber);
             this.buyerName = itemView.findViewById(R.id.BuyerName);
+            System.out.println("Buyer name line count: " + this.buyerName.getLineCount());
+            if (this.buyerName.getLineCount() == 3) {
+                this.card.getLayoutParams().height = 170;
+            } else if (this.buyerName.getLineCount() == 4) {
+                this.card.getLayoutParams().height = 200;
+            } else if (this.buyerName.getLineCount() == 5) {
+                this.card.getLayoutParams().height = 240;
+            }
             this.destination = itemView.findViewById(R.id.Destination);
             this.aptTime = itemView.findViewById(R.id.AptTime);
             this.estPallets = itemView.findViewById(R.id.EstPallets);

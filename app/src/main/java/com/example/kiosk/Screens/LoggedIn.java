@@ -381,7 +381,7 @@ public class LoggedIn extends AppCompatActivity {
         TextView userPhone = findViewById(R.id.UserPhone);
         TextView userTruck = findViewById(R.id.UserTruck);
         userEmail.setText(Account.getCurrentAccount().getEmail());
-        userPhone.setText(PhoneNumberFormat.formatPhoneNumber(userPhone.getText().toString()));
+        userPhone.setText(PhoneNumberFormat.formatPhoneNumber(Account.getCurrentAccount().getPhoneNumber()));
         userTruck.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
 
         select.setVisibility(View.GONE);

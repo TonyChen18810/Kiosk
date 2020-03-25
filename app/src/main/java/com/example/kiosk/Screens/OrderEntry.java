@@ -31,6 +31,7 @@ import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Dialogs.SubmitDialog;
 import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Helpers.MySpinner;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.MasterOrder;
@@ -54,6 +55,10 @@ public class OrderEntry extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private Spinner destinationSpinner;
+
+    private MySpinner customDestinationSpinner;
+
+    // private ListView destinationListView;
     // public static boolean initialSelection = false;
 
     private static RecyclerViewHorizontalAdapter adapter;
@@ -165,9 +170,13 @@ public class OrderEntry extends AppCompatActivity {
 
         listListener.observe(OrderEntry.this, empty -> {
             if (!empty) {
-                ArrayAdapter<String> destinationAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, possibleCustomerDestinations);
+                ArrayAdapter<String> destinationAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, possibleCustomerDestinations);
                 destinationAdapter.setDropDownViewResource(R.layout.spinner_layout);
                 destinationSpinner.setAdapter(destinationAdapter);
+
+                customDestinationSpinner.setAdapter(destinationAdapter);
+
+                // ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, possibleCustomerDestinations);
             }
         });
 
@@ -216,6 +225,72 @@ public class OrderEntry extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+
+        customDestinationSpinner.setOnItemSelectedEvenIfUnchangedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] destinationsArray = possibleCustomerDestinations.toArray(new String[0]);
+                if (destinationsArray[position].equals(MasterOrder.getCurrentMasterOrder().getDestination())) {
+                    System.out.println("Selected: " + destinationsArray[position]);
+                    selectDestinationBtn.setText(destinationsArray[position]);
+                    selectDestinationBtn.clearAnimation();
+                    // destinationSpinner.setSelection(0);
+                    selectDestinationBtn.setEnabled(false);
+                    addOrderBtn.setEnabled(true);
+                    addOrderBtn.startAnimation(AnimationUtils.loadAnimation(OrderEntry.this, R.anim.fade));
+                    DESTINATION_ATTEMPTS = 0;
+                    check = 0;
+                    System.out.println(addOrderBtn.isEnabled());
+                    // initialSelection = false;
+                } else {
+                    DESTINATION_ATTEMPTS++;
+                    // initialSelection = false;
+                    if (DESTINATION_ATTEMPTS >= 2) {
+                        check = 0;
+                        String message = null;
+                        if (currentLanguage == 0) {
+                            message = "Maximum destination attempts exceeded, please try another order number or contact your dispatcher.";
+                        } else if (currentLanguage == 1) {
+                            message = "Se excedieron los intentos de destino máximos, intente con otro número de pedido o comuníquese con su despachador.";
+                        } else if (currentLanguage == 2) {
+                            message = "Nombre maximal de tentatives de destination dépassé, veuillez essayer un autre numéro de ordre ou contacter votre répartiteur.";
+                        }
+                        HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
+                        dialog.show();
+                        orderNumber.setText("");
+                        buyerName.setVisibility(View.GONE);
+                        selectDestinationBtn.setVisibility(View.GONE);
+
+                        orderNumber.setEnabled(true);
+                        orderNumber.setFocusable(true);
+                        orderNumber.requestFocus();
+                        showSoftKeyboard(orderNumber);
+                        checkOrderBtn.setEnabled(false);
+                        addOrderBtn.setEnabled(false);
+                        DESTINATION_ATTEMPTS = 0;
+                    } else {
+                        String message = null;
+                        if (currentLanguage == 0) {
+                            message = "Incorrect destination for the entered order number, you have one attempt remaining.";
+                        } else if (currentLanguage == 1) {
+                            message = "Destino incorrecto para el número de pedido ingresado, le queda un intento.";
+                        } else if (currentLanguage == 2) {
+                            message = "Destination incorrecte pour le numéro de ordre saisi, il vous reste un tentative";
+                        }
+                        HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
+                        dialog.show();
+                        // initialSelection = false;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         destinationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -232,12 +307,13 @@ public class OrderEntry extends AppCompatActivity {
                         System.out.println("Selected: " + destinationsArray[position]);
                         selectDestinationBtn.setText(destinationsArray[position]);
                         selectDestinationBtn.clearAnimation();
-                        destinationSpinner.setSelection(0);
+                        // destinationSpinner.setSelection(0);
                         selectDestinationBtn.setEnabled(false);
                         addOrderBtn.setEnabled(true);
                         addOrderBtn.startAnimation(AnimationUtils.loadAnimation(OrderEntry.this, R.anim.fade));
                         DESTINATION_ATTEMPTS = 0;
                         check = 0;
+                        System.out.println(addOrderBtn.isEnabled());
                         // initialSelection = false;
                     } else {
                         DESTINATION_ATTEMPTS++;
@@ -279,10 +355,7 @@ public class OrderEntry extends AppCompatActivity {
                             // initialSelection = false;
                         }
                     }
-                } else {
-                    // System.out.println("initialSelection was not true");
-                    // initialSelection = true;
-                    // destinationSpinner.performClick();
+
                 }
             }
 
@@ -327,7 +400,7 @@ public class OrderEntry extends AppCompatActivity {
                 listener.setValue(false);
             }
 
-            destinationSpinner.setSelection(0);
+            // destinationSpinner.setSelection(0);
             adapter.notifyDataSetChanged();
             adapter.notifyItemInserted(adapter.getItemCount() - 1);
             recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
@@ -343,7 +416,7 @@ public class OrderEntry extends AppCompatActivity {
 
             try {
                 // new GetMasterOrderDetails(OrderEntry.this, MasterOrder.getCurrentMasterOrder().getSOPNumber()).execute();
-                new GetOrderDetailsByMasterNumber(GetMasterOrderDetails.getMasterNumber()).execute().get();
+                new GetOrderDetailsByMasterNumber(MasterOrder.getCurrentMasterOrder().getMasterNumber()).execute().get();
                 /*
                 if (GetOrderDetailsByMasterNumber.getPropertyCount() > -1) {
                     // setContentView(R.layout.connected_orders);
@@ -448,7 +521,10 @@ public class OrderEntry extends AppCompatActivity {
             }
         });
 
-        selectDestinationBtn.setOnClickListener(v -> destinationSpinner.performClick());
+        selectDestinationBtn.setOnClickListener(v -> {
+            // destinationSpinner.performClick();
+            customDestinationSpinner.performClick();
+        });
     }
 
     public static void confirmMsg(final View v, Context context) {
@@ -542,6 +618,7 @@ public class OrderEntry extends AppCompatActivity {
         addOrderBtn = findViewById(R.id.AddOrderBtn);
         checkOrderBtn = findViewById(R.id.CheckOrderBtn);
         selectDestinationBtn = findViewById(R.id.SelectDestinationBtn);
+        customDestinationSpinner = new MySpinner(OrderEntry.this);
         selectDestinationBtn.setVisibility(View.GONE);
         destinationSpinner = findViewById(R.id.DestinationSpinner);
         destinationSpinner.setVisibility(View.INVISIBLE);

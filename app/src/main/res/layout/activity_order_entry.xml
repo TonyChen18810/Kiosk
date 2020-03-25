@@ -22,6 +22,7 @@
         app:layout_constraintVertical_bias="0.599" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -254,10 +255,9 @@
         app:cardElevation="5dp"
         app:layout_constraintBottom_toTopOf="@+id/OrderInfo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LogoutBtn"
-        app:layout_constraintVertical_bias="0.258">
+        app:layout_constraintVertical_bias="0.423">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -275,7 +275,7 @@
                 android:text="You are logged in as "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/andy_accent"
-                android:textSize="36sp"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.264"
@@ -293,7 +293,7 @@
                 android:text="example@gmail.com"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="#C9000000"
-                android:textSize="36sp"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.718"
@@ -319,7 +319,7 @@
                 android:text="1234567890"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="#C9000000"
-                android:textSize="36sp"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.718"
@@ -345,7 +345,7 @@
                 android:text="Truck 000"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="#C9000000"
-                android:textSize="36sp"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.718"
@@ -373,7 +373,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:dropDownWidth="50dp"
-        android:spinnerMode="dialog">
+        android:spinnerMode="dialog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.005">
     </Spinner>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

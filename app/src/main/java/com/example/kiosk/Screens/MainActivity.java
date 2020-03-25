@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 if (Account.getCurrentAccount() != null) {
                     if (doesPhoneMatch() && validNumber()) {
                         setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), asList(unmatchingPhone, noPhoneNumberWarning));
-                    } else if (count == 10) {
+                    } else if (count == 13) {
                         if (PhoneNumberFormat.extract(phoneNumberBox.getText().toString()).equals(Account.getCurrentAccount().getPhoneNumber())) {
                             setStatus(1, asList(phoneNumberBox, emailAddressBox), Collections.singletonList(noPhoneNumberWarning));
                         } else {
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (emailAddressBox.getText().toString().equals(confirmEmailAddress.getText().toString())) {
+                if (doesEmailMatch()) {
                     setStatus(1, asList(emailAddressBox, confirmEmailAddress), Collections.singletonList(unmatchingEmail));
                 }
             }
@@ -217,8 +217,10 @@ public class MainActivity extends AppCompatActivity {
 
         confirmEmailAddress.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                if (!emailAddressBox.getText().toString().equals(confirmEmailAddress.getText().toString()) && emailAddressBox.length() != 0 && confirmEmailAddress.length() != 0) {
+                if (!doesEmailMatch() && emailAddressBox.length() != 0 && confirmEmailAddress.length() != 0) {
                     setStatus(0, asList(emailAddressBox, confirmEmailAddress), Collections.singletonList(unmatchingEmail));
+                } else if (confirmEmailAddress.length() == 0) {
+                    setStatus(-1, Collections.singletonList(confirmEmailAddress), Collections.singletonList(unmatchingEmail));
                 }
             }
         });
@@ -412,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean doesEmailMatch() {
-        return emailAddressBox.getText().toString().equals(confirmEmailAddress.getText().toString());
+        return emailAddressBox.getText().toString().toLowerCase().equals(confirmEmailAddress.getText().toString().toLowerCase());
     }
 
     private boolean doesPhoneMatch() {
@@ -420,11 +422,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean validEmail() {
-        String email = emailAddressBox.getText().toString();
+        String email = emailAddressBox.getText().toString().toLowerCase();
         if (email.contains("@")) {
             List<String> extensions = asList(getResources().getStringArray(R.array.extensions));
             for (int i = 0; i < extensions.size(); i++) {
-                if (email.endsWith(extensions.get(i))) {
+                if (email.endsWith(extensions.get(i).toLowerCase())) {
                     return true;
                 }
             }
