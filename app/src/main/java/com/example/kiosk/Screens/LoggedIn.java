@@ -28,6 +28,8 @@ import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
 
+import java.text.ParseException;
+
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class LoggedIn extends AppCompatActivity {
@@ -80,7 +82,11 @@ public class LoggedIn extends AppCompatActivity {
 
         setup();
 
-        Time.setTime();
+        try {
+            Time.setTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
         stateAdapter.setDropDownViewResource(R.layout.spinner_layout);

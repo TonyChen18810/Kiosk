@@ -12,7 +12,7 @@ public class DeleteMasterOrderDetails extends AsyncTask<Void, Void, Void> {
 
     private String SOPnumber;
 
-    DeleteMasterOrderDetails(String SOPnumber) {
+    public DeleteMasterOrderDetails(String SOPnumber) {
         this.SOPnumber = SOPnumber;
     }
 

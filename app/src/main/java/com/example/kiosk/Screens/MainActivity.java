@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 confirmEmailAddress.requestFocus();
                 newAccountExpand();
                 confirmEmailAddress.requestFocus();
+                if (emailAddressBox.getText().toString().equals(confirmEmailAddress.getText().toString())) {
+                    setStatus(1, asList(emailAddressBox, confirmEmailAddress), asList(noEmailWarning, unmatchingEmail));
+                }
             } else {
                 if (expanded) {
                     animation(phoneNumberBox, "translationY", -10f);
@@ -238,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (PhoneNumberFormat.extract(confirmPhoneNumber.getText().toString()).equals(PhoneNumberFormat.extract(phoneNumberBox.getText().toString()))
                         && PhoneNumberFormat.extract(phoneNumberBox.getText().toString()).length() == 10) {
-                    setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(unmatchingPhone));
+                    setStatus(1, asList(phoneNumberBox, confirmPhoneNumber), asList(unmatchingPhone, noPhoneNumberWarning));
                 } else if (PhoneNumberFormat.extract(confirmPhoneNumber.getText().toString()).length() > 10) {
                     setStatus(0, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(unmatchingPhone));
                 }

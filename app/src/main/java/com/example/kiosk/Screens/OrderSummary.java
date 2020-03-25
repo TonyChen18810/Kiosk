@@ -17,6 +17,7 @@ import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewSummaryAdapter;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
+import com.example.kiosk.Webservices.DeleteMasterOrderDetails;
 import com.example.kiosk.Webservices.GetMasterOrderDetails;
 import com.example.kiosk.Webservices.UpdateMasterOrder;
 import java.text.DecimalFormat;
@@ -73,11 +74,15 @@ public class OrderSummary extends AppCompatActivity {
 
         findViewById(R.id.ConfirmBtn).setOnClickListener(v -> {
             List<MasterOrder> orderList = MasterOrder.getMasterOrdersList();
+            // List<MasterOrder> orderList = MasterOrder.getPossibleMasterOrdersList();
+            for (int i = 0; i < orderList.size(); i++) {
+                new DeleteMasterOrderDetails(orderList.get(i).getSOPNumber()).execute();
+            }
             for (int i = 0; i < orderList.size(); i++) {
                 if (i == orderList.size()-1) {
-                    new UpdateMasterOrder(orderList.get(i).getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), true).execute();
+                    new UpdateMasterOrder(GetMasterOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), true).execute();
                 } else {
-                    new UpdateMasterOrder(orderList.get(i).getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), false).execute();
+                    new UpdateMasterOrder(GetMasterOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), false).execute();
                 }
             }
             setContentView(R.layout.final_screen);

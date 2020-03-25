@@ -44,9 +44,9 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             SoapObject response = (SoapObject) envelope.getResponse();
             propertyCount = response.getPropertyCount();
             System.out.println(propertyCount);
-            if (propertyCount < -1) {
+            if (propertyCount < 1) {
                 // empty list, no associated orders
-                System.out.println("No orders with matching master number");
+                System.out.println("No orders with matching master number (" + inMasterNumber + ") ----------------------------------------------, property count: " + propertyCount);
             } else {
                 for (int i = 0; i < response.getPropertyCount(); i++) {
                     String masterNumber = ((SoapObject) (response.getProperty(i))).getProperty(0).toString();
@@ -97,10 +97,10 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         if (propertyCount < 1 && MasterOrder.getAssociatedMasterOrdersList().size() < 1) {
-            System.out.println("we printed false");
+            System.out.println("No associated orders");
             OrderEntry.sharedMasterNumber.setValue(false);
         } else if (MasterOrder.getAssociatedMasterOrdersList().size() > 0){
-            System.out.println("we printed true");
+            System.out.println("There's associated orders!!");
             OrderEntry.sharedMasterNumber.setValue(true);
         }
 

@@ -31,6 +31,7 @@ import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Dialogs.SubmitDialog;
 import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.MasterOrder;
 import com.example.kiosk.R;
@@ -53,7 +54,7 @@ public class OrderEntry extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private Spinner destinationSpinner;
-    public static boolean initialSelection = false;
+    // public static boolean initialSelection = false;
 
     private static RecyclerViewHorizontalAdapter adapter;
     private static RecyclerView recyclerView;
@@ -66,6 +67,8 @@ public class OrderEntry extends AppCompatActivity {
     public static MutableLiveData<Boolean> listListener = null;
     public static MutableLiveData<Boolean> sharedMasterNumber = null;
 
+    public static MutableLiveData<Integer> appointmentTimeListener = null;
+    public static int check;
     public static int DESTINATION_ATTEMPTS = 0;
 
     @Override
@@ -73,12 +76,16 @@ public class OrderEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_entry);
 
+        check = 0;
+
         listener = new MutableLiveData<>();
         listener.setValue(true);
         dialogListener = new MutableLiveData<>();
         dialogListener.setValue(false);
         validOrderNumber = new MutableLiveData<>();
         listListener = new MutableLiveData<>();
+
+        appointmentTimeListener = new MutableLiveData<>();
 
         listener.observe(OrderEntry.this, empty -> {
             if (empty) {
@@ -142,6 +149,17 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.show();
                 orderNumber.setText("");
                 showSoftKeyboard(orderNumber);
+            } else if (valid == 3) {
+                String helpText = "";
+                if (Language.getCurrentLanguage() == 0) {
+                    helpText = "The order has already been checked in";
+                } else if (Language.getCurrentLanguage() == 1) {
+                    helpText = "El pedido ya ha sido facturado";
+                } else if (Language.getCurrentLanguage() == 2) {
+                    helpText = "La ordre a déjà été enregistrée";
+                }
+                HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
+                dialog.show();
             }
         });
 
@@ -150,6 +168,34 @@ public class OrderEntry extends AppCompatActivity {
                 ArrayAdapter<String> destinationAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, possibleCustomerDestinations);
                 destinationAdapter.setDropDownViewResource(R.layout.spinner_layout);
                 destinationSpinner.setAdapter(destinationAdapter);
+            }
+        });
+
+        appointmentTimeListener.observe(OrderEntry.this, aptCode -> {
+            if (aptCode == -1) {
+                String helpText = "";
+                if (Language.getCurrentLanguage() == 0) {
+                    helpText = "This order has a later appointment time. This submitted order will not be checked in until 1 hour prior to appointment time.";
+                } else if (Language.getCurrentLanguage() == 1) {
+                    helpText = "Este pedido tiene una hora de cita posterior. Este pedido enviado no se registrará hasta 1 hora antes de la hora de la cita.";
+                } else if (Language.getCurrentLanguage() == 2) {
+                    helpText = "Cette commande a une heure de rendez-vous ultérieure. Cette commande soumise ne sera enregistrée que 1 heure avant l'heure du rendez-vous.";
+                }
+                HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
+                dialog.show();
+            } else if (aptCode == 1) {
+                String helpText = "";
+                if (Language.getCurrentLanguage() == 0) {
+                    helpText = "Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.";
+                } else if (Language.getCurrentLanguage() == 1) {
+                    helpText = "Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.";
+                } else if (Language.getCurrentLanguage() == 2) {
+                    helpText = "L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.";
+                }
+                HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
+                dialog.show();
+            } else if (aptCode == 0) {
+                System.out.println("Hi");
             }
         });
 
@@ -176,8 +222,12 @@ public class OrderEntry extends AppCompatActivity {
                 // String[] statesArray = getResources().getStringArray(R.array.states);
                 String[] destinationsArray = possibleCustomerDestinations.toArray(new String[0]);
                 System.out.println("---------------------------CLICKED--------------------------------!");
-                if (initialSelection) {
-                    System.out.println("Initial Selection true");
+                System.out.println("check: " + check);
+                System.out.println("Clicked on: " + destinationsArray[position]);
+                System.out.println("DESTINATION_ATTEMPTS: " + DESTINATION_ATTEMPTS);
+                System.out.println(destinationsArray.length);
+                if (++check > 1) {
+                    System.out.println("check: " + check);
                     if (destinationsArray[position].equals(MasterOrder.getCurrentMasterOrder().getDestination())) {
                         System.out.println("Selected: " + destinationsArray[position]);
                         selectDestinationBtn.setText(destinationsArray[position]);
@@ -187,10 +237,13 @@ public class OrderEntry extends AppCompatActivity {
                         addOrderBtn.setEnabled(true);
                         addOrderBtn.startAnimation(AnimationUtils.loadAnimation(OrderEntry.this, R.anim.fade));
                         DESTINATION_ATTEMPTS = 0;
-                        initialSelection = false;
+                        check = 0;
+                        // initialSelection = false;
                     } else {
                         DESTINATION_ATTEMPTS++;
+                        // initialSelection = false;
                         if (DESTINATION_ATTEMPTS >= 2) {
+                            check = 0;
                             String message = null;
                             if (currentLanguage == 0) {
                                 message = "Maximum destination attempts exceeded, please try another order number or contact your dispatcher.";
@@ -205,10 +258,11 @@ public class OrderEntry extends AppCompatActivity {
                             buyerName.setVisibility(View.GONE);
                             selectDestinationBtn.setVisibility(View.GONE);
 
+                            orderNumber.setEnabled(true);
                             orderNumber.setFocusable(true);
                             orderNumber.requestFocus();
                             showSoftKeyboard(orderNumber);
-                            checkOrderBtn.setEnabled(true);
+                            checkOrderBtn.setEnabled(false);
                             addOrderBtn.setEnabled(false);
                             DESTINATION_ATTEMPTS = 0;
                         } else {
@@ -222,11 +276,12 @@ public class OrderEntry extends AppCompatActivity {
                             }
                             HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                             dialog.show();
+                            // initialSelection = false;
                         }
                     }
                 } else {
-                    System.out.println("initialSelection was not true");
-                    initialSelection = true;
+                    // System.out.println("initialSelection was not true");
+                    // initialSelection = true;
                     // destinationSpinner.performClick();
                 }
             }
@@ -284,11 +339,11 @@ public class OrderEntry extends AppCompatActivity {
             buyerName.setVisibility(View.GONE);
             selectDestinationBtn.setVisibility(View.GONE);
             selectDestinationBtn.setEnabled(true);
-            initialSelection = false;
+            // initialSelection = false;
 
             try {
                 // new GetMasterOrderDetails(OrderEntry.this, MasterOrder.getCurrentMasterOrder().getSOPNumber()).execute();
-                new GetOrderDetailsByMasterNumber(GetMasterOrderDetails.getMasterNumber()).execute();
+                new GetOrderDetailsByMasterNumber(GetMasterOrderDetails.getMasterNumber()).execute().get();
                 /*
                 if (GetOrderDetailsByMasterNumber.getPropertyCount() > -1) {
                     // setContentView(R.layout.connected_orders);
@@ -322,12 +377,17 @@ public class OrderEntry extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            possibleCustomerDestinations.clear();
             orderNumber.setEnabled(true);
             showSoftKeyboard(orderNumber);
             orderNumber.setFocusable(true);
             orderNumber.requestFocus();
             checkOrderBtn.setEnabled(false);
             addOrderBtn.setEnabled(false);
+            if (MasterOrder.getCurrentMasterOrder().getAppointment().equals("true") && GetMasterOrderDetails.checkApppointmentTime(MasterOrder.getCurrentMasterOrder().getAppointmentTime()) == -1) {
+                appointmentTimeListener.setValue(-1);
+            }
+            // appointmentTimeListener.setValue(-1);
             // initialSelection = false;
         });
 
@@ -425,24 +485,6 @@ public class OrderEntry extends AppCompatActivity {
         dialogListener.setValue(b);
     }
 
-    public String formatPhoneNumber(String number) {
-        StringBuilder newNum = new StringBuilder();
-        char[] charNum = number.toCharArray();
-        newNum.append("(");
-        for (int i = 0; i < charNum.length; i++) {
-            if (i == 2) {
-                newNum.append(charNum[i]);
-                newNum.append(")-");
-            } else if (i == 5) {
-                newNum.append(charNum[i]);
-                newNum.append("-");
-            } else {
-                newNum.append(charNum[i]);
-            }
-        }
-        return newNum.toString();
-    }
-
     private void changeLanguage(int val) {
         System.out.println("val: " + val);
         switch(val) {
@@ -513,14 +555,9 @@ public class OrderEntry extends AppCompatActivity {
 
         possibleCustomerDestinations = new ArrayList<>();
 
-        // possibleOrders.add(new Order("FF555", "Charlies" + "/" + "Consignee Co.", "San Jose, California", "5:00pm", 1350, 5));
-        // possibleOrders.add(new Order("BB222", "John" + "/" + "Jonathon","Santa Cruz, California","6:30pm", 500, 1));
-        // possibleOrders.add(new Order("00000", "Starbucks" + "/" + "Bob's","Seattle, Washington","1:00pm", 1200, 5));
-        // possibleOrders.add(new Order("11111", "Safeway" + "/" + "Vans","Yuma, Arizona","9:00am", 6000, 8));
-
         showSoftKeyboard(orderNumber);
         emailStr.setText(Account.getCurrentAccount().getEmail());
-        phoneNumberStr.setText(formatPhoneNumber(Account.getCurrentAccount().getPhoneNumber()));
+        phoneNumberStr.setText(PhoneNumberFormat.formatPhoneNumber(Account.getCurrentAccount().getPhoneNumber()));
         truckNumberStr.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
         addOrderBtn.setEnabled(false);
         submitBtn.setEnabled(false);

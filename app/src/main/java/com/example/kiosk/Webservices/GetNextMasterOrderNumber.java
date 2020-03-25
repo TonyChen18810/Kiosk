@@ -42,8 +42,10 @@ public class GetNextMasterOrderNumber extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         GetMasterOrderDetails.setNewMasterNumber(nextMasterNumber);
+        /*
         for (int i = 0; i < MasterOrder.getPossibleMasterOrdersList().size(); i++) {
             MasterOrder.getPossibleMasterOrdersList().get(i).setMasterNumber(nextMasterNumber);
         }
+         */
     }
 }
