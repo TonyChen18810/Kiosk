@@ -35,7 +35,8 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         String namespace = "http://tempuri.org/";
         String method = "GetShippingTruckDriver";
         String soapAction = "http://tempuri.org/GetShippingTruckDriver";
-        String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
+        // String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
+        String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inEmail", enteredEmail);

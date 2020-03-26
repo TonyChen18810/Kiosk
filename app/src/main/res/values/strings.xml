@@ -198,6 +198,7 @@
     <string name="invalid_phone_eng">*Invalid phone number</string>
     <string name="appt_required_eng">*If your order requires an appointment please call 831&#8211;455&#8211;4305 to schedule an appointment</string>
     <string name="next_eng">Next</string>
+    <string name="log_in_eng">Log in</string>
     <string name="state_eng">State</string>
     <string name="logout_eng">Logout</string>
     <string name="create_account_eng">Create Account</string>
@@ -244,7 +245,7 @@
     <string name="est_pallets_eng">Est.\nPallets</string>
     <string name="apt_time_eng">Apt. Time</string>
     <string name="destination_eng">Destination</string>
-    <string name="est_weight_eng">Est. Weight</string>
+    <string name="est_weight_eng">Est.\nWeight</string>
     <string name="total_orders_eng">Total order count:</string>
     <string name="pallet_count_eng">Total pallet count:</string>
     <string name="total_weight_eng">Total weight:</string>
@@ -259,6 +260,7 @@
     <string name="invalid_phone_sp">*Numero de telefono invalido</string>
     <string name="appt_required_sp">*Si su pedido requiere una cita, llame al 831&#8211;455&#8211;4305 para programar una cita</string>
     <string name="next_sp">Siguiente</string>
+    <string name="log_in_sp">Iniciar sesión</string>
     <string name="state_sp">Estado</string>
     <string name="logout_sp">Cerrar sesión</string>
     <string name="create_account_sp">Crear una cuenta</string>
@@ -291,7 +293,7 @@
     <string name="line9_sp">&#8226; No se permiten conductores dentro de la cámara fría o en el muelle de carga..</string>
     <string name="line10_sp">&#8226; No opere puertas o placas de muelle.</string>
     <string name="line11_sp">&#8226; Tenga mucho cuidado con los pisos mojados y resbaladizos, así como con los montacargas en movimiento.</string>
-    <string name="line12_sp">&#8226; Cash transactions and/or gratuities of any kind are strictly prohibited.</string>
+    <string name="line12_sp">&#8226; Las transacciones en efectivo y / o propinas de cualquier tipo están estrictamente prohibidas.</string>
     <string name="line13_sp">&#8226; Tenga en cuenta que la videovigilancia captura sus acciones las 24 horas del día.</string>
     <string name="cooperation_sp">Su cooperación asegurará una carga más rápida y segura</string>
     <string name="verify_read_sp">*Al seleccionar \"Enviar\" a continuación, acepta que lee y comprende el protocolo establecido por la instalación y que toda la información ingresada anteriormente es verdadera y correcta.</string>
@@ -299,11 +301,11 @@
     <string name="confirm_orders_sp">Por favor confirme los siguientes pedidos:</string>
     <string name="confirmation_num_sp">Número de confirmación:</string>
     <string name="order_number_sp">Número\nde orden</string>
-    <string name="buyer_name_sp">Nombre del comprador</string>
+    <string name="buyer_name_sp">Nombre del\ncomprador</string>
     <string name="est_pallets_sp">Est.\nPaletas</string>
     <string name="apt_time_sp">Apto. Hora</string>
     <string name="destination_sp">Destino</string>
-    <string name="est_weight_sp">Est. Peso</string>
+    <string name="est_weight_sp">Est.\nPeso</string>
     <string name="total_orders_sp">Recuento total de pedidos:</string>
     <string name="pallet_count_sp">Recuento total de palets:</string>
     <string name="total_weight_sp">Peso total:</string>
@@ -318,6 +320,7 @@
     <string name="invalid_phone_fr">*Numéro de téléphone invalide</string>
     <string name="appt_required_fr">*Si votre commande nécessite un rendez&#8211;vous, veuillez appeler le 831&#8211;455&#8211;4305 pour fixer un rendez&#8211;vous</string>
     <string name="next_fr">Suivant</string>
+    <string name="log_in_fr">S\'identifier</string>
     <string name="state_fr">État</string>
     <string name="logout_fr">Se déconnecter</string>
     <string name="create_account_fr">Créer un compte</string>
@@ -362,11 +365,11 @@
     <string name="confirm_orders_fr">Veuillez confirmer les ordres suivantes:</string>
     <string name="confirmation_num_fr">Numéro de\nconfirmation:</string>
     <string name="order_number_fr">Numéro\nde ordre</string>
-    <string name="buyer_name_fr">Nom de l\'acheteur</string>
+    <string name="buyer_name_fr">Nom de\nl\'acheteur</string>
     <string name="est_pallets_fr">Est.\nPalettes</string>
     <string name="apt_time_fr">Apte. Temps</string>
     <string name="destination_fr">Destination</string>
-    <string name="est_weight_fr">Est. Poids</string>
+    <string name="est_weight_fr">Est.\nPoids</string>
     <string name="total_orders_fr">Nombre total de commandes:</string>
     <string name="pallet_count_fr">Nombre total de palettes:</string>
     <string name="total_weight_fr">Poids total:</string>

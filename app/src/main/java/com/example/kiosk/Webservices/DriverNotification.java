@@ -22,7 +22,8 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
         String namespace = "http://tempuri.org/";
         String method = "UpdateMasterOrderNotification";
         String soapAction = "http://tempuri.org/UpdateMasterOrderNotification";
-        String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
+        // String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
+        String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inMasterNumber", inMasterNumber);

@@ -335,7 +335,7 @@ public class CreateAccount extends AppCompatActivity {
                 userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + trailerLicenseStr + "<b>"));
                 userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + driverLicenseStr + "<b>"));
                 userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + driverNameStr + "<b>"));
-                userDispatcherPhone.setText(Html.fromHtml("Current dispatcher's phone number: " + "<b>\n" + dispatcherNumberStr + "<b>"));
+                userDispatcherPhone.setText(Html.fromHtml("Dispatcher's phone number: " + "<b>\n" + dispatcherNumberStr + "<b>"));
 
                 findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                     Account.clearAccounts();

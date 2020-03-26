@@ -15,13 +15,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.ConnectedOrders;
@@ -259,81 +256,6 @@ public class OrderEntry extends AppCompatActivity {
             }
         });
 
-/*
-        destinationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // String[] statesArray = getResources().getStringArray(R.array.states);
-                String[] destinationsArray = possibleCustomerDestinations.toArray(new String[0]);
-                System.out.println("---------------------------CLICKED--------------------------------!");
-                System.out.println("check: " + check);
-                System.out.println("Clicked on: " + destinationsArray[position]);
-                System.out.println("DESTINATION_ATTEMPTS: " + DESTINATION_ATTEMPTS);
-                System.out.println(destinationsArray.length);
-                if (++check > 1) {
-                    System.out.println("check: " + check);
-                    if (destinationsArray[position].equals(MasterOrder.getCurrentMasterOrder().getDestination())) {
-                        System.out.println("Selected: " + destinationsArray[position]);
-                        selectDestinationBtn.setText(destinationsArray[position]);
-                        selectDestinationBtn.clearAnimation();
-                        // destinationSpinner.setSelection(0);
-                        selectDestinationBtn.setEnabled(false);
-                        addOrderBtn.setEnabled(true);
-                        addOrderBtn.startAnimation(AnimationUtils.loadAnimation(OrderEntry.this, R.anim.fade));
-                        DESTINATION_ATTEMPTS = 0;
-                        check = 0;
-                        System.out.println(addOrderBtn.isEnabled());
-                        // initialSelection = false;
-                    } else {
-                        DESTINATION_ATTEMPTS++;
-                        // initialSelection = false;
-                        if (DESTINATION_ATTEMPTS >= 2) {
-                            check = 0;
-                            String message = null;
-                            if (currentLanguage == 0) {
-                                message = "Maximum destination attempts exceeded, please try another order number or contact your dispatcher.";
-                            } else if (currentLanguage == 1) {
-                                message = "Se excedieron los intentos de destino máximos, intente con otro número de pedido o comuníquese con su despachador.";
-                            } else if (currentLanguage == 2) {
-                                message = "Nombre maximal de tentatives de destination dépassé, veuillez essayer un autre numéro de ordre ou contacter votre répartiteur.";
-                            }
-                            HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
-                            dialog.show();
-                            orderNumber.setText("");
-                            buyerName.setVisibility(View.GONE);
-                            selectDestinationBtn.setVisibility(View.GONE);
-
-                            orderNumber.setEnabled(true);
-                            orderNumber.setFocusable(true);
-                            orderNumber.requestFocus();
-                            showSoftKeyboard(orderNumber);
-                            checkOrderBtn.setEnabled(false);
-                            addOrderBtn.setEnabled(false);
-                            DESTINATION_ATTEMPTS = 0;
-                        } else {
-                            String message = null;
-                            if (currentLanguage == 0) {
-                                message = "Incorrect destination for the entered order number, you have one attempt remaining.";
-                            } else if (currentLanguage == 1) {
-                                message = "Destino incorrecto para el número de pedido ingresado, le queda un intento.";
-                            } else if (currentLanguage == 2) {
-                                message = "Destination incorrecte pour le numéro de ordre saisi, il vous reste un tentative";
-                            }
-                            HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
-                            dialog.show();
-                            // initialSelection = false;
-                        }
-                    }
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-*/
         adapter.notifyDataSetChanged();
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
@@ -590,13 +512,7 @@ public class OrderEntry extends AppCompatActivity {
         checkOrderBtn = findViewById(R.id.CheckOrderBtn);
         selectDestinationBtn = findViewById(R.id.SelectDestinationBtn);
         selectDestinationBtn.setVisibility(View.GONE);
-     /*
-        destinationSpinner = findViewById(R.id.DestinationSpinner);
-        destinationSpinner.setVisibility(View.INVISIBLE);
 
-        destinationListView = findViewById(R.id.DestinationListView);
-        destinationListView.setVisibility(View.GONE);
-*/
         buyerName = findViewById(R.id.BuyerName);
         buyerName.setVisibility(View.GONE);
         currentlyEntered = findViewById(R.id.CurrentlyEntered);

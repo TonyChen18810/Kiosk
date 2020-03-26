@@ -19,7 +19,8 @@ public class GetNextMasterOrderNumber extends AsyncTask<Void, Void, Void> {
         String namespace = "http://tempuri.org/";
         String method = "GetNextMasterOrderNumber";
         String soapAction = "http://tempuri.org/GetNextMasterOrderNumber";
-        String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
+        // String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
+        String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
 
         SoapObject request = new SoapObject(namespace, method);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
