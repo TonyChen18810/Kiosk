@@ -1,13 +1,18 @@
 package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telecom.PhoneAccount;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.InputFilter;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -15,10 +20,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.kiosk.Account;
+import com.example.kiosk.Dialogs.ListViewDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
@@ -29,6 +36,7 @@ import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
 
 import java.text.ParseException;
+import java.util.List;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -45,8 +53,14 @@ public class LoggedIn extends AppCompatActivity {
     private EditText truckNumber;
     private EditText trailerLicense;
     private Spinner trailerStateSpinner;
+
+    private ListView trailerStateListView;
+
     private EditText driverLicense;
     private Spinner driverStateSpinner;
+
+    private ListView driverStateListView;
+
     private EditText driverName;
     private EditText dispatcherPhoneNumber;
     private TextView verifyText;
@@ -62,7 +76,9 @@ public class LoggedIn extends AppCompatActivity {
     private boolean initialSelection1 = false;
     private boolean initialSelection2 = false;
 
-    private int PREFERRED_COMMUNICATION = -1;
+    public static MutableLiveData<Boolean> checkboxListener;
+
+    private static int PREFERRED_COMMUNICATION = -1;
     private Account CURRENT_ACCOUNT = Account.getCurrentAccount();
 
     @Override
@@ -88,6 +104,13 @@ public class LoggedIn extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        checkboxListener = new MutableLiveData<>();
+        checkboxListener.observe(LoggedIn.this, needsUpdated -> {
+            if (needsUpdated) {
+                setCommunication();
+            }
+        });
+/*
         final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
         stateAdapter.setDropDownViewResource(R.layout.spinner_layout);
         trailerStateSpinner.setAdapter(stateAdapter);
@@ -114,6 +137,13 @@ public class LoggedIn extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+        });
+
+        trailerStateListView.setAdapter(stateAdapter);
+        trailerStateListView.setOnItemClickListener((parent, view, position, id) -> {
+            state1 = getResources().getStringArray(R.array.states_abbreviated)[position];
+            selectState1.setText(state1);
+            trailerStateListView.setVisibility(View.GONE);
         });
 
         final ArrayAdapter<CharSequence> stateAdapter2 = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
@@ -143,7 +173,7 @@ public class LoggedIn extends AppCompatActivity {
 
             }
         });
-
+*/
         phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         dispatcherPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
@@ -176,8 +206,8 @@ public class LoggedIn extends AppCompatActivity {
                 driverNameStr = driverName.getText().toString();
                 dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
                 new UpdateShippingTruckDriver(LoggedIn.this, Account.getCurrentAccount().getEmail(), emailStr, driverNameStr,
-                        PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr, driverLicenseStr, state1, trailerLicenseStr, state2,
-                        PhoneNumberFormat.extract(dispatcherNumberStr), "0", Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
+                        PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(), trailerLicenseStr, selectState2.getText().toString(),
+                        PhoneNumberFormat.extract(dispatcherNumberStr), "0", Integer.toString(++PREFERRED_COMMUNICATION)).execute();
                 /*
                 Account account = new Account(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
                         trailerStateStr, driverLicenseStr, driverStateStr, dispatcherNumberStr, "0", Integer.toString(PREFERRED_COMMUNICATION+1));
@@ -224,22 +254,30 @@ public class LoggedIn extends AppCompatActivity {
             return true;
         });
 
-        selectState1.setOnClickListener(v -> trailerStateSpinner.performClick());
+        selectState1.setOnClickListener(v -> {
+            // trailerStateSpinner.performClick();
+            // listview click
+            // trailerStateListView.setVisibility(View.VISIBLE);
+            // trailerStateListView.performClick();
+            ListViewDialog dialog = new ListViewDialog(LoggedIn.this, selectState1, 1);
+            dialog.show();
+        });
 
-        selectState2.setOnClickListener(v -> driverStateSpinner.performClick());
+        selectState2.setOnClickListener(v -> {
+            //driverStateSpinner.performClick();
+            // listview click
+            ListViewDialog dialog = new ListViewDialog(LoggedIn.this, selectState2, 1);
+            dialog.show();
+        });
+    }
 
-        System.out.println("COMMUNICATION PREFERENCE: " + Account.getCurrentAccount().getCommunicationPreference());
-
-        switch (Account.getCurrentAccount().getCommunicationPreference()) {
-            case "1":
-                setChecked(emailCheckbox, bothCheckbox, textCheckbox);
-                break;
-            case "2":
-                setChecked(textCheckbox, bothCheckbox, emailCheckbox);
-                break;
-            case "3":
-                setChecked(emailCheckbox, textCheckbox, bothCheckbox);
-                break;
+    public void setCommunication() {
+        if (Account.getCurrentAccount().getCommunicationPreference().equals("0")) {
+            setChecked(emailCheckbox, bothCheckbox, textCheckbox);
+        } else if (Account.getCurrentAccount().getCommunicationPreference().equals("1")) {
+            setChecked(textCheckbox, bothCheckbox, emailCheckbox);
+        } else if (Account.getCurrentAccount().getCommunicationPreference().equals("2")) {
+            setChecked(emailCheckbox, textCheckbox, bothCheckbox);
         }
     }
 
@@ -253,10 +291,13 @@ public class LoggedIn extends AppCompatActivity {
         }
         if (checkBox[checkBox.length-1] == textCheckbox) {
             PREFERRED_COMMUNICATION = 0;
+            Account.getCurrentAccount().setCommunicationPreference("0");
         } else if (checkBox[checkBox.length-1] == emailCheckbox) {
             PREFERRED_COMMUNICATION = 1;
+            Account.getCurrentAccount().setCommunicationPreference("1");
         } else if (checkBox[checkBox.length-1] == bothCheckbox) {
             PREFERRED_COMMUNICATION = 2;
+            Account.getCurrentAccount().setCommunicationPreference("2");
         }
     }
 
@@ -369,6 +410,15 @@ public class LoggedIn extends AppCompatActivity {
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
 
+        driverStateListView = findViewById(R.id.DriverStateListView);
+        trailerStateListView = findViewById(R.id.TrailerStateListView);
+        android.view.Display display = ((android.view.WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        driverStateListView.setMinimumHeight((int)(display.getHeight()*0.50));
+        trailerStateListView.setMinimumHeight((int)(display.getHeight()*0.50));
+
+        driverStateListView.setVisibility(View.GONE);
+        trailerStateListView.setVisibility(View.GONE);
+
         emailAddress.setEnabled(false);
         phoneNumber.setEnabled(false);
         driverLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
@@ -408,9 +458,14 @@ public class LoggedIn extends AppCompatActivity {
         driverLicense.setText(CURRENT_ACCOUNT.getDriverLicense());
         driverName.setText(CURRENT_ACCOUNT.getDriverName());
         dispatcherPhoneNumber.setText(PhoneNumberFormat.formatPhoneNumber(CURRENT_ACCOUNT.getDispatcherPhoneNumber()));
-        state1 = CURRENT_ACCOUNT.getDriverState();
-        state2 = CURRENT_ACCOUNT.getTrailerState();
 
         changeLanguage(currentLanguage);
+        selectState1.setText(CURRENT_ACCOUNT.getDriverState());
+        selectState2.setText(CURRENT_ACCOUNT.getTrailerState());
+        PREFERRED_COMMUNICATION = Integer.parseInt(Account.getCurrentAccount().getCommunicationPreference()) - 1;
+        Account.getCurrentAccount().setCommunicationPreference(Integer.toString(PREFERRED_COMMUNICATION));
+        System.out.println("PREFERRED COMMUNICATION: " + PREFERRED_COMMUNICATION);
+        System.out.println("Accounts contact preference: " + Account.getCurrentAccount().getCommunicationPreference());
+        setCommunication();
     }
 }

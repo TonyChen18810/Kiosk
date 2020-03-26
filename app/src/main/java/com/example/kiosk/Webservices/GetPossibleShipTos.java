@@ -17,10 +17,10 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
     private WeakReference<Activity> mWeakActivity;
     private String enteredSOPNumber;
     private String coolerNumber = "01";
-    private List<PossibleDestination> possibleDestinations;
+    private static List<PossibleDestination> possibleDestinations;
     private int propCount = 0;
 
-    List<PossibleDestination> getPossibleDestinations() {
+    static List<PossibleDestination> getPossibleDestinations() {
         return possibleDestinations;
     }
 

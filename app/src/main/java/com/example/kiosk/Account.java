@@ -83,6 +83,10 @@ public class Account {
         return communicationPreference;
     }
 
+    public void setCommunicationPreference(String communicationPreference) {
+        this.communicationPreference = communicationPreference;
+    }
+
     public static ArrayList<Account> getAccounts() {
         return accounts;
     }

@@ -37,15 +37,21 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         MasterOrder masterOrder = masterOrders.get(position);
-        String buyerNameEdit, buyerStr = masterOrder.getCustomerName();
         holder.orderNumber.setText(masterOrder.getSOPNumber());
+
+        String buyerNameEdit, buyerStr = masterOrder.getCustomerName();
+        String[] words = buyerStr.split(" ");
         if (buyerStr.length() > 13) {
             StringBuilder buyerNameStrBuilder = new StringBuilder();
             char[] buyerNameCharArray = buyerStr.toCharArray();
             for (int i = 0; i < buyerNameCharArray.length; i++) {
                 buyerNameStrBuilder.append(buyerNameCharArray[i]);
-                if ((i + 1) != buyerNameCharArray.length) {
+                if ((i + 1) != buyerNameCharArray.length && words.length < 4) {
                     if (buyerNameCharArray[i] == ' ' || buyerNameCharArray[i+1] == '-') {
+                        buyerNameStrBuilder.append('\n');
+                    }
+                } else if (words.length > 3) {
+                    if (buyerNameCharArray[i] == ' ') {
                         buyerNameStrBuilder.append('\n');
                     }
                 }

@@ -1,6 +1,9 @@
 package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -24,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.HelpDialog;
+import com.example.kiosk.Dialogs.ListViewDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
@@ -66,6 +70,8 @@ public class CreateAccount extends AppCompatActivity {
     private boolean initialSelection2 = false;
     private boolean clicked1 = false, clicked2 = false;
 
+    public static MutableLiveData<Boolean> checkboxListener;
+
     private int PREFERRED_COMMUNICATION = -1;
 
     private static int currentLanguage = Language.getCurrentLanguage();
@@ -99,6 +105,19 @@ public class CreateAccount extends AppCompatActivity {
             phone = (String) savedInstanceState.getSerializable("Phone Number");
         }
         setup();
+
+        checkboxListener = new MutableLiveData<>();
+        checkboxListener.observe(CreateAccount.this, updateState -> {
+            if (updateState) {
+                setCommunication();
+                clicked1 = true;
+                selectState1.clearAnimation();
+            } else if (!updateState) {
+                setCommunication();
+                clicked2 = true;
+                selectState2.clearAnimation();
+            }
+        });
 
         final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
         stateAdapter.setDropDownViewResource(R.layout.spinner_layout);
@@ -320,7 +339,6 @@ public class CreateAccount extends AppCompatActivity {
 
                 findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                     Account.clearAccounts();
-                    // Order.clearOrders();
                     MasterOrder.reset();
                     startActivity(new Intent(CreateAccount.this, MainActivity.class));
                 });
@@ -363,9 +381,27 @@ public class CreateAccount extends AppCompatActivity {
             return true;
         });
 
-        selectState1.setOnClickListener(v -> trailerStateSpinner.performClick());
+        selectState1.setOnClickListener(v -> {
+            // trailerStateSpinner.performClick();
+            ListViewDialog dialog = new ListViewDialog(CreateAccount.this, selectState1, 2);
+            dialog.show();
+        });
 
-        selectState2.setOnClickListener(v -> driverStateSpinner.performClick());
+        selectState2.setOnClickListener(v -> {
+            // driverStateSpinner.performClick();
+            ListViewDialog dialog = new ListViewDialog(CreateAccount.this, selectState2, 2);
+            dialog.show();
+        });
+    }
+
+    public void setCommunication() {
+        if (Account.getCurrentAccount().getCommunicationPreference().equals("0")) {
+            setChecked(emailCheckbox, bothCheckbox, textCheckbox);
+        } else if (Account.getCurrentAccount().getCommunicationPreference().equals("1")) {
+            setChecked(textCheckbox, bothCheckbox, emailCheckbox);
+        } else if (Account.getCurrentAccount().getCommunicationPreference().equals("2")) {
+            setChecked(emailCheckbox, textCheckbox, bothCheckbox);
+        }
     }
 
     private void setChecked(View... checkBox) {
@@ -377,10 +413,13 @@ public class CreateAccount extends AppCompatActivity {
             }
         }
         if (checkBox[checkBox.length-1] == textCheckbox) {
+            Account.getCurrentAccount().setCommunicationPreference("0");
             PREFERRED_COMMUNICATION = 0;
         } else if (checkBox[checkBox.length-1] == emailCheckbox) {
+            Account.getCurrentAccount().setCommunicationPreference("1");
             PREFERRED_COMMUNICATION = 1;
         } else if (checkBox[checkBox.length-1] == bothCheckbox) {
+            Account.getCurrentAccount().setCommunicationPreference("2");
             PREFERRED_COMMUNICATION = 2;
         }
     }

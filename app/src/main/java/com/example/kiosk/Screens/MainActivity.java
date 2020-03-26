@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (count == 13) {
                         if (PhoneNumberFormat.extract(phoneNumberBox.getText().toString()).equals(Account.getCurrentAccount().getPhoneNumber())) {
                             setStatus(1, asList(phoneNumberBox, emailAddressBox), Collections.singletonList(noPhoneNumberWarning));
-                        } else {
+                        } else if (!expanded){
                             setStatus(0, asList(phoneNumberBox, emailAddressBox), Collections.singletonList(noPhoneNumberWarning));
                         }
                     }

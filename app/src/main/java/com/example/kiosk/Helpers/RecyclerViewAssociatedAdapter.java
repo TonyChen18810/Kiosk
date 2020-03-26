@@ -42,17 +42,23 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         MasterOrder masterOrder = associatedOrders.get(position);
+        holder.orderNumber.setText(masterOrder.getSOPNumber());
 
         // format customer name
         String buyerNameEdit, buyerStr = masterOrder.getCustomerName();
-        holder.orderNumber.setText(masterOrder.getSOPNumber());
+        String[] words = buyerStr.split(" ");
+
         if (buyerStr.length() > 13) {
             StringBuilder buyerNameStrBuilder = new StringBuilder();
             char[] buyerNameCharArray = buyerStr.toCharArray();
             for (int i = 0; i < buyerNameCharArray.length; i++) {
                 buyerNameStrBuilder.append(buyerNameCharArray[i]);
-                if ((i + 1) != buyerNameCharArray.length) {
+                if ((i + 1) != buyerNameCharArray.length  && words.length < 4) {
                     if (buyerNameCharArray[i] == ' ' || buyerNameCharArray[i+1] == '-') {
+                        buyerNameStrBuilder.append('\n');
+                    }
+                } else if (words.length > 3) {
+                    if (buyerNameCharArray[i] == ' ') {
                         buyerNameStrBuilder.append('\n');
                     }
                 }
