@@ -385,6 +385,9 @@
     <string name="back_eng">Back</string>
     <string name="back_sp">Volver</string>
     <string name="back_fr">Retour</string>
+    <string name="account_already_exists_eng">*An account with this email already exists</string>
+    <string name="account_already_exists_sp">*Ya existe una cuenta con este correo electrónico</string>
+    <string name="account_already_exists_fr">*Un compte avec cet e-mail existe déjà</string>
 
 
 </resources>

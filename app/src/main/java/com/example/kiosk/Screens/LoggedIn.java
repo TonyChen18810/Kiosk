@@ -207,7 +207,7 @@ public class LoggedIn extends AppCompatActivity {
                 dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
                 new UpdateShippingTruckDriver(LoggedIn.this, Account.getCurrentAccount().getEmail(), emailStr, driverNameStr,
                         PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(), trailerLicenseStr, selectState2.getText().toString(),
-                        PhoneNumberFormat.extract(dispatcherNumberStr), "0", Integer.toString(++PREFERRED_COMMUNICATION)).execute();
+                        PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(++PREFERRED_COMMUNICATION)).execute();
                 /*
                 Account account = new Account(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
                         trailerStateStr, driverLicenseStr, driverStateStr, dispatcherNumberStr, "0", Integer.toString(PREFERRED_COMMUNICATION+1));

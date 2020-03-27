@@ -326,7 +326,7 @@ public class CreateAccount extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 // pass a weak reference?
                 new UpdateShippingTruckDriver(CreateAccount.this, emailStr, emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
-                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr),"0", Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
+                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
 
                 userEmail.setText(Html.fromHtml("Email address: " + "<b>" + email + "<b>"));
                 userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + phone + "<b>"));
