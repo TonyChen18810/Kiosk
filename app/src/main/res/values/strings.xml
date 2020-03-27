@@ -220,6 +220,7 @@
     <string name="no_eng">No</string>
     <string name="confirm_eng">Confirm</string>
     <string name="delete_eng">Delete</string>
+    <string name="existing_account_eng">Do you have an existing account?</string>
 
     <string name="regulations_eng">Rules and Regulations</string>
     <string name="line1_eng">&#8226; Your trailer temperature must be set to 34&#176;F continuously and pre-cooled prior to loading.</string>
@@ -280,6 +281,7 @@
     <string name="no_sp">No</string>
     <string name="confirm_sp">Confirmar</string>
     <string name="delete_sp">Eliminar</string>
+    <string name="existing_account_sp">¿Tienes una cuenta existente?</string>
 
     <string name="regulations_sp">Reglas y Regulaciones</string>
     <string name="line1_sp">&#8226; La temperatura de su remolque debe configurarse a 34&#176;F de forma continua y preenfriarse antes de la carga.</string>
@@ -344,6 +346,7 @@
     <string name="no_fr">Non</string>
     <string name="confirm_fr">Confirmer</string>
     <string name="delete_fr">Supprimer</string>
+    <string name="existing_account_fr">Avez-vous un compte existant?</string>
 
     <string name="regulations_fr">Règles et Règlements</string>
     <string name="line_fr">&#8226; La température de votre remorque doit être réglée à 34&#176;F en continu et pré-refroidie avant le chargement.</string>
@@ -379,6 +382,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back_eng">Back</string>
+    <string name="back_sp">Volver</string>
+    <string name="back_fr">Retour</string>
 
 
 </resources>

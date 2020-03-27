@@ -340,7 +340,7 @@ public class CreateAccount extends AppCompatActivity {
                 findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                     Account.clearAccounts();
                     MasterOrder.reset();
-                    startActivity(new Intent(CreateAccount.this, MainActivity.class));
+                    startActivity(new Intent(CreateAccount.this, FirstScreen.class));
                 });
             }
         });

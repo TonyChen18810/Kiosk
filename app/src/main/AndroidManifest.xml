@@ -16,9 +16,25 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysVisible"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Screens.OrderSummary" />
-        <activity android:name=".Screens.OrderEntry" />
-        <activity android:name=".Screens.LoggedIn" />
+        <activity android:name=".Screens.FirstScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Screens.OrderSummary"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name=".Screens.OrderEntry"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name=".Screens.LoggedIn"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
         <activity
             android:name=".Screens.CreateAccount"
             android:screenOrientation="portrait"
@@ -27,11 +43,6 @@
             android:name=".Screens.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data

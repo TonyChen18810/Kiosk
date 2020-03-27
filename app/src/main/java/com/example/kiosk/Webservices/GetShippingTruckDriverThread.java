@@ -1,37 +1,31 @@
 package com.example.kiosk.Webservices;
 
 import android.app.Activity;
-import android.os.AsyncTask;
-import android.view.View;
-import android.widget.ProgressBar;
+
 import com.example.kiosk.Account;
-import com.example.kiosk.R;
-import com.example.kiosk.Screens.MainActivity;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
 import java.lang.ref.WeakReference;
 
-public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
+public class GetShippingTruckDriverThread {
 
     private WeakReference<Activity> mWeakActivity;
-    private String enteredEmail;
+    private String enteredEmail,  enteredPhoneNumber;;
 
-    public GetShippingTruckDriver(Activity activity, String enteredEmail) {
+    public GetShippingTruckDriverThread(Activity activity, String enteredEmail, String enteredPhoneNumber) {
         mWeakActivity = new WeakReference<>(activity);
         this.enteredEmail = enteredEmail;
+        this.enteredPhoneNumber = enteredPhoneNumber;
     }
 
     private static String email = "", driverName = "", phone = "", truckName = "", truckNumber = "", driversLicense = "", driversLicenseState = "",
             trailerLicense = "", trailerLicenseState = "", dispatcherPhone = "", languagePreference = "", communicationPreference = "";
 
-    static public String getEmail() {
-        return email;
-    }
-
-    @Override
-    protected Void doInBackground(Void... voids) {
+    public boolean call() {
         String namespace = "http://tempuri.org/";
         String method = "GetShippingTruckDriver";
         String soapAction = "http://tempuri.org/GetShippingTruckDriver";
@@ -63,13 +57,19 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                 dispatcherPhone = ((SoapObject) (response.getProperty(0))).getProperty(9).toString();
                 languagePreference = ((SoapObject) (response.getProperty(0))).getProperty(10).toString();
                 communicationPreference = ((SoapObject) (response.getProperty(0))).getProperty(11).toString();
-                Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
-                        driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, communicationPreference);
-                Account.setCurrentAccount(account);
+                if (enteredEmail.toLowerCase().equals(email.toLowerCase()) && enteredPhoneNumber.equals(phone)) {
+                    Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
+                            driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, communicationPreference);
+                    Account.setCurrentAccount(account);
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
                         driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, communicationPreference);
                 Account.setCurrentAccount(account);
+                return false;
             }
 
         } catch (Exception e) {
@@ -77,33 +77,7 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
             Account account = new Account(null, null, null, null, null, null,
                     null, null, null, null, null, null);
             Account.setCurrentAccount(account);
+            return false;
         }
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        Activity activity = mWeakActivity.get();
-        if (activity != null) {
-            ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.GONE);
-        }
-        if (getEmail().length() == 0) {
-            MainActivity.accountExists.setValue(false);
-        } else {
-            MainActivity.accountExists.setValue(true);
-        }
-        // reset in case of different login attempt
-        email = "";
-        driverName = "";
-        phone = "";
-        truckName = "";
-        truckNumber = "";
-        driversLicense = "";
-        driversLicenseState = "";
-        trailerLicense = "";
-        trailerLicenseState = "";
-        dispatcherPhone = "";
     }
 }

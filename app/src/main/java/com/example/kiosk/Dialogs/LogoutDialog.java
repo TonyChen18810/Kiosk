@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Screens.FirstScreen;
 import com.example.kiosk.Screens.MainActivity;
 import com.example.kiosk.R;
 
@@ -54,7 +55,7 @@ public class LogoutDialog extends Dialog implements android.view.View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_yes:
-                Intent intent = new Intent(context, MainActivity.class);
+                Intent intent = new Intent(context, FirstScreen.class);
                 context.startActivity(intent);
                 dismiss();
                 break;
