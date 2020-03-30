@@ -2,7 +2,12 @@ package com.example.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+
 import com.example.kiosk.PossibleDestination;
+import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -78,6 +83,9 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
                 System.out.println(getPossibleDestinations().get(i).getDestination());
                 OrderEntry.possibleCustomerDestinations.add(possibleDestinations.get(i).getDestination());
             }
+            activity.findViewById(R.id.SelectDestinationBtn).setEnabled(true);
+            activity.findViewById(R.id.progressBar).setVisibility(View.GONE);
+            // Button destinationBtn = activity.findViewById(R.id.SelectDestinationBtn).startAnimation(AnimationUtils.loadAnimation(mWeakActivity.get(), R.anim.fade));
         }
         if (propCount > 0) {
             OrderEntry.listListener.setValue(true);

@@ -97,8 +97,8 @@ public class CreateAccount extends AppCompatActivity {
                 email = null;
                 phone = null;
             } else {
-                email = extras.getString("Email Address");
-                phone = extras.getString("Phone Number");
+                email = extras.getString("Email Address").toLowerCase();
+                phone = PhoneNumberFormat.extract(extras.getString("Phone Number"));
             }
         } else {
             email = (String) savedInstanceState.getSerializable("Email Address");
@@ -112,10 +112,16 @@ public class CreateAccount extends AppCompatActivity {
                 setCommunication();
                 clicked1 = true;
                 selectState1.clearAnimation();
+                showSoftKeyboard(truckName);
+                showSoftKeyboard(truckName);
+                showSoftKeyboard(truckName);
             } else if (!updateState) {
                 setCommunication();
                 clicked2 = true;
                 selectState2.clearAnimation();
+                showSoftKeyboard(dispatcherPhoneNumber);
+                showSoftKeyboard(dispatcherPhoneNumber);
+                showSoftKeyboard(dispatcherPhoneNumber);
             }
         });
 
@@ -255,6 +261,20 @@ public class CreateAccount extends AppCompatActivity {
 
         phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         dispatcherPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
+        driverLicense.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                selectState1.performClick();
+                // showSoftKeyboard(truckName);
+            }
+        });
+
+        trailerLicense.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                selectState2.performClick();
+                // showSoftKeyboard(dispatcherPhoneNumber);
+            }
+        });
 
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(CreateAccount.this, v);

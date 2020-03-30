@@ -129,7 +129,7 @@ public class OrderEntry extends AppCompatActivity {
                 checkOrderBtn.setEnabled(false);
                 checkOrderBtn.setBackgroundResource(R.drawable.arrow_down);
                 CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, MasterOrder.getCurrentMasterOrder().getCustomerName(),
-                        buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this);
+                        buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
                 // order needs to schedule appointment
@@ -281,6 +281,8 @@ public class OrderEntry extends AppCompatActivity {
         });
 
         addOrderBtn.setOnClickListener(v -> {
+            addOrderBtn.setEnabled(false);
+            progressBar.setVisibility(View.VISIBLE);
             addOrderBtn.clearAnimation();
             if (!recyclerView.isShown()) {
                 MasterOrder.getMasterOrdersList().remove(0);
@@ -307,7 +309,7 @@ public class OrderEntry extends AppCompatActivity {
 
             try {
                 // new GetMasterOrderDetails(OrderEntry.this, MasterOrder.getCurrentMasterOrder().getSOPNumber()).execute();
-                new GetOrderDetailsByMasterNumber(MasterOrder.getCurrentMasterOrder().getMasterNumber()).execute().get();
+                new GetOrderDetailsByMasterNumber(MasterOrder.getCurrentMasterOrder().getMasterNumber(), OrderEntry.this).execute().get();
                 /*
                 if (GetOrderDetailsByMasterNumber.getPropertyCount() > -1) {
                     // setContentView(R.layout.connected_orders);
@@ -402,6 +404,7 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.show();
                 orderNumber.setText("");
                 showSoftKeyboard(orderNumber);
+                checkOrderBtn.setEnabled(true);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
                 try {

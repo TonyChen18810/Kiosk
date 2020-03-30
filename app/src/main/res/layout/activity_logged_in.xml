@@ -37,6 +37,7 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/EmailHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -57,6 +58,7 @@
                 android:maxLength="50" />
 
             <TextView
+                android:id="@+id/PhoneHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -78,6 +80,7 @@
                 android:maxLength="20"/>
 
             <TextView
+                android:id="@+id/DriverNameHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -98,6 +101,7 @@
                 android:maxLength="30"/>
 
             <TextView
+                android:id="@+id/DriverLicenseHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -136,6 +140,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/TruckNameHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -156,6 +161,7 @@
                 android:maxLength="20"/>
 
             <TextView
+                android:id="@+id/TruckNumberHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -177,6 +183,7 @@
                 android:maxLength="20"/>
 
             <TextView
+                android:id="@+id/TrailerLicenseHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -216,6 +223,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/DispatcherHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -512,20 +520,20 @@
 
     <TextView
         android:id="@+id/VerifyText"
-        android:layout_width="550dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="8sp"
         android:text="*By clicking 'Next' I verify that\nall information is correct and accurate"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/andy_accent"
-        android:textSize="36sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/NextBtn"
-        app:layout_constraintHorizontal_bias="0.908"
+        app:layout_constraintHorizontal_bias="0.951"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CommunicationCard"
-        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintVertical_bias="0.083"
         tools:ignore="HardcodedText" />
 
     <Button

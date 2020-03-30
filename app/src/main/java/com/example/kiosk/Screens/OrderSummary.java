@@ -132,7 +132,7 @@ public class OrderSummary extends AppCompatActivity {
             logoutBtn.setOnClickListener(v1 -> {
                 timer.cancel();
                 System.out.println("done");
-                startActivity(new Intent(OrderSummary.this, MainActivity.class));
+                startActivity(new Intent(OrderSummary.this, FirstScreen.class));
             });
         });
     }

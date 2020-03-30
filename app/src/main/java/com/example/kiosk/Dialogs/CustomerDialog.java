@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.MasterOrder;
@@ -26,8 +27,10 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
     private Button destination;
     private ImageButton checkOrderBtn;
     private Context context;
+    private ProgressBar progressBar;
 
-    public CustomerDialog(Activity a, EditText orderNumber, String customerName, TextView customer, Button destination, ImageButton checkOrderBtn, Context context) {
+    public CustomerDialog(Activity a, EditText orderNumber, String customerName, TextView customer, Button destination,
+                          ImageButton checkOrderBtn, Context context, ProgressBar progressbar) {
         super(a);
         this.a = a;
         this.customerNameStr = customerName;
@@ -36,6 +39,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         this.orderNumber = orderNumber;
         this.checkOrderBtn = checkOrderBtn;
         this.context = context;
+        this.progressBar = progressbar;
     }
 
     @Override
@@ -74,11 +78,13 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_yes:
+                progressBar.setVisibility(View.VISIBLE);
                 new GetPossibleShipTos(a, MasterOrder.getCurrentMasterOrder().getSOPNumber()).execute();
                 customer.setVisibility(View.VISIBLE);
                 customer.setText(customerNameStr);
                 destination.setVisibility(View.VISIBLE);
                 destination.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade));
+                destination.setEnabled(false);
                 dismiss();
                 break;
             case R.id.btn_no:

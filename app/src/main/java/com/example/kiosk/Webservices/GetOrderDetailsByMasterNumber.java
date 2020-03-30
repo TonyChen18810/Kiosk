@@ -1,29 +1,33 @@
 package com.example.kiosk.Webservices;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.view.View;
 import com.example.kiosk.MasterOrder;
+import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+import java.lang.ref.WeakReference;
 
 public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
 
     private String inMasterNumber;
     private static int propertyCount;
+    private WeakReference<Activity> mWeakActivity;
 
-    public GetOrderDetailsByMasterNumber(String inMasterNumber) {
+    public GetOrderDetailsByMasterNumber(String inMasterNumber, Activity activity) {
         this.inMasterNumber = inMasterNumber;
+        mWeakActivity = new WeakReference<>(activity);
     }
 
     public static int getPropertyCount() {
         return propertyCount;
     }
 
-    @SuppressLint("WrongThread")
     @Override
     protected Void doInBackground(Void... voids) {
         String namespace = "http://tempuri.org/";
@@ -49,6 +53,26 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                 // empty list, no associated orders
                 System.out.println("No orders with matching master number (" + inMasterNumber + ") ----------------------------------------------, property count: " + propertyCount);
             } else {
+                /*
+                for (int k = 0; k < response.getPropertyCount(); k++) {
+                    if (((SoapObject) (response.getProperty(k))).getProperty(8).toString().equals("true")) {
+                        if (!MasterOrder.getCurrentMasterOrder().getAppointmentTime().equals(((SoapObject) (response.getProperty(k))).getProperty(10).toString())) {
+                            // yo these times don't match up call your dispatcher
+                            String message = "";
+                            if (Language.getCurrentLanguage() == 0) {
+                                message = "Some of these orders have differing appointment times, please contact your dispatcher";
+                            } else if (Language.getCurrentLanguage() == 1) {
+                                message = "Algunos de estos pedidos tienen horarios de citas diferentes, comuníquese con su despachador";
+                            } else if (Language.getCurrentLanguage() == 2) {
+                                message = "Certaines de ces commandes ont des heures de rendez-vous différentes, veuillez contacter votre répartiteur";
+                            }
+                            HelpDialog dialog = new HelpDialog(message, mWeakActivity.get());
+                            dialog.show();
+                            MasterOrder.reset();
+                        }
+                    }
+                }
+                 */
                 for (int i = 0; i < response.getPropertyCount(); i++) {
                     String masterNumber = ((SoapObject) (response.getProperty(i))).getProperty(0).toString();
                     String SOPNumber = ((SoapObject) (response.getProperty(i))).getProperty(1).toString();
@@ -69,14 +93,14 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                             canBeInserted = false;
                         }
                     }
-                    for (int k = 0; k < MasterOrder.getPossibleMasterOrdersList().size(); k++) {
-                        if (MasterOrder.getPossibleMasterOrdersList().get(k).getSOPNumber().equals(SOPNumber)) {
+                    for (int j = 0; j < MasterOrder.getPossibleMasterOrdersList().size(); j++) {
+                        if (MasterOrder.getPossibleMasterOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
                             canBeInserted = false;
                         }
                     }
 
-                    for (int l = 0; l < MasterOrder.getAssociatedMasterOrdersList().size(); l++) {
-                        if (MasterOrder.getAssociatedMasterOrdersList().get(l).getSOPNumber().equals(SOPNumber)) {
+                    for (int j = 0; j < MasterOrder.getAssociatedMasterOrdersList().size(); j++) {
+                        if (MasterOrder.getAssociatedMasterOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
                             canBeInserted = false;
                         }
                     }
@@ -104,6 +128,10 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             System.out.println("There's associated orders!!");
             OrderEntry.sharedMasterNumber.setValue(true);
         }
-
+        Activity activity = mWeakActivity.get();
+        if (activity != null) {
+            activity.findViewById(R.id.progressBar).setVisibility(View.GONE);
+            // activity.findViewById(R.id.addBtn).setEnabled(true);
+        }
     }
 }

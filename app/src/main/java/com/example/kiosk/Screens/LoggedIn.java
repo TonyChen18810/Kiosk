@@ -2,28 +2,20 @@ package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telecom.PhoneAccount;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.InputFilter;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.ListViewDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
@@ -34,10 +26,7 @@ import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
-
 import java.text.ParseException;
-import java.util.List;
-
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class LoggedIn extends AppCompatActivity {
@@ -69,6 +58,8 @@ public class LoggedIn extends AppCompatActivity {
     private TextView email;
     private TextView both;
     private TextView select;
+    private TextView emailHint, phoneHint, driverNameHint, driverLicenseHint,
+            truckNameHint, truckNumberHint, trailerLicenseHint, dispatcherHint;
     private View textCheckbox, emailCheckbox, bothCheckbox;
 
     private Button selectState1, selectState2;
@@ -338,6 +329,14 @@ public class LoggedIn extends AppCompatActivity {
                 select.setText(R.string.select_one_eng);
                 selectState1.setText(R.string.state_eng);
                 selectState2.setText(R.string.state_eng);
+                emailHint.setText(R.string.hint_email_eng);
+                phoneHint.setText(R.string.hint_phone_eng);
+                driverNameHint.setText(R.string.hint_driver_name_eng);
+                driverLicenseHint.setText(R.string.hint_driver_license_eng);
+                truckNameHint.setText(R.string.hint_truck_name_eng);
+                truckNumberHint.setText(R.string.hint_truck_number_eng);
+                trailerLicenseHint.setText(R.string.hint_trailer_license_eng);
+                dispatcherHint.setText(R.string.hint_dispatcher_eng);
                 break;
             case 1:
                 //Spanish
@@ -358,6 +357,14 @@ public class LoggedIn extends AppCompatActivity {
                 select.setText(R.string.select_one_sp);
                 selectState1.setText(R.string.state_sp);
                 selectState2.setText(R.string.state_sp);
+                emailHint.setText("Dirección de correo electrónico");
+                phoneHint.setText("Número de teléfono");
+                driverNameHint.setText("Nombre del conductor");
+                driverLicenseHint.setText("Número de licencia de conducir");
+                truckNameHint.setText("Nombre del camión");
+                truckNumberHint.setText("Numero de camion");
+                trailerLicenseHint.setText("Número de licencia de remolque");
+                dispatcherHint.setText("Número de teléfono del despachador");
                 break;
             case 2:
                 //French
@@ -378,6 +385,14 @@ public class LoggedIn extends AppCompatActivity {
                 select.setText(R.string.select_one_fr);
                 selectState1.setText(R.string.state_fr);
                 selectState2.setText(R.string.state_fr);
+                emailHint.setText("Adresse électronique");
+                phoneHint.setText("Numéro de téléphone");
+                driverNameHint.setText("Nom du conducteur");
+                driverLicenseHint.setText("Numéro de permis de conduire");
+                truckNameHint.setText("Nom du camion");
+                truckNumberHint.setText("Numéro de camion");
+                trailerLicenseHint.setText("Numéro de licence de la remorque");
+                dispatcherHint.setText("Numéro de téléphone du répartiteur");
                 break;
         }
     }
@@ -409,6 +424,16 @@ public class LoggedIn extends AppCompatActivity {
         preferText = findViewById(R.id.PreferInfoText);
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
+
+        // Field Hints
+        emailHint = findViewById(R.id.EmailHint);
+        phoneHint = findViewById(R.id.PhoneHint);
+        driverNameHint = findViewById(R.id.DriverNameHint);
+        driverLicenseHint = findViewById(R.id.DriverLicenseHint);
+        truckNameHint = findViewById(R.id.TruckNameHint);
+        truckNumberHint = findViewById(R.id.TruckNumberHint);
+        trailerLicenseHint = findViewById(R.id.TrailerLicenseHint);
+        dispatcherHint = findViewById(R.id.DispatcherHint);
 
         driverStateListView = findViewById(R.id.DriverStateListView);
         trailerStateListView = findViewById(R.id.TrailerStateListView);

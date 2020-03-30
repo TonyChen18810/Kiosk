@@ -246,7 +246,7 @@
     <string name="est_pallets_eng">Est.\nPallets</string>
     <string name="apt_time_eng">Apt. Time</string>
     <string name="destination_eng">Destination</string>
-    <string name="est_weight_eng">Est.\nWeight</string>
+    <string name="est_weight_eng">Est. Weight</string>
     <string name="total_orders_eng">Total order count:</string>
     <string name="pallet_count_eng">Total pallet count:</string>
     <string name="total_weight_eng">Total weight:</string>
@@ -307,7 +307,7 @@
     <string name="est_pallets_sp">Est.\nPaletas</string>
     <string name="apt_time_sp">Apto. Hora</string>
     <string name="destination_sp">Destino</string>
-    <string name="est_weight_sp">Est.\nPeso</string>
+    <string name="est_weight_sp">Est. Peso</string>
     <string name="total_orders_sp">Recuento total de pedidos:</string>
     <string name="pallet_count_sp">Recuento total de palets:</string>
     <string name="total_weight_sp">Peso total:</string>
@@ -372,7 +372,7 @@
     <string name="est_pallets_fr">Est.\nPalettes</string>
     <string name="apt_time_fr">Apte. Temps</string>
     <string name="destination_fr">Destination</string>
-    <string name="est_weight_fr">Est.\nPoids</string>
+    <string name="est_weight_fr">Est. Poids</string>
     <string name="total_orders_fr">Nombre total de commandes:</string>
     <string name="pallet_count_fr">Nombre total de palettes:</string>
     <string name="total_weight_fr">Poids total:</string>
@@ -388,6 +388,14 @@
     <string name="account_already_exists_eng">*An account with this email already exists</string>
     <string name="account_already_exists_sp">*Ya existe una cuenta con este correo electrónico</string>
     <string name="account_already_exists_fr">*Un compte avec cet e-mail existe déjà</string>
+    <string name="hint_email_eng">Email address</string>
+    <string name="hint_phone_eng">Phone number</string>
+    <string name="hint_driver_name_eng">Driver name</string>
+    <string name="hint_driver_license_eng">Driver license number</string>
+    <string name="hint_truck_name_eng">Name of truck</string>
+    <string name="hint_truck_number_eng">Truck number</string>
+    <string name="hint_trailer_license_eng">Trailer license number</string>
+    <string name="hint_dispatcher_eng">Dispatcher phone number</string>
 
 
 </resources>
