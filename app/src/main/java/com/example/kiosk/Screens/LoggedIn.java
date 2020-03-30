@@ -204,6 +204,7 @@ public class LoggedIn extends AppCompatActivity {
                         trailerStateStr, driverLicenseStr, driverStateStr, dispatcherNumberStr, "0", Integer.toString(PREFERRED_COMMUNICATION+1));
                 Account.setCurrentAccount(account);
                  */
+                nextBtn.setEnabled(false);
                 Intent intent = new Intent(LoggedIn.this, OrderEntry.class);
                 startActivity(intent);
             }

@@ -15,10 +15,10 @@ import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewSummaryAdapter;
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
-import com.example.kiosk.Webservices.DeleteMasterOrderDetails;
-import com.example.kiosk.Webservices.GetMasterOrderDetails;
+import com.example.kiosk.Webservices.DeleteOrderDetails;
+import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.UpdateMasterOrder;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -31,7 +31,7 @@ public class OrderSummary extends AppCompatActivity {
 
     private int currentLanguage = Language.getCurrentLanguage();
 
-    private final String CONFIRMATION_NUMBER = GetMasterOrderDetails.getMasterNumber();
+    private final String CONFIRMATION_NUMBER = GetOrderDetails.getMasterNumber();
 
     private Button logoutBtn;
 
@@ -58,7 +58,7 @@ public class OrderSummary extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.OrdersView);
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(OrderSummary.this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(verticalLayoutManager);
-        RecyclerViewSummaryAdapter adapter = new RecyclerViewSummaryAdapter(MasterOrder.getMasterOrdersList());
+        RecyclerViewSummaryAdapter adapter = new RecyclerViewSummaryAdapter(Order.getOrdersList());
         recyclerView.setAdapter(adapter);
 
         adapter.notifyDataSetChanged();
@@ -73,16 +73,16 @@ public class OrderSummary extends AppCompatActivity {
         });
 
         findViewById(R.id.ConfirmBtn).setOnClickListener(v -> {
-            List<MasterOrder> orderList = MasterOrder.getMasterOrdersList();
-            // List<MasterOrder> orderList = MasterOrder.getPossibleMasterOrdersList();
+            List<Order> orderList = Order.getOrdersList();
+            // List<Order> orderList = Order.getPossibleOrdersList();
             for (int i = 0; i < orderList.size(); i++) {
-                new DeleteMasterOrderDetails(orderList.get(i).getSOPNumber()).execute();
+                new DeleteOrderDetails(orderList.get(i).getSOPNumber()).execute();
             }
             for (int i = 0; i < orderList.size(); i++) {
                 if (i == orderList.size()-1) {
-                    new UpdateMasterOrder(GetMasterOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), true).execute();
+                    new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), true).execute();
                 } else {
-                    new UpdateMasterOrder(GetMasterOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), false).execute();
+                    new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), false).execute();
                 }
             }
             setContentView(R.layout.final_screen);
@@ -105,7 +105,7 @@ public class OrderSummary extends AppCompatActivity {
             TextView tv1 = findViewById(R.id.textView1);
             TextView tv2 = findViewById(R.id.textView2);
             if (currentLanguage == 0) {
-                if (MasterOrder.getMasterOrdersList().size() > 1) {
+                if (Order.getOrdersList().size() > 1) {
                     tv1.setText(R.string.thanks_bye_eng);
                 } else {
                     tv1.setText(R.string.thanks_bye2_eng);
@@ -113,7 +113,7 @@ public class OrderSummary extends AppCompatActivity {
                 tv2.setText(R.string.please_logout_eng);
                 logoutBtn.setText(R.string.logout_eng);
             } else if (currentLanguage == 1) {
-                if (MasterOrder.getMasterOrdersList().size() > 1) {
+                if (Order.getOrdersList().size() > 1) {
                     tv1.setText(R.string.thanks_bye_sp);
                 } else {
                     tv1.setText(R.string.thanks_bye2_sp);
@@ -121,7 +121,7 @@ public class OrderSummary extends AppCompatActivity {
                 tv2.setText(R.string.please_logout_sp);
                 logoutBtn.setText(R.string.logout_sp);
             } else if (currentLanguage == 2) {
-                if (MasterOrder.getMasterOrdersList().size() > 1) {
+                if (Order.getOrdersList().size() > 1) {
                     tv1.setText(R.string.thanks_bye_fr);
                 } else {
                     tv1.setText(R.string.thanks_bye2_fr);
@@ -155,14 +155,14 @@ public class OrderSummary extends AppCompatActivity {
         totalPalletsCount = findViewById(R.id.PalletCount);
         totalWeightCount = findViewById(R.id.TotalWeight);
 
-        ordersCount.setText(Integer.toString(MasterOrder.getMasterOrdersList().size()));
+        ordersCount.setText(Integer.toString(Order.getOrdersList().size()));
         DecimalFormat formatter = new DecimalFormat("#,###");
-        if (MasterOrder.getTotalPalletCount() < 1) {
+        if (Order.getTotalPalletCount() < 1) {
             totalPalletsCount.setText("1");
         } else {
-            totalPalletsCount.setText(formatter.format(MasterOrder.getTotalPalletCount()));
+            totalPalletsCount.setText(formatter.format(Order.getTotalPalletCount()));
         }
-        totalWeightCount.setText(formatter.format(MasterOrder.getTotalWeight()) + " lbs");
+        totalWeightCount.setText(formatter.format(Order.getTotalWeight()) + " lbs");
 
         if (currentLanguage == 0) {
             confirmOrders.setText(R.string.confirm_orders_eng);

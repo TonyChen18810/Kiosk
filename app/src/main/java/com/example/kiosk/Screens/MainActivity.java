@@ -24,7 +24,7 @@ import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.States;
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetShippingTruckDriver;
 
@@ -409,11 +409,11 @@ public class MainActivity extends AppCompatActivity {
         });
 */
         nextBtn.setOnClickListener(v -> {
-            progressBar.setVisibility(View.VISIBLE);
             nextBtn.setEnabled(false);
             backBtn.setEnabled(false);
             if (!newAccount) {
                 if (validEmail() && validNumber()) {
+                    progressBar.setVisibility(View.VISIBLE);
                     new GetShippingTruckDriver(MainActivity.this, emailAddressBox.getText().toString().toLowerCase()).execute();
                 } else {
                     if (!validEmail()) {
@@ -425,6 +425,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (newAccount) {
                 if (validNumber() && validEmail() && doesEmailMatch() && doesPhoneMatch()) {
+                    progressBar.setVisibility(View.VISIBLE);
                     new GetShippingTruckDriver(MainActivity.this, emailAddressBox.getText().toString().toLowerCase()).execute();
                 } else {
                     if (!validEmail()){
@@ -614,9 +615,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setup() {
-        Account.clearAccounts();
-        Account.setCurrentAccount(null);
-        MasterOrder.reset();
 
         View decorView = getWindow().getDecorView();
 

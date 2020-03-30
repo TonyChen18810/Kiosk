@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
 
 import java.text.DecimalFormat;
@@ -19,11 +19,11 @@ import java.util.List;
 
 public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerViewSummaryAdapter.MyViewHolder> {
 
-    private List<MasterOrder> masterOrders;
+    private List<Order> orders;
     private final static int minHeight = 190;
 
-    public RecyclerViewSummaryAdapter(List<MasterOrder> masterOrders) {
-        this.masterOrders = masterOrders;
+    public RecyclerViewSummaryAdapter(List<Order> orders) {
+        this.orders = orders;
     }
 
     @NonNull
@@ -36,10 +36,10 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        MasterOrder masterOrder = masterOrders.get(position);
-        holder.orderNumber.setText(masterOrder.getSOPNumber());
+        Order order = orders.get(position);
+        holder.orderNumber.setText(order.getSOPNumber());
 
-        String buyerNameEdit, buyerStr = masterOrder.getCustomerName();
+        String buyerNameEdit, buyerStr = order.getCustomerName();
         String[] words = buyerStr.split(" ");
         if (buyerStr.length() > 13) {
             StringBuilder buyerNameStrBuilder = new StringBuilder();
@@ -62,8 +62,8 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
         }
         holder.buyerName.setText(buyerNameEdit);
 
-        if (masterOrder.getDestination().length() > 11) {
-            char[] destArray = masterOrder.getDestination().toCharArray();
+        if (order.getDestination().length() > 11) {
+            char[] destArray = order.getDestination().toCharArray();
             StringBuilder destStrBuilder = new StringBuilder();
             for (int i = 0; i < destArray.length; i++) {
                 destStrBuilder.append(destArray[i]);
@@ -73,30 +73,29 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
             }
             holder.destination.setText(destStrBuilder.toString());
         } else {
-            holder.destination.setText(masterOrder.getDestination());
+            holder.destination.setText(order.getDestination());
         }
 
 
-        // holder.destination.setText(masterOrder.getDestination());
-        if (masterOrder.getAppointmentTime().equals("00:00:00")) {
+        // holder.destination.setText(order.getDestination());
+        if (order.getAppointmentTime().equals("00:00:00")) {
             holder.aptTime.setText("N/A");
         } else {
-            holder.aptTime.setText(masterOrder.getAppointmentTime());
+            holder.aptTime.setText(order.getAppointmentTime());
         }
 
         DecimalFormat formatter = new DecimalFormat("#,###");
-
-        if (masterOrder.getEstimatedPallets() < 1) {
+        if (order.getEstimatedPallets() <= 1 && order.getEstimatedPallets() > 0) {
             holder.estPallets.setText("1");
         } else {
-            holder.estPallets.setText(Integer.toString((int) Math.round(masterOrder.getEstimatedPallets())));
+            holder.estPallets.setText(Integer.toString((int) Math.round(order.getEstimatedPallets())));
         }
-        holder.estWeight.setText(formatter.format(masterOrder.getEstimatedWeight()) + " lbs");
+        holder.estWeight.setText(formatter.format(order.getEstimatedWeight()) + " lbs");
     }
 
     @Override
     public int getItemCount() {
-        return masterOrders.size();
+        return orders.size();
     }
 
 

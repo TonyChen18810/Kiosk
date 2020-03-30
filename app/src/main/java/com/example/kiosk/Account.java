@@ -1,7 +1,5 @@
 package com.example.kiosk;
 
-import java.util.ArrayList;
-
 public class Account {
 
     private String email;
@@ -18,8 +16,6 @@ public class Account {
     private String communicationPreference;
 
     private static Account CURRENT_ACCOUNT;
-
-    private static ArrayList<Account> accounts = new ArrayList<>();
 
     public Account(String email, String driverName, String phoneNumber, String truckName, String truckNumber, String driverLicense, String driverState,
                    String trailerLicense, String trailerState, String dispatcherPhoneNumber, String languagePreference, String communicationPreference) {
@@ -87,37 +83,11 @@ public class Account {
         this.communicationPreference = communicationPreference;
     }
 
-    public static ArrayList<Account> getAccounts() {
-        return accounts;
-    }
-
-    public static void addAccount(Account account) {
-        accounts.add(account);
-    }
-
-    public static void clearAccounts() {
-        accounts.clear();
-    }
-
     public static Account getCurrentAccount() {
         return CURRENT_ACCOUNT;
     }
 
     public static void setCurrentAccount(Account account) {
-
         CURRENT_ACCOUNT = account;
-        /*
-        System.out.println(CURRENT_ACCOUNT.email);
-        System.out.println(CURRENT_ACCOUNT.driverName);
-        System.out.println(CURRENT_ACCOUNT.phoneNumber);
-        System.out.println(CURRENT_ACCOUNT.truckName);
-        System.out.println(CURRENT_ACCOUNT.truckNumber);
-        System.out.println(CURRENT_ACCOUNT.driverLicense);
-        System.out.println(CURRENT_ACCOUNT.driverState);
-        System.out.println(CURRENT_ACCOUNT.trailerLicense);
-        System.out.println(CURRENT_ACCOUNT.trailerState);
-        System.out.println(CURRENT_ACCOUNT.dispatcherPhoneNumber);
-
-         */
     }
 }

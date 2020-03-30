@@ -9,26 +9,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<RecyclerViewAssociatedAdapter.MyViewHolder> {
 
-    private List<MasterOrder> associatedOrders;
+    private List<Order> associatedOrders;
     private Button addBtn;
 
-    private static List<MasterOrder> selectedOrders;
+    private static List<Order> selectedOrders;
 
-    public RecyclerViewAssociatedAdapter(List<MasterOrder> associatedOrders, Button addBtn) {
+    public RecyclerViewAssociatedAdapter(List<Order> associatedOrders, Button addBtn) {
         this.associatedOrders = associatedOrders;
         selectedOrders = new ArrayList<>();
         this.addBtn = addBtn;
         this.addBtn.setEnabled(false);
     }
 
-    public static List<MasterOrder> getSelectedOrders() {
+    public static List<Order> getSelectedOrders() {
         return selectedOrders;
     }
 
@@ -41,11 +41,11 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        MasterOrder masterOrder = associatedOrders.get(position);
-        holder.orderNumber.setText(masterOrder.getSOPNumber());
+        Order order = associatedOrders.get(position);
+        holder.orderNumber.setText(order.getSOPNumber());
 
         // format customer name
-        String buyerNameEdit, buyerStr = masterOrder.getCustomerName();
+        String buyerNameEdit, buyerStr = order.getCustomerName();
         String[] words = buyerStr.split(" ");
 
         if (buyerStr.length() > 13) {
@@ -68,12 +68,12 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
             buyerNameEdit = buyerStr;
         }
 
-        holder.orderNumber.setText(masterOrder.getSOPNumber());
+        holder.orderNumber.setText(order.getSOPNumber());
         holder.buyerName.setText(buyerNameEdit);
 
         // format destination
-        if (masterOrder.getDestination().length() > 11) {
-            char[] destArray = masterOrder.getDestination().toCharArray();
+        if (order.getDestination().length() > 11) {
+            char[] destArray = order.getDestination().toCharArray();
             StringBuilder destStrBuilder = new StringBuilder();
             for (int i = 0; i < destArray.length; i++) {
                 destStrBuilder.append(destArray[i]);
@@ -83,7 +83,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
             }
             holder.destination.setText(destStrBuilder.toString());
         } else {
-            holder.destination.setText(masterOrder.getDestination());
+            holder.destination.setText(order.getDestination());
         }
     }
 

@@ -366,7 +366,7 @@
     <string name="verify_read_fr">*En sélectionnant \"Soumettre\" ci-dessous, vous acceptez de lire et de comprendre le protocole établi par l\'établissement et que toutes les informations précédemment saisies sont véridiques et correctes.</string>
     <string name="submit_fr">Soumettre</string>
     <string name="confirm_orders_fr">Veuillez confirmer les ordres suivantes:</string>
-    <string name="confirmation_num_fr">Numéro de\nconfirmation:</string>
+    <string name="confirmation_num_fr">Numéro de confirmation:</string>
     <string name="order_number_fr">Numéro\nde ordre</string>
     <string name="buyer_name_fr">Nom de\nl\'acheteur</string>
     <string name="est_pallets_fr">Est.\nPalettes</string>

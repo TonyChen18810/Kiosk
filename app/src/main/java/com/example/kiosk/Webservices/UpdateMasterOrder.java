@@ -65,7 +65,7 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         if (this.lastCall) {
-            new DriverNotification(GetMasterOrderDetails.getMasterNumber()).execute();
+            new DriverNotification(GetOrderDetails.getMasterNumber()).execute();
         }
     }
 }

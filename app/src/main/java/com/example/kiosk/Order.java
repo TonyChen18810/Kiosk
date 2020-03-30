@@ -1,11 +1,11 @@
 package com.example.kiosk;
 
-import com.example.kiosk.Webservices.GetMasterOrderDetails;
+import com.example.kiosk.Webservices.GetOrderDetails;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MasterOrder {
+public class Order {
 
     private String masterNumber;
     private String SOPNumber;
@@ -21,16 +21,16 @@ public class MasterOrder {
     private String estimatedWeight;
     private String estimatedPallets;
 
-    private static MasterOrder CURRENT_MASTER_ORDER;
-    private static ArrayList<MasterOrder> masterOrdersList = new ArrayList<>();
-    private static ArrayList<MasterOrder> possibleMasterOrdersList = new ArrayList<>();
-    private static ArrayList<MasterOrder> associatedMasterOrdersList = new ArrayList<>();
+    private static Order CURRENT_ORDER;
+    private static ArrayList<Order> ordersList = new ArrayList<>();
+    private static ArrayList<Order> possibleOrdersList = new ArrayList<>();
+    private static ArrayList<Order> associatedOrdersList = new ArrayList<>();
     private static double totalWeight = 0;
-    private static double totalPalletCount = 0;
+    private static int totalPalletCount = 0;
 
-    public MasterOrder(String masterNumber, String SOPNumber, String coolerLocation, String destination, String consignee,
-                       String truckStatus, String customerName, String isCheckedIn, String isAppointment,
-                       String orderDate, String appointmentTime, String estimatedWeight, String estimatedPallets) {
+    public Order(String masterNumber, String SOPNumber, String coolerLocation, String destination, String consignee,
+                 String truckStatus, String customerName, String isCheckedIn, String isAppointment,
+                 String orderDate, String appointmentTime, String estimatedWeight, String estimatedPallets) {
         this.masterNumber = masterNumber;
         this.SOPNumber = SOPNumber;
         this.coolerLocation = coolerLocation;
@@ -44,15 +44,11 @@ public class MasterOrder {
         this.appointmentTime = appointmentTime;
         this.estimatedWeight = estimatedWeight;
         this.estimatedPallets = estimatedPallets;
-        CURRENT_MASTER_ORDER = this;
+        CURRENT_ORDER = this;
     }
 
     public String getMasterNumber() {
         return masterNumber;
-    }
-
-    public void setMasterNumber(String masterNumber) {
-        this.masterNumber = masterNumber;
     }
 
     public String getSOPNumber() {
@@ -95,8 +91,8 @@ public class MasterOrder {
         return appointmentTime;
     }
 
-    public static MasterOrder getOrderByOrderNumber(String SOPNumber) {
-        for (MasterOrder order : masterOrdersList) {
+    public static Order getOrderByOrderNumber(String SOPNumber) {
+        for (Order order : ordersList) {
             if (order.SOPNumber.equals(SOPNumber)) {
                 return order;
             }
@@ -123,49 +119,57 @@ public class MasterOrder {
     public static void reset() {
         totalWeight = 0;
         totalPalletCount = 0;
-        possibleMasterOrdersList.clear();
-        associatedMasterOrdersList.clear();
-        masterOrdersList.clear();
-        GetMasterOrderDetails.setNewMasterNumber(null);
+        possibleOrdersList.clear();
+        associatedOrdersList.clear();
+        ordersList.clear();
+        CURRENT_ORDER = null;
+        GetOrderDetails.setNewMasterNumber(null);
     }
 
     public static void clearAssociatedOrderList() {
-        associatedMasterOrdersList.clear();
+        associatedOrdersList.clear();
     }
 
-    public static List<MasterOrder> getMasterOrdersList() {
-        return masterOrdersList;
+    public static List<Order> getOrdersList() {
+        return ordersList;
     }
 
-    public static List<MasterOrder> getPossibleMasterOrdersList() {
-        return possibleMasterOrdersList;
+    public static List<Order> getPossibleOrdersList() {
+        return possibleOrdersList;
     }
 
-    public static List<MasterOrder> getAssociatedMasterOrdersList() {
-        return associatedMasterOrdersList;
+    public static List<Order> getAssociatedOrdersList() {
+        return associatedOrdersList;
     }
 
-    public static MasterOrder getCurrentMasterOrder() {
-        return CURRENT_MASTER_ORDER;
+    public static Order getCurrentMasterOrder() {
+        return CURRENT_ORDER;
     }
 
-    public static void addMasterOrderToList(MasterOrder masterOrder) {
-        totalWeight += masterOrder.getEstimatedWeight();
-        totalPalletCount += masterOrder.getEstimatedPallets();
-        masterOrdersList.add(masterOrder);
+    public static void addMasterOrderToList(Order order) {
+        System.out.println("Estimated pallet count of order: " + order.getEstimatedPallets());
+        System.out.println("Total pallets: " + totalPalletCount);
+        totalWeight += order.getEstimatedWeight();
+        if (order.getEstimatedPallets() < 1 && order.getEstimatedPallets() > 0) {
+            totalPalletCount += 1;
+        } else {
+            totalPalletCount += order.getEstimatedPallets();
+        }
+        System.out.println("Total pallet count after adding: " + totalPalletCount);
+        ordersList.add(order);
     }
 
     public static void removeMasterOrderFromList(int i) {
-        totalWeight -= masterOrdersList.get(i).getEstimatedWeight();
-        totalPalletCount -= masterOrdersList.get(i).getEstimatedPallets();
-        masterOrdersList.remove(i);
+        totalWeight -= ordersList.get(i).getEstimatedWeight();
+        totalPalletCount -= ordersList.get(i).getEstimatedPallets();
+        ordersList.remove(i);
     }
 
-    public static void addPossibleMasterOrderToList(MasterOrder masterOrder) {
-        possibleMasterOrdersList.add(masterOrder);
+    public static void addPossibleMasterOrderToList(Order order) {
+        possibleOrdersList.add(order);
     }
 
-    public static void addAssociatedMasterOrderToList(MasterOrder masterOrder) {
-        associatedMasterOrdersList.add(masterOrder);
+    public static void addAssociatedMasterOrderToList(Order order) {
+        associatedOrdersList.add(order);
     }
 }

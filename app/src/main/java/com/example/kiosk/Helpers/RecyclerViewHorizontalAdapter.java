@@ -10,21 +10,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.R;
 import java.util.List;
 
 public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<RecyclerViewHorizontalAdapter.MyViewHolder> {
 
-    private List<MasterOrder> masterOrders;
+    private List<Order> orders;
     private LayoutInflater mInflater;
     private Context context;
 
-    public RecyclerViewHorizontalAdapter(Context context, List<MasterOrder> masterOrders) {
+    public RecyclerViewHorizontalAdapter(Context context, List<Order> orders) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
-        this.masterOrders = masterOrders;
+        this.orders = orders;
     }
 
     @Override
@@ -36,20 +36,20 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        MasterOrder masterOrder = masterOrders.get(position);
-        holder.orderNumber.setText(masterOrder.getSOPNumber());
-        holder.buyerName.setText(masterOrder.getCustomerName());
-        holder.destination.setText(masterOrder.getDestination());
-        if (masterOrder.getAppointmentTime().equals("00:00:00")) {
+        Order order = orders.get(position);
+        holder.orderNumber.setText(order.getSOPNumber());
+        holder.buyerName.setText(order.getCustomerName());
+        holder.destination.setText(order.getDestination());
+        if (order.getAppointmentTime().equals("00:00:00")) {
             holder.appointment.setText("N/A");
         } else {
-            holder.appointment.setText(masterOrder.getAppointmentTime());
+            holder.appointment.setText(order.getAppointmentTime());
         }
     }
 
     @Override
     public int getItemCount() {
-        return masterOrders.size();
+        return orders.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

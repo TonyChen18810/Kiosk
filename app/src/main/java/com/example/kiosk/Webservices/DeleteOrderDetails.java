@@ -8,11 +8,11 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-public class DeleteMasterOrderDetails extends AsyncTask<Void, Void, Void> {
+public class DeleteOrderDetails extends AsyncTask<Void, Void, Void> {
 
     private String SOPnumber;
 
-    public DeleteMasterOrderDetails(String SOPnumber) {
+    public DeleteOrderDetails(String SOPnumber) {
         this.SOPnumber = SOPnumber;
     }
 

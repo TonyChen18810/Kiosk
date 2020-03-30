@@ -5,8 +5,11 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import com.example.kiosk.Dialogs.HelpDialog;
+import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.Time;
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
 
@@ -16,11 +19,12 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
 
-public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
+public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<Activity> mWeakActivity;
     private String enteredSOPNumber;
     private static String MASTER_NUMBER = null;
+    private static String APPOINTMENT_TIME = null;
     private static String coolerNumber = "01";
 
     private int propertyCount;
@@ -39,7 +43,7 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
     private String estimatedWeight;
     private String estimatedPallets;
 
-    public GetMasterOrderDetails(Activity activity, String enteredSOPNumber) {
+    public GetOrderDetails(Activity activity, String enteredSOPNumber) {
         mWeakActivity = new WeakReference<>(activity);
         this.enteredSOPNumber = enteredSOPNumber;
         System.out.println("MASTER NUMBER ON METHOD CALL: " + MASTER_NUMBER);
@@ -79,6 +83,7 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
             System.out.println("PROPERTY COUNT ------- : " + propertyCount);
             if (propertyCount > 0) {
                 masterNumber = ((SoapObject) (response.getProperty(0))).getProperty(0).toString();
+                System.out.println("Master number of this ORDER1: " + masterNumber);
                 SOPNumber = ((SoapObject) (response.getProperty(0))).getProperty(1).toString();
                 coolerLocation = ((SoapObject) (response.getProperty(0))).getProperty(2).toString();
                 destination = ((SoapObject) (response.getProperty(0))).getProperty(3).toString();
@@ -117,9 +122,12 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
                             if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
                                 System.out.println("We need a new master number...");
                                 new GetNextMasterOrderNumber().execute();
-                                isGoodOrder = true;
+                            } else {
+                                MASTER_NUMBER = masterNumber;
                             }
                         }
+                        isGoodOrder = true;
+                        OrderEntry.appointmentTimeListener.setValue(0);
                         // OrderEntry.appointmentTimeListener.setValue(-1);
                     } else if (checkApppointmentTime(appointmentTime) == 1) {
                         System.out.println("You're late");
@@ -132,6 +140,8 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
                                 System.out.println("We need a new master number...");
                                 new GetNextMasterOrderNumber().execute();
                                 isGoodOrder = true;
+                            } else {
+                                MASTER_NUMBER = masterNumber;
                             }
                         }
                         isGoodOrder = true;
@@ -150,7 +160,7 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
                     } else {
                         isGoodOrder = true;
                     }
-                    // MasterOrder.addMasterOrderToList(masterOrder);
+                    // Order.addMasterOrderToList(masterOrder);
                 }
             }
 
@@ -164,7 +174,7 @@ public class GetMasterOrderDetails extends AsyncTask<Void, Void, Void> {
             OrderEntry.validOrderNumber.setValue(0);
         }
         if (isGoodOrder) {
-            MasterOrder masterOrder = new MasterOrder(MASTER_NUMBER, SOPNumber, coolerLocation, destination, consignee, truckStatus,
+            Order order = new Order(MASTER_NUMBER, SOPNumber, coolerLocation, destination, consignee, truckStatus,
                     customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
             OrderEntry.validOrderNumber.setValue(1);
         }

@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.kiosk.Helpers.Language;
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetPossibleShipTos;
 
@@ -53,7 +53,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         TextView congsigneeName = findViewById(R.id.ConsigneeName);
         TextView correctCustomer = findViewById(R.id.CorrectCustomer);
         customerName.setText(customerNameStr);
-        congsigneeName.setText(MasterOrder.getCurrentMasterOrder().getConsignee());
+        congsigneeName.setText(Order.getCurrentMasterOrder().getConsignee());
         if (Language.getCurrentLanguage() == 0) {
             correctCustomer.setText(R.string.correct_customer_eng);
             destination.setText(R.string.select_destination_eng);
@@ -79,7 +79,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         switch (v.getId()) {
             case R.id.btn_yes:
                 progressBar.setVisibility(View.VISIBLE);
-                new GetPossibleShipTos(a, MasterOrder.getCurrentMasterOrder().getSOPNumber()).execute();
+                new GetPossibleShipTos(a, Order.getCurrentMasterOrder().getSOPNumber()).execute();
                 customer.setVisibility(View.VISIBLE);
                 customer.setText(customerNameStr);
                 destination.setVisibility(View.VISIBLE);

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.kiosk.Helpers.RecyclerViewAssociatedAdapter;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
         Button addBtn = findViewById(R.id.addBtn);
         Button cancelBtn = findViewById(R.id.cancelBtn);
 
-        ArrayList<MasterOrder> connectedOrders = new ArrayList<>(MasterOrder.getAssociatedMasterOrdersList());
+        ArrayList<Order> connectedOrders = new ArrayList<>(Order.getAssociatedOrdersList());
 
         RecyclerView recyclerView2 = findViewById(R.id.AssociatedOrdersView);
         LinearLayoutManager verticalLayoutManager2 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -54,20 +54,20 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.addBtn:
-                List<MasterOrder> selectedOrders = RecyclerViewAssociatedAdapter.getSelectedOrders();
+                List<Order> selectedOrders = RecyclerViewAssociatedAdapter.getSelectedOrders();
                 for (int i = 0; i < selectedOrders.size(); i++) {
-                    MasterOrder.addMasterOrderToList(selectedOrders.get(i));
+                    Order.addMasterOrderToList(selectedOrders.get(i));
                 }
                 adapter.notifyDataSetChanged();
                 adapter.notifyItemInserted(adapter.getItemCount() - 1);
                 recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
                 recyclerView.scheduleLayoutAnimation();
-                MasterOrder.clearAssociatedOrderList();
+                Order.clearAssociatedOrderList();
                 dismiss();
                 break;
             case R.id.cancelBtn:
                 setContentView(R.layout.activity_order_entry);
-                MasterOrder.clearAssociatedOrderList();
+                Order.clearAssociatedOrderList();
                 dismiss();
                 break;
             default:

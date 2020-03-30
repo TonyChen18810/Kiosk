@@ -183,7 +183,7 @@
         app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.243"
+        app:layout_constraintVertical_bias="0.244"
         app:srcCompat="@drawable/help" />
 
     <ImageButton
@@ -198,7 +198,7 @@
         app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39"
+        app:layout_constraintVertical_bias="0.391"
         app:srcCompat="@drawable/help" />
 
     <ImageButton
@@ -213,7 +213,7 @@
         app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.339"
+        app:layout_constraintVertical_bias="0.341"
         app:srcCompat="@drawable/help" />
 
     <ImageButton
@@ -228,7 +228,7 @@
         app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.492"
+        app:layout_constraintVertical_bias="0.494"
         app:srcCompat="@drawable/help" />
 
     <ImageButton
@@ -243,7 +243,7 @@
         app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.293"
+        app:layout_constraintVertical_bias="0.294"
         app:srcCompat="@drawable/help" />
 
     <ImageButton
@@ -258,7 +258,7 @@
         app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.439"
+        app:layout_constraintVertical_bias="0.442"
         app:srcCompat="@drawable/help" />
 
     <Spinner

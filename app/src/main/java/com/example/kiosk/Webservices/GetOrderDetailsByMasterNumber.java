@@ -1,10 +1,9 @@
 package com.example.kiosk.Webservices;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
 import org.ksoap2.SoapEnvelope;
@@ -56,7 +55,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                 /*
                 for (int k = 0; k < response.getPropertyCount(); k++) {
                     if (((SoapObject) (response.getProperty(k))).getProperty(8).toString().equals("true")) {
-                        if (!MasterOrder.getCurrentMasterOrder().getAppointmentTime().equals(((SoapObject) (response.getProperty(k))).getProperty(10).toString())) {
+                        if (!Order.getCurrentMasterOrder().getAppointmentTime().equals(((SoapObject) (response.getProperty(k))).getProperty(10).toString())) {
                             // yo these times don't match up call your dispatcher
                             String message = "";
                             if (Language.getCurrentLanguage() == 0) {
@@ -68,7 +67,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                             }
                             HelpDialog dialog = new HelpDialog(message, mWeakActivity.get());
                             dialog.show();
-                            MasterOrder.reset();
+                            Order.reset();
                         }
                     }
                 }
@@ -88,27 +87,27 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                     String estimatedWeight = ((SoapObject) (response.getProperty(i))).getProperty(11).toString();
                     String estimatedPallets = ((SoapObject) (response.getProperty(i))).getProperty(12).toString();
                     boolean canBeInserted = true;
-                    for (int j = 0; j < MasterOrder.getMasterOrdersList().size(); j++) {
-                        if (MasterOrder.getMasterOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
+                    for (int j = 0; j < Order.getOrdersList().size(); j++) {
+                        if (Order.getOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
                             canBeInserted = false;
                         }
                     }
-                    for (int j = 0; j < MasterOrder.getPossibleMasterOrdersList().size(); j++) {
-                        if (MasterOrder.getPossibleMasterOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
+                    for (int j = 0; j < Order.getPossibleOrdersList().size(); j++) {
+                        if (Order.getPossibleOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
                             canBeInserted = false;
                         }
                     }
 
-                    for (int j = 0; j < MasterOrder.getAssociatedMasterOrdersList().size(); j++) {
-                        if (MasterOrder.getAssociatedMasterOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
+                    for (int j = 0; j < Order.getAssociatedOrdersList().size(); j++) {
+                        if (Order.getAssociatedOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
                             canBeInserted = false;
                         }
                     }
 
                     if (canBeInserted) {
-                        MasterOrder masterOrder = new MasterOrder(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
+                        Order order = new Order(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
                                 customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
-                        MasterOrder.addAssociatedMasterOrderToList(masterOrder);
+                        Order.addAssociatedMasterOrderToList(order);
                     }
                 }
             }
@@ -121,10 +120,10 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if (propertyCount < 1 && MasterOrder.getAssociatedMasterOrdersList().size() < 1) {
+        if (propertyCount < 1 && Order.getAssociatedOrdersList().size() < 1) {
             System.out.println("No associated orders");
             OrderEntry.sharedMasterNumber.setValue(false);
-        } else if (MasterOrder.getAssociatedMasterOrdersList().size() > 0){
+        } else if (Order.getAssociatedOrdersList().size() > 0){
             System.out.println("There's associated orders!!");
             OrderEntry.sharedMasterNumber.setValue(true);
         }

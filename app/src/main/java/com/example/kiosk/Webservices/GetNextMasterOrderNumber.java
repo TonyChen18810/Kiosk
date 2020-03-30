@@ -2,8 +2,6 @@ package com.example.kiosk.Webservices;
 
 import android.os.AsyncTask;
 
-import com.example.kiosk.MasterOrder;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -42,10 +40,10 @@ public class GetNextMasterOrderNumber extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        GetMasterOrderDetails.setNewMasterNumber(nextMasterNumber);
+        GetOrderDetails.setNewMasterNumber(nextMasterNumber);
         /*
-        for (int i = 0; i < MasterOrder.getPossibleMasterOrdersList().size(); i++) {
-            MasterOrder.getPossibleMasterOrdersList().get(i).setMasterNumber(nextMasterNumber);
+        for (int i = 0; i < Order.getPossibleOrdersList().size(); i++) {
+            Order.getPossibleOrdersList().get(i).setMasterNumber(nextMasterNumber);
         }
          */
     }

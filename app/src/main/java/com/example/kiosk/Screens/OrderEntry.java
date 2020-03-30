@@ -31,9 +31,9 @@ import com.example.kiosk.Dialogs.SubmitDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
-import com.example.kiosk.Webservices.GetMasterOrderDetails;
+import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 
 import java.util.ArrayList;
@@ -128,7 +128,7 @@ public class OrderEntry extends AppCompatActivity {
                 orderNumber.setEnabled(false);
                 checkOrderBtn.setEnabled(false);
                 checkOrderBtn.setBackgroundResource(R.drawable.arrow_down);
-                CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, MasterOrder.getCurrentMasterOrder().getCustomerName(),
+                CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, Order.getCurrentMasterOrder().getCustomerName(),
                         buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
@@ -137,11 +137,11 @@ public class OrderEntry extends AppCompatActivity {
                 checkOrderBtn.setEnabled(true);
                 String message = null;
                 if (Language.getCurrentLanguage() == 0) {
-                    message = "Order #" + MasterOrder.getCurrentMasterOrder().getSOPNumber() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
+                    message = "Order #" + Order.getCurrentMasterOrder().getSOPNumber() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
                 } else if (Language.getCurrentLanguage() == 1) {
-                    message = "Pedido #" + MasterOrder.getCurrentMasterOrder().getSOPNumber() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
+                    message = "Pedido #" + Order.getCurrentMasterOrder().getSOPNumber() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
                 } else if (Language.getCurrentLanguage() == 2) {
-                    message = "Ordre #" + MasterOrder.getCurrentMasterOrder().getSOPNumber() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
+                    message = "Ordre #" + Order.getCurrentMasterOrder().getSOPNumber() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
                 }
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                 dialog.show();
@@ -191,8 +191,8 @@ public class OrderEntry extends AppCompatActivity {
 
         setup();
 
-        if (MasterOrder.getMasterOrdersList().size() == 0) {
-            MasterOrder.addMasterOrderToList(new MasterOrder("","","",
+        if (Order.getOrdersList().size() == 0) {
+            Order.addMasterOrderToList(new Order("","","",
                     "", "","","","","",
                     "","","0","0"));
             listener.setValue(true);
@@ -202,12 +202,12 @@ public class OrderEntry extends AppCompatActivity {
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(OrderEntry.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new RecyclerViewHorizontalAdapter(OrderEntry.this, MasterOrder.getMasterOrdersList());
+        adapter = new RecyclerViewHorizontalAdapter(OrderEntry.this, Order.getOrdersList());
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
         destinationListener.observe(OrderEntry.this, selectedDestination -> {
-            if (selectedDestination.equals(MasterOrder.getCurrentMasterOrder().getDestination())) {
+            if (selectedDestination.equals(Order.getCurrentMasterOrder().getDestination())) {
                 // correct
                 selectDestinationBtn.setText(selectedDestination);
                 selectDestinationBtn.clearAnimation();
@@ -285,11 +285,11 @@ public class OrderEntry extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             addOrderBtn.clearAnimation();
             if (!recyclerView.isShown()) {
-                MasterOrder.getMasterOrdersList().remove(0);
-                MasterOrder.addMasterOrderToList(MasterOrder.getCurrentMasterOrder());
+                Order.getOrdersList().remove(0);
+                Order.addMasterOrderToList(Order.getCurrentMasterOrder());
                 listener.setValue(false);
             } else {
-                MasterOrder.addMasterOrderToList(MasterOrder.getCurrentMasterOrder());
+                Order.addMasterOrderToList(Order.getCurrentMasterOrder());
                 listener.setValue(false);
             }
 
@@ -308,8 +308,8 @@ public class OrderEntry extends AppCompatActivity {
             // initialSelection = false;
 
             try {
-                // new GetMasterOrderDetails(OrderEntry.this, MasterOrder.getCurrentMasterOrder().getSOPNumber()).execute();
-                new GetOrderDetailsByMasterNumber(MasterOrder.getCurrentMasterOrder().getMasterNumber(), OrderEntry.this).execute().get();
+                // new GetOrderDetails(OrderEntry.this, Order.getCurrentMasterOrder().getSOPNumber()).execute();
+                new GetOrderDetailsByMasterNumber(Order.getCurrentMasterOrder().getMasterNumber(), OrderEntry.this).execute().get();
                 /*
                 if (GetOrderDetailsByMasterNumber.getPropertyCount() > -1) {
                     // setContentView(R.layout.connected_orders);
@@ -319,7 +319,7 @@ public class OrderEntry extends AppCompatActivity {
                 }
                  */
 /**
-                    ArrayList<MasterOrder> connectedOrders = new ArrayList<>(MasterOrder.getAssociatedMasterOrdersList());
+                    ArrayList<Order> connectedOrders = new ArrayList<>(Order.getAssociatedOrdersList());
 
                     if (connectedOrders.size() > 0) {
                         RecyclerView recyclerView = findViewById(R.id.AssociatedOrdersView);
@@ -329,9 +329,9 @@ public class OrderEntry extends AppCompatActivity {
                         recyclerView.setAdapter(adapter);
 
                         findViewById(R.id.btn_add).setOnClickListener(v1 -> {
-                            List<MasterOrder> selectedOrders = RecyclerViewAssociatedAdapter.getSelectedOrders();
+                            List<Order> selectedOrders = RecyclerViewAssociatedAdapter.getSelectedOrders();
                             for (int i = 0; i < selectedOrders.size(); i++) {
-                                MasterOrder.addMasterOrderToList(selectedOrders.get(i));
+                                Order.addMasterOrderToList(selectedOrders.get(i));
                             }
                             setContentView(R.layout.activity_order_entry);
                         });
@@ -350,7 +350,7 @@ public class OrderEntry extends AppCompatActivity {
             orderNumber.requestFocus();
             checkOrderBtn.setEnabled(false);
             addOrderBtn.setEnabled(false);
-            if (MasterOrder.getCurrentMasterOrder().getAppointment().equals("true") && GetMasterOrderDetails.checkApppointmentTime(MasterOrder.getCurrentMasterOrder().getAppointmentTime()) == -1) {
+            if (Order.getCurrentMasterOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentMasterOrder().getAppointmentTime()) == -1) {
                 appointmentTimeListener.setValue(-1);
             }
             // appointmentTimeListener.setValue(-1);
@@ -385,8 +385,8 @@ public class OrderEntry extends AppCompatActivity {
             checkOrderBtn.setEnabled(false);
             // initialSelection = false;
             boolean added = false;
-            for (int i = 0; i < MasterOrder.getMasterOrdersList().size(); i++) {
-                if (MasterOrder.getMasterOrdersList().get(i).getSOPNumber().equals(orderNumber.getText().toString())) {
+            for (int i = 0; i < Order.getOrdersList().size(); i++) {
+                if (Order.getOrdersList().get(i).getSOPNumber().equals(orderNumber.getText().toString())) {
                     added = true;
                     break;
                 }
@@ -405,14 +405,17 @@ public class OrderEntry extends AppCompatActivity {
                 orderNumber.setText("");
                 showSoftKeyboard(orderNumber);
                 checkOrderBtn.setEnabled(true);
+                orderNumber.requestFocus();
+                // showSoftKeyboard(orderNumber);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
                 try {
-                    new GetMasterOrderDetails(OrderEntry.this, orderNumber.getText().toString()).execute();
+                    new GetOrderDetails(OrderEntry.this, orderNumber.getText().toString()).execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+            // checkOrderBtn.setEnabled(true);
         });
 
         selectDestinationBtn.setOnClickListener(v -> {
@@ -425,18 +428,18 @@ public class OrderEntry extends AppCompatActivity {
 
     public static void confirmMsg(final View v, Context context) {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
-        DeleteDialog dialog = new DeleteDialog(MasterOrder.getMasterOrdersList().get(selectedItemPosition).getSOPNumber(), context, v);
+        DeleteDialog dialog = new DeleteDialog(Order.getOrdersList().get(selectedItemPosition).getSOPNumber(), context, v);
         dialog.show();
     }
 
     public static void removeItem(View v) {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
 
-        MasterOrder.removeMasterOrderFromList(selectedItemPosition);
+        Order.removeMasterOrderFromList(selectedItemPosition);
         adapter.notifyItemRemoved(selectedItemPosition);
 
-        if (MasterOrder.getMasterOrdersList().size() == 0) {
-            MasterOrder.addMasterOrderToList(new MasterOrder("","","",
+        if (Order.getOrdersList().size() == 0) {
+            Order.addMasterOrderToList(new Order("","","",
                     "","","","","","",
                     "","","0","0"));
             listener.setValue(true);

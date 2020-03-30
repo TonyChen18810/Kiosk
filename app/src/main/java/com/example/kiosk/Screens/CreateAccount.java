@@ -2,13 +2,12 @@ package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Html;
 import android.text.InputFilter;
@@ -32,7 +31,7 @@ import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
-import com.example.kiosk.MasterOrder;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
 
@@ -112,16 +111,12 @@ public class CreateAccount extends AppCompatActivity {
                 setCommunication();
                 clicked1 = true;
                 selectState1.clearAnimation();
-                showSoftKeyboard(truckName);
-                showSoftKeyboard(truckName);
-                showSoftKeyboard(truckName);
+                truckName.requestFocus();
             } else if (!updateState) {
                 setCommunication();
                 clicked2 = true;
                 selectState2.clearAnimation();
-                showSoftKeyboard(dispatcherPhoneNumber);
-                showSoftKeyboard(dispatcherPhoneNumber);
-                showSoftKeyboard(dispatcherPhoneNumber);
+                dispatcherPhoneNumber.requestFocus();
             }
         });
 
@@ -264,14 +259,18 @@ public class CreateAccount extends AppCompatActivity {
 
         driverLicense.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                selectState1.performClick();
+                if (selectState1.getText().equals("State") || selectState1.getText().equals("Estado") || selectState1.getText().equals("État")) {
+                    selectState1.performClick();
+                }
                 // showSoftKeyboard(truckName);
             }
         });
 
         trailerLicense.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                selectState2.performClick();
+                if (selectState1.getText().equals("State") || selectState1.getText().equals("Estado") || selectState1.getText().equals("État")) {
+                    selectState2.performClick();
+                }
                 // showSoftKeyboard(dispatcherPhoneNumber);
             }
         });
@@ -356,12 +355,6 @@ public class CreateAccount extends AppCompatActivity {
                 userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + driverLicenseStr + "<b>"));
                 userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + driverNameStr + "<b>"));
                 userDispatcherPhone.setText(Html.fromHtml("Dispatcher's phone number: " + "<b>\n" + dispatcherNumberStr + "<b>"));
-
-                findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
-                    Account.clearAccounts();
-                    MasterOrder.reset();
-                    startActivity(new Intent(CreateAccount.this, FirstScreen.class));
-                });
             }
         });
 
