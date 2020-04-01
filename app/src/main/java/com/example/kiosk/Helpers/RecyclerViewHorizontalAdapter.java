@@ -76,12 +76,7 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
                 deleteBtn.setText(R.string.delete_fr);
             }
 
-            deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    OrderEntry.confirmMsg(itemView, context);
-                }
-            });
+            deleteBtn.setOnClickListener(v -> OrderEntry.confirmMsg(itemView, context));
         }
     }
 }

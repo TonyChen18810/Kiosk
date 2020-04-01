@@ -5,6 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     <androidx.cardview.widget.CardView
         android:id="@+id/HeartOfTheCards"
         android:layout_width="1100dp"
@@ -75,5 +80,5 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
+    </LinearLayout>
 </LinearLayout>

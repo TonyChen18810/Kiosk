@@ -128,7 +128,7 @@ public class OrderEntry extends AppCompatActivity {
                 orderNumber.setEnabled(false);
                 checkOrderBtn.setEnabled(false);
                 checkOrderBtn.setBackgroundResource(R.drawable.arrow_down);
-                CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, Order.getCurrentMasterOrder().getCustomerName(),
+                CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, Order.getCurrentOrder().getCustomerName(),
                         buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
@@ -137,11 +137,11 @@ public class OrderEntry extends AppCompatActivity {
                 checkOrderBtn.setEnabled(true);
                 String message = null;
                 if (Language.getCurrentLanguage() == 0) {
-                    message = "Order #" + Order.getCurrentMasterOrder().getSOPNumber() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
+                    message = "Order #" + Order.getCurrentOrder().getSOPNumber() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
                 } else if (Language.getCurrentLanguage() == 1) {
-                    message = "Pedido #" + Order.getCurrentMasterOrder().getSOPNumber() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
+                    message = "Pedido #" + Order.getCurrentOrder().getSOPNumber() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
                 } else if (Language.getCurrentLanguage() == 2) {
-                    message = "Ordre #" + Order.getCurrentMasterOrder().getSOPNumber() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
+                    message = "Ordre #" + Order.getCurrentOrder().getSOPNumber() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
                 }
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                 dialog.show();
@@ -159,9 +159,11 @@ public class OrderEntry extends AppCompatActivity {
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
             }
+            progressBar.setVisibility(View.GONE);
         });
 
         appointmentTimeListener.observe(OrderEntry.this, aptCode -> {
+            /*
             if (aptCode == -1) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 0) {
@@ -173,7 +175,8 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
-            } else if (aptCode == 1) {
+             */
+            if (aptCode == 1) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 0) {
                     helpText = "Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.";
@@ -184,8 +187,17 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
-            } else if (aptCode == 0) {
-                System.out.println("Hi");
+            } else if (aptCode == -2) {
+                String helpText = "";
+                if (Language.getCurrentLanguage() == 0) {
+                    helpText = "One or more of the added orders has a later appointment time. These submitted orders will not be checked in until 1 hour prior to appointment time.";
+                } else if (Language.getCurrentLanguage() == 1) {
+                    helpText = "Uno o más de los pedidos agregados tienen una hora de cita posterior. Estos pedidos enviados no se registrarán hasta 1 hora antes de la hora de la cita.";
+                } else if (Language.getCurrentLanguage() == 2) {
+                    helpText = "Une ou plusieurs des commandes ajoutées ont une heure de rendez-vous ultérieure. Les commandes soumises ne seront enregistrées que 1 heure avant l'heure du rendez-vous.";
+                }
+                HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
+                dialog.show();
             }
         });
 
@@ -207,7 +219,7 @@ public class OrderEntry extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         destinationListener.observe(OrderEntry.this, selectedDestination -> {
-            if (selectedDestination.equals(Order.getCurrentMasterOrder().getDestination())) {
+            if (selectedDestination.toLowerCase().equals(Order.getCurrentOrder().getDestination().toLowerCase())) {
                 // correct
                 selectDestinationBtn.setText(selectedDestination);
                 selectDestinationBtn.clearAnimation();
@@ -286,14 +298,13 @@ public class OrderEntry extends AppCompatActivity {
             addOrderBtn.clearAnimation();
             if (!recyclerView.isShown()) {
                 Order.getOrdersList().remove(0);
-                Order.addMasterOrderToList(Order.getCurrentMasterOrder());
+                Order.addMasterOrderToList(Order.getCurrentOrder());
                 listener.setValue(false);
             } else {
-                Order.addMasterOrderToList(Order.getCurrentMasterOrder());
+                Order.addMasterOrderToList(Order.getCurrentOrder());
                 listener.setValue(false);
             }
 
-            // destinationSpinner.setSelection(0);
             adapter.notifyDataSetChanged();
             adapter.notifyItemInserted(adapter.getItemCount() - 1);
             recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
@@ -305,44 +316,7 @@ public class OrderEntry extends AppCompatActivity {
             buyerName.setVisibility(View.GONE);
             selectDestinationBtn.setVisibility(View.GONE);
             selectDestinationBtn.setEnabled(true);
-            // initialSelection = false;
 
-            try {
-                // new GetOrderDetails(OrderEntry.this, Order.getCurrentMasterOrder().getSOPNumber()).execute();
-                new GetOrderDetailsByMasterNumber(Order.getCurrentMasterOrder().getMasterNumber(), OrderEntry.this).execute().get();
-                /*
-                if (GetOrderDetailsByMasterNumber.getPropertyCount() > -1) {
-                    // setContentView(R.layout.connected_orders);
-                    ConnectedOrders dialog = new ConnectedOrders(OrderEntry.this, recyclerView, adapter);
-                    dialog.show();
-                    dialog.setCancelable(false);
-                }
-                 */
-/**
-                    ArrayList<Order> connectedOrders = new ArrayList<>(Order.getAssociatedOrdersList());
-
-                    if (connectedOrders.size() > 0) {
-                        RecyclerView recyclerView = findViewById(R.id.AssociatedOrdersView);
-                        LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(OrderEntry.this, LinearLayoutManager.VERTICAL, false);
-                        recyclerView.setLayoutManager(verticalLayoutManager);
-                        RecyclerViewAssociatedAdapter adapter = new RecyclerViewAssociatedAdapter(connectedOrders);
-                        recyclerView.setAdapter(adapter);
-
-                        findViewById(R.id.btn_add).setOnClickListener(v1 -> {
-                            List<Order> selectedOrders = RecyclerViewAssociatedAdapter.getSelectedOrders();
-                            for (int i = 0; i < selectedOrders.size(); i++) {
-                                Order.addMasterOrderToList(selectedOrders.get(i));
-                            }
-                            setContentView(R.layout.activity_order_entry);
-                        });
-
-                        findViewById(R.id.btn_cancel).setOnClickListener(v12 -> setContentView(R.layout.activity_order_entry));
-
-                    }
-                 */
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             possibleCustomerDestinations.clear();
             orderNumber.setEnabled(true);
             showSoftKeyboard(orderNumber);
@@ -350,11 +324,14 @@ public class OrderEntry extends AppCompatActivity {
             orderNumber.requestFocus();
             checkOrderBtn.setEnabled(false);
             addOrderBtn.setEnabled(false);
-            if (Order.getCurrentMasterOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentMasterOrder().getAppointmentTime()) == -1) {
+            if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
                 appointmentTimeListener.setValue(-1);
             }
-            // appointmentTimeListener.setValue(-1);
-            // initialSelection = false;
+            try {
+                new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute().get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
         orderNumber.addTextChangedListener(new TextWatcher() {

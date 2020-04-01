@@ -111,8 +111,11 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
             this.card = itemView.findViewById(R.id.HeartOfTheCards);
             this.orderNumber = itemView.findViewById(R.id.OrderNumber);
             this.buyerName = itemView.findViewById(R.id.BuyerName);
-            System.out.println("Buyer name line count: " + this.buyerName.getLineCount());
-            if (this.buyerName.getLineCount() == 3) {
+            if (this.buyerName.getLineCount() == 1) {
+                this.card.getLayoutParams().height = 130;
+            } else if (this.buyerName.getLineCount() == 2) {
+                this.card.getLayoutParams().height = 150;
+            }else if (this.buyerName.getLineCount() == 3) {
                 this.card.getLayoutParams().height = 170;
             } else if (this.buyerName.getLineCount() == 4) {
                 this.card.getLayoutParams().height = 200;

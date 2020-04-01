@@ -55,7 +55,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                 /*
                 for (int k = 0; k < response.getPropertyCount(); k++) {
                     if (((SoapObject) (response.getProperty(k))).getProperty(8).toString().equals("true")) {
-                        if (!Order.getCurrentMasterOrder().getAppointmentTime().equals(((SoapObject) (response.getProperty(k))).getProperty(10).toString())) {
+                        if (!Order.getCurrentOrder().getAppointmentTime().equals(((SoapObject) (response.getProperty(k))).getProperty(10).toString())) {
                             // yo these times don't match up call your dispatcher
                             String message = "";
                             if (Language.getCurrentLanguage() == 0) {

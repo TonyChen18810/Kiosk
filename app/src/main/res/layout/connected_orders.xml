@@ -62,16 +62,16 @@
         android:paddingTop="20dp"
         android:paddingRight="40dp"
         android:paddingBottom="20dp"
-        android:text="Add Orders"
+        android:text="Add"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/white"
         android:textSize="80sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cancelBtn"
-        app:layout_constraintHorizontal_bias="0.447"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AssociatedOrdersView"
-        app:layout_constraintVertical_bias="0.306" />
+        app:layout_constraintVertical_bias="0.303" />
 
     <Button
         android:id="@+id/cancelBtn"
@@ -90,7 +90,7 @@
         android:textSize="80sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.823"
+        app:layout_constraintHorizontal_bias="0.837"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AssociatedOrdersView"
         app:layout_constraintVertical_bias="0.303" />

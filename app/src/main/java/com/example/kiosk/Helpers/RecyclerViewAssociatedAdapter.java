@@ -42,6 +42,18 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Order order = associatedOrders.get(position);
+/*
+        // if (order.getAppointment().equals("true") && !order.getAppointmentTime().equals("00:00:00") && GetOrderDetails.checkApppointmentTime(order.getAppointmentTime()) == 1) {
+        if (GetOrderDetails.checkApppointmentTime(order.getAppointmentTime()) == 1) {
+            // this.setBackgroundColor(Color.parseColor("#BE424242"));
+            holder.isLate = true;
+            holder.lateWarning.setVisibility(View.VISIBLE);
+        } else {
+            holder.isLate = false;
+            holder.lateWarning.setVisibility(View.GONE);
+        }
+        */
+
         holder.orderNumber.setText(order.getSOPNumber());
 
         // format customer name

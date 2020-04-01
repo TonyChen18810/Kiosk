@@ -6,13 +6,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewAssociatedAdapter;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
+import com.example.kiosk.Screens.OrderEntry;
+import com.example.kiosk.Webservices.GetOrderDetails;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +43,21 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
 
         Button addBtn = findViewById(R.id.addBtn);
         Button cancelBtn = findViewById(R.id.cancelBtn);
+        TextView associatedOrdersText = findViewById(R.id.AssociatedOrdersText);
+
+        if (Language.getCurrentLanguage() == 0) {
+            addBtn.setText("Add Order(s)");
+            cancelBtn.setText("Cancel");
+            associatedOrdersText.setText("The following orders are also connected with your previously entered order. You can tap any order to add it to your orders.");
+        } else if (Language.getCurrentLanguage() == 1) {
+            associatedOrdersText.setText("Los siguientes pedidos también están relacionados con su pedido ingresado anteriormente. Puede tocar cualquier pedido para agregarlo a sus pedidos.");
+            addBtn.setText("Añadir Pedido(s)");
+            cancelBtn.setText("Cancelar");
+        } else if (Language.getCurrentLanguage() == 2) {
+            associatedOrdersText.setText("Les commandes suivantes sont également liées à votre commande précédemment saisie. Vous pouvez appuyer sur n'importe quelle commande pour l'ajouter à vos commandes.\n");
+            addBtn.setText("Ajouter Ordre(s)");
+            cancelBtn.setText("Annuler");
+        }
 
         ArrayList<Order> connectedOrders = new ArrayList<>(Order.getAssociatedOrdersList());
 
@@ -62,6 +83,11 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                 adapter.notifyItemInserted(adapter.getItemCount() - 1);
                 recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
                 recyclerView.scheduleLayoutAnimation();
+                for (int i = 0; i < Order.getAssociatedOrdersList().size(); i++) {
+                    if (Order.getAssociatedOrdersList().get(i).getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getAssociatedOrdersList().get(i).getAppointmentTime()) == -1) {
+                        OrderEntry.appointmentTimeListener.setValue(-2);
+                    }
+                }
                 Order.clearAssociatedOrderList();
                 dismiss();
                 break;

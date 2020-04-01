@@ -113,9 +113,9 @@ public class FirstScreen extends AppCompatActivity {
     }
 
     public void setup() {
+        System.out.println("Reset values...");
         Account.setCurrentAccount(null);
         Order.reset();
-        GetOrderDetails.setNewMasterNumber(null);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);

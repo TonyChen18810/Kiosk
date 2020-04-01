@@ -24,7 +24,6 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
     private WeakReference<Activity> mWeakActivity;
     private String enteredSOPNumber;
     private static String MASTER_NUMBER = null;
-    private static String APPOINTMENT_TIME = null;
     private static String coolerNumber = "01";
 
     private int propertyCount;
@@ -109,8 +108,10 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         Activity activity = mWeakActivity.get();
         boolean isGoodOrder = false;
 
-        if (propertyCount > 0) {// get rid of TRUE part after some tests
-            if (isCheckedIn.equals("false")) { // || isCheckedIn.equals("true")) {
+        // left off here, check truck outstanding status
+        if (propertyCount > 0) {
+            System.out.println("THIS IS FOR ORDER NUMBER: " + SOPNumber);
+            if (isCheckedIn.equals("false")) {
                 if (isAppointment.equals("true") && appointmentTime.equals("00:00:00")) {
                     System.out.println("Need to make appointment");
                     OrderEntry.validOrderNumber.setValue(2);
@@ -162,9 +163,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                     }
                     // Order.addMasterOrderToList(masterOrder);
                 }
-            }
-
-            else if (isCheckedIn.equals("true")){
+            } else if (isCheckedIn.equals("true") || !truckStatus.equals("Outstanding")){
                 System.out.println("Order already checked in");
                 OrderEntry.validOrderNumber.setValue(3);
             }
@@ -174,14 +173,15 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
             OrderEntry.validOrderNumber.setValue(0);
         }
         if (isGoodOrder) {
-            Order order = new Order(MASTER_NUMBER, SOPNumber, coolerLocation, destination, consignee, truckStatus,
+            System.out.println("MASTER_NUMBER: " + MASTER_NUMBER);
+            System.out.println("masterNumber: " + masterNumber);
+            Order order = new Order(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
                     customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
             OrderEntry.validOrderNumber.setValue(1);
-        }
-
-        if (activity != null) {
-            ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.GONE);
+            if (activity != null) {
+                ProgressBar progressBar = activity.findViewById(R.id.progressBar);
+                progressBar.setVisibility(View.GONE);
+            }
         }
     }
 

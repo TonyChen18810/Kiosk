@@ -3,7 +3,6 @@ package com.example.kiosk.Screens;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -31,7 +30,6 @@ import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
-import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
 
@@ -332,6 +330,10 @@ public class CreateAccount extends AppCompatActivity {
                 }
                 selectText.setVisibility(View.GONE);
                 setContentView(R.layout.account_created_msg);
+
+                findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
+                    startActivity(new Intent(CreateAccount.this, FirstScreen.class));
+                });
 
                 TextView userEmail = findViewById(R.id.emailAddress);
                 TextView userNumber = findViewById(R.id.phoneNumber);

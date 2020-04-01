@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.kiosk.Helpers.Language;
@@ -16,6 +17,7 @@ public class DeleteDialog extends Dialog implements android.view.View.OnClickLis
 
     private String orderNumberStr;
     private View view;
+    ProgressBar progressBar;
 
     public DeleteDialog(String orderNumberStr, Context context, View view) {
         super(context);
@@ -31,6 +33,7 @@ public class DeleteDialog extends Dialog implements android.view.View.OnClickLis
         Button yes = findViewById(R.id.btn_yes);
         Button no = findViewById(R.id.btn_no);
         TextView deleteOrder = findViewById(R.id.CorrectCustomer);
+        progressBar.setVisibility(View.GONE);
         if (Language.getCurrentLanguage() == 0) {
             deleteOrder.setText("Are you sure you want to delete order: " + orderNumberStr + "?");
             yes.setText(R.string.yes_eng);

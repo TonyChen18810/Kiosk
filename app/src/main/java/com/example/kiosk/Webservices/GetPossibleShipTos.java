@@ -80,7 +80,7 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
             // System.out.println("Possible customer destinations size: " + OrderEntry.possibleCustomerDestinations.size());
             OrderEntry.possibleCustomerDestinations.clear();
             for (int i = 0; i < possibleDestinations.size(); i++) {
-                System.out.println(getPossibleDestinations().get(i).getDestination());
+                // System.out.println(getPossibleDestinations().get(i).getDestination());
                 OrderEntry.possibleCustomerDestinations.add(possibleDestinations.get(i).getDestination());
             }
             activity.findViewById(R.id.SelectDestinationBtn).setEnabled(true);

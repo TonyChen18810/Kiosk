@@ -53,7 +53,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         TextView congsigneeName = findViewById(R.id.ConsigneeName);
         TextView correctCustomer = findViewById(R.id.CorrectCustomer);
         customerName.setText(customerNameStr);
-        congsigneeName.setText(Order.getCurrentMasterOrder().getConsignee());
+        congsigneeName.setText(Order.getCurrentOrder().getConsignee());
         if (Language.getCurrentLanguage() == 0) {
             correctCustomer.setText(R.string.correct_customer_eng);
             destination.setText(R.string.select_destination_eng);
@@ -79,7 +79,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         switch (v.getId()) {
             case R.id.btn_yes:
                 progressBar.setVisibility(View.VISIBLE);
-                new GetPossibleShipTos(a, Order.getCurrentMasterOrder().getSOPNumber()).execute();
+                new GetPossibleShipTos(a, Order.getCurrentOrder().getSOPNumber()).execute();
                 customer.setVisibility(View.VISIBLE);
                 customer.setText(customerNameStr);
                 destination.setVisibility(View.VISIBLE);

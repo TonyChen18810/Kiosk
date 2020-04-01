@@ -205,7 +205,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/OrdersView"
-        app:layout_constraintVertical_bias="0.217">
+        app:layout_constraintVertical_bias="0.107">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -310,7 +310,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView7"
-        app:layout_constraintVertical_bias="0.145" />
+        app:layout_constraintVertical_bias="0.4" />
 
     <Button
         android:id="@+id/LogoutBtn"

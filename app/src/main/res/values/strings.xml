@@ -320,7 +320,7 @@
     <string name="phone_doesnt_match_fr">*Les numéros de téléphone saisis ne correspondent pas</string>
     <string name="invalid_email_fr">*Adresse e-mail invalide</string>
     <string name="invalid_phone_fr">*Numéro de téléphone invalide</string>
-    <string name="appt_required_fr">*Si votre commande nécessite un rendez&#8211;vous, veuillez appeler le 831&#8211;455&#8211;4305 pour fixer un rendez&#8211;vous</string>
+    <string name="appt_required_fr">*Si votre ordre nécessite un rendez&#8211;vous, veuillez appeler le 831&#8211;455&#8211;4305 pour fixer un rendez&#8211;vous</string>
     <string name="next_fr">Suivant</string>
     <string name="log_in_fr">S\'identifier</string>
     <string name="state_fr">État</string>
@@ -337,10 +337,10 @@
     <string name="verify_submit_fr">*En cliquant sur \'Soumettre\', je vérifie quetoutes \n les informations sont correctes et exactes</string>
     <string name="submit_orders_fr">Soumettre ordres</string>
     <string name="add_orders_fr">Ajouter ordre</string>
-    <string name="entered_orders_fr">Vous avez entré des informations pour les commandes suivantes:</string>
+    <string name="entered_orders_fr">Vous avez entré des informations pour les ordres suivantes:</string>
     <string name="correct_customer_sp">¿Es este el cliente correcto para este número de pedido?</string>
     <string name="select_destination_sp">Seleccione destino</string>
-    <string name="correct_customer_fr">Est-ce le bon client pour ce numéro de commande?</string>
+    <string name="correct_customer_fr">Est-ce le bon client pour ce numéro de ordre?</string>
     <string name="select_destination_fr">Sélectionner la destination</string>
     <string name="yes_fr">Oui</string>
     <string name="no_fr">Non</string>
@@ -373,7 +373,7 @@
     <string name="apt_time_fr">Apte. Temps</string>
     <string name="destination_fr">Destination</string>
     <string name="est_weight_fr">Est. Poids</string>
-    <string name="total_orders_fr">Nombre total de commandes:</string>
+    <string name="total_orders_fr">Nombre total de ordres:</string>
     <string name="pallet_count_fr">Nombre total de palettes:</string>
     <string name="total_weight_fr">Poids total:</string>
     <string name="thanks_bye_fr">Merci d\'avoir soumis vos ordres. Vous recevrez une notification une fois que les ordres auront été approuvées par un représentant D’Arrigo.</string>

@@ -142,20 +142,17 @@ public class Order {
         return associatedOrdersList;
     }
 
-    public static Order getCurrentMasterOrder() {
+    public static Order getCurrentOrder() {
         return CURRENT_ORDER;
     }
 
     public static void addMasterOrderToList(Order order) {
-        System.out.println("Estimated pallet count of order: " + order.getEstimatedPallets());
-        System.out.println("Total pallets: " + totalPalletCount);
         totalWeight += order.getEstimatedWeight();
         if (order.getEstimatedPallets() < 1 && order.getEstimatedPallets() > 0) {
             totalPalletCount += 1;
         } else {
             totalPalletCount += order.getEstimatedPallets();
         }
-        System.out.println("Total pallet count after adding: " + totalPalletCount);
         ordersList.add(order);
     }
 
