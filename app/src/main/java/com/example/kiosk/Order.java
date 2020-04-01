@@ -23,6 +23,7 @@ public class Order {
     private String estimatedPallets;
 
     private static Order CURRENT_ORDER;
+    private static String CURRENT_APPOINTMENT_TIME;
     private static ArrayList<Order> ordersList = new ArrayList<>();
     private static ArrayList<Order> possibleOrdersList = new ArrayList<>();
     private static ArrayList<Order> associatedOrdersList = new ArrayList<>();
@@ -90,6 +91,14 @@ public class Order {
 
     public String getAppointmentTime() {
         return appointmentTime;
+    }
+
+    public static String getCurrentAppointmentTime() {
+        return CURRENT_APPOINTMENT_TIME;
+    }
+
+    public static void setCurrentAppointmentTime(String appointmentTime) {
+        CURRENT_APPOINTMENT_TIME = appointmentTime;
     }
 
     public static Order getOrderByOrderNumber(String SOPNumber) {

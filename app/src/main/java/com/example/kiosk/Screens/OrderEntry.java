@@ -137,11 +137,11 @@ public class OrderEntry extends AppCompatActivity {
                 checkOrderBtn.setEnabled(true);
                 String message = null;
                 if (Language.getCurrentLanguage() == 0) {
-                    message = "Order #" + Order.getCurrentOrder().getSOPNumber() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
+                    message = "Order #" + orderNumber.getText().toString() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
                 } else if (Language.getCurrentLanguage() == 1) {
-                    message = "Pedido #" + Order.getCurrentOrder().getSOPNumber() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
+                    message = "Pedido #" + orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
                 } else if (Language.getCurrentLanguage() == 2) {
-                    message = "Ordre #" + Order.getCurrentOrder().getSOPNumber() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
+                    message = "Ordre #" + orderNumber.getText().toString() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
                 }
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                 dialog.show();
@@ -175,6 +175,7 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
+            }
              */
             if (aptCode == 1) {
                 String helpText = "";
@@ -187,6 +188,7 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
+                orderNumber.setText("");
             } else if (aptCode == -2) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 0) {
@@ -304,6 +306,8 @@ public class OrderEntry extends AppCompatActivity {
                 Order.addMasterOrderToList(Order.getCurrentOrder());
                 listener.setValue(false);
             }
+
+            Order.setCurrentAppointmentTime(Order.getCurrentOrder().getAppointmentTime());
 
             adapter.notifyDataSetChanged();
             adapter.notifyItemInserted(adapter.getItemCount() - 1);

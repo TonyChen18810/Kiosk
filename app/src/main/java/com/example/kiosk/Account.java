@@ -83,6 +83,14 @@ public class Account {
         this.communicationPreference = communicationPreference;
     }
 
+    public void setTruckName(String truckName) {
+        this.truckName = truckName;
+    }
+
+    public void setTruckNumber(String truckNumber) {
+        this.truckNumber = truckNumber;
+    }
+
     public static Account getCurrentAccount() {
         return CURRENT_ACCOUNT;
     }

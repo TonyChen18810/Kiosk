@@ -104,22 +104,11 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                 isAppointment = ((SoapObject) (response.getProperty(0))).getProperty(8).toString();
                 orderDate = ((SoapObject) (response.getProperty(0))).getProperty(9).toString();
                 appointmentTime = ((SoapObject) (response.getProperty(0))).getProperty(10).toString();
+                System.out.println("HERE'S THE APPOINTMENT TIME: " + appointmentTime);
                 estimatedWeight = ((SoapObject) (response.getProperty(0))).getProperty(11).toString();
                 estimatedPallets = ((SoapObject) (response.getProperty(0))).getProperty(12).toString();
             }
-        } catch (SocketException se) {
-            se.printStackTrace();
-            connection = false;
-        } catch (HttpResponseException e) {
-            e.printStackTrace();
-            connection = false;
-        } catch (SoapFault soapFault) {
-            soapFault.printStackTrace();
-            connection = false;
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-            connection = false;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             connection = false;
         }
@@ -133,35 +122,55 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         boolean isGoodOrder = false;
 
         // left off here, check truck outstanding status
+        System.out.println("connection: " + connection);
         if (connection) {
-            if (truckStatus.equals("Outstanding")) {
-                if (propertyCount > 0) {
-                    System.out.println("THIS IS FOR ORDER NUMBER: " + SOPNumber);
-                    if (isCheckedIn.equals("false")) {
-                        if (isAppointment.equals("true") && appointmentTime.equals("00:00:00")) {
-                            System.out.println("Need to make appointment");
-                            OrderEntry.validOrderNumber.setValue(2);
-                        } else if (isAppointment.equals("true")) {
-                            System.out.println("Has an appointment, now check for late/early/on-time");
-                            if (checkApppointmentTime(appointmentTime) == -1) {
-                                System.out.println("You're early");
-                                if (MASTER_NUMBER == null) {
-                                    if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
-                                        System.out.println("We need a new master number...");
-                                        new GetNextMasterOrderNumber().execute();
-                                    } else {
-                                        MASTER_NUMBER = masterNumber;
+            if (truckStatus == null || truckStatus.equals("null")) {
+                isGoodOrder = false;
+                OrderEntry.validOrderNumber.setValue(0);
+            } else {
+                System.out.println("truckStatus: " + truckStatus);
+                if (truckStatus.equals("Outstanding")) {
+                    System.out.println("propertyCount: " + propertyCount);
+                    if (propertyCount > 0) {
+                        System.out.println("THIS IS FOR ORDER NUMBER: " + SOPNumber);
+                        if (isCheckedIn.equals("false")) {
+                            if (isAppointment.equals("true") && appointmentTime.equals("00:00:00")) {
+                                System.out.println("Need to make appointment");
+                                OrderEntry.validOrderNumber.setValue(2);
+                            } else if (isAppointment.equals("true")) {
+                                System.out.println("Has an appointment, now check for late/early/on-time");
+                                if (checkApppointmentTime(appointmentTime) == -1) {
+                                    System.out.println("You're early");
+                                    if (MASTER_NUMBER == null) {
+                                        if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
+                                            System.out.println("We need a new master number...");
+                                            new GetNextMasterOrderNumber().execute();
+                                        } else {
+                                            MASTER_NUMBER = masterNumber;
+                                        }
                                     }
+                                    isGoodOrder = true;
+                                    OrderEntry.appointmentTimeListener.setValue(0);
+                                    // OrderEntry.appointmentTimeListener.setValue(-1);
+                                } else if (checkApppointmentTime(appointmentTime) == 1) {
+                                    System.out.println("You're late");
+                                    isGoodOrder = false;
+                                    OrderEntry.appointmentTimeListener.setValue(1);
+                                } else if (checkApppointmentTime(appointmentTime) == 0) {
+                                    System.out.println("On time");
+                                    if (MASTER_NUMBER == null) {
+                                        if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
+                                            System.out.println("We need a new master number...");
+                                            new GetNextMasterOrderNumber().execute();
+                                            isGoodOrder = true;
+                                        } else {
+                                            MASTER_NUMBER = masterNumber;
+                                        }
+                                    }
+                                    isGoodOrder = true;
                                 }
-                                isGoodOrder = true;
-                                OrderEntry.appointmentTimeListener.setValue(0);
-                                // OrderEntry.appointmentTimeListener.setValue(-1);
-                            } else if (checkApppointmentTime(appointmentTime) == 1) {
-                                System.out.println("You're late");
-                                isGoodOrder = false;
-                                OrderEntry.appointmentTimeListener.setValue(1);
-                            } else if (checkApppointmentTime(appointmentTime) == 0) {
-                                System.out.println("On time");
+                            } else {
+                                System.out.println("No appointment - continue");
                                 if (MASTER_NUMBER == null) {
                                     if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
                                         System.out.println("We need a new master number...");
@@ -169,37 +178,32 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                                         isGoodOrder = true;
                                     } else {
                                         MASTER_NUMBER = masterNumber;
+                                        isGoodOrder = true;
                                     }
-                                }
-                                isGoodOrder = true;
-                            }
-                        } else {
-                            System.out.println("No appointment - continue");
-                            if (MASTER_NUMBER == null) {
-                                if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
-                                    System.out.println("We need a new master number...");
-                                    new GetNextMasterOrderNumber().execute();
-                                    isGoodOrder = true;
                                 } else {
-                                    MASTER_NUMBER = masterNumber;
                                     isGoodOrder = true;
                                 }
-                            } else {
-                                isGoodOrder = true;
+                                // Order.addMasterOrderToList(masterOrder);
                             }
-                            // Order.addMasterOrderToList(masterOrder);
+                        } else if (isCheckedIn.equals("true") || !truckStatus.equals("Outstanding")) {
+                            isGoodOrder = false;
+                            System.out.println("Order already checked in");
+                            OrderEntry.validOrderNumber.setValue(3);
                         }
-                    } else if (isCheckedIn.equals("true") || !truckStatus.equals("Outstanding")) {
-                        isGoodOrder = false;
-                        System.out.println("Order already checked in");
-                        OrderEntry.validOrderNumber.setValue(3);
-                    }
 
-                } else {
-                    // Order doesn't exist, invalid
-                    OrderEntry.validOrderNumber.setValue(0);
+                    } else {
+                        // Order doesn't exist, invalid
+                        OrderEntry.validOrderNumber.setValue(0);
+                    }
+                } else if (!truckStatus.equals("Outstanding")) {
+                    System.out.println("Order already checked in / not Outstanding");
+                    OrderEntry.validOrderNumber.setValue(3);
                 }
             }
+        }
+        if (activity != null) {
+            ProgressBar progressBar = activity.findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.GONE);
         }
         if (isGoodOrder) {
             System.out.println("MASTER_NUMBER: " + MASTER_NUMBER);
@@ -238,13 +242,13 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         System.out.println("timeB: " + timeB);
 
         if (timeB < timeA - 1) {
-            System.out.println("EARLY!");
+            System.out.println("EARLY");
             aptCode = -1;
         } else if (timeB > timeA + 1) {
-            System.out.println("LATE!");
+            System.out.println("LATE");
             aptCode = 1;
         } else {
-            System.out.println("ON TIME!");
+            System.out.println("ON TIME");
             aptCode = 0;
         }
         return aptCode;
