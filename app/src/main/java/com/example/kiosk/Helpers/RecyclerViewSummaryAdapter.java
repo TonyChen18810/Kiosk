@@ -45,7 +45,9 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
             StringBuilder buyerNameStrBuilder = new StringBuilder();
             char[] buyerNameCharArray = buyerStr.toCharArray();
             for (int i = 0; i < buyerNameCharArray.length; i++) {
-                buyerNameStrBuilder.append(buyerNameCharArray[i]);
+                if (buyerNameCharArray[i] != '&') {
+                    buyerNameStrBuilder.append(buyerNameCharArray[i]);
+                }
                 if ((i + 1) != buyerNameCharArray.length && words.length < 4) {
                     if (buyerNameCharArray[i] == ' ' || buyerNameCharArray[i+1] == '-') {
                         buyerNameStrBuilder.append('\n');
@@ -60,7 +62,8 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
         } else {
             buyerNameEdit = buyerStr;
         }
-        holder.buyerName.setText(buyerNameEdit);
+        String customerName = buyerNameEdit.replaceAll("\\s+","\n");
+        holder.buyerName.setText(customerName);
 
         if (order.getDestination().length() > 11) {
             char[] destArray = order.getDestination().toCharArray();
@@ -85,11 +88,7 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         DecimalFormat formatter = new DecimalFormat("#,###");
-        if (order.getEstimatedPallets() <= 1 && order.getEstimatedPallets() > 0) {
-            holder.estPallets.setText("1");
-        } else {
-            holder.estPallets.setText(Integer.toString((int) Math.round(order.getEstimatedPallets())));
-        }
+        holder.estPallets.setText(Double.toString(Rounder.round(order.getEstimatedPallets(), 1)));
         holder.estWeight.setText(formatter.format(order.getEstimatedWeight()) + " lbs");
     }
 

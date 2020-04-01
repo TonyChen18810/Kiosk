@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<RecyclerViewAssociatedAdapter.MyViewHolder> {
@@ -59,17 +60,25 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         // format customer name
         String buyerNameEdit, buyerStr = order.getCustomerName();
         String[] words = buyerStr.split(" ");
+        List<String> filteredWords = new ArrayList<>();
+        for (int i = 0; i < words.length; i++) {
+            if (!words[i].equals("&") && !words[i].equals("and")) {
+                filteredWords.add(words[i]);
+            }
+        }
 
         if (buyerStr.length() > 13) {
             StringBuilder buyerNameStrBuilder = new StringBuilder();
-            char[] buyerNameCharArray = buyerStr.toCharArray();
+            char[] buyerNameCharArray = filteredWords.toString().toCharArray();
             for (int i = 0; i < buyerNameCharArray.length; i++) {
-                buyerNameStrBuilder.append(buyerNameCharArray[i]);
-                if ((i + 1) != buyerNameCharArray.length  && words.length < 4) {
+                if (buyerNameCharArray[i] != '&') {
+                    buyerNameStrBuilder.append(buyerNameCharArray[i]);
+                }
+                if ((i + 1) != buyerNameCharArray.length  && filteredWords.size() < 4) {
                     if (buyerNameCharArray[i] == ' ' || buyerNameCharArray[i+1] == '-') {
                         buyerNameStrBuilder.append('\n');
                     }
-                } else if (words.length > 3) {
+                } else if (filteredWords.size() > 3) {
                     if (buyerNameCharArray[i] == ' ') {
                         buyerNameStrBuilder.append('\n');
                     }
@@ -81,7 +90,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         }
 
         holder.orderNumber.setText(order.getSOPNumber());
-        holder.buyerName.setText(buyerNameEdit);
+        holder.buyerName.setText(order.getCustomerName());
 
         // format destination
         if (order.getDestination().length() > 11) {

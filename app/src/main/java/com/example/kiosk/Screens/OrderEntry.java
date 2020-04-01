@@ -328,7 +328,7 @@ public class OrderEntry extends AppCompatActivity {
                 appointmentTimeListener.setValue(-1);
             }
             try {
-                new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute().get();
+                new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute();
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -1,5 +1,6 @@
 package com.example.kiosk;
 
+import com.example.kiosk.Helpers.Rounder;
 import com.example.kiosk.Webservices.GetOrderDetails;
 
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ public class Order {
     private static ArrayList<Order> ordersList = new ArrayList<>();
     private static ArrayList<Order> possibleOrdersList = new ArrayList<>();
     private static ArrayList<Order> associatedOrdersList = new ArrayList<>();
-    private static double totalWeight = 0;
-    private static int totalPalletCount = 0;
+    private static double totalWeight = 0.0;
+    private static double totalPalletCount = 0.0;
 
     public Order(String masterNumber, String SOPNumber, String coolerLocation, String destination, String consignee,
                  String truckStatus, String customerName, String isCheckedIn, String isAppointment,
@@ -101,11 +102,11 @@ public class Order {
     }
 
     public double getEstimatedWeight() {
-        return Double.parseDouble(estimatedWeight);
+        return Rounder.round(Double.parseDouble(estimatedWeight), 1);
     }
 
     public double getEstimatedPallets() {
-        return Double.parseDouble(estimatedPallets);
+        return Rounder.round(Double.parseDouble(estimatedPallets), 1);
     }
 
     public static double getTotalWeight() {
@@ -117,8 +118,8 @@ public class Order {
     }
 
     public static void reset() {
-        totalWeight = 0;
-        totalPalletCount = 0;
+        totalWeight = 0.0;
+        totalPalletCount = 0.0;
         possibleOrdersList.clear();
         associatedOrdersList.clear();
         ordersList.clear();
@@ -148,11 +149,14 @@ public class Order {
 
     public static void addMasterOrderToList(Order order) {
         totalWeight += order.getEstimatedWeight();
+        /*
         if (order.getEstimatedPallets() < 1 && order.getEstimatedPallets() > 0) {
             totalPalletCount += 1;
         } else {
             totalPalletCount += order.getEstimatedPallets();
         }
+        */
+        totalPalletCount += order.getEstimatedPallets();
         ordersList.add(order);
     }
 

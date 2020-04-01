@@ -21,7 +21,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="#1E04B486"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="25dp"
+            android:paddingBottom="25dp">
 
             <TextView
                 android:id="@+id/OrderNumber"

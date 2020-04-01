@@ -3,6 +3,8 @@ package com.example.kiosk.Screens;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -15,6 +17,7 @@ import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewSummaryAdapter;
+import com.example.kiosk.Helpers.Rounder;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.DeleteOrderDetails;
@@ -137,6 +140,7 @@ public class OrderSummary extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     public void setup() {
         confirmOrders = findViewById(R.id.ConfirmOrders);
         confirmationNumberText = findViewById(R.id.ConfirmationNumberText);
@@ -157,11 +161,7 @@ public class OrderSummary extends AppCompatActivity {
 
         ordersCount.setText(Integer.toString(Order.getOrdersList().size()));
         DecimalFormat formatter = new DecimalFormat("#,###");
-        if (Order.getTotalPalletCount() < 1) {
-            totalPalletsCount.setText("1");
-        } else {
-            totalPalletsCount.setText(formatter.format(Order.getTotalPalletCount()));
-        }
+        totalPalletsCount.setText(Double.toString(Rounder.round(Order.getTotalPalletCount(), 1)));
         totalWeightCount.setText(formatter.format(Order.getTotalWeight()) + " lbs");
 
         if (currentLanguage == 0) {

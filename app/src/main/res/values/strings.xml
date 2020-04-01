@@ -126,6 +126,7 @@
         <item>Saskatchewan</item>
         <item>Alberta</item>
         <item>Newfoundland and Labrador</item>
+        <item>Mexico</item>
     </string-array>
 
     <string-array name="states_abbreviated">
@@ -189,6 +190,7 @@
         <item>SK</item>
         <item>AB</item>
         <item>NL</item>
+        <item>MX</item>
     </string-array>
 
     <!-- English -->
