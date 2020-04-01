@@ -266,7 +266,7 @@ public class CreateAccount extends AppCompatActivity {
 
         trailerLicense.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                if (selectState1.getText().equals("State") || selectState1.getText().equals("Estado") || selectState1.getText().equals("État")) {
+                if (selectState2.getText().equals("State") || selectState2.getText().equals("Estado") || selectState2.getText().equals("État")) {
                     selectState2.performClick();
                 }
                 // showSoftKeyboard(dispatcherPhoneNumber);
