@@ -5,31 +5,22 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
-
 import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
-
 import org.ksoap2.SoapEnvelope;
-import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpResponseException;
 import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.net.SocketException;
 
 public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<Activity> mWeakActivity;
     private String enteredSOPNumber;
-    private View view;
 
     private static String MASTER_NUMBER = null;
     private static String coolerNumber = "01";
@@ -55,7 +46,6 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
     public GetOrderDetails(Activity activity, String enteredSOPNumber) {
         mWeakActivity = new WeakReference<>(activity);
         this.enteredSOPNumber = enteredSOPNumber;
-        this.view = view;
         System.out.println("MASTER NUMBER ON METHOD CALL: " + MASTER_NUMBER);
     }
 
@@ -113,16 +103,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Trying again...");
-            Thread thread = new Thread(() -> {
-                new GetOrderDetails(mWeakActivity.get(), enteredSOPNumber);
-            });
-            try {
-                thread.start();
-                // Thread.sleep(5000);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            System.out.println("Internet connection issue...");
             connection = false;
         }
         return null;
@@ -157,7 +138,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                                     if (MASTER_NUMBER == null) {
                                         if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
                                             System.out.println("We need a new master number...");
-                                            new GetNextMasterOrderNumber().execute();
+                                            // new GetNextMasterOrderNumber().execute();
                                         } else {
                                             MASTER_NUMBER = masterNumber;
                                         }
@@ -174,7 +155,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                                     if (MASTER_NUMBER == null) {
                                         if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
                                             System.out.println("We need a new master number...");
-                                            new GetNextMasterOrderNumber().execute();
+                                            // new GetNextMasterOrderNumber().execute();
                                             isGoodOrder = true;
                                         } else {
                                             MASTER_NUMBER = masterNumber;
@@ -187,7 +168,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                                 if (MASTER_NUMBER == null) {
                                     if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
                                         System.out.println("We need a new master number...");
-                                        new GetNextMasterOrderNumber().execute();
+                                        // new GetNextMasterOrderNumber().execute();
                                         isGoodOrder = true;
                                     } else {
                                         MASTER_NUMBER = masterNumber;

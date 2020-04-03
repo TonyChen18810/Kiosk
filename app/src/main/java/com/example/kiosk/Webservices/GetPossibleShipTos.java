@@ -23,13 +23,8 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
     private String enteredSOPNumber;
     private String coolerNumber = "01";
     private static List<PossibleDestination> possibleDestinations;
-    private int propCount = 0;
 
     private boolean connection = false;
-
-    static List<PossibleDestination> getPossibleDestinations() {
-        return possibleDestinations;
-    }
 
     public GetPossibleShipTos(Activity activity, String enteredSOPNumber) {
         mWeakActivity = new WeakReference<>(activity);
@@ -38,7 +33,6 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        propCount = 0;
         String namespace = "http://tempuri.org/";
         String method = "GetPossibleShipTos";
         String soapAction = "http://tempuri.org/GetPossibleShipTos";

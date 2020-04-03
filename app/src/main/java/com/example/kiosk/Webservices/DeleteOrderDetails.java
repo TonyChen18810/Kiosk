@@ -44,7 +44,6 @@ public class DeleteOrderDetails extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 }

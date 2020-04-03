@@ -13,7 +13,7 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
     private String inMasterNumber;
     private String inCoolerLocation = "01";
 
-    public DriverNotification(String inMasterNumber) {
+    DriverNotification(String inMasterNumber) {
         this.inMasterNumber = inMasterNumber;
     }
 

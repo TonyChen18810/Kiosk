@@ -31,10 +31,6 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
         mWeakActivity = new WeakReference<>(activity);
     }
 
-    public static int getPropertyCount() {
-        return propertyCount;
-    }
-
     @Override
     protected Void doInBackground(Void... voids) {
         String namespace = "http://tempuri.org/";
@@ -63,26 +59,6 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                 // empty list, no associated orders
                 System.out.println("No orders with matching master number (" + inMasterNumber + ") ----------------------------------------------, property count: " + propertyCount);
             } else {
-                /*
-                for (int k = 0; k < response.getPropertyCount(); k++) {
-                    if (((SoapObject) (response.getProperty(k))).getProperty(8).toString().equals("true")) {
-                        if (!Order.getCurrentOrder().getAppointmentTime().equals(((SoapObject) (response.getProperty(k))).getProperty(10).toString())) {
-                            // yo these times don't match up call your dispatcher
-                            String message = "";
-                            if (Language.getCurrentLanguage() == 0) {
-                                message = "Some of these orders have differing appointment times, please contact your dispatcher";
-                            } else if (Language.getCurrentLanguage() == 1) {
-                                message = "Algunos de estos pedidos tienen horarios de citas diferentes, comuníquese con su despachador";
-                            } else if (Language.getCurrentLanguage() == 2) {
-                                message = "Certaines de ces commandes ont des heures de rendez-vous différentes, veuillez contacter votre répartiteur";
-                            }
-                            HelpDialog dialog = new HelpDialog(message, mWeakActivity.get());
-                            dialog.show();
-                            Order.reset();
-                        }
-                    }
-                }
-                 */
                 for (int i = 0; i < response.getPropertyCount(); i++) {
                     String masterNumber = ((SoapObject) (response.getProperty(i))).getProperty(0).toString();
                     String SOPNumber = ((SoapObject) (response.getProperty(i))).getProperty(1).toString();
@@ -164,6 +140,11 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                     }
                 }
             }
+            /*
+            if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
+                OrderEntry.appointmentTimeListener.setValue(-2);
+            }
+             */
         }
     }
 }

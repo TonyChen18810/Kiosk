@@ -38,30 +38,6 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/NextBtn"
-        style="@android:style/Widget.Button.Small"
-        android:layout_width="300dp"
-        android:layout_height="130dp"
-        android:background="@drawable/mybutton2"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:paddingLeft="40dp"
-        android:paddingTop="20dp"
-        android:paddingRight="40dp"
-        android:paddingBottom="20dp"
-        android:text="Next"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/white"
-        android:textSize="56sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.386"
-        app:layout_constraintStart_toEndOf="@+id/BackBtn"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.546" />
-
-    <Button
         android:id="@+id/BackBtn"
         style="@android:style/Widget.Button.Small"
         android:layout_width="300dp"
@@ -80,10 +56,34 @@
         android:textSize="56sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintHorizontal_bias="0.291"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.546" />
+        app:layout_constraintVertical_bias="0.55" />
+
+    <Button
+        android:id="@+id/NextBtn"
+        style="@android:style/Widget.Button.Small"
+        android:layout_width="300dp"
+        android:layout_height="130dp"
+        android:background="@drawable/mybutton2"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:paddingLeft="40dp"
+        android:paddingTop="20dp"
+        android:paddingRight="40dp"
+        android:paddingBottom="20dp"
+        android:text="Next"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/white"
+        android:textSize="56sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.385"
+        app:layout_constraintStart_toEndOf="@+id/BackBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.55" />
 
     <TextView
         android:id="@+id/NoEmailWarning"

@@ -145,6 +145,9 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                 if (!this.error) {
                     if (clickedOrder.getTruckStatus().equals("Outstanding")) {
                         if (clickedOrder.getCheckedIn().equals("false")) {
+                            System.out.println("Does current order (" + Order.getOrdersList().get(Order.getOrdersList().size()-1).getSOPNumber() + ") have an appointment? " + Order.getOrdersList().get(Order.getOrdersList().size()-1).getAppointment());
+                            System.out.println("Entered orders apt. time: " + Order.getCurrentAppointmentTime());
+                            System.out.println("Clicked orders apt. time: " + clickedOrder.getAppointmentTime());
                             if (clickedOrder.getAppointment().equals("true") && clickedOrder.getAppointmentTime().equals("00:00:00")) {
                                 System.out.println("Need to make appointment");
                                 isGoodOrder = false;
@@ -165,7 +168,23 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                                 System.out.println("Has an appointment, now check for late/early/on-time");
                                 System.out.println("Clicked apt. time: " + clickedOrder.getSOPNumber() + " " + clickedOrder.getAppointmentTime());
                                 System.out.println("Entered order apt. time: " + Order.getCurrentOrder().getSOPNumber() + " " + Order.getCurrentOrder().getAppointmentTime());
-                                if (!clickedOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
+                                if (checkApppointmentTime(clickedOrder.getAppointmentTime()) == 1) {
+                                    System.out.println("You're late");
+                                    isGoodOrder = false;
+                                    // OrderEntry.appointmentTimeListener.setValue(1);
+                                    this.layout.setBackgroundColor(Color.parseColor("#b3b3b3"));
+                                    this.error = true;
+                                    String helpText = "";
+                                    if (Language.getCurrentLanguage() == 0) {
+                                        helpText = "Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.";
+                                    } else if (Language.getCurrentLanguage() == 1) {
+                                        helpText = "Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.";
+                                    } else if (Language.getCurrentLanguage() == 2) {
+                                        helpText = "L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.";
+                                    }
+                                    HelpDialog dialog = new HelpDialog(helpText, itemView.getContext());
+                                    dialog.show();
+                                } else if (Order.getOrdersList().get(Order.getOrdersList().size()-1).getAppointment().equals("true") && !clickedOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
                                     isGoodOrder = false;
                                     this.layout.setBackgroundColor(Color.parseColor("#b3b3b3"));
                                     this.error = true;
@@ -191,27 +210,11 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                                         helpText = "Cette commande a une heure de rendez-vous ultérieure. Cette commande soumise ne sera enregistrée que 1 heure avant l'heure du rendez-vous.";
                                     }
                                     HelpDialog dialog = new HelpDialog(helpText, itemView.getContext());
-                                    dialog.show();
+                                    // dialog.show();
                                     // OrderEntry.appointmentTimeListener.setValue(0);
                                     // HelpDialog dialog = new HelpDialog("This order is early", itemView.getContext());
                                     // dialog.show();
-                                } else if (checkApppointmentTime(clickedOrder.getAppointmentTime()) == 1) {
-                                    System.out.println("You're late");
-                                    isGoodOrder = false;
-                                    // OrderEntry.appointmentTimeListener.setValue(1);
-                                    this.layout.setBackgroundColor(Color.parseColor("#b3b3b3"));
-                                    this.error = true;
-                                    String helpText = "";
-                                    if (Language.getCurrentLanguage() == 0) {
-                                        helpText = "Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.";
-                                    } else if (Language.getCurrentLanguage() == 1) {
-                                        helpText = "Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.";
-                                    } else if (Language.getCurrentLanguage() == 2) {
-                                        helpText = "L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.";
-                                    }
-                                    HelpDialog dialog = new HelpDialog(helpText, itemView.getContext());
-                                    dialog.show();
-                                } else if (checkApppointmentTime(clickedOrder.getAppointmentTime()) == 0) {
+                                }  else if (checkApppointmentTime(clickedOrder.getAppointmentTime()) == 0) {
                                     System.out.println("On time");
                                     isGoodOrder = true;
                                 }

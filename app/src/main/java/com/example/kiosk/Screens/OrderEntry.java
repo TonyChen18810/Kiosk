@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -33,10 +32,13 @@ import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
+import com.example.kiosk.Webservices.GetNextMasterOrderNumber;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class OrderEntry extends AppCompatActivity {
@@ -96,7 +98,20 @@ public class OrderEntry extends AppCompatActivity {
             if (dialogChoice) {
                 setContentView(R.layout.rules_regulations);
                 rulesRegulationsSetup();
+                AtomicBoolean masterNull = new AtomicBoolean(true);
                 findViewById(R.id.SubmitBtn2).setOnClickListener(v -> {
+                    for (int i = 0; i < Order.getOrdersList().size(); i++) {
+                        if (Order.getOrdersList().get(i).getMasterNumber() == null || Order.getOrdersList().get(i).getMasterNumber().equals("anyType{}") || Order.getOrdersList().get(i).getMasterNumber().equals("")) {
+                            masterNull.set(true);
+                        } else {
+                            masterNull.set(false);
+                            GetOrderDetails.setNewMasterNumber(Order.getOrdersList().get(i).getMasterNumber());
+                            break;
+                        }
+                    }
+                    if (masterNull.get()) {
+                        new GetNextMasterOrderNumber().execute();
+                    }
                     Intent intent = new Intent(OrderEntry.this, OrderSummary.class);
                     startActivity(intent);
                 });
@@ -302,7 +317,11 @@ public class OrderEntry extends AppCompatActivity {
                 addOrderListener.setValue(false);
             }
 
-            Order.setCurrentAppointmentTime(Order.getCurrentOrder().getAppointmentTime());
+            if (Order.getCurrentOrder().getAppointment().equals("true")) {
+                Order.setCurrentAppointmentTime(Order.getCurrentOrder().getAppointmentTime());
+            } else {
+                Order.setCurrentAppointmentTime(null);
+            }
 
             adapter.notifyDataSetChanged();
             adapter.notifyItemInserted(adapter.getItemCount() - 1);
@@ -325,9 +344,6 @@ public class OrderEntry extends AppCompatActivity {
              */
             checkOrderBtn.setEnabled(false);
             addOrderBtn.setEnabled(false);
-            if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
-                appointmentTimeListener.setValue(-2);
-            }
             try {
                 new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute();
             } catch (Exception e) {

@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                         nextBtn.setEnabled(true);
                     }
                     if (doesEmailMatch()) {
-                        setStatus(-1, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
+                        setStatus(-1, asList(emailAddressBox, confirmEmailAddress), asList(noEmailWarning, unmatchingEmail));
                     }
                 }
             }
@@ -182,6 +182,9 @@ public class MainActivity extends AppCompatActivity {
                     if (emailAddressBox.length() != 0 && confirmEmailAddress.length() != 0 && phoneNumberBox.length() != 0
                             && confirmPhoneNumber.length() != 0 && validEmail() && validNumber()) {
                         nextBtn.setEnabled(true);
+                    }
+                    if (doesPhoneMatch() && validNumber()) {
+                        setStatus(-1, asList(phoneNumberBox, confirmPhoneNumber), asList(noPhoneNumberWarning, unmatchingPhone));
                     }
                 }
                 if (validNumber()) {
@@ -422,9 +425,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * @param obj
-     * @param propertyName
-     * @param value
+     * @param obj object to be moved (Button, EditText, etc.)
+     * @param propertyName (ex: "translationY")
+     * @param value amount to move
      * Called from newAccountExpand()
      */
     private void animation(Object obj, String propertyName, float value) {
@@ -444,8 +447,8 @@ public class MainActivity extends AppCompatActivity {
         animation(phoneNumberBox, "translationY", 165f);
         animation(noPhoneNumberWarning, "translationY", 165f);
         animation(confirmPhoneNumber, "translationY", 330f);
-        animation(nextBtn, "translationY", 320f);
-        animation(backBtn, "translationY", 320f);
+        animation(nextBtn, "translationY", 330f);
+        animation(backBtn, "translationY", 330f);
         AlphaAnimation fade = new AlphaAnimation(0.0f, 1.0f);
         // was 1000
         fade.setDuration(1);
