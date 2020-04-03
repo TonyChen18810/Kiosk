@@ -17,6 +17,8 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
     private String inLocation = "01";
     private Boolean lastCall;
 
+    private boolean connection = false;
+
     public UpdateMasterOrder(String inMasterNumber, String inEmail, String inSOPnumber, Boolean lastCall) {
         this.inMasterNumber = inMasterNumber;
         this.inEmail = inEmail;
@@ -48,6 +50,9 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
         try {
             transportSE.call(soapAction, envelope);
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+            if (response != null) {
+                connection = true;
+            }
             if (response.toString().equals("0")) {
                 System.out.println("UpdateMasterOrder success");
             } else if (response.toString().equals("1000")) {
@@ -57,6 +62,17 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            connection = false;
+            System.out.println("Trying again...");
+            Thread thread = new Thread(() -> {
+                new UpdateMasterOrder(inMasterNumber, inEmail, inSOPnumber, lastCall).execute();
+            });
+            try {
+                thread.start();
+                // Thread.sleep(5000);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return null;
     }
@@ -64,8 +80,10 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if (this.lastCall) {
-            new DriverNotification(GetOrderDetails.getMasterNumber()).execute();
+        if (connection) {
+            if (this.lastCall) {
+                new DriverNotification(GetOrderDetails.getMasterNumber()).execute();
+            }
         }
     }
 }

@@ -29,6 +29,8 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<Activity> mWeakActivity;
     private String enteredSOPNumber;
+    private View view;
+
     private static String MASTER_NUMBER = null;
     private static String coolerNumber = "01";
 
@@ -53,6 +55,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
     public GetOrderDetails(Activity activity, String enteredSOPNumber) {
         mWeakActivity = new WeakReference<>(activity);
         this.enteredSOPNumber = enteredSOPNumber;
+        this.view = view;
         System.out.println("MASTER NUMBER ON METHOD CALL: " + MASTER_NUMBER);
     }
 
@@ -110,6 +113,16 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Trying again...");
+            Thread thread = new Thread(() -> {
+                new GetOrderDetails(mWeakActivity.get(), enteredSOPNumber);
+            });
+            try {
+                thread.start();
+                // Thread.sleep(5000);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             connection = false;
         }
         return null;
@@ -150,7 +163,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                                         }
                                     }
                                     isGoodOrder = true;
-                                    OrderEntry.appointmentTimeListener.setValue(0);
+                                    // OrderEntry.appointmentTimeListener.setValue(-2);
                                     // OrderEntry.appointmentTimeListener.setValue(-1);
                                 } else if (checkApppointmentTime(appointmentTime) == 1) {
                                     System.out.println("You're late");
@@ -200,20 +213,20 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                     OrderEntry.validOrderNumber.setValue(3);
                 }
             }
-        }
-        if (activity != null) {
-            ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.GONE);
-        }
-        if (isGoodOrder) {
-            System.out.println("MASTER_NUMBER: " + MASTER_NUMBER);
-            System.out.println("masterNumber: " + masterNumber);
-            Order order = new Order(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
-                    customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
-            OrderEntry.validOrderNumber.setValue(1);
             if (activity != null) {
                 ProgressBar progressBar = activity.findViewById(R.id.progressBar);
                 progressBar.setVisibility(View.GONE);
+            }
+            if (isGoodOrder) {
+                System.out.println("MASTER_NUMBER: " + MASTER_NUMBER);
+                System.out.println("masterNumber: " + masterNumber);
+                Order order = new Order(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
+                        customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
+                OrderEntry.validOrderNumber.setValue(1);
+                if (activity != null) {
+                    ProgressBar progressBar = activity.findViewById(R.id.progressBar);
+                    progressBar.setVisibility(View.GONE);
+                }
             }
         }
 
@@ -226,31 +239,55 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
     }
 
     public static int checkApppointmentTime(String appointmentTime) {
-        int aptCode;
-        System.out.println("Appointment time: " + appointmentTime);
-        System.out.println("Logged in time: " + Time.getCurrentTime());
+        int aptCode = 0;
+        // System.out.println("Appointment time: " + appointmentTime);
+        // System.out.println("Logged in time: " + Time.getCurrentTime());
         char[] aptC = appointmentTime.toCharArray();
         char[] timeC = Time.getCurrentTime().toCharArray();
         String aptHour = ((aptC[0]-'0') + "" + (aptC[1]-'0'));
-        System.out.println("Hour of apt: " + aptHour);
+        // System.out.println("Hour of apt: " + aptHour);
         String loggedInHour = ((timeC[0]-'0') + "" + (timeC[1]-'0'));
-        System.out.println("Hour of logged in time: " + loggedInHour);
+        // System.out.println("Hour of logged in time: " + loggedInHour);
+        String aptMinute = ((aptC[3]-'0') + "" + (aptC[4]-'0'));
+        // System.out.println("Minutes of apt: " + aptMinute);
+        String loggedInMinute = ((timeC[3]-'0') + "" + (timeC[4]-'0'));
+        // System.out.println("Minutes of logged in time: " + loggedInMinute);
 
-        int timeA = Integer.parseInt(aptHour);
-        int timeB = Integer.parseInt(loggedInHour);
-        System.out.println("timeA: " + timeA);
-        System.out.println("timeB: " + timeB);
+        int aptHourInt = Integer.parseInt(aptHour);
+        int aptMinuteInt = Integer.parseInt(aptMinute);
+        int loggedHourInt = Integer.parseInt(loggedInHour);
+        int loggedMinuteInt = Integer.parseInt(loggedInMinute);
+        System.out.println("Apt. hour: " + aptHourInt);
+        System.out.println("Apt. minute: " + aptMinuteInt);
+        System.out.println("Logged in hour: " + loggedHourInt);
+        System.out.println("Logged in minute: " + loggedMinuteInt);
 
-        if (timeB < timeA - 1) {
+
+        if (aptHourInt - 1 > loggedHourInt) {
+            aptCode = -1;
+        } else if (aptHourInt - 1 == loggedHourInt) {
+            if (aptMinuteInt > loggedMinuteInt) {
+                aptCode = -1;
+            }
+        } else if (aptHourInt + 1 < loggedHourInt) {
+            aptCode = 1;
+        } else if (aptHourInt + 1 <= loggedHourInt) {
+            if (aptMinuteInt < loggedMinuteInt) {
+                aptCode = 1;
+            }
+        }
+/*
+        if (timeL < timeA - 1) {
             System.out.println("EARLY");
             aptCode = -1;
-        } else if (timeB > timeA + 1) {
+        } else if (timeL > timeA + 1) {
             System.out.println("LATE");
             aptCode = 1;
         } else {
             System.out.println("ON TIME");
             aptCode = 0;
         }
+ */
         return aptCode;
     }
 }

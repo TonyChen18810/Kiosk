@@ -25,6 +25,8 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
     private static List<PossibleDestination> possibleDestinations;
     private int propCount = 0;
 
+    private boolean connection = false;
+
     static List<PossibleDestination> getPossibleDestinations() {
         return possibleDestinations;
     }
@@ -56,6 +58,9 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
             transportSE.call(soapAction, envelope);
             SoapObject response = (SoapObject) envelope.getResponse();
             possibleDestinations = new ArrayList<>();
+            if (response != null) {
+                connection = true;
+            }
             if (response.getPropertyCount() > 0) {
                 for (int i = 0; i < response.getPropertyCount(); i++) {
                     String SOPNumber = ((SoapObject) (response.getProperty(i))).getProperty(0).toString();
@@ -67,6 +72,17 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            connection = false;
+            System.out.println("Trying again...");
+            Thread thread = new Thread(() -> {
+                new GetPossibleShipTos(mWeakActivity.get(), enteredSOPNumber).execute();
+            });
+            try {
+                thread.start();
+                // Thread.sleep(5000);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return null;
     }
@@ -74,24 +90,20 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        Activity activity = mWeakActivity.get();
-        if (activity != null) {
-            // System.out.println("Possible destinations size: " + possibleDestinations.size());
-            // System.out.println("Possible customer destinations size: " + OrderEntry.possibleCustomerDestinations.size());
-            OrderEntry.possibleCustomerDestinations.clear();
-            for (int i = 0; i < possibleDestinations.size(); i++) {
-                // System.out.println(getPossibleDestinations().get(i).getDestination());
-                OrderEntry.possibleCustomerDestinations.add(possibleDestinations.get(i).getDestination());
+        if (connection) {
+            Activity activity = mWeakActivity.get();
+            if (activity != null) {
+                // System.out.println("Possible destinations size: " + possibleDestinations.size());
+                // System.out.println("Possible customer destinations size: " + OrderEntry.possibleCustomerDestinations.size());
+                OrderEntry.possibleCustomerDestinations.clear();
+                for (int i = 0; i < possibleDestinations.size(); i++) {
+                    // System.out.println(getPossibleDestinations().get(i).getDestination());
+                    OrderEntry.possibleCustomerDestinations.add(possibleDestinations.get(i).getDestination());
+                }
+                activity.findViewById(R.id.SelectDestinationBtn).setEnabled(true);
+                activity.findViewById(R.id.progressBar).setVisibility(View.GONE);
+                // Button destinationBtn = activity.findViewById(R.id.SelectDestinationBtn).startAnimation(AnimationUtils.loadAnimation(mWeakActivity.get(), R.anim.fade));
             }
-            activity.findViewById(R.id.SelectDestinationBtn).setEnabled(true);
-            activity.findViewById(R.id.progressBar).setVisibility(View.GONE);
-            // Button destinationBtn = activity.findViewById(R.id.SelectDestinationBtn).startAnimation(AnimationUtils.loadAnimation(mWeakActivity.get(), R.anim.fade));
-        }
-        if (propCount > 0) {
-            OrderEntry.listListener.setValue(true);
-        } else {
-            propCount = 0;
-            OrderEntry.listListener.setValue(false);
         }
     }
 }

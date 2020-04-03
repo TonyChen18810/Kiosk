@@ -35,10 +35,8 @@ import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.GetOrderDetailsByMasterNumber;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class OrderEntry extends AppCompatActivity {
@@ -56,10 +54,9 @@ public class OrderEntry extends AppCompatActivity {
 
     public static List<String> possibleCustomerDestinations;
 
-    private static MutableLiveData<Boolean> listener = null;
-    private static MutableLiveData<Boolean> dialogListener = null;
+    private static MutableLiveData<Boolean> addOrderListener = null;
+    private static MutableLiveData<Boolean> submitDialogListener = null;
     public static MutableLiveData<Integer> validOrderNumber = null;
-    public static MutableLiveData<Boolean> listListener = null;
     public static MutableLiveData<Boolean> sharedMasterNumber = null;
 
     public static MutableLiveData<String> destinationListener = null;
@@ -73,19 +70,16 @@ public class OrderEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_entry);
 
-        check = 0;
-
-        listener = new MutableLiveData<>();
-        listener.setValue(true);
-        dialogListener = new MutableLiveData<>();
-        dialogListener.setValue(false);
+        addOrderListener = new MutableLiveData<>();
+        addOrderListener.setValue(true);
+        submitDialogListener = new MutableLiveData<>();
+        submitDialogListener.setValue(false);
         validOrderNumber = new MutableLiveData<>();
-        listListener = new MutableLiveData<>();
         destinationListener = new MutableLiveData<>();
 
         appointmentTimeListener = new MutableLiveData<>();
 
-        listener.observe(OrderEntry.this, empty -> {
+        addOrderListener.observe(OrderEntry.this, empty -> {
             if (empty) {
                 recyclerView.setVisibility(View.INVISIBLE);
                 currentlyEntered.setVisibility(View.INVISIBLE);
@@ -98,7 +92,7 @@ public class OrderEntry extends AppCompatActivity {
             }
         });
 
-        dialogListener.observe(OrderEntry.this, dialogChoice -> {
+        submitDialogListener.observe(OrderEntry.this, dialogChoice -> {
             if (dialogChoice) {
                 setContentView(R.layout.rules_regulations);
                 rulesRegulationsSetup();
@@ -113,6 +107,7 @@ public class OrderEntry extends AppCompatActivity {
             // non-existing order
             if (valid == 0) {
                 checkOrderBtn.setEnabled(true);
+                orderNumber.setText("");
                 String message = null;
                 if (Language.getCurrentLanguage() == 0) {
                     message = "Invalid order number, please try again";
@@ -124,7 +119,7 @@ public class OrderEntry extends AppCompatActivity {
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                 dialog.show();
                 // good order
-            } else if (valid == 1){
+            } else if (valid == 1) {
                 orderNumber.setEnabled(false);
                 checkOrderBtn.setEnabled(false);
                 checkOrderBtn.setBackgroundResource(R.drawable.arrow_down);
@@ -209,7 +204,7 @@ public class OrderEntry extends AppCompatActivity {
             Order.addMasterOrderToList(new Order("","","",
                     "", "","","","","",
                     "","","0","0"));
-            listener.setValue(true);
+            addOrderListener.setValue(true);
         }
 
         recyclerView = findViewById(R.id.OrdersView);
@@ -301,10 +296,10 @@ public class OrderEntry extends AppCompatActivity {
             if (!recyclerView.isShown()) {
                 Order.getOrdersList().remove(0);
                 Order.addMasterOrderToList(Order.getCurrentOrder());
-                listener.setValue(false);
+                addOrderListener.setValue(false);
             } else {
                 Order.addMasterOrderToList(Order.getCurrentOrder());
-                listener.setValue(false);
+                addOrderListener.setValue(false);
             }
 
             Order.setCurrentAppointmentTime(Order.getCurrentOrder().getAppointmentTime());
@@ -322,14 +317,16 @@ public class OrderEntry extends AppCompatActivity {
             selectDestinationBtn.setEnabled(true);
 
             possibleCustomerDestinations.clear();
+            /*
             orderNumber.setEnabled(true);
             showSoftKeyboard(orderNumber);
             orderNumber.setFocusable(true);
             orderNumber.requestFocus();
+             */
             checkOrderBtn.setEnabled(false);
             addOrderBtn.setEnabled(false);
             if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
-                appointmentTimeListener.setValue(-1);
+                appointmentTimeListener.setValue(-2);
             }
             try {
                 new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute();
@@ -423,7 +420,7 @@ public class OrderEntry extends AppCompatActivity {
             Order.addMasterOrderToList(new Order("","","",
                     "","","","","","",
                     "","","0","0"));
-            listener.setValue(true);
+            addOrderListener.setValue(true);
         }
     }
 
@@ -438,7 +435,7 @@ public class OrderEntry extends AppCompatActivity {
     }
 
     public static void setDialogListener(Boolean b) {
-        dialogListener.setValue(b);
+        submitDialogListener.setValue(b);
     }
 
     private void changeLanguage(int val) {
@@ -479,13 +476,9 @@ public class OrderEntry extends AppCompatActivity {
     }
 
     private void setup(){
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Window w = getWindow();
-        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         orderNumber = findViewById(R.id.OrderNumberBox);
         logoutBtn = findViewById(R.id.LogoutBtn);

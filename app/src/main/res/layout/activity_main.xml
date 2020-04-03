@@ -195,6 +195,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text"
         android:ems="12"
+        android:maxLines="1"
+        android:maxLength="14"
         android:inputType="phone"
         android:textSize="60sp"
         android:digits="1234567890+()-"

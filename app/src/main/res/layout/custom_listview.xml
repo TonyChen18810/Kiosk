@@ -7,10 +7,10 @@
         android:id="@+id/ListViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Driver License State"
-        android:textSize="45sp"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:text="Select Driver License State"
+        android:textSize="55sp" />
 
     <ListView
         android:id="@+id/ListView"

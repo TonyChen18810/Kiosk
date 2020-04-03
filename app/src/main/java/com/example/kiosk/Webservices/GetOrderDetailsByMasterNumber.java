@@ -1,8 +1,12 @@
 package com.example.kiosk.Webservices;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
@@ -12,11 +16,15 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
 
+import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
+
 public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
 
     private String inMasterNumber;
     private static int propertyCount;
     private WeakReference<Activity> mWeakActivity;
+
+    private boolean connection = false;
 
     public GetOrderDetailsByMasterNumber(String inMasterNumber, Activity activity) {
         this.inMasterNumber = inMasterNumber;
@@ -46,6 +54,9 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
         try {
             transportSE.call(soapAction, envelope);
             SoapObject response = (SoapObject) envelope.getResponse();
+            if (response != null) {
+                connection = true;
+            }
             propertyCount = response.getPropertyCount();
             System.out.println(propertyCount);
             if (propertyCount < 1) {
@@ -113,6 +124,17 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            connection = false;
+            System.out.println("Trying again...");
+            Thread thread = new Thread(() -> {
+                new GetOrderDetailsByMasterNumber(inMasterNumber, mWeakActivity.get()).execute();
+            });
+            try {
+                thread.start();
+                // Thread.sleep(5000);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return null;
     }
@@ -120,17 +142,28 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if (propertyCount < 1 && Order.getAssociatedOrdersList().size() < 1) {
-            System.out.println("No associated orders");
-            OrderEntry.sharedMasterNumber.setValue(false);
-        } else if (Order.getAssociatedOrdersList().size() > 0){
-            System.out.println("There's associated orders!!");
-            OrderEntry.sharedMasterNumber.setValue(true);
-        }
-        Activity activity = mWeakActivity.get();
-        if (activity != null) {
-            activity.findViewById(R.id.progressBar).setVisibility(View.GONE);
-            // activity.findViewById(R.id.addBtn).setEnabled(true);
+        if (connection) {
+            if (propertyCount < 1 && Order.getAssociatedOrdersList().size() < 1) {
+                System.out.println("No associated orders");
+                OrderEntry.sharedMasterNumber.setValue(false);
+            } else if (Order.getAssociatedOrdersList().size() > 0){
+                System.out.println("There's associated orders!!");
+                OrderEntry.sharedMasterNumber.setValue(true);
+            }
+            Activity activity = mWeakActivity.get();
+            if (activity != null) {
+                activity.findViewById(R.id.progressBar).setVisibility(View.GONE);
+                EditText orderNumber = activity.findViewById(R.id.OrderNumberBox);
+                orderNumber.setEnabled(true);
+                orderNumber.setFocusable(true);
+                orderNumber.requestFocus();
+                if (orderNumber.requestFocus()) {
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.showSoftInput(orderNumber, SHOW_IMPLICIT);
+                    }
+                }
+            }
         }
     }
 }

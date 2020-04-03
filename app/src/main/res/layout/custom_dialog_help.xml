@@ -20,8 +20,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:text="Help information text"
                 android:padding="20dp"
+                android:text="Help information text"
                 android:textAlignment="center"
                 android:textSize="80sp" />
 
@@ -29,21 +29,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_confirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/mybutton2"
-                    android:layout_gravity="center"
                     android:clickable="true"
                     android:focusable="true"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
                     android:paddingLeft="40dp"
+                    android:paddingTop="20dp"
                     android:paddingRight="40dp"
+                    android:paddingBottom="20dp"
                     android:text="Confirm"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/white"

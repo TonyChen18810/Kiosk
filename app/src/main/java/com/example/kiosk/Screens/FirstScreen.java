@@ -10,12 +10,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.kiosk.Account;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
-import com.example.kiosk.Webservices.GetOrderDetails;
 
 public class FirstScreen extends AppCompatActivity {
 
@@ -94,6 +92,12 @@ public class FirstScreen extends AppCompatActivity {
         });
     }
 
+    /**
+     * @param checkBox
+     * use this function to check the custom language checkboxes
+     * the last checkbox passed as a parameter is the one to be checked
+     * all others are unchecked
+     */
     private void setChecked(View... checkBox) {
         for (int i = 0; i < checkBox.length; i++) {
             if (i == checkBox.length-1) {
@@ -112,6 +116,9 @@ public class FirstScreen extends AppCompatActivity {
         changeLanguage(Language.getCurrentLanguage());
     }
 
+    /**
+     * Used to reset values if necessary and initialize all UI variables & version number
+     */
     public void setup() {
         System.out.println("Reset values...");
         Account.setCurrentAccount(null);
@@ -141,6 +148,12 @@ public class FirstScreen extends AppCompatActivity {
         noBtn.setEnabled(true);
     }
 
+    /**
+     * @param currentLanguage
+     * changes UI text based on current language int
+     * 0 = English, 1 = Spanish, 2 = French
+     * Called from setChecked()
+     */
     public void changeLanguage(int currentLanguage) {
         if (currentLanguage == 0) {
             appointmentWarningText.setText(R.string.appt_required_eng);
@@ -158,6 +171,50 @@ public class FirstScreen extends AppCompatActivity {
             existingAccountText.setText(R.string.existing_account_fr);
             noBtn.setText(R.string.no_fr);
             yesBtn.setText(R.string.yes_fr);
+        }
+    }
+
+    public void testTimes() {
+        String aptTime;
+        String logTime;
+
+        aptTime = "00:00:00";
+        logTime = "24:59:00";
+        char[] aptC = aptTime.toCharArray();
+        char[] timeC = logTime.toCharArray();
+        String aptHour = ((aptC[0] - '0') + "" + (aptC[1] - '0'));
+        String loggedInHour = ((timeC[0] - '0') + "" + (timeC[1] - '0'));
+        String aptMinute = ((aptC[3] - '0') + "" + (aptC[4] - '0'));
+        String loggedInMinute = ((timeC[3] - '0') + "" + (timeC[4] - '0'));
+
+        int aptHourInt = Integer.parseInt(aptHour);
+        int aptMinuteInt = Integer.parseInt(aptMinute);
+        int loggedHourInt = Integer.parseInt(loggedInHour);
+        int loggedMinuteInt = Integer.parseInt(loggedInMinute);
+
+        for (int i = 0; i < 50; i++) {
+            System.out.println("Appointment Time: " + aptHourInt + ":" + aptMinuteInt);
+            System.out.println("Logged In Time: " + loggedHourInt + ":" + loggedMinuteInt);
+            if (aptHourInt - 1 > loggedHourInt) {
+                System.out.println("Early!");
+            } else if (aptHourInt - 1 == loggedHourInt) {
+                if (aptMinuteInt > loggedMinuteInt) {
+                    System.out.println("Early!");
+                }
+            } else if (aptHourInt + 1 < loggedHourInt) {
+                System.out.println("Late!");
+            } else if (aptHourInt + 1 <= loggedHourInt) {
+                if (aptMinuteInt < loggedMinuteInt) {
+                    System.out.println("Late!");
+                }
+            } else {
+                System.out.println("On Time!");
+            }
+            aptHourInt += 1;
+            aptMinuteInt += 1;
+            loggedHourInt -= 1;
+            loggedMinuteInt -= 1;
+            System.out.println("-----------------------------------------------------------------------");
         }
     }
 }

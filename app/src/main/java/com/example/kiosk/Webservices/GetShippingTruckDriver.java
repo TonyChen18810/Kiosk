@@ -18,6 +18,8 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
     private WeakReference<Activity> mWeakActivity;
     private String enteredEmail;
 
+    private boolean connection = false;
+
     public GetShippingTruckDriver(Activity activity, String enteredEmail) {
         mWeakActivity = new WeakReference<>(activity);
         this.enteredEmail = enteredEmail;
@@ -49,6 +51,9 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         try {
             transportSE.call(soapAction, envelope);
             SoapObject response = (SoapObject) envelope.getResponse();
+            if (response != null) {
+                connection = true;
+            }
             if (response.getPropertyCount() > 0) {
                 // really don't need all this, just make the object?
                 email = ((SoapObject) (response.getProperty(0))).getProperty(0).toString();
@@ -74,9 +79,20 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
 
         } catch (Exception e) {
             e.printStackTrace();
+            connection = false;
             Account account = new Account(null, null, null, null, null, null,
                     null, null, null, null, null, null);
             Account.setCurrentAccount(account);
+            System.out.println("Trying again...");
+            Thread thread = new Thread(() -> {
+                new GetShippingTruckDriver(mWeakActivity.get(), enteredEmail).execute();
+            });
+            try {
+                thread.start();
+                // Thread.sleep(5000);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return null;
     }
@@ -84,15 +100,17 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        Activity activity = mWeakActivity.get();
-        if (activity != null) {
-            ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.GONE);
-        }
-        if (getEmail().length() == 0) {
-            MainActivity.accountExists.setValue(false);
-        } else {
-            MainActivity.accountExists.setValue(true);
+        if (connection) {
+            Activity activity = mWeakActivity.get();
+            if (activity != null) {
+                ProgressBar progressBar = activity.findViewById(R.id.progressBar);
+                progressBar.setVisibility(View.GONE);
+            }
+            if (getEmail().length() == 0) {
+                MainActivity.accountExists.setValue(false);
+            } else {
+                MainActivity.accountExists.setValue(true);
+            }
         }
         // reset in case of different login attempt
         email = "";

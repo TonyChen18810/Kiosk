@@ -16,6 +16,10 @@ public class Time {
         currentTime = currentDateandTime;
     }
 
+    public static void setTestingTime(String time) {
+        currentTime = time;
+    }
+
     public static String getCurrentTime() {
         return currentTime;
     }

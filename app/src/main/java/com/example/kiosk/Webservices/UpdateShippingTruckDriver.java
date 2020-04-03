@@ -75,20 +75,17 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
 
         } catch (Exception e) {
             e.printStackTrace();
-            /*
             System.out.println("Trying again...");
             Thread thread = new Thread(() -> {
                 new UpdateShippingTruckDriver(mWeakActivity.get(), email, email, driverName, phone, truckName, truckNumber,
                         driversLicense, driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone,"0", commmunicationPreference).execute();
             });
             try {
-                // thread.start();
+                thread.start();
                 // Thread.sleep(5000);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-
-             */
         }
         return null;
 

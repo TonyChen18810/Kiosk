@@ -31,44 +31,15 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class LoggedIn extends AppCompatActivity {
 
-    private int currentLanguage = Language.getCurrentLanguage();
-
     private Button logoutBtn;
     private Button nextBtn;
     private TextView loggedInText;
-    private EditText emailAddress;
-    private EditText phoneNumber;
-    private EditText truckName;
-    private EditText truckNumber;
-    private EditText trailerLicense;
-    private Spinner trailerStateSpinner;
-
-    private ListView trailerStateListView;
-
-    private EditText driverLicense;
-    private Spinner driverStateSpinner;
-
-    private ListView driverStateListView;
-
-    private EditText driverName;
-    private EditText dispatcherPhoneNumber;
-    private TextView verifyText;
-    private TextView preferText;
-    private TextView text;
-    private TextView email;
-    private TextView both;
-    private TextView select;
-    private TextView emailHint, phoneHint, driverNameHint, driverLicenseHint,
-            truckNameHint, truckNumberHint, trailerLicenseHint, dispatcherHint;
+    private EditText emailAddress, phoneNumber, truckName, truckNumber, trailerLicense, driverLicense, driverName, dispatcherPhoneNumber;
+    private TextView verifyText, preferText, text, email, both, select, emailHint, phoneHint, driverNameHint, driverLicenseHint,
+                        truckNameHint, truckNumberHint, trailerLicenseHint, dispatcherHint;
     private View textCheckbox, emailCheckbox, bothCheckbox;
-
     private Button selectState1, selectState2;
-    private String state1, state2;
-    private boolean initialSelection1 = false;
-    private boolean initialSelection2 = false;
-
     public static MutableLiveData<Boolean> checkboxListener;
-
     private static int PREFERRED_COMMUNICATION = -1;
     private Account CURRENT_ACCOUNT = Account.getCurrentAccount();
 
@@ -76,17 +47,6 @@ public class LoggedIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_in);
-        View decorView = getWindow().getDecorView();
-
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        Window w = getWindow();
-        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
         setup();
 
         try {
@@ -101,70 +61,7 @@ public class LoggedIn extends AppCompatActivity {
                 setCommunication();
             }
         });
-/*
-        final ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
-        stateAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        trailerStateSpinner.setAdapter(stateAdapter);
-        trailerStateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (initialSelection1) {
-                    state1 = getResources().getStringArray(R.array.states_abbreviated)[position];
-                    selectState1.setText(state1);
-                    if (PREFERRED_COMMUNICATION == 0) {
-                        setChecked(bothCheckbox, emailCheckbox, textCheckbox);
-                    } else if (PREFERRED_COMMUNICATION == 1) {
-                        setChecked(bothCheckbox, textCheckbox, emailCheckbox);
-                    } else if (PREFERRED_COMMUNICATION == 2) {
-                        setChecked(emailCheckbox, textCheckbox, bothCheckbox);
-                    }
-                } else {
-                    initialSelection1 = true;
-                    selectState1.setText(state1);
-                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        trailerStateListView.setAdapter(stateAdapter);
-        trailerStateListView.setOnItemClickListener((parent, view, position, id) -> {
-            state1 = getResources().getStringArray(R.array.states_abbreviated)[position];
-            selectState1.setText(state1);
-            trailerStateListView.setVisibility(View.GONE);
-        });
-
-        final ArrayAdapter<CharSequence> stateAdapter2 = ArrayAdapter.createFromResource(this, R.array.states, R.layout.spinner_layout);
-        stateAdapter2.setDropDownViewResource(R.layout.spinner_layout);
-        driverStateSpinner.setAdapter(stateAdapter2);
-        driverStateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (initialSelection2) {
-                    state2 = getResources().getStringArray(R.array.states_abbreviated)[position];
-                    selectState2.setText(state2);
-                    if (PREFERRED_COMMUNICATION == 0) {
-                        setChecked(bothCheckbox, emailCheckbox, textCheckbox);
-                    } else if (PREFERRED_COMMUNICATION == 1) {
-                        setChecked(bothCheckbox, textCheckbox, emailCheckbox);
-                    } else if (PREFERRED_COMMUNICATION == 2) {
-                        setChecked(emailCheckbox, textCheckbox, bothCheckbox);
-                    }
-                } else {
-                    initialSelection2 = true;
-                    selectState2.setText(state2);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-*/
         phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         dispatcherPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
@@ -191,8 +88,6 @@ public class LoggedIn extends AppCompatActivity {
                 truckNameStr = truckName.getText().toString();
                 truckNumberStr = truckNumber.getText().toString();
                 trailerLicenseStr = trailerLicense.getText().toString();
-                // String trailerStateStr = trailerStateSpinner.getSelectedItem().toString();
-                // String driverStateStr = driverStateSpinner.getSelectedItem().toString();
                 driverLicenseStr = driverLicense.getText().toString();
                 driverNameStr = driverName.getText().toString();
                 dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
@@ -201,11 +96,6 @@ public class LoggedIn extends AppCompatActivity {
                         PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(++PREFERRED_COMMUNICATION)).execute();
                 Account.getCurrentAccount().setTruckName(truckNameStr);
                 Account.getCurrentAccount().setTruckNumber(truckNumberStr);
-                /*
-                Account account = new Account(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr,
-                        trailerStateStr, driverLicenseStr, driverStateStr, dispatcherNumberStr, "0", Integer.toString(PREFERRED_COMMUNICATION+1));
-                Account.setCurrentAccount(account);
-                 */
                 nextBtn.setEnabled(false);
                 Intent intent = new Intent(LoggedIn.this, OrderEntry.class);
                 startActivity(intent);
@@ -249,17 +139,11 @@ public class LoggedIn extends AppCompatActivity {
         });
 
         selectState1.setOnClickListener(v -> {
-            // trailerStateSpinner.performClick();
-            // listview click
-            // trailerStateListView.setVisibility(View.VISIBLE);
-            // trailerStateListView.performClick();
             ListViewDialog dialog = new ListViewDialog(LoggedIn.this, selectState1, 1);
             dialog.show();
         });
 
         selectState2.setOnClickListener(v -> {
-            //driverStateSpinner.performClick();
-            // listview click
             ListViewDialog dialog = new ListViewDialog(LoggedIn.this, selectState2, 1);
             dialog.show();
         });
@@ -274,7 +158,12 @@ public class LoggedIn extends AppCompatActivity {
             setChecked(emailCheckbox, textCheckbox, bothCheckbox);
         }
     }
-
+    /**
+     * @param checkBox
+     * use this function to check the custom communication checkboxes
+     * the last checkbox passed as a parameter is the one to be checked
+     * all others are unchecked
+     */
     private void setChecked(View... checkBox) {
         for (int i = 0; i < checkBox.length; i++) {
             if (i == checkBox.length-1) {
@@ -401,7 +290,9 @@ public class LoggedIn extends AppCompatActivity {
     }
 
     private void setup() {
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         logoutBtn = findViewById(R.id.LogoutBtn);
         nextBtn = findViewById(R.id.NextBtn);
         loggedInText = findViewById(R.id.LoggedInText);
@@ -410,10 +301,8 @@ public class LoggedIn extends AppCompatActivity {
         truckName = findViewById(R.id.TruckNameBox);
         truckNumber = findViewById(R.id.TruckNumberBox);
         trailerLicense = findViewById(R.id.TrailerLicenseBox);
-
         driverLicense = findViewById(R.id.DriverLicenseBox);
         driverLicense.setTransformationMethod(new LicenseTransformationMethod());
-
         driverName = findViewById(R.id.DriverNameBox);
         dispatcherPhoneNumber = findViewById(R.id.DispatcherPhoneNumberBox);
         verifyText = findViewById(R.id.VerifyText);
@@ -427,7 +316,6 @@ public class LoggedIn extends AppCompatActivity {
         preferText = findViewById(R.id.PreferInfoText);
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
-
         // Field Hints
         emailHint = findViewById(R.id.EmailHint);
         phoneHint = findViewById(R.id.PhoneHint);
@@ -438,8 +326,8 @@ public class LoggedIn extends AppCompatActivity {
         trailerLicenseHint = findViewById(R.id.TrailerLicenseHint);
         dispatcherHint = findViewById(R.id.DispatcherHint);
 
-        driverStateListView = findViewById(R.id.DriverStateListView);
-        trailerStateListView = findViewById(R.id.TrailerStateListView);
+        ListView driverStateListView = findViewById(R.id.DriverStateListView);
+        ListView trailerStateListView = findViewById(R.id.TrailerStateListView);
         android.view.Display display = ((android.view.WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         driverStateListView.setMinimumHeight((int)(display.getHeight()*0.50));
         trailerStateListView.setMinimumHeight((int)(display.getHeight()*0.50));
@@ -464,8 +352,8 @@ public class LoggedIn extends AppCompatActivity {
 
         select.setVisibility(View.GONE);
 
-        trailerStateSpinner = findViewById(R.id.StateSpinner);
-        driverStateSpinner = findViewById(R.id.StateSpinner2);
+        Spinner trailerStateSpinner = findViewById(R.id.StateSpinner);
+        Spinner driverStateSpinner = findViewById(R.id.StateSpinner2);
 
         trailerStateSpinner.setVisibility(View.INVISIBLE);
         driverStateSpinner.setVisibility(View.INVISIBLE);
@@ -487,7 +375,7 @@ public class LoggedIn extends AppCompatActivity {
         driverName.setText(CURRENT_ACCOUNT.getDriverName());
         dispatcherPhoneNumber.setText(PhoneNumberFormat.formatPhoneNumber(CURRENT_ACCOUNT.getDispatcherPhoneNumber()));
 
-        changeLanguage(currentLanguage);
+        changeLanguage(Language.getCurrentLanguage());
         selectState1.setText(CURRENT_ACCOUNT.getDriverState());
         selectState2.setText(CURRENT_ACCOUNT.getTrailerState());
         PREFERRED_COMMUNICATION = Integer.parseInt(Account.getCurrentAccount().getCommunicationPreference()) - 1;
