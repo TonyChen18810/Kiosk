@@ -14,6 +14,7 @@
             android:id="@+id/HeartOfTheCards"
             android:layout_width="1100dp"
             android:layout_height="170dp"
+            app:cardBackgroundColor="@color/andy_accent"
             app:cardCornerRadius="7.5dp"
             app:cardElevation="5dp"
             app:cardUseCompatPadding="true">
@@ -23,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/recycled_card"
+                android:background="#1E04B486"
                 android:orientation="horizontal">
 
                 <TextView

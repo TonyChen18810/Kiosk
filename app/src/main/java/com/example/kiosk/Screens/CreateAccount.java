@@ -2,7 +2,6 @@ package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -11,7 +10,6 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Html;
 import android.text.InputFilter;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -32,10 +30,8 @@ import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class CreateAccount extends AppCompatActivity {
@@ -63,8 +59,7 @@ public class CreateAccount extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private Button selectState1, selectState2;
-    private boolean initialSelection1 = false;
-    private boolean initialSelection2 = false;
+    private boolean initialSelection1 = false, initialSelection2 = false;
     private boolean clicked1 = false, clicked2 = false;
 
     public static MutableLiveData<Boolean> checkboxListener;

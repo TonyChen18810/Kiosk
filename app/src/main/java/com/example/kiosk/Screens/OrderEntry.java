@@ -225,6 +225,7 @@ public class OrderEntry extends AppCompatActivity {
         recyclerView = findViewById(R.id.OrdersView);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(OrderEntry.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
+        horizontalLayoutManager.setAutoMeasureEnabled(false);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter = new RecyclerViewHorizontalAdapter(OrderEntry.this, Order.getOrdersList());
         recyclerView.setAdapter(adapter);

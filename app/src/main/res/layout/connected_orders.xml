@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="1100dp"
-    android:layout_height="1600dp">
+    android:layout_width="1150dp"
+    android:layout_height="2000dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView6"
@@ -37,7 +37,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/AssociatedOrdersView"
         android:layout_width="wrap_content"
-        android:layout_height="800dp"
+        android:layout_height="1400dp"
         android:clipToPadding="false"
         android:fadeScrollbars="false"
         android:orientation="vertical"

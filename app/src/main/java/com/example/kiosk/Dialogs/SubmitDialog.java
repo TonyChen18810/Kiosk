@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;

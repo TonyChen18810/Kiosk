@@ -4,23 +4,17 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
-import com.example.kiosk.Screens.OrderEntry;
-import com.example.kiosk.Webservices.GetNextMasterOrderNumber;
-import com.example.kiosk.Webservices.GetOrderDetails;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import static com.example.kiosk.Webservices.GetOrderDetails.checkApppointmentTime;
 
 public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<RecyclerViewAssociatedAdapter.MyViewHolder> {
@@ -29,6 +23,8 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
     private Button addBtn;
 
     private static List<Order> selectedOrders;
+
+    private List<LinearLayout> layoutList = new ArrayList<>();
 
     public RecyclerViewAssociatedAdapter(List<Order> associatedOrders, Button addBtn) {
         this.associatedOrders = associatedOrders;
@@ -51,30 +47,15 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Order order = associatedOrders.get(position);
-/*
-        // if (order.getAppointment().equals("true") && !order.getAppointmentTime().equals("00:00:00") && GetOrderDetails.checkApppointmentTime(order.getAppointmentTime()) == 1) {
-        if (GetOrderDetails.checkApppointmentTime(order.getAppointmentTime()) == 1) {
-            // this.setBackgroundColor(Color.parseColor("#BE424242"));
-            holder.isLate = true;
-            holder.lateWarning.setVisibility(View.VISIBLE);
-        } else {
-            holder.isLate = false;
-            holder.lateWarning.setVisibility(View.GONE);
-        }
-        */
-
         holder.orderNumber.setText(order.getSOPNumber());
-
-        // format customer name
         String buyerNameEdit, buyerStr = order.getCustomerName();
         String[] words = buyerStr.split(" ");
         List<String> filteredWords = new ArrayList<>();
-        for (int i = 0; i < words.length; i++) {
-            if (!words[i].equals("&") && !words[i].equals("and")) {
-                filteredWords.add(words[i]);
+        for (String word : words) {
+            if (!word.equals("&") && !word.equals("and")) {
+                filteredWords.add(word);
             }
         }
-
         if (buyerStr.length() > 13) {
             StringBuilder buyerNameStrBuilder = new StringBuilder();
             char[] buyerNameCharArray = filteredWords.toString().toCharArray();
@@ -96,17 +77,15 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         } else {
             buyerNameEdit = buyerStr;
         }
-
         holder.orderNumber.setText(order.getSOPNumber());
         holder.buyerName.setText(order.getCustomerName());
-
         // format destination
         if (order.getDestination().length() > 11) {
             char[] destArray = order.getDestination().toCharArray();
             StringBuilder destStrBuilder = new StringBuilder();
-            for (int i = 0; i < destArray.length; i++) {
-                destStrBuilder.append(destArray[i]);
-                if (destArray[i]== ',') {
+            for (char c : destArray) {
+                destStrBuilder.append(c);
+                if (c == ',') {
                     destStrBuilder.append('\n');
                 }
             }
@@ -114,6 +93,22 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         } else {
             holder.destination.setText(order.getDestination());
         }
+/*
+        layoutList.add(holder.linearLayout);
+
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(LinearLayout linearLayout : layoutList){
+                    linearLayout.setBackgroundColor(Color.parseColor("#1E04B486"));
+                }
+                //The selected card is set to colorSelected
+                holder.linearLayout.setBackgroundColor(Color.parseColor("#04B486"));
+            }
+        });
+*/
+
+
     }
 
     @Override
@@ -121,12 +116,11 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         return associatedOrders.size();
     }
 
-
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView orderNumber, buyerName, destination;
         Boolean isSelected, error;
-        LinearLayout layout;
+        LinearLayout linearLayout;
 
         MyViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -135,24 +129,21 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
             this.destination = itemView.findViewById(R.id.Destination);
             this.isSelected = false;
             this.error = false;
-            this.layout = itemView.findViewById(R.id.LinearLayoutInCardView);
+            this.linearLayout = itemView.findViewById(R.id.LinearLayoutInCardView);
 
             itemView.setOnClickListener(v -> {
 
                 boolean isGoodOrder = false;
 
                 Order clickedOrder = associatedOrders.get(getAdapterPosition());
+                System.out.println("CLICKED ORDER: " + clickedOrder.getSOPNumber());
                 if (!this.error) {
                     if (clickedOrder.getTruckStatus().equals("Outstanding")) {
                         if (clickedOrder.getCheckedIn().equals("false")) {
-                            System.out.println("Does current order (" + Order.getOrdersList().get(Order.getOrdersList().size()-1).getSOPNumber() + ") have an appointment? " + Order.getOrdersList().get(Order.getOrdersList().size()-1).getAppointment());
-                            System.out.println("Entered orders apt. time: " + Order.getCurrentAppointmentTime());
-                            System.out.println("Clicked orders apt. time: " + clickedOrder.getAppointmentTime());
                             if (clickedOrder.getAppointment().equals("true") && clickedOrder.getAppointmentTime().equals("00:00:00")) {
-                                System.out.println("Need to make appointment");
                                 isGoodOrder = false;
                                 String message = null;
-                                this.layout.setBackgroundColor(Color.parseColor("#b3b3b3"));
+                                // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
                                 this.error = true;
                                 if (Language.getCurrentLanguage() == 0) {
                                     message = "Order #" + orderNumber.getText().toString() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
@@ -163,16 +154,10 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                                 }
                                 HelpDialog dialog = new HelpDialog(message, itemView.getContext());
                                 dialog.show();
-                                // OrderEntry.validOrderNumber.setValue(2);
                             } else if (clickedOrder.getAppointment().equals("true")) {
-                                System.out.println("Has an appointment, now check for late/early/on-time");
-                                System.out.println("Clicked apt. time: " + clickedOrder.getSOPNumber() + " " + clickedOrder.getAppointmentTime());
-                                System.out.println("Entered order apt. time: " + Order.getCurrentOrder().getSOPNumber() + " " + Order.getCurrentOrder().getAppointmentTime());
                                 if (checkApppointmentTime(clickedOrder.getAppointmentTime()) == 1) {
-                                    System.out.println("You're late");
                                     isGoodOrder = false;
-                                    // OrderEntry.appointmentTimeListener.setValue(1);
-                                    this.layout.setBackgroundColor(Color.parseColor("#b3b3b3"));
+                                    // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
                                     this.error = true;
                                     String helpText = "";
                                     if (Language.getCurrentLanguage() == 0) {
@@ -186,7 +171,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                                     dialog.show();
                                 } else if (Order.getOrdersList().get(Order.getOrdersList().size()-1).getAppointment().equals("true") && !clickedOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
                                     isGoodOrder = false;
-                                    this.layout.setBackgroundColor(Color.parseColor("#b3b3b3"));
+                                    // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
                                     this.error = true;
                                     String helpText = "";
                                     if (Language.getCurrentLanguage() == 0) {
@@ -199,7 +184,6 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                                     HelpDialog dialog = new HelpDialog(helpText, itemView.getContext());
                                     dialog.show();
                                 } else if (checkApppointmentTime(clickedOrder.getAppointmentTime()) == -1) {
-                                    System.out.println("You're early");
                                     isGoodOrder = true;
                                     String helpText = "";
                                     if (Language.getCurrentLanguage() == 0) {
@@ -215,16 +199,13 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                                     // HelpDialog dialog = new HelpDialog("This order is early", itemView.getContext());
                                     // dialog.show();
                                 }  else if (checkApppointmentTime(clickedOrder.getAppointmentTime()) == 0) {
-                                    System.out.println("On time");
                                     isGoodOrder = true;
                                 }
                             } else {
-                                System.out.println("No appointment - continue");
                                 isGoodOrder = true;
                             }
                         } else {
-                            System.out.println("hi");
-                            this.layout.setBackgroundColor(Color.parseColor("#b3b3b3"));
+                            // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
                             this.error = true;
                             String helpText = "";
                             if (Language.getCurrentLanguage() == 0) {
@@ -237,10 +218,8 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                             HelpDialog dialog = new HelpDialog(helpText, itemView.getContext());
                             dialog.show();
                             isGoodOrder = false;
-                            // OrderEntry.validOrderNumber.setValue(0);
                         }
                     } else {
-                        System.out.println("hello");
                         String helpText = "";
                         if (Language.getCurrentLanguage() == 0) {
                             helpText = "The order has already been checked in";
@@ -255,9 +234,11 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                     }
 
                     if (isGoodOrder) {
-                        if (this.isSelected) {
+                        if (this.isSelected && selectedOrders.contains(associatedOrders.get(getAdapterPosition()))) {
                             this.isSelected = false;
-                            this.layout.setBackgroundColor(Color.parseColor("#1E04B486"));
+                            // this.linearLayout.setBackgroundColor(Color.parseColor("#1E04B486"));
+                            notifyItemChanged(getAdapterPosition());
+                            // this.setIsRecyclable(false);
                             selectedOrders.remove(associatedOrders.get(getAdapterPosition()));
                             if (selectedOrders.size() == 0) {
                                 addBtn.setEnabled(false);
@@ -271,20 +252,22 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                                 System.out.println(selectedOrders.get(i));
                             }
                             notifyDataSetChanged();
-                        } else {
+                        } else if (!this.isSelected && !selectedOrders.contains(associatedOrders.get(getAdapterPosition()))){
                             this.isSelected = true;
-                            this.layout.setBackgroundColor(Color.parseColor("#04B486"));
+                            // this.linearLayout.setBackgroundColor(Color.parseColor("#04B486"));
+                            notifyItemChanged(getAdapterPosition());
+                            // this.setIsRecyclable(false);
                             selectedOrders.add(associatedOrders.get(getAdapterPosition()));
                             addBtn.setEnabled(true);
                             // ConnectedOrders.buttonListener.setValue(true);
                             System.out.println("SELECTION ADDED: ");
                             for (int i = 0; i < selectedOrders.size(); i++) {
-                                System.out.println(selectedOrders.get(i));
+                                System.out.println(selectedOrders.get(i).getSOPNumber());
                             }
                             notifyDataSetChanged();
                         }
                     } else {
-                        // bad order, turn card grey? pop-up should be handled above (isGoodOrder)
+                        System.out.println("Bad Order");
                     }
                 }
             });

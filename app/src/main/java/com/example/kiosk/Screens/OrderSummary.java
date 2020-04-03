@@ -49,6 +49,7 @@ public class OrderSummary extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.OrdersView);
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(OrderSummary.this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(verticalLayoutManager);
+        verticalLayoutManager.setAutoMeasureEnabled(false);
         RecyclerViewSummaryAdapter adapter = new RecyclerViewSummaryAdapter(Order.getOrdersList());
         recyclerView.setAdapter(adapter);
 
