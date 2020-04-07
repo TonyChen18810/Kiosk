@@ -447,7 +447,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CommunicationCard"
-        app:layout_constraintVertical_bias="0.034" />
+        app:layout_constraintVertical_bias="0.059" />
 
     <Button
         android:id="@+id/LogoutBtn"

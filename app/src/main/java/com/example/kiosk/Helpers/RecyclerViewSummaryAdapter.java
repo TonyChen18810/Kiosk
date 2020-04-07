@@ -94,8 +94,7 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
         return orders.size();
     }
 
-
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView orderNumber, buyerName, destination, aptTime, estPallets, estWeight;
         CardView card;

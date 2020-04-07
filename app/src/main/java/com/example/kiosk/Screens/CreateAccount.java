@@ -164,9 +164,9 @@ public class CreateAccount extends AppCompatActivity {
             if (currentLanguage == 0) {
                 message = "Please enter your first and last name.";
             } else if (currentLanguage == 1) {
-                message = "Por favor introduce tu primer nombre y apellido.";
+                message = "Escriba su nombre y apellido.";
             } else if (currentLanguage == 2) {
-                message = "S'il-vous-plaît, entrer votre prénom et votre nom.";
+                message = "Veuillez saisir votre prénom et nom.";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
@@ -177,9 +177,9 @@ public class CreateAccount extends AppCompatActivity {
             if (currentLanguage == 0) {
                 message = "Please enter your driver license number";
             } else if (currentLanguage == 1) {
-                message = "Por favor ingrese su número de licencia de conducir";
+                message = "Escriba el número de su licencia de conducir";
             } else if (currentLanguage == 2) {
-                message = "Veuillez entrer votre numéro de permis de conduire";
+                message = "Veuillez saisir votre numéro de permis de conduire";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
@@ -190,9 +190,9 @@ public class CreateAccount extends AppCompatActivity {
             if (currentLanguage == 0) {
                 message = "Please enter the company name of your truck (NOT the make/model)";
             } else if (currentLanguage == 1) {
-                message = "Ingrese el nombre de la compañía de su camión (NO la marca / modelo)";
+                message = "Escriba el nombre de la empresa de su camión (NO la marca/el modelo)";
             } else if (currentLanguage == 2) {
-                message = "Veuillez saisir le nom de l'entreprise de votre camion (PAS la marque / le modèle)";
+                message = "Veuillez saisir le nom de l’entreprise de votre camion (PAS la marque/le modèle)";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
@@ -203,9 +203,9 @@ public class CreateAccount extends AppCompatActivity {
             if (currentLanguage == 0) {
                 message = "Please enter the number of your truck";
             } else if (currentLanguage == 1) {
-                message = "Por favor ingrese el número de su camión";
+                message = "Escriba el número de su camión";
             } else if (currentLanguage == 2) {
-                message = "Veuillez entrer le numéro de votre camion";
+                message = "Veuillez saisir le numéro de votre camion";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
@@ -216,9 +216,9 @@ public class CreateAccount extends AppCompatActivity {
             if (currentLanguage == 0) {
                 message = "Please enter the license plate number of your trailer";
             } else if (currentLanguage == 1) {
-                message = "Ingrese el número de placa de su remolque";
+                message = "Escriba el número de matrícula de su tráiler";
             } else if (currentLanguage == 2) {
-                message = "Veuillez entrer le numéro de plaque d'immatriculation de votre remorque";
+                message = "Veuillez saisir le numéro d’immatriculation de votre remorque";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
@@ -229,9 +229,9 @@ public class CreateAccount extends AppCompatActivity {
             if (currentLanguage == 0) {
                 message = "Please enter the phone number of your current dispatcher";
             } else if (currentLanguage == 1) {
-                message = "Ingrese el número de teléfono de su despachador actual";
+                message = "Escriba el número de teléfono de su despachante actual";
             } else if (currentLanguage == 2) {
-                message = "Veuillez entrer le numéro de téléphone de votre répartiteur actuel";
+                message = "Veuillez saisir le numéro de téléphone de votre répartiteur actuel";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
@@ -315,6 +315,18 @@ public class CreateAccount extends AppCompatActivity {
                 }
                 selectText.setVisibility(View.GONE);
                 setContentView(R.layout.account_created_msg);
+                TextView successText = findViewById(R.id.textView);
+                Button loginBtn = findViewById(R.id.LogoutBtn);
+                if (Language.getCurrentLanguage() == 0) {
+                    successText.setText("Congratulations! You have successfully created an account. You are now ready to log in.");
+                    loginBtn.setText("Log in");
+                } else if (Language.getCurrentLanguage() == 1) {
+                    successText.setText("¡Felicidades! Has creado una cuenta con éxito. Ahora está listo para iniciar sesión.");
+                    loginBtn.setText("Iniciar sesión");
+                } else if (Language.getCurrentLanguage() == 2) {
+                    successText.setText("Félicitations! Vous avez réussi à créer un compte. Vous êtes maintenant prêt à vous connecter.");
+                    loginBtn.setText("Connexion");
+                }
 
                 findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                     startActivity(new Intent(CreateAccount.this, FirstScreen.class));
@@ -333,7 +345,7 @@ public class CreateAccount extends AppCompatActivity {
                 // pass a weak reference?
                 new UpdateShippingTruckDriver(CreateAccount.this, emailStr, emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
                         driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
-
+                System.out.println("SENDING LANGUAGE PREFERENCE: " + Language.getCurrentLanguage()+1);
                 userEmail.setText(Html.fromHtml("Email address: " + "<b>" + email + "<b>"));
                 userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + phone + "<b>"));
                 userTruckName.setText(Html.fromHtml("Current truck name: " + "<b>" + truckNameStr + "<b>"));
@@ -445,16 +457,18 @@ public class CreateAccount extends AppCompatActivity {
         }
     }
 
-    private void changeLanguage(int val) {
+    private void changeLanguage() {
         truckName.setHintTextColor(getResources().getColor(R.color.dark_gray));
         truckNumber.setHintTextColor(getResources().getColor(R.color.dark_gray));
         trailerLicense.setHintTextColor(getResources().getColor(R.color.dark_gray));
         driverLicense.setHintTextColor(getResources().getColor(R.color.dark_gray));
         driverName.setHintTextColor(getResources().getColor(R.color.dark_gray));
         dispatcherPhoneNumber.setHintTextColor(getResources().getColor(R.color.dark_gray));
-        switch(val) {
+        System.out.println("Current Language: " + currentLanguage);
+        switch(currentLanguage) {
             case 0:
                 //English
+                System.out.println("ENGLISH!!!!");
                 logoutBtn.setText(R.string.logout_eng);
                 nextBtn.setText(R.string.next_eng);
                 createAccount.setText(R.string.create_account_eng);
@@ -476,16 +490,17 @@ public class CreateAccount extends AppCompatActivity {
                 break;
             case 1:
                 //Spanish
+                System.out.println("SPANISH!!!!");
                 logoutBtn.setText(R.string.logout_sp);
                 nextBtn.setText(R.string.next_sp);
                 createAccount.setText(R.string.create_account_sp);
                 helpText.setText(R.string.select_help_icon_sp);
                 truckName.setHint("Nombre del camión");
-                truckNumber.setHint("Numero de camión");
-                trailerLicense.setHint("Número de licencia de remolque");
-                driverLicense.setHint("Número de licencia de conducir");
+                truckNumber.setHint("N.º del camión");
+                trailerLicense.setHint("N.º de la matrícula del tráiler");
+                driverLicense.setHint("N.º de licencia de conducir");
                 driverName.setHint("Nombre del conductor");
-                dispatcherPhoneNumber.setHint("Número de teléfono del despachador");
+                dispatcherPhoneNumber.setHint("N.º de teléfono del despachante");
                 verifyText.setText(R.string.verify_next_sp);
                 preferText.setText(R.string.comm_preference_sp);
                 txtText.setText(R.string.text_msg_sp);
@@ -497,14 +512,15 @@ public class CreateAccount extends AppCompatActivity {
                 break;
             case 2:
                 //French
+                System.out.println("FRENCH!!!!");
                 logoutBtn.setText(R.string.logout_fr);
                 nextBtn.setText(R.string.next_fr);
                 createAccount.setText(R.string.create_account_fr);
                 helpText.setText(R.string.select_help_icon_fr);
                 truckName.setHint("Nom du camion");
-                truckNumber.setHint("Numéro de camion");
-                trailerLicense.setHint("Numéro de licence de la remorque");
-                driverLicense.setHint("Numéro de permis de conduire");
+                truckNumber.setHint("Numéro du camion");
+                trailerLicense.setHint("Numéro du permis de la remorque");
+                driverLicense.setHint("Numéro du permis de conduire");
                 driverName.setHint("Nom du conducteur");
                 dispatcherPhoneNumber.setHint("Numéro de téléphone du répartiteur");
                 verifyText.setText(R.string.verify_next_fr);
@@ -575,6 +591,6 @@ public class CreateAccount extends AppCompatActivity {
         emailAddress.setTextColor(getResources().getColor(R.color.black));
         phoneNumber.setTextColor(getResources().getColor(R.color.black));
 
-        changeLanguage(currentLanguage);
+        changeLanguage();
     }
 }

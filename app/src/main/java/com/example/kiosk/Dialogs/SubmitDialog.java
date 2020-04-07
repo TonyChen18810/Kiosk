@@ -1,5 +1,6 @@
 package com.example.kiosk.Dialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -8,17 +9,25 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import com.example.kiosk.Helpers.Language;
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
+import com.example.kiosk.Webservices.GetNextMasterOrderNumber;
+import com.example.kiosk.Webservices.GetOrderDetails;
+
+import java.lang.ref.WeakReference;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SubmitDialog extends Dialog implements android.view.View.OnClickListener {
 
     private String orderNumberStr;
-    private View view;
+    private Activity activity;
+    private static WeakReference<Activity> mWeakActivity;
 
-    public SubmitDialog(Context context, View view) {
+    public SubmitDialog(Context context, View view, Activity activity) {
         super(context);
-        this.view = view;
+        this.activity = activity;
+        mWeakActivity = new WeakReference<>(activity);
     }
 
     @Override
@@ -30,15 +39,15 @@ public class SubmitDialog extends Dialog implements android.view.View.OnClickLis
         Button no = findViewById(R.id.btn_no);
         TextView deleteOrder = findViewById(R.id.CorrectCustomer);
         if (Language.getCurrentLanguage() == 0) {
-            deleteOrder.setText("Are you sure you want to submit these orders?");
+            deleteOrder.setText(R.string.submit_confirm_eng);
             yes.setText(R.string.yes_eng);
             no.setText(R.string.no_eng);
         } else if (Language.getCurrentLanguage() == 1) {
-            deleteOrder.setText("¿Estás seguro de que quieres enviar pedidos?");
+            deleteOrder.setText(R.string.submit_confirm_sp);
             yes.setText(R.string.yes_sp);
             no.setText(R.string.no_sp);
         } else if (Language.getCurrentLanguage() == 2) {
-            deleteOrder.setText("Voulez-vous vraiment soumettre des ordres?");
+            deleteOrder.setText(R.string.submit_confirm_fr);
             yes.setText(R.string.yes_fr);
             no.setText(R.string.no_fr);
         }
@@ -50,11 +59,37 @@ public class SubmitDialog extends Dialog implements android.view.View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_yes:
-                OrderEntry.setDialogListener(true);
+                AtomicBoolean masterNull = new AtomicBoolean(true);
+                for (int i = 0; i < Order.getOrdersList().size(); i++) {
+                    if (Order.getOrdersList().get(i).getMasterNumber() == null || Order.getOrdersList().get(i).getMasterNumber().equals("anyType{}") || Order.getOrdersList().get(i).getMasterNumber().equals("")) {
+                        masterNull.set(true);
+                    } else {
+                        masterNull.set(false);
+                        GetOrderDetails.setNewMasterNumber(Order.getOrdersList().get(i).getMasterNumber());
+                        System.out.println(Order.getOrdersList().get(i).getSOPNumber());
+                        break;
+                    }
+                }
+                if (masterNull.get()) {
+                    // Thread thread = new Thread(() -> new GetNextMasterOrderNumber(OrderEntry.this).execute());
+                    // thread.start();
+                    Activity activity = mWeakActivity.get();
+                    if (activity != null) {
+                        activity.findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+                        activity.findViewById(R.id.OrderNumberBox).setEnabled(false);
+                        activity.findViewById(R.id.CheckOrderBtn).setEnabled(false);
+                        activity.findViewById(R.id.SubmitBtn2).setEnabled(false);
+                        activity.findViewById(R.id.OrdersView).setEnabled(false);
+                        // activity.findViewById(R.id.LogoutBtn).setEnabled(false);
+                    }
+                    new GetNextMasterOrderNumber(activity).execute();
+                } else {
+                    OrderEntry.setDialogListener(true);
+                }
                 dismiss();
                 break;
             case R.id.btn_no:
-                OrderEntry.setDialogListener(false);
+                // OrderEntry.setDialogListener(false);
                 dismiss();
                 break;
             default:

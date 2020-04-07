@@ -87,9 +87,9 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
             Thread thread = new Thread(() -> {
                 new GetShippingTruckDriver(mWeakActivity.get(), enteredEmail).execute();
             });
+            thread.start();
             try {
-                thread.start();
-                // Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

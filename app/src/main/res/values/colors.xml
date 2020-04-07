@@ -6,6 +6,7 @@
     <color name="error">#ffcc0000</color>
     <color name="okay">#4BC451</color>
     <color name="dark_gray">#BE424242</color>
+    <color name="light_gray">#b3b3b3</color>
     <color name="andy_primary">#A1ED4698</color>
     <color name="andy_accent">#04B486</color>
     <color name="black">#000</color>

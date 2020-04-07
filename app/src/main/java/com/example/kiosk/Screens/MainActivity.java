@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
             newAccount = false;
         }
 
-
-
         accountExists = new MutableLiveData<>();
 
         accountExists.observe(MainActivity.this, accountExists -> {
@@ -571,10 +569,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 // Spanish
-                emailAddressBox.setHint("Dirección de correo electrónico");
-                phoneNumberBox.setHint("Número de teléfono");
-                confirmEmailAddress.setHint("Confirmar el correo");
-                confirmPhoneNumber.setHint("Confirmar número de teléfono");
+                emailAddressBox.setHint("Dirección de email");
+                phoneNumberBox.setHint("N.º de teléfono");
+                confirmEmailAddress.setHint("Confirme el email");
+                confirmPhoneNumber.setHint("Confirme el número de teléfono");
                 unmatchingEmail.setText(R.string.email_doesnt_match_sp);
                 unmatchingPhone.setText(R.string.phone_doesnt_match_sp);
                 noEmailWarning.setText(R.string.invalid_email_sp);
@@ -586,9 +584,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 // French
-                emailAddressBox.setHint("Adresse électronique");
+                emailAddressBox.setHint("Adresse courriel");
                 phoneNumberBox.setHint("Numéro de téléphone");
-                confirmEmailAddress.setHint("Confirmez votre adresse email");
+                confirmEmailAddress.setHint("Confirmer l’adresse courriel");
                 confirmPhoneNumber.setHint("Confirmer le numéro de téléphone");
                 unmatchingEmail.setText(R.string.email_doesnt_match_fr);
                 unmatchingPhone.setText(R.string.phone_doesnt_match_fr);

@@ -105,6 +105,13 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
             System.out.println("Internet connection issue...");
             connection = false;
+            Thread thread = new Thread(() -> new GetOrderDetails(mWeakActivity.get(), enteredSOPNumber).execute());
+            try {
+                Thread.sleep(3000);
+                thread.start();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
         }
         return null;
     }
@@ -194,10 +201,6 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                     OrderEntry.validOrderNumber.setValue(3);
                 }
             }
-            if (activity != null) {
-                ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-                progressBar.setVisibility(View.GONE);
-            }
             if (isGoodOrder) {
                 System.out.println("MASTER_NUMBER: " + MASTER_NUMBER);
                 System.out.println("masterNumber: " + masterNumber);
@@ -208,13 +211,6 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                     ProgressBar progressBar = activity.findViewById(R.id.progressBar);
                     progressBar.setVisibility(View.GONE);
                 }
-            }
-        }
-
-        if (!connection) {
-            if (activity != null) {
-                ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-                progressBar.setVisibility(View.GONE);
             }
         }
     }

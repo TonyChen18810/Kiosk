@@ -34,15 +34,15 @@ public class LogoutDialog extends Dialog implements android.view.View.OnClickLis
         Button no = findViewById(R.id.btn_no);
         TextView logoutText = findViewById(R.id.CorrectCustomer);
         if (Language.getCurrentLanguage() == 0) {
-            logoutText.setText("Are you sure you want to logout?");
+            logoutText.setText(R.string.logout_confirm_eng);
             yes.setText(R.string.yes_eng);
             no.setText(R.string.no_eng);
         } else if (Language.getCurrentLanguage() == 1) {
-            logoutText.setText("¿Estás seguro de que quieres cerrar sesión?");
+            logoutText.setText(R.string.logout_confirm_sp);
             yes.setText(R.string.yes_sp);
             no.setText(R.string.no_sp);
         } else if (Language.getCurrentLanguage() == 2) {
-            logoutText.setText("Êtes-vous sûr de vouloir vous déconnecter?");
+            logoutText.setText(R.string.logout_confirm_fr);
             yes.setText(R.string.yes_fr);
             no.setText(R.string.yes_fr);
         }

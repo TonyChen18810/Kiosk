@@ -78,7 +78,7 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
             System.out.println("Trying again...");
             Thread thread = new Thread(() -> {
                 new UpdateShippingTruckDriver(mWeakActivity.get(), email, email, driverName, phone, truckName, truckNumber,
-                        driversLicense, driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone,"0", commmunicationPreference).execute();
+                        driversLicense, driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone,languagePreference, commmunicationPreference).execute();
             });
             try {
                 thread.start();

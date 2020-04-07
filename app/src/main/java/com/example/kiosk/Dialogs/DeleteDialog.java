@@ -8,7 +8,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.R;
@@ -39,11 +38,11 @@ public class DeleteDialog extends Dialog implements android.view.View.OnClickLis
             yes.setText(R.string.yes_eng);
             no.setText(R.string.no_eng);
         } else if (Language.getCurrentLanguage() == 1) {
-            deleteOrder.setText("¿Estás seguro de que quieres eliminar el pedido: " + orderNumberStr + "?");
+            deleteOrder.setText("¿Está seguro de que quiere eliminar el pedido: " + orderNumberStr + "?");
             yes.setText(R.string.yes_sp);
             no.setText(R.string.no_sp);
         } else if (Language.getCurrentLanguage() == 2) {
-            deleteOrder.setText("Voulez-vous vraiment supprimer la ordre: " + orderNumberStr + "?");
+            deleteOrder.setText("Voulez-vous vraiment supprimer la commande: " + orderNumberStr + "?");
             yes.setText(R.string.yes_fr);
             no.setText(R.string.no_fr);
         }

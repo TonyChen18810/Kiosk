@@ -1,5 +1,6 @@
 package com.example.kiosk.Helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +21,13 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
     private List<Order> orders;
     private LayoutInflater mInflater;
     private Context context;
+    private Activity activity;
 
-    public RecyclerViewHorizontalAdapter(Context context, List<Order> orders) {
+    public RecyclerViewHorizontalAdapter(Context context, List<Order> orders, Activity activity) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.orders = orders;
+        this.activity = activity;
     }
 
     @Override
@@ -59,6 +62,7 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
         TextView destination;
         TextView appointment;
         Button deleteBtn;
+        boolean clickable;
 
         MyViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -67,6 +71,11 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
             this.destination = itemView.findViewById(R.id.Destination);
             this.appointment = itemView.findViewById(R.id.AppointmentTime);
             this.deleteBtn = itemView.findViewById(R.id.DeleteBtn);
+            if (!activity.findViewById(R.id.CheckOrderBtn).isEnabled()) {
+                this.clickable = false;
+            } else {
+                this.clickable = true;
+            }
 
             if (Language.getCurrentLanguage() == 0) {
                 deleteBtn.setText(R.string.delete_eng);
@@ -76,7 +85,11 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
                 deleteBtn.setText(R.string.delete_fr);
             }
 
-            deleteBtn.setOnClickListener(v -> OrderEntry.confirmMsg(itemView, context));
+            deleteBtn.setOnClickListener(v -> {
+                if (this.clickable) {
+                    OrderEntry.confirmMsg(itemView, context);
+                }
+            });
         }
     }
 }

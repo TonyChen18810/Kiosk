@@ -33,8 +33,6 @@ public class OrderSummary extends AppCompatActivity {
 
     private int currentLanguage = Language.getCurrentLanguage();
 
-    private final String CONFIRMATION_NUMBER = GetOrderDetails.getMasterNumber();
-
     private Button logoutBtn;
 
     private int counter;
@@ -57,7 +55,7 @@ public class OrderSummary extends AppCompatActivity {
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
 
         TextView confirmationNum = findViewById(R.id.confirm);
-        confirmationNum.setText(CONFIRMATION_NUMBER);
+        confirmationNum.setText(GetOrderDetails.getMasterNumber());
 
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(OrderSummary.this, v);

@@ -3,6 +3,7 @@ package com.example.kiosk.Dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import com.example.kiosk.Helpers.RecyclerViewAssociatedAdapter;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
+import com.example.kiosk.Screens.MainActivity;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import java.util.ArrayList;
@@ -27,6 +29,11 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
     private Context context;
     private RecyclerView recyclerView;
     private RecyclerViewHorizontalAdapter adapter;
+
+    private ActionMode actionMode;
+    private boolean isMultiSelect = false;
+    //i created List of int type to store id of data, you can create custom class type data according to your need.
+    private List<Integer> selectedIds = new ArrayList<>();
 
     public ConnectedOrders(@NonNull Context context, RecyclerView recyclerView, RecyclerViewHorizontalAdapter adapter) {
         super(context);
@@ -48,14 +55,14 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
         if (Language.getCurrentLanguage() == 0) {
             addBtn.setText("Add Order(s)");
             cancelBtn.setText("Cancel");
-            associatedOrdersText.setText("The following orders are also connected with your previously entered order. You can tap any order to add it to your orders.");
+            associatedOrdersText.setText(R.string.following_orders_eng);
         } else if (Language.getCurrentLanguage() == 1) {
-            associatedOrdersText.setText("Los siguientes pedidos también están relacionados con su pedido ingresado anteriormente. Puede tocar cualquier pedido para agregarlo a sus pedidos.");
-            addBtn.setText("Añadir Pedido(s)");
+            associatedOrdersText.setText(R.string.following_orders_sp);
+            addBtn.setText("Agregar Pedido(s)");
             cancelBtn.setText("Cancelar");
         } else if (Language.getCurrentLanguage() == 2) {
-            associatedOrdersText.setText("Les commandes suivantes sont également liées à votre commande précédemment saisie. Vous pouvez appuyer sur n'importe quelle commande pour l'ajouter à vos commandes.\n");
-            addBtn.setText("Ajouter Ordre(s)");
+            associatedOrdersText.setText(R.string.following_orders_fr);
+            addBtn.setText("Ajouter Commande(s)");
             cancelBtn.setText("Annuler");
         }
 
