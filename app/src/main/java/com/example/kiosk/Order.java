@@ -155,7 +155,7 @@ public class Order {
         return CURRENT_ORDER;
     }
 
-    public static void addMasterOrderToList(Order order) {
+    public static void addOrderToList(Order order) {
         totalWeight += order.getEstimatedWeight();
         /*
         if (order.getEstimatedPallets() < 1 && order.getEstimatedPallets() > 0) {

@@ -239,7 +239,7 @@
     <string name="line12_eng">&#8226; Cash transactions and/or gratuities of any kind are strictly prohibited.</string>
     <string name="line13_eng">&#8226; Be advised that video surveillance is capturing your actions 24 hours a day.</string>
     <string name="cooperation_eng">Your cooperation will ensure faster and safer loading</string>
-    <string name="verify_read_eng">*By selecting “Submit” below, you are agreeing that you read and understand the protocol set forth by the facility and that all information previously entered is true and correct.</string>
+    <string name="verify_read_eng">*By selecting \'Accept\' below, you are agreeing that you read and understand the protocol set forth by the facility and that all information previously entered is true and correct.</string>
     <string name="submit_eng">Submit</string>
     <string name="confirm_orders_eng">Please confirm the following order(s):</string>
     <string name="confirmation_num_eng">Confirmation number:</string>
@@ -303,7 +303,7 @@
     <string name="line13_sp">&#8226; Están estrictamente prohibidas las operaciones con dinero en efectivo y las propinas de cualquier tipo.</string>
     <string name="line14_sp">&#8226; Las cámaras de seguridad graban las 24 horas del día.</string>
     <string name="cooperation_sp">Su cooperación hará que la carga sea más rápida y segura.</string>
-    <string name="verify_read_sp">*Haciendo clic en \'Enviar\' abajo, usted confirma que ha leído y entiende el protocolo establecido por las instalaciones y que toda la información que escribió anteriormente es verdadera y correcta.</string>
+    <string name="verify_read_sp">*Haciendo clic en \'Accept\' abajo, usted confirma que ha leído y entiende el protocolo establecido por las instalaciones y que toda la información que escribió anteriormente es verdadera y correcta.</string>
     <string name="submit_sp">Enviar</string>
     <string name="confirm_orders_sp">Confirme los siguientes pedido(s):</string>
     <string name="confirmation_num_sp">Número de confirmación:</string>
@@ -367,7 +367,7 @@
     <string name="line13_fr">&#8226; Les transactions en espèces ou les gratifications de toute sorte sont strictement interdites.</string>
     <string name="line14_fr">&#8226; Nous vous rappelons que la vidéosurveillance vous enregistre 24 h/24.</string>
     <string name="cooperation_fr">Votre coopération permettra de garantir un chargement plus rapide et sécuritaire.</string>
-    <string name="verify_read_fr">*En cliquant sur « Envoyer » ci-dessous, vous reconnaissez avoir lu et compris le protocole établi par le site et que toutes les informations saisies précédemment sont vraies et correctes.</string>
+    <string name="verify_read_fr">*En cliquant sur « Accept » ci-dessous, vous reconnaissez avoir lu et compris le protocole établi par le site et que toutes les informations saisies précédemment sont vraies et correctes.</string>
     <string name="submit_fr">Envoyer</string>
     <string name="confirm_orders_fr">Veuillez confirmer les commandes suivantes:</string>
     <string name="confirmation_num_fr">Numéro de confirmation:</string>
@@ -412,6 +412,9 @@
     <string name="submit_confirm_eng">Are you sure you want to submit these order(s)?</string>
     <string name="submit_confirm_sp">¿Está seguro de que quiere enviar estos pedidos?</string>
     <string name="submit_confirm_fr">Voulez-vous vraiment envoyer ces commandes?</string>
+    <string name="accept_eng">Accept</string>
+    <string name="accept_sp">Aceptar</string>
+    <string name="accept_fr">Accepter</string>
 
 
 </resources>

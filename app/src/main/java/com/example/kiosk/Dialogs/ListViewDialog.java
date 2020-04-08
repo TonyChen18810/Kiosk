@@ -39,7 +39,16 @@ public class ListViewDialog extends Dialog {
         TextView listViewTitle = findViewById(R.id.ListViewTitle);
 
         if (listCode == 0) { // OrderEntry customer destination selector
-            listViewTitle.setVisibility(View.GONE);
+            listViewTitle.setVisibility(View.VISIBLE);
+            if (button.getId() == R.id.SelectDestinationBtn) {
+                if (Language.getCurrentLanguage() == 0) {
+                    listViewTitle.setText("Select Customer Destination");
+                } else if (Language.getCurrentLanguage() == 1) {
+                    listViewTitle.setText("Seleccionar Destino del Cliente");
+                } else if (Language.getCurrentLanguage() == 2) {
+                    listViewTitle.setText("Sélectionnez la Destination du Client");
+                }
+            }
             List<String> possibleCustomerDestinations = OrderEntry.possibleCustomerDestinations;
             ArrayAdapter<String> destinationAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_layout, possibleCustomerDestinations);
             destinationAdapter.setDropDownViewResource(R.layout.spinner_layout);

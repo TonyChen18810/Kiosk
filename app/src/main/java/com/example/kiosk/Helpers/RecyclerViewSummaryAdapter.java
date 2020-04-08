@@ -60,7 +60,7 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
             buyerNameEdit = buyerStr;
         }
         String customerName = buyerNameEdit.replaceAll("\\s+","\n");
-        holder.buyerName.setText(customerName);
+        holder.buyerName.setText(order.getCustomerName());
 
         if (order.getDestination().length() > 11) {
             char[] destArray = order.getDestination().toCharArray();

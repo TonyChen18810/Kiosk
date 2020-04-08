@@ -23,17 +23,13 @@ import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ConnectedOrders extends Dialog implements android.view.View.OnClickListener {
 
     private Context context;
     private RecyclerView recyclerView;
     private RecyclerViewHorizontalAdapter adapter;
-
-    private ActionMode actionMode;
-    private boolean isMultiSelect = false;
-    //i created List of int type to store id of data, you can create custom class type data according to your need.
-    private List<Integer> selectedIds = new ArrayList<>();
 
     public ConnectedOrders(@NonNull Context context, RecyclerView recyclerView, RecyclerViewHorizontalAdapter adapter) {
         super(context);
@@ -55,13 +51,13 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
         if (Language.getCurrentLanguage() == 0) {
             addBtn.setText("Add Order(s)");
             cancelBtn.setText("Cancel");
-            associatedOrdersText.setText("The following order(s) are also connected with order #" + Order.getCurrentOrder().getSOPNumber() + ". You can tap any order to add it to your orders.");
+            associatedOrdersText.setText("The following order(s) are also connected with order #" + Order.getOrdersList().get(Order.getOrdersList().size()-1).getSOPNumber() + ". You can tap any order to add it to your orders.");
         } else if (Language.getCurrentLanguage() == 1) {
-            associatedOrdersText.setText("Los siguientes pedidos también están relacionados con pedido #" + Order.getCurrentOrder().getSOPNumber() + ". Puede hacer clic en cualquier pedido para agregarlo a su lista de pedidos.");
+            associatedOrdersText.setText("Los siguientes pedidos también están relacionados con pedido #" + Order.getOrdersList().get(Order.getOrdersList().size()-1).getSOPNumber() + ". Puede hacer clic en cualquier pedido para agregarlo a su lista de pedidos.");
             addBtn.setText("Agregar");
             cancelBtn.setText("Cancelar");
         } else if (Language.getCurrentLanguage() == 2) {
-            associatedOrdersText.setText("Les commandes suivantes sont également liées à la commande #" + Order.getCurrentOrder().getSOPNumber() + ". Vous pouvez appuyer sur n’importe quelle commande pour l’ajouter à vos commandes.");
+            associatedOrdersText.setText("Les commandes suivantes sont également liées à la commande #" + Order.getOrdersList().get(Order.getOrdersList().size()-1).getSOPNumber() + ". Vous pouvez appuyer sur n’importe quelle commande pour l’ajouter à vos commandes.");
             addBtn.setText("Ajouter");
             cancelBtn.setText("Annuler");
         }
@@ -82,9 +78,9 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.addBtn:
-                List<Order> selectedOrders = RecyclerViewAssociatedAdapter.getSelectedOrders();
+                List<Order> selectedOrders = new ArrayList<>(RecyclerViewAssociatedAdapter.getSelectedOrders());
                 for (int i = 0; i < selectedOrders.size(); i++) {
-                    Order.addMasterOrderToList(selectedOrders.get(i));
+                    Order.addOrderToList(selectedOrders.get(i));
                 }
                 boolean showEarlyDialog = false;
                 adapter.notifyDataSetChanged();
@@ -92,11 +88,7 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                 recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
                 recyclerView.scheduleLayoutAnimation();
                 for (int i = 0; i < Order.getAssociatedOrdersList().size(); i++) {
-                    if (Order.getAssociatedOrdersList().get(i).getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getAssociatedOrdersList().get(i).getAppointmentTime()) == -1) {
-                        showEarlyDialog = true;
-                    } else {
-                        showEarlyDialog = false;
-                    }
+                    showEarlyDialog = Order.getAssociatedOrdersList().get(i).getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getAssociatedOrdersList().get(i).getAppointmentTime()) == -1;
                 }
                 if (showEarlyDialog) {
                     OrderEntry.appointmentTimeListener.setValue(-2);

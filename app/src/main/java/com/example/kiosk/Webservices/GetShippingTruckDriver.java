@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
 import com.example.kiosk.Account;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.MainActivity;
@@ -92,6 +94,7 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                 Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
+                // Toast.makeText()
             }
         }
         return null;

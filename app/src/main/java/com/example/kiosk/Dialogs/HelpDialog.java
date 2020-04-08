@@ -30,11 +30,11 @@ public class HelpDialog extends Dialog implements android.view.View.OnClickListe
         confirm.setOnClickListener(this);
 
         if (Language.getCurrentLanguage() == 0) {
-            confirm.setText(R.string.confirm_eng);
+            confirm.setText("OK");
         } else if (Language.getCurrentLanguage() == 1) {
-            confirm.setText(R.string.confirm_sp);
+            confirm.setText("OK");
         } else if (Language.getCurrentLanguage() == 2) {
-            confirm.setText(R.string.confirm_fr);
+            confirm.setText("OK");
         }
     }
 

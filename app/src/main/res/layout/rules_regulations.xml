@@ -375,7 +375,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="*By selecting “Submit” below, you are agreeing that you read and understand the protocol set forth by the facility and that all information previously entered is true and correct."
+            android:text="*By selecting “Accept” below, you are agreeing that you read and understand the protocol set forth by the facility and that all information previously entered is true and correct."
             android:textAlignment="center"
             android:textColor="@color/andy_accent"
             android:textSize="32sp"
@@ -385,7 +385,7 @@
             app:layout_constraintVertical_bias="0.059" />
 
         <Button
-            android:id="@+id/SubmitBtn2"
+            android:id="@+id/AcceptBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/mybutton2"
@@ -394,7 +394,7 @@
             android:paddingTop="20dp"
             android:paddingRight="40dp"
             android:paddingBottom="20dp"
-            android:text="Submit"
+            android:text="Accept"
             android:textColor="@color/white"
             android:textSize="40sp"
             app:layout_constraintBottom_toBottomOf="parent"

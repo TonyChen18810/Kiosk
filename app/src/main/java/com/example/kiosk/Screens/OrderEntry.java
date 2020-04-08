@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.kiosk.Account;
+import com.example.kiosk.Dialogs.CancelDialog;
 import com.example.kiosk.Dialogs.ConnectedOrders;
 import com.example.kiosk.Dialogs.CustomerDialog;
 import com.example.kiosk.Dialogs.DeleteDialog;
@@ -27,6 +28,7 @@ import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Dialogs.ListViewDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Dialogs.SubmitDialog;
+import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
@@ -46,7 +48,7 @@ public class OrderEntry extends AppCompatActivity {
     private EditText orderNumber;
     private TextView buyerName, appointmentText, loggedInAsText, currentlyEntered;
     private Button logoutBtn, submitBtn, addOrderBtn, selectDestinationBtn;
-    private ImageButton checkOrderBtn;
+    private ImageButton checkOrderBtn, cancelOrderBtn;
     private ProgressBar progressBar;
 
     private static RecyclerViewHorizontalAdapter adapter;
@@ -97,10 +99,10 @@ public class OrderEntry extends AppCompatActivity {
                 // Intent intent = new Intent(OrderEntry.this, OrderSummary.class);
                 // startActivity(intent);
                 setContentView(R.layout.rules_regulations);
-                Button rulesSubmitBtn = findViewById(R.id.SubmitBtn2);
-                rulesSubmitBtn.setEnabled(true);
+                Button rulesAcceptBtn = findViewById(R.id.AcceptBtn);
+                rulesAcceptBtn.setEnabled(true);
                 rulesRegulationsSetup();
-                rulesSubmitBtn.setOnClickListener(v -> {
+                rulesAcceptBtn.setOnClickListener(v -> {
                     Intent intent = new Intent(OrderEntry.this, OrderSummary.class);
                     startActivity(intent);
                 });
@@ -130,7 +132,7 @@ public class OrderEntry extends AppCompatActivity {
                 checkOrderBtn.setEnabled(false);
                 checkOrderBtn.setBackgroundResource(R.drawable.arrow_down_disabled);
                 CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, Order.getCurrentOrder().getCustomerName(),
-                        buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar);
+                        buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar, cancelOrderBtn);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
                 // order needs to schedule appointment
@@ -211,12 +213,22 @@ public class OrderEntry extends AppCompatActivity {
             }
         });
 
+        sharedMasterNumber = new MutableLiveData<>();
+
+        sharedMasterNumber.observe(OrderEntry.this, shared -> {
+            if (shared) {
+                ConnectedOrders dialog = new ConnectedOrders(OrderEntry.this, recyclerView, adapter);
+                dialog.show();
+                dialog.setCancelable(false);
+            }
+        });
+
         setup();
 
         System.out.println("Order list size: " + Order.getOrdersList().size());
 
         if (Order.getOrdersList().size() == 0) {
-            Order.addMasterOrderToList(new Order("","","",
+            Order.addOrderToList(new Order("","","",
                     "", "","","","","",
                     "","","0","0"));
             addOrderListener.setValue(true);
@@ -286,6 +298,8 @@ public class OrderEntry extends AppCompatActivity {
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
 
+        /// orderNumber.setOnEditorActionListener(new KeyboardListener());
+
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(OrderEntry.this, v);
             dialog.show();
@@ -296,26 +310,16 @@ public class OrderEntry extends AppCompatActivity {
             dialog.show();
         });
 
-        sharedMasterNumber = new MutableLiveData<>();
-
-        sharedMasterNumber.observe(OrderEntry.this, shared -> {
-            if (shared) {
-                ConnectedOrders dialog = new ConnectedOrders(OrderEntry.this, recyclerView, adapter);
-                dialog.show();
-                dialog.setCancelable(false);
-            }
-        });
-
         addOrderBtn.setOnClickListener(v -> {
             addOrderBtn.setEnabled(false);
             progressBar.setVisibility(View.VISIBLE);
             addOrderBtn.clearAnimation();
             if (!recyclerView.isShown()) {
                 Order.getOrdersList().remove(0);
-                Order.addMasterOrderToList(Order.getCurrentOrder());
+                Order.addOrderToList(Order.getCurrentOrder());
                 addOrderListener.setValue(false);
             } else {
-                Order.addMasterOrderToList(Order.getCurrentOrder());
+                Order.addOrderToList(Order.getCurrentOrder());
                 addOrderListener.setValue(false);
             }
 
@@ -346,6 +350,9 @@ public class OrderEntry extends AppCompatActivity {
              */
             checkOrderBtn.setEnabled(false);
             addOrderBtn.setEnabled(false);
+            cancelOrderBtn.setEnabled(false);
+            cancelOrderBtn.setVisibility(View.GONE);
+            checkOrderBtn.setVisibility(View.VISIBLE);
             try {
                 new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute();
             } catch (Exception e) {
@@ -420,6 +427,15 @@ public class OrderEntry extends AppCompatActivity {
             // checkOrderBtn.setEnabled(true);
         });
 
+        cancelOrderBtn.setOnClickListener(v -> {
+            CancelDialog dialog = new CancelDialog(OrderEntry.this, OrderEntry.this, buyerName);
+            dialog.show();
+            dialog.setCancelable(false);
+            showSoftKeyboard(orderNumber);
+            orderNumber.requestFocus();
+            showSoftKeyboard(orderNumber);
+        });
+
         selectDestinationBtn.setOnClickListener(v -> {
             // destinationSpinner.performClick();
             // destinationListView.performClick();
@@ -441,7 +457,7 @@ public class OrderEntry extends AppCompatActivity {
         adapter.notifyItemRemoved(selectedItemPosition);
 
         if (Order.getOrdersList().size() == 0) {
-            Order.addMasterOrderToList(new Order("","","",
+            Order.addOrderToList(new Order("","","",
                     "","","","","","",
                     "","","0","0"));
             addOrderListener.setValue(true);
@@ -514,6 +530,8 @@ public class OrderEntry extends AppCompatActivity {
         submitBtn = findViewById(R.id.SubmitBtn2);
         addOrderBtn = findViewById(R.id.AddOrderBtn);
         checkOrderBtn = findViewById(R.id.CheckOrderBtn);
+        cancelOrderBtn = findViewById(R.id.CancelOrderBtn);
+        cancelOrderBtn.setVisibility(View.GONE);
         selectDestinationBtn = findViewById(R.id.SelectDestinationBtn);
         selectDestinationBtn.setVisibility(View.GONE);
 
@@ -564,7 +582,7 @@ public class OrderEntry extends AppCompatActivity {
         TextView line13 = findViewById(R.id.line13);
         TextView bottomText = findViewById(R.id.BottomText);
         TextView selectText = findViewById(R.id.SelectText);
-        Button submitBtn2 = findViewById(R.id.SubmitBtn2);
+        Button rulesAcceptBtn = findViewById(R.id.AcceptBtn);
 
         if (currentLanguage == 0) {
             title.setText(R.string.regulations_eng);
@@ -583,7 +601,7 @@ public class OrderEntry extends AppCompatActivity {
             line13.setText(R.string.line13_eng);
             bottomText.setText(R.string.cooperation_eng);
             selectText.setText(R.string.verify_read_eng);
-            submitBtn2.setText(R.string.submit_eng);
+            rulesAcceptBtn.setText(R.string.accept_eng);
         } else if (currentLanguage == 1) {
             title.setText(R.string.regulations_sp);
             line1.setText(R.string.line1_sp);
@@ -601,7 +619,7 @@ public class OrderEntry extends AppCompatActivity {
             line13.setText(R.string.line13_sp);
             bottomText.setText(R.string.cooperation_sp);
             selectText.setText(R.string.verify_read_sp);
-            submitBtn2.setText(R.string.submit_sp);
+            rulesAcceptBtn.setText(R.string.accept_sp);
         } else if (currentLanguage == 2) {
             title.setText(R.string.regulations_fr);
             line1.setText(R.string.line_fr);
@@ -619,7 +637,7 @@ public class OrderEntry extends AppCompatActivity {
             line13.setText(R.string.line13_fr);
             bottomText.setText(R.string.cooperation_fr);
             selectText.setText(R.string.verify_read_fr);
-            submitBtn2.setText(R.string.submit_fr);
+            rulesAcceptBtn.setText(R.string.accept_fr);
         }
     }
 }

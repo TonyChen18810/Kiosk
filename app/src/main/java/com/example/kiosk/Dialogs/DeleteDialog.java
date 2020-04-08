@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Screens.OrderEntry;
@@ -16,7 +15,6 @@ public class DeleteDialog extends Dialog implements android.view.View.OnClickLis
 
     private String orderNumberStr;
     private View view;
-    ProgressBar progressBar;
 
     public DeleteDialog(String orderNumberStr, Context context, View view) {
         super(context);
@@ -48,7 +46,6 @@ public class DeleteDialog extends Dialog implements android.view.View.OnClickLis
         }
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
-
     }
 
     @Override

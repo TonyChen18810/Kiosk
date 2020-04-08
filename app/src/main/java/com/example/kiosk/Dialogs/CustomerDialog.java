@@ -28,9 +28,10 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
     private ImageButton checkOrderBtn;
     private Context context;
     private ProgressBar progressBar;
+    private ImageButton cancelOrderButton;
 
     public CustomerDialog(Activity a, EditText orderNumber, String customerName, TextView customer, Button destination,
-                          ImageButton checkOrderBtn, Context context, ProgressBar progressbar) {
+                          ImageButton checkOrderBtn, Context context, ProgressBar progressbar, ImageButton cancelOrderBtn) {
         super(a);
         this.a = a;
         this.customerNameStr = customerName;
@@ -40,6 +41,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         this.checkOrderBtn = checkOrderBtn;
         this.context = context;
         this.progressBar = progressbar;
+        this.cancelOrderButton = cancelOrderBtn;
     }
 
     @Override
@@ -53,7 +55,13 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         TextView congsigneeName = findViewById(R.id.ConsigneeName);
         TextView correctCustomer = findViewById(R.id.CorrectCustomer);
         customerName.setText(customerNameStr);
-        congsigneeName.setText(Order.getCurrentOrder().getConsignee());
+        if (!Order.getCurrentOrder().getConsignee().equals("anyType{}") && !Order.getCurrentOrder().getConsignee().equals("")) {
+            congsigneeName.setText(Order.getCurrentOrder().getConsignee());
+            congsigneeName.setVisibility(View.VISIBLE);
+        } else {
+            congsigneeName.setText("");
+            congsigneeName.setVisibility(View.GONE);
+        }
         if (Language.getCurrentLanguage() == 0) {
             correctCustomer.setText(R.string.correct_customer_eng);
             destination.setText(R.string.select_destination_eng);
@@ -85,9 +93,15 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
                 destination.setVisibility(View.VISIBLE);
                 destination.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade));
                 destination.setEnabled(false);
+                checkOrderBtn.setVisibility(View.GONE);
+                cancelOrderButton.setVisibility(View.VISIBLE);
+                cancelOrderButton.setEnabled(true);
                 dismiss();
                 break;
             case R.id.btn_no:
+                cancelOrderButton.setVisibility(View.GONE);
+                cancelOrderButton.setEnabled(false);
+                checkOrderBtn.setVisibility(View.VISIBLE);
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setText("");
                 orderNumber.setEnabled(true);

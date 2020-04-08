@@ -14,24 +14,28 @@ import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import static com.example.kiosk.Webservices.GetOrderDetails.checkApppointmentTime;
 
 public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<RecyclerViewAssociatedAdapter.MyViewHolder> {
 
     private List<Order> associatedOrders;
-    private static List<Order> selectedOrders;
+    private static Set<Order> selectedOrders;
+    private static Set<Order> errorOrders;
 
     private Button addBtn;
 
     public RecyclerViewAssociatedAdapter(List<Order> associatedOrders, Button addBtn) {
         this.associatedOrders = associatedOrders;
-        selectedOrders = new ArrayList<>();
+        selectedOrders = new HashSet<>();
+        errorOrders = new HashSet<>();
         this.addBtn = addBtn;
         addBtn.setEnabled(false);
     }
 
-    public static List<Order> getSelectedOrders() {
+    public static Set<Order> getSelectedOrders() {
         return selectedOrders;
     }
 
@@ -48,6 +52,37 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         Order currentOrder = associatedOrders.get(position);
         holder.orderNumber.setText(currentOrder.getSOPNumber());
         holder.buyerName.setText(currentOrder.getCustomerName());
+
+        if (!errorOrders.contains(currentOrder)) {
+            if (selectedOrders.contains(currentOrder)) {
+                holder.errorMsg.setVisibility(View.GONE);
+                highlightView(holder);
+            } else {
+                holder.errorMsg.setVisibility(View.GONE);
+                unhighlightView(holder);
+            }
+        } else {
+            if (currentOrder.getAppointment().equals("true") && currentOrder.getAppointmentTime().equals("00:00:00")) {
+                scheduleAptText(holder);
+                errorView(holder);
+                errorOrders.add(currentOrder);
+            } else if (currentOrder.getAppointment().equals("true")) {
+                if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 1) {
+                    lateText(holder);
+                    errorView(holder);
+                    errorOrders.add(currentOrder);
+                } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
+                    differentAptTimeText(holder);
+                    errorView(holder);
+                    errorOrders.add(currentOrder);
+                } else {
+                    alreadyCheckedInText(holder);
+                    errorOrders.add(currentOrder);
+                }
+            }
+            holder.errorMsg.setVisibility(View.VISIBLE);
+            errorView(holder);
+        }
 
         String buyerNameEdit, buyerStr = currentOrder.getCustomerName();
         String[] words = buyerStr.split(" ");
@@ -93,167 +128,180 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
             holder.destination.setText(currentOrder.getDestination());
         }
 
+        // click
         holder.itemView.setOnClickListener(view -> {
-
-            boolean isGoodOrder = true;
             System.out.println("Clicked order: " + currentOrder.getSOPNumber());
 
-            if (!holder.error) {
+            if (!errorOrders.contains(currentOrder)) {
                 if (currentOrder.getTruckStatus().equals("Outstanding")) {
                     if (currentOrder.getCheckedIn().equals("false")) {
                         if (currentOrder.getAppointment().equals("true") && currentOrder.getAppointmentTime().equals("00:00:00")) {
-                            isGoodOrder = false;
-                            String message = null;
-                            // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
+                            scheduleApt(holder);
                             errorView(holder);
-                            holder.error = true;
-                            if (Language.getCurrentLanguage() == 0) {
-                                message = "Order #" + holder.orderNumber.getText().toString() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
-                            } else if (Language.getCurrentLanguage() == 1) {
-                                message = "Pedido #" + holder.orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
-                            } else if (Language.getCurrentLanguage() == 2) {
-                                message = "Ordre #" + holder.orderNumber.getText().toString() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
-                            }
-                            HelpDialog dialog = new HelpDialog(message, holder.itemView.getContext());
-                            dialog.show();
+                            errorOrders.add(currentOrder);
                         } else if (currentOrder.getAppointment().equals("true")) {
                             if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 1) {
-                                isGoodOrder = false;
-                                // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
+                                late(holder);
                                 errorView(holder);
-                                holder.error = true;
-                                String helpText = "";
-                                if (Language.getCurrentLanguage() == 0) {
-                                    helpText = "Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.";
-                                } else if (Language.getCurrentLanguage() == 1) {
-                                    helpText = "Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.";
-                                } else if (Language.getCurrentLanguage() == 2) {
-                                    helpText = "L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.";
-                                }
-                                HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
-                                dialog.show();
+                                errorOrders.add(currentOrder);
                             } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
-                                isGoodOrder = false;
-                                // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
+                                differentAptTime(holder);
                                 errorView(holder);
-                                holder.error = true;
-                                String helpText = "";
-                                if (Language.getCurrentLanguage() == 0) {
-                                    helpText = "The appointment time of this order differs from the appointment time of the entered order making it ineligible for pick-up.";
-                                } else if (Language.getCurrentLanguage() == 1) {
-                                    helpText = "La hora de la cita de este pedido difiere de la hora de la cita del pedido ingresado, por lo que no es elegible para ser recogido.";
-                                } else if (Language.getCurrentLanguage() == 2) {
-                                    helpText = "L'heure de rendez-vous de cette commande diffère de l'heure de rendez-vous de la commande saisie, ce qui la rend inéligible au retrait.";
-                                }
-                                HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
-                                dialog.show();
-                            } else if (checkApppointmentTime(currentOrder.getAppointmentTime()) == -1) {
-                                isGoodOrder = true;
-                                String helpText = "";
-                                if (Language.getCurrentLanguage() == 0) {
-                                    helpText = "This order has a later appointment time. This submitted order will not be checked in until 1 hour prior to appointment time.";
-                                } else if (Language.getCurrentLanguage() == 1) {
-                                    helpText = "Este pedido tiene una hora de cita posterior. Este pedido enviado no se registrará hasta 1 hora antes de la hora de la cita.";
-                                } else if (Language.getCurrentLanguage() == 2) {
-                                    helpText = "Cette commande a une heure de rendez-vous ultérieure. Cette commande soumise ne sera enregistrée que 1 heure avant l'heure du rendez-vous.";
-                                }
-                                HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
-                                // dialog.show();
-                                // OrderEntry.appointmentTimeListener.setValue(0);
-                                // HelpDialog dialog = new HelpDialog("This order is early", itemView.getContext());
-                                // dialog.show();
+                                errorOrders.add(currentOrder);
                             } else if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 0) {
-                                isGoodOrder = true;
+                                errorOrders.add(currentOrder);
                             }
-                        } else {
-                            isGoodOrder = true;
                         }
                     } else {
-                        // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
-                        holder.error = true;
-                        String helpText = "";
-                        if (Language.getCurrentLanguage() == 0) {
-                            helpText = "The order has already been checked in";
-                        } else if (Language.getCurrentLanguage() == 1) {
-                            helpText = "El pedido ya ha sido facturado";
-                        } else if (Language.getCurrentLanguage() == 2) {
-                            helpText = "La ordre a déjà été enregistrée";
-                        }
-                        HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
-                        dialog.show();
-                        isGoodOrder = false;
+                        errorOrders.add(currentOrder);
+                        alreadyCheckedIn(holder);
                     }
                 } else {
-                    String helpText = "";
-                    if (Language.getCurrentLanguage() == 0) {
-                        helpText = "The order has already been checked in";
-                    } else if (Language.getCurrentLanguage() == 1) {
-                        helpText = "El pedido ya ha sido facturado";
-                    } else if (Language.getCurrentLanguage() == 2) {
-                        helpText = "La ordre a déjà été enregistrée";
-                    }
-                    HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
-                    dialog.show();
-                    isGoodOrder = false;
+                    errorOrders.add(currentOrder);
+                    alreadyCheckedIn(holder);
                 }
 
-                if (isGoodOrder) {
+                if (!errorOrders.contains(currentOrder)) {
                     if (selectedOrders.contains(currentOrder)) {
                         selectedOrders.remove(currentOrder);
                         unhighlightView(holder);
-                        System.out.println("Unselected");
                         if (selectedOrders.size() == 0) {
                             addBtn.setEnabled(false);
-                            // ConnectedOrders.buttonListener.setValue(false);
                         } else {
-                            // ConnectedOrders.buttonListener.setValue(true);
                             addBtn.setEnabled(true);
-                        }
-                        System.out.println("SELECTION REMOVED: ");
-                        for (int i = 0; i < selectedOrders.size(); i++) {
-                            System.out.println(selectedOrders.get(i).getSOPNumber());
                         }
                         notifyDataSetChanged();
                     } else if (!selectedOrders.contains(currentOrder)) {
                         selectedOrders.add(currentOrder);
                         highlightView(holder);
-                        System.out.println("Selected");
                         addBtn.setEnabled(true);
-                        // ConnectedOrders.buttonListener.setValue(true);
-                        System.out.println("SELECTION ADDED: ");
-                        for (int i = 0; i < selectedOrders.size(); i++) {
-                            System.out.println(selectedOrders.get(i).getSOPNumber());
-                        }
                         notifyDataSetChanged();
                     }
                 } else {
-                    // errorView(holder);
-                    holder.error = true;
+                    errorView(holder);
+                    errorOrders.add(currentOrder);
                 }
             }
         });
-
-        if (holder.error) {
-            errorView(holder);
-        } else {
-            if (selectedOrders.contains(currentOrder)) {
-                highlightView(holder);
-            } else {
-                unhighlightView(holder);
-            }
-        }
     }
 
     private void highlightView(MyViewHolder holder) {
+        holder.errorMsg.setVisibility(View.GONE);
         holder.linearLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.andy_accent));
     }
 
     private void unhighlightView(MyViewHolder holder) {
+        holder.errorMsg.setVisibility(View.GONE);
         holder.linearLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.transparent));
     }
 
     private void errorView(MyViewHolder holder) {
-        holder.linearLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.darker_gray));
+        holder.linearLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.dark_gray));
+        holder.errorMsg.setVisibility(View.VISIBLE);
+    }
+
+    private void scheduleAptText(MyViewHolder holder) {
+        if (Language.getCurrentLanguage() == 0) {
+            holder.errorMsg.setText("Order requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.");
+        } else if (Language.getCurrentLanguage() == 1) {
+            holder.errorMsg.setText("El pedido requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.");
+        } else if (Language.getCurrentLanguage() == 2) {
+            holder.errorMsg.setText("La commande nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour planifier un rendez-vous.");
+        }
+    }
+
+    private void scheduleApt(MyViewHolder holder) {
+        String message = null;
+        if (Language.getCurrentLanguage() == 0) {
+            message = "Order #" + holder.orderNumber.getText().toString() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
+            holder.errorMsg.setText("Order requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.");
+        } else if (Language.getCurrentLanguage() == 1) {
+            message = "Pedido #" + holder.orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
+            holder.errorMsg.setText("El pedido requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.");
+        } else if (Language.getCurrentLanguage() == 2) {
+            message = "Ordre #" + holder.orderNumber.getText().toString() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
+            holder.errorMsg.setText("La commande nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour planifier un rendez-vous.");
+        }
+        HelpDialog dialog = new HelpDialog(message, holder.itemView.getContext());
+        dialog.show();
+    }
+
+    private void lateText(MyViewHolder holder) {
+        if (Language.getCurrentLanguage() == 0) {
+            holder.errorMsg.setText("Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.");
+        } else if (Language.getCurrentLanguage() == 1) {
+            holder.errorMsg.setText("Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.");
+        } else if (Language.getCurrentLanguage() == 2) {
+            holder.errorMsg.setText("L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.");
+        }
+    }
+
+    private void late(MyViewHolder holder) {
+        String helpText = "";
+        if (Language.getCurrentLanguage() == 0) {
+            helpText = "Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.";
+            holder.errorMsg.setText("Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.");
+        } else if (Language.getCurrentLanguage() == 1) {
+            helpText = "Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.";
+            holder.errorMsg.setText("Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.");
+        } else if (Language.getCurrentLanguage() == 2) {
+            helpText = "L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.";
+            holder.errorMsg.setText("L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.");
+        }
+        HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
+        dialog.show();
+    }
+
+    private void alreadyCheckedInText(MyViewHolder holder) {
+        if (Language.getCurrentLanguage() == 0) {
+            holder.errorMsg.setText("The order has already been checked in");
+        } else if (Language.getCurrentLanguage() == 1) {
+            holder.errorMsg.setText("El pedido ya ha sido facturado");
+        } else if (Language.getCurrentLanguage() == 2) {
+            holder.errorMsg.setText("La ordre a déjà été enregistrée");
+        }
+    }
+
+    private void alreadyCheckedIn(MyViewHolder holder) {
+        String helpText = "";
+        if (Language.getCurrentLanguage() == 0) {
+            helpText = "The order has already been checked in";
+            holder.errorMsg.setText("The order has already been checked in");
+        } else if (Language.getCurrentLanguage() == 1) {
+            helpText = "El pedido ya ha sido facturado";
+            holder.errorMsg.setText("El pedido ya ha sido facturado");
+        } else if (Language.getCurrentLanguage() == 2) {
+            helpText = "La ordre a déjà été enregistrée";
+            holder.errorMsg.setText("La ordre a déjà été enregistrée");
+        }
+        HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
+        dialog.show();
+    }
+
+    private void differentAptTimeText(MyViewHolder holder) {
+        if (Language.getCurrentLanguage() == 0) {
+            holder.errorMsg.setText("The appointment time of this order differs from the appointment time of the entered order making it ineligible for pick-up.");
+        } else if (Language.getCurrentLanguage() == 1) {
+            holder.errorMsg.setText("La hora de la cita de este pedido difiere de la hora de la cita del pedido ingresado, por lo que no es elegible para ser recogido.");
+        } else if (Language.getCurrentLanguage() == 2) {
+            holder.errorMsg.setText("L'heure de rendez-vous de cette commande diffère de l'heure de rendez-vous de la commande saisie, ce qui la rend inéligible au retrait.");
+        }
+    }
+
+    private void differentAptTime(MyViewHolder holder) {
+        String helpText = "";
+        if (Language.getCurrentLanguage() == 0) {
+            helpText = "The appointment time of this order differs from the appointment time of the entered order making it ineligible for pick-up.";
+            holder.errorMsg.setText("The appointment time of this order differs from the appointment time of the entered order making it ineligible for pick-up.");
+        } else if (Language.getCurrentLanguage() == 1) {
+            helpText = "La hora de la cita de este pedido difiere de la hora de la cita del pedido ingresado, por lo que no es elegible para ser recogido.";
+            holder.errorMsg.setText("La hora de la cita de este pedido difiere de la hora de la cita del pedido ingresado, por lo que no es elegible para ser recogido.");
+        } else if (Language.getCurrentLanguage() == 2) {
+            helpText = "L'heure de rendez-vous de cette commande diffère de l'heure de rendez-vous de la commande saisie, ce qui la rend inéligible au retrait.";
+            holder.errorMsg.setText("L'heure de rendez-vous de cette commande diffère de l'heure de rendez-vous de la commande saisie, ce qui la rend inéligible au retrait.");
+        }
+        HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
+        dialog.show();
     }
 
     @Override
@@ -263,8 +311,8 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView orderNumber, buyerName, destination;
-        Boolean isSelected, error;
+        TextView orderNumber, buyerName, destination, errorMsg;
+        Boolean isSelected;
         LinearLayout linearLayout;
 
         MyViewHolder(@NonNull final View itemView) {
@@ -274,8 +322,8 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
             this.orderNumber = itemView.findViewById(R.id.OrderNumber);
             this.buyerName = itemView.findViewById(R.id.BuyerName);
             this.destination = itemView.findViewById(R.id.Destination);
+            this.errorMsg = itemView.findViewById(R.id.ErrorMessage);
             this.isSelected = false;
-            this.error = false;
             this.linearLayout = itemView.findViewById(R.id.LinearLayoutInCardView);
         }
     }

@@ -49,14 +49,14 @@ public class LoggedIn extends AppCompatActivity {
         setContentView(R.layout.activity_logged_in);
         setup();
 
-        Time.setTestingTime("07:00:00");
-/*
+        // Time.setTestingTime("07:00:00");
+
         try {
             Time.setTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-*/
+
         checkboxListener = new MutableLiveData<>();
         checkboxListener.observe(LoggedIn.this, needsUpdated -> {
             if (needsUpdated) {

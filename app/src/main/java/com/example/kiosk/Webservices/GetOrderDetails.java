@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
-import com.example.kiosk.Dialogs.HelpDialog;
-import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
