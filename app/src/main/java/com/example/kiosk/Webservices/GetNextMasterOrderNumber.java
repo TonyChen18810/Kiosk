@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+
+import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
 
@@ -68,7 +70,8 @@ public class GetNextMasterOrderNumber extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
         if (connection) {
             GetOrderDetails.setNewMasterNumber(nextMasterNumber);
-            OrderEntry.setDialogListener(true);
+            // OrderEntry.setDialogListener(true);
+            OrderEntry.submitDialogListener.setValue(true);
         }
         /*
         for (int i = 0; i < Order.getPossibleOrdersList().size(); i++) {

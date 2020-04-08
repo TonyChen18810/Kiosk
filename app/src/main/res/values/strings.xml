@@ -213,9 +213,9 @@
     <string name="select_one_eng">*Please select one</string>
     <string name="logged_in_as_eng">Logged in as:</string>
     <string name="verify_submit_eng">*By clicking \'Submit\' I verify that all \n information is correct and accurate</string>
-    <string name="submit_orders_eng">Submit Orders</string>
+    <string name="submit_orders_eng">Submit Order(s)</string>
     <string name="add_order_eng">Add Order</string>
-    <string name="entered_orders_eng">You have entered information for the following orders:</string>
+    <string name="entered_orders_eng">You have entered information for the following order(s):</string>
     <string name="correct_customer_eng">Is this the correct customer for this order number?</string>
     <string name="select_destination_eng">Select destination</string>
     <string name="yes_eng">Yes</string>
@@ -241,7 +241,7 @@
     <string name="cooperation_eng">Your cooperation will ensure faster and safer loading</string>
     <string name="verify_read_eng">*By selecting “Submit” below, you are agreeing that you read and understand the protocol set forth by the facility and that all information previously entered is true and correct.</string>
     <string name="submit_eng">Submit</string>
-    <string name="confirm_orders_eng">Please confirm the following orders:</string>
+    <string name="confirm_orders_eng">Please confirm the following order(s):</string>
     <string name="confirmation_num_eng">Confirmation number:</string>
     <string name="order_number_eng">Order\nNumber</string>
     <string name="buyer_name_eng">Customer Name</string>
@@ -305,7 +305,7 @@
     <string name="cooperation_sp">Su cooperación hará que la carga sea más rápida y segura.</string>
     <string name="verify_read_sp">*Haciendo clic en \'Enviar\' abajo, usted confirma que ha leído y entiende el protocolo establecido por las instalaciones y que toda la información que escribió anteriormente es verdadera y correcta.</string>
     <string name="submit_sp">Enviar</string>
-    <string name="confirm_orders_sp">Confirme los siguientes pedidos:</string>
+    <string name="confirm_orders_sp">Confirme los siguientes pedido(s):</string>
     <string name="confirmation_num_sp">Número de confirmación:</string>
     <string name="order_number_sp">Número\nde pedido</string>
     <string name="buyer_name_sp">Nombre del\mcliente</string>
@@ -400,7 +400,7 @@
     <string name="hint_truck_number_eng">Truck number</string>
     <string name="hint_trailer_license_eng">Trailer license number</string>
     <string name="hint_dispatcher_eng">Dispatcher phone number</string>
-    <string name="following_orders_eng">The following orders are also connected with your previously entered order. You can tap any order to add it to your orders.</string>
+    <string name="following_orders_eng">The following order(s) are also connected with your previously entered order. You can tap any order to add it to your orders.</string>
     <string name="following_orders_sp">Los siguientes pedidos también están relacionados con el pedido especificado. Puede hacer clic en cualquier pedido para agregarlo a su lista de pedidos.</string>
     <string name="following_orders_fr">Les commandes suivantes sont également liées à votre commande précédemment saisie. Vous pouvez appuyer sur n\’importe quelle commande pour l\’ajouter à vos commandes.</string>
     <string name="delete_order_eng">Are you sure you want to delete order:</string>
@@ -409,7 +409,7 @@
     <string name="logout_confirm_eng">Are you sure you want to logout?</string>
     <string name="logout_confirm_sp">¿Está seguro de que quiere cerrar sesión?</string>
     <string name="logout_confirm_fr">Voulez-vous vraiment vous déconnecter?</string>
-    <string name="submit_confirm_eng">Are you sure you want to submit these orders?</string>
+    <string name="submit_confirm_eng">Are you sure you want to submit these order(s)?</string>
     <string name="submit_confirm_sp">¿Está seguro de que quiere enviar estos pedidos?</string>
     <string name="submit_confirm_fr">Voulez-vous vraiment envoyer ces commandes?</string>
 

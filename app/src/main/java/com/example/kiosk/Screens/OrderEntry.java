@@ -26,19 +26,16 @@ import com.example.kiosk.Dialogs.DeleteDialog;
 import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Dialogs.ListViewDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
-import com.example.kiosk.Dialogs.ProgressDialog;
 import com.example.kiosk.Dialogs.SubmitDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
-import com.example.kiosk.Webservices.GetNextMasterOrderNumber;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
@@ -58,17 +55,13 @@ public class OrderEntry extends AppCompatActivity {
     public static List<String> possibleCustomerDestinations;
 
     private static MutableLiveData<Boolean> addOrderListener = null;
-    private static MutableLiveData<Boolean> submitDialogListener = null;
+    public static MutableLiveData<Boolean> submitDialogListener = null;
     public static MutableLiveData<Integer> validOrderNumber = null;
     public static MutableLiveData<Boolean> sharedMasterNumber = null;
-
     public static MutableLiveData<String> destinationListener = null;
-
     public static MutableLiveData<Integer> appointmentTimeListener = null;
-    public static int check;
-    public static int DESTINATION_ATTEMPTS = 0;
 
-    public static ProgressDialog rulesRegsDialog;
+    public static int DESTINATION_ATTEMPTS = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +71,7 @@ public class OrderEntry extends AppCompatActivity {
         System.out.println("MASTER NUMBER AT ORDER ENTRY: " + GetOrderDetails.getMasterNumber());
 
         addOrderListener = new MutableLiveData<>();
-        addOrderListener.setValue(true);
+        // addOrderListener.setValue(true);
         submitDialogListener = new MutableLiveData<>();
         submitDialogListener.setValue(false);
         validOrderNumber = new MutableLiveData<>();
@@ -94,7 +87,6 @@ public class OrderEntry extends AppCompatActivity {
             } else {
                 recyclerView.setVisibility(View.VISIBLE);
                 currentlyEntered.setVisibility(View.VISIBLE);
-                // initialSelection = false;
                 submitBtn.setEnabled(true);
             }
         });
@@ -102,6 +94,8 @@ public class OrderEntry extends AppCompatActivity {
         submitDialogListener.observe(OrderEntry.this, dialogChoice -> {
             if (dialogChoice) {
                 progressBar.setVisibility(View.INVISIBLE);
+                // Intent intent = new Intent(OrderEntry.this, OrderSummary.class);
+                // startActivity(intent);
                 setContentView(R.layout.rules_regulations);
                 Button rulesSubmitBtn = findViewById(R.id.SubmitBtn2);
                 rulesSubmitBtn.setEnabled(true);
@@ -134,7 +128,7 @@ public class OrderEntry extends AppCompatActivity {
             } else if (valid == 1) {
                 orderNumber.setEnabled(false);
                 checkOrderBtn.setEnabled(false);
-                checkOrderBtn.setBackgroundResource(R.drawable.arrow_down);
+                checkOrderBtn.setBackgroundResource(R.drawable.arrow_down_disabled);
                 CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, Order.getCurrentOrder().getCustomerName(),
                         buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar);
                 dialog.setCanceledOnTouchOutside(false);
@@ -152,6 +146,8 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                 dialog.show();
+                checkOrderBtn.setEnabled(true);
+                orderNumber.setEnabled(true);
                 orderNumber.setText("");
                 showSoftKeyboard(orderNumber);
             } else if (valid == 3) {
@@ -165,6 +161,10 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
+                orderNumber.setText("");
+                checkOrderBtn.setEnabled(true);
+                orderNumber.setEnabled(true);
+                orderNumber.requestFocus();
             }
             progressBar.setVisibility(View.GONE);
         });
@@ -196,6 +196,7 @@ public class OrderEntry extends AppCompatActivity {
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
                 orderNumber.setText("");
+                orderNumber.setEnabled(true);
             } else if (aptCode == -2) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 0) {
@@ -212,11 +213,15 @@ public class OrderEntry extends AppCompatActivity {
 
         setup();
 
+        System.out.println("Order list size: " + Order.getOrdersList().size());
+
         if (Order.getOrdersList().size() == 0) {
             Order.addMasterOrderToList(new Order("","","",
                     "", "","","","","",
                     "","","0","0"));
             addOrderListener.setValue(true);
+        } else {
+            addOrderListener.setValue(false);
         }
 
         recyclerView = findViewById(R.id.OrdersView);
@@ -241,7 +246,6 @@ public class OrderEntry extends AppCompatActivity {
                 // incorrect
                 DESTINATION_ATTEMPTS++;
                 if (DESTINATION_ATTEMPTS >= 2) {
-                    check = 0;
                     String message = null;
                     if (currentLanguage == 0) {
                         message = "Maximum destination attempts exceeded, please try another order number or contact your dispatcher.";
@@ -356,15 +360,19 @@ public class OrderEntry extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (orderNumber.getText().length() == 0) {
-                    checkOrderBtn.setEnabled(false);
-                }
                 if (orderNumber.length() == 0) {
-                    checkOrderBtn.setBackgroundResource(R.drawable.arrow_right);
+                    checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
                     selectDestinationBtn.setVisibility(View.GONE);
                     checkOrderBtn.setEnabled(false);
+                    if (recyclerView.isShown()) {
+                        submitBtn.setEnabled(true);
+                    } else {
+                        submitBtn.setEnabled(false);
+                    }
                 } else {
+                    checkOrderBtn.setBackgroundResource(R.drawable.arrow_right);
                     checkOrderBtn.setEnabled(true);
+                    submitBtn.setEnabled(false);
                 }
             }
 
@@ -449,11 +457,11 @@ public class OrderEntry extends AppCompatActivity {
             }
         }
     }
-
+/*
     public static void setDialogListener(Boolean b) {
         submitDialogListener.setValue(b);
     }
-
+*/
     private void changeLanguage(int val) {
         System.out.println("val: " + val);
         switch(val) {
@@ -525,6 +533,8 @@ public class OrderEntry extends AppCompatActivity {
         truckNumberStr.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
         addOrderBtn.setEnabled(false);
         submitBtn.setEnabled(false);
+        checkOrderBtn.setEnabled(false);
+        checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
         changeLanguage(currentLanguage);
         if (currentLanguage == 2) {
             addOrderBtn.setTextSize(50);

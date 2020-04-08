@@ -84,7 +84,7 @@ public class SubmitDialog extends Dialog implements android.view.View.OnClickLis
                     }
                     new GetNextMasterOrderNumber(activity).execute();
                 } else {
-                    OrderEntry.setDialogListener(true);
+                    OrderEntry.submitDialogListener.setValue(true);
                 }
                 dismiss();
                 break;

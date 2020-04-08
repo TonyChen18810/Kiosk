@@ -207,10 +207,10 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                 Order order = new Order(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
                         customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
                 OrderEntry.validOrderNumber.setValue(1);
-                if (activity != null) {
-                    ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-                    progressBar.setVisibility(View.GONE);
-                }
+            }
+            if (activity != null) {
+                ProgressBar progressBar = activity.findViewById(R.id.progressBar);
+                progressBar.setVisibility(View.GONE);
             }
         }
     }

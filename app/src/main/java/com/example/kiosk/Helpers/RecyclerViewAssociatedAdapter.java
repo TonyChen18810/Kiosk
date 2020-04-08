@@ -105,7 +105,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                             isGoodOrder = false;
                             String message = null;
                             // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
-                            // errorView(holder);
+                            errorView(holder);
                             holder.error = true;
                             if (Language.getCurrentLanguage() == 0) {
                                 message = "Order #" + holder.orderNumber.getText().toString() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
@@ -120,7 +120,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                             if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 1) {
                                 isGoodOrder = false;
                                 // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
-                                // errorView(holder);
+                                errorView(holder);
                                 holder.error = true;
                                 String helpText = "";
                                 if (Language.getCurrentLanguage() == 0) {
@@ -135,7 +135,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                             } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
                                 isGoodOrder = false;
                                 // this.linearLayout.setBackgroundColor(Color.parseColor("#b3b3b3"));
-                                // errorView(holder);
+                                errorView(holder);
                                 holder.error = true;
                                 String helpText = "";
                                 if (Language.getCurrentLanguage() == 0) {
@@ -233,12 +233,14 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
             }
         });
 
-        if (selectedOrders.contains(currentOrder)) {
-            highlightView(holder);
-        } else if (holder.error) {
-            // errorView(holder);
+        if (holder.error) {
+            errorView(holder);
         } else {
-            unhighlightView(holder);
+            if (selectedOrders.contains(currentOrder)) {
+                highlightView(holder);
+            } else {
+                unhighlightView(holder);
+            }
         }
     }
 

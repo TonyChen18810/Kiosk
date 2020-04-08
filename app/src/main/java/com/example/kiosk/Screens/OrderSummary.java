@@ -29,7 +29,7 @@ public class OrderSummary extends AppCompatActivity {
 
     TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight,
             totalOrders, totalPallets, totalWeight, ordersCount, totalPalletsCount, totalWeightCount;
-    Button confirmBtn;
+    Button confirmBtn, backBtn;
 
     private int currentLanguage = Language.getCurrentLanguage();
 
@@ -60,6 +60,11 @@ public class OrderSummary extends AppCompatActivity {
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(OrderSummary.this, v);
             dialog.show();
+        });
+        backBtn.setOnClickListener(v12 -> {
+            System.out.println("Back button clicked!");
+            // finish();
+            startActivity(new Intent(OrderSummary.this, OrderEntry.class));
         });
 
         findViewById(R.id.ConfirmBtn).setOnClickListener(v -> {
@@ -145,6 +150,7 @@ public class OrderSummary extends AppCompatActivity {
         totalWeight = findViewById(R.id.TotalWeightText);
         confirmBtn = findViewById(R.id.ConfirmBtn);
         logoutBtn = findViewById(R.id.LogoutBtn);
+        backBtn = findViewById(R.id.BackBtn);
         ordersCount = findViewById(R.id.OrdersCount);
         totalPalletsCount = findViewById(R.id.PalletCount);
         totalWeightCount = findViewById(R.id.TotalWeight);
@@ -168,6 +174,7 @@ public class OrderSummary extends AppCompatActivity {
             totalWeight.setText(R.string.total_weight_eng);
             confirmBtn.setText(R.string.confirm_eng);
             logoutBtn.setText(R.string.logout_eng);
+            backBtn.setText(R.string.back_eng);
         } else if (currentLanguage == 1) {
             confirmOrders.setText(R.string.confirm_orders_sp);
             confirmationNumberText.setText(R.string.confirmation_num_sp);
@@ -182,6 +189,7 @@ public class OrderSummary extends AppCompatActivity {
             totalWeight.setText(R.string.total_weight_sp);
             confirmBtn.setText(R.string.confirm_sp);
             logoutBtn.setText(R.string.logout_sp);
+            backBtn.setText(R.string.back_sp);
         } else if (currentLanguage == 2) {
             confirmOrders.setText(R.string.confirm_orders_fr);
             confirmationNumberText.setText(R.string.confirmation_num_fr);
@@ -196,6 +204,7 @@ public class OrderSummary extends AppCompatActivity {
             totalWeight.setText(R.string.total_weight_fr);
             confirmBtn.setText(R.string.confirm_fr);
             logoutBtn.setText(R.string.logout_fr);
+            backBtn.setText(R.string.back_fr);
         }
     }
 }

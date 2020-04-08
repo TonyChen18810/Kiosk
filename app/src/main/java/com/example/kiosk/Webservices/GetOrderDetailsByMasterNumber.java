@@ -122,6 +122,9 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             if (propertyCount < 1 && Order.getAssociatedOrdersList().size() < 1) {
                 System.out.println("No associated orders");
                 OrderEntry.sharedMasterNumber.setValue(false);
+                if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
+                    OrderEntry.appointmentTimeListener.setValue(-2);
+                }
             } else if (Order.getAssociatedOrdersList().size() > 0){
                 System.out.println("There's associated orders!!");
                 OrderEntry.sharedMasterNumber.setValue(true);

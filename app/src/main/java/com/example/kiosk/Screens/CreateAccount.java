@@ -464,8 +464,8 @@ public class CreateAccount extends AppCompatActivity {
         driverLicense.setHintTextColor(getResources().getColor(R.color.dark_gray));
         driverName.setHintTextColor(getResources().getColor(R.color.dark_gray));
         dispatcherPhoneNumber.setHintTextColor(getResources().getColor(R.color.dark_gray));
-        System.out.println("Current Language: " + currentLanguage);
-        switch(currentLanguage) {
+        System.out.println("Current Language: " + Language.getCurrentLanguage());
+        switch(Language.getCurrentLanguage()) {
             case 0:
                 //English
                 System.out.println("ENGLISH!!!!");
@@ -531,6 +531,27 @@ public class CreateAccount extends AppCompatActivity {
                 selectText.setText(R.string.select_one_fr);
                 selectState1.setText(R.string.state_fr);
                 selectState2.setText(R.string.state_fr);
+                break;
+            default:
+                System.out.println("ENGLISH!!!!");
+                logoutBtn.setText(R.string.logout_eng);
+                nextBtn.setText(R.string.next_eng);
+                createAccount.setText(R.string.create_account_eng);
+                helpText.setText(R.string.select_help_icon_eng);
+                truckName.setHint("Truck name");
+                truckNumber.setHint("Truck number");
+                trailerLicense.setHint("Trailer license number");
+                driverLicense.setHint("Driver license number");
+                driverName.setHint("Driver's name");
+                dispatcherPhoneNumber.setHint("Dispatcher's phone number");
+                verifyText.setText(R.string.verify_next_eng);
+                preferText.setText(R.string.comm_preference_eng);
+                txtText.setText(R.string.text_msg_eng);
+                emailText.setText(R.string.email_eng);
+                bothText.setText(R.string.text_and_email_eng);
+                selectText.setText(R.string.select_one_eng);
+                selectState1.setText(R.string.state_eng);
+                selectState2.setText(R.string.state_eng);
                 break;
         }
     }

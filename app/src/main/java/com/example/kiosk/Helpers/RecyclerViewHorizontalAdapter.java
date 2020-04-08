@@ -62,7 +62,6 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
         TextView destination;
         TextView appointment;
         Button deleteBtn;
-        boolean clickable;
 
         MyViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -71,11 +70,6 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
             this.destination = itemView.findViewById(R.id.Destination);
             this.appointment = itemView.findViewById(R.id.AppointmentTime);
             this.deleteBtn = itemView.findViewById(R.id.DeleteBtn);
-            if (!activity.findViewById(R.id.CheckOrderBtn).isEnabled()) {
-                this.clickable = false;
-            } else {
-                this.clickable = true;
-            }
 
             if (Language.getCurrentLanguage() == 0) {
                 deleteBtn.setText(R.string.delete_eng);
@@ -86,9 +80,7 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
             }
 
             deleteBtn.setOnClickListener(v -> {
-                if (this.clickable) {
-                    OrderEntry.confirmMsg(itemView, context);
-                }
+                OrderEntry.confirmMsg(itemView, context);
             });
         }
     }
