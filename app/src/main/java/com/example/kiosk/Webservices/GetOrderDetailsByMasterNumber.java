@@ -94,7 +94,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                     if (canBeInserted) {
                         Order order = new Order(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
                                 customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
-                        Order.addAssociatedMasterOrderToList(order);
+                        Order.addAssociatedOrderToList(order);
                     }
                 }
             }
@@ -122,12 +122,15 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             if (propertyCount < 1 && Order.getAssociatedOrdersList().size() < 1) {
                 System.out.println("No associated orders");
                 OrderEntry.sharedMasterNumber.setValue(false);
-                if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
-                    OrderEntry.appointmentTimeListener.setValue(-2);
-                }
             } else if (Order.getAssociatedOrdersList().size() > 0){
                 System.out.println("There's associated orders!!");
                 OrderEntry.sharedMasterNumber.setValue(true);
+                if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
+                    if (OrderEntry.appointmentTimeListener.getValue() != -2) {
+                        OrderEntry.appointmentTimeListener.setValue(-2);
+                        OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
+                    }
+                }
             }
             Activity activity = mWeakActivity.get();
             if (activity != null) {
@@ -136,12 +139,15 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                 orderNumber.setEnabled(true);
                 orderNumber.setFocusable(true);
                 orderNumber.requestFocus();
+                /*
                 if (orderNumber.requestFocus()) {
                     InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm != null) {
                         imm.showSoftInput(orderNumber, SHOW_IMPLICIT);
                     }
                 }
+
+                 */
             }
             /*
             if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {

@@ -9,11 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,7 +30,7 @@ import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Dialogs.ListViewDialog;
 import com.example.kiosk.Dialogs.LogoutDialog;
 import com.example.kiosk.Dialogs.SubmitDialog;
-import com.example.kiosk.Helpers.KeyboardListener;
+import com.example.kiosk.Helpers.CustomOrderKeyboard;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
@@ -38,8 +40,6 @@ import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 
 public class OrderEntry extends AppCompatActivity {
 
@@ -69,6 +69,14 @@ public class OrderEntry extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_entry);
+
+        setup();
+
+        CustomOrderKeyboard keyboard = findViewById(R.id.keyboard);
+        orderNumber.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        orderNumber.setTextIsSelectable(true);
+        InputConnection ic = orderNumber.onCreateInputConnection(new EditorInfo());
+        keyboard.setInputConnection(ic);
 
         System.out.println("MASTER NUMBER AT ORDER ENTRY: " + GetOrderDetails.getMasterNumber());
 
@@ -132,7 +140,7 @@ public class OrderEntry extends AppCompatActivity {
                 checkOrderBtn.setEnabled(false);
                 checkOrderBtn.setBackgroundResource(R.drawable.arrow_down_disabled);
                 CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, Order.getCurrentOrder().getCustomerName(),
-                        buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar, cancelOrderBtn);
+                        buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar, cancelOrderBtn, keyboard);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
                 // order needs to schedule appointment
@@ -151,7 +159,7 @@ public class OrderEntry extends AppCompatActivity {
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setEnabled(true);
                 orderNumber.setText("");
-                showSoftKeyboard(orderNumber);
+                // showSoftKeyboard(orderNumber);
             } else if (valid == 3) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 0) {
@@ -166,7 +174,7 @@ public class OrderEntry extends AppCompatActivity {
                 orderNumber.setText("");
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setEnabled(true);
-                orderNumber.requestFocus();
+                //orderNumber.requestFocus();
             }
             progressBar.setVisibility(View.GONE);
         });
@@ -223,8 +231,6 @@ public class OrderEntry extends AppCompatActivity {
             }
         });
 
-        setup();
-
         System.out.println("Order list size: " + Order.getOrdersList().size());
 
         if (Order.getOrdersList().size() == 0) {
@@ -273,9 +279,9 @@ public class OrderEntry extends AppCompatActivity {
                     selectDestinationBtn.setVisibility(View.GONE);
 
                     orderNumber.setEnabled(true);
-                    orderNumber.setFocusable(true);
-                    orderNumber.requestFocus();
-                    showSoftKeyboard(orderNumber);
+                    // orderNumber.setFocusable(true);
+                    //orderNumber.requestFocus();
+                    // showSoftKeyboard(orderNumber);
                     checkOrderBtn.setEnabled(false);
                     addOrderBtn.setEnabled(false);
                     DESTINATION_ATTEMPTS = 0;
@@ -311,6 +317,7 @@ public class OrderEntry extends AppCompatActivity {
         });
 
         addOrderBtn.setOnClickListener(v -> {
+            keyboard.setVisibility(View.VISIBLE);
             addOrderBtn.setEnabled(false);
             progressBar.setVisibility(View.VISIBLE);
             addOrderBtn.clearAnimation();
@@ -342,17 +349,12 @@ public class OrderEntry extends AppCompatActivity {
             selectDestinationBtn.setEnabled(true);
 
             possibleCustomerDestinations.clear();
-            /*
-            orderNumber.setEnabled(true);
-            showSoftKeyboard(orderNumber);
-            orderNumber.setFocusable(true);
-            orderNumber.requestFocus();
-             */
             checkOrderBtn.setEnabled(false);
             addOrderBtn.setEnabled(false);
             cancelOrderBtn.setEnabled(false);
             cancelOrderBtn.setVisibility(View.GONE);
             checkOrderBtn.setVisibility(View.VISIBLE);
+
             try {
                 new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute();
             } catch (Exception e) {
@@ -411,10 +413,10 @@ public class OrderEntry extends AppCompatActivity {
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
                 orderNumber.setText("");
-                showSoftKeyboard(orderNumber);
+                // showSoftKeyboard(orderNumber);
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setEnabled(true);
-                orderNumber.requestFocus();
+                //orderNumber.requestFocus();
                 // showSoftKeyboard(orderNumber);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
@@ -431,9 +433,9 @@ public class OrderEntry extends AppCompatActivity {
             CancelDialog dialog = new CancelDialog(OrderEntry.this, OrderEntry.this, buyerName);
             dialog.show();
             dialog.setCancelable(false);
-            showSoftKeyboard(orderNumber);
-            orderNumber.requestFocus();
-            showSoftKeyboard(orderNumber);
+            //showSoftKeyboard(orderNumber);
+            //orderNumber.requestFocus();
+            //showSoftKeyboard(orderNumber);
         });
 
         selectDestinationBtn.setOnClickListener(v -> {
@@ -463,7 +465,7 @@ public class OrderEntry extends AppCompatActivity {
             addOrderListener.setValue(true);
         }
     }
-
+/*
     public void showSoftKeyboard(View view) {
         if (view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager)
@@ -473,11 +475,8 @@ public class OrderEntry extends AppCompatActivity {
             }
         }
     }
-/*
-    public static void setDialogListener(Boolean b) {
-        submitDialogListener.setValue(b);
-    }
-*/
+
+ */
     private void changeLanguage(int val) {
         System.out.println("val: " + val);
         switch(val) {
@@ -517,7 +516,7 @@ public class OrderEntry extends AppCompatActivity {
 
     private void setup(){
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         orderNumber = findViewById(R.id.OrderNumberBox);
@@ -545,7 +544,7 @@ public class OrderEntry extends AppCompatActivity {
 
         possibleCustomerDestinations = new ArrayList<>();
 
-        showSoftKeyboard(orderNumber);
+        //showSoftKeyboard(orderNumber);
         emailStr.setText(Account.getCurrentAccount().getEmail());
         phoneNumberStr.setText(PhoneNumberFormat.formatPhoneNumber(Account.getCurrentAccount().getPhoneNumber()));
         truckNumberStr.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
@@ -561,6 +560,7 @@ public class OrderEntry extends AppCompatActivity {
             addOrderBtn.setTextSize(60);
             submitBtn.setTextSize(60);
         }
+        orderNumber.setShowSoftInputOnFocus(false);
         // findViewById(R.id.cardView3).setVisibility(View.INVISIBLE);
     }
 

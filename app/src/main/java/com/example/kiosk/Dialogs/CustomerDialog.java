@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.example.kiosk.Helpers.CustomOrderKeyboard;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
@@ -29,9 +31,10 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
     private Context context;
     private ProgressBar progressBar;
     private ImageButton cancelOrderButton;
+    private CustomOrderKeyboard keyboard;
 
     public CustomerDialog(Activity a, EditText orderNumber, String customerName, TextView customer, Button destination,
-                          ImageButton checkOrderBtn, Context context, ProgressBar progressbar, ImageButton cancelOrderBtn) {
+                          ImageButton checkOrderBtn, Context context, ProgressBar progressbar, ImageButton cancelOrderBtn, CustomOrderKeyboard keyboard) {
         super(a);
         this.a = a;
         this.customerNameStr = customerName;
@@ -42,6 +45,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
         this.context = context;
         this.progressBar = progressbar;
         this.cancelOrderButton = cancelOrderBtn;
+        this.keyboard = keyboard;
     }
 
     @Override
@@ -96,6 +100,7 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
                 checkOrderBtn.setVisibility(View.GONE);
                 cancelOrderButton.setVisibility(View.VISIBLE);
                 cancelOrderButton.setEnabled(true);
+                keyboard.setVisibility(View.GONE);
                 dismiss();
                 break;
             case R.id.btn_no:

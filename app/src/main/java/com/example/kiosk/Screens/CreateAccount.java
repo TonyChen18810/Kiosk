@@ -346,14 +346,14 @@ public class CreateAccount extends AppCompatActivity {
                 new UpdateShippingTruckDriver(CreateAccount.this, emailStr, emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
                         driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
                 System.out.println("SENDING LANGUAGE PREFERENCE: " + Language.getCurrentLanguage()+1);
-                userEmail.setText(Html.fromHtml("Email address: " + "<b>" + email + "<b>"));
-                userNumber.setText(Html.fromHtml("Phone number: " + "<b>" + phone + "<b>"));
-                userTruckName.setText(Html.fromHtml("Current truck name: " + "<b>" + truckNameStr + "<b>"));
-                userTruckNumber.setText(Html.fromHtml("Current truck number: " + "<b>" + truckNumberStr + "<b>"));
-                userTrailerLicense.setText(Html.fromHtml("Current trailer license: " + "<b>" + trailerLicenseStr + "<b>"));
-                userDriverLicense.setText(Html.fromHtml("Driver license: " + "<b>" + driverLicenseStr + "<b>"));
-                userDriverName.setText(Html.fromHtml("Driver name: " + "<b>" + driverNameStr + "<b>"));
-                userDispatcherPhone.setText(Html.fromHtml("Dispatcher's phone number: " + "<b>\n" + dispatcherNumberStr + "<b>"));
+                userEmail.setText(Html.fromHtml("Email address:\n" + "<b>" + email + "<b>"));
+                userNumber.setText(Html.fromHtml("Phone number:\n" + "<b>" + phone + "<b>"));
+                userTruckName.setText(Html.fromHtml("Current truck name:\n" + "<b>" + truckNameStr + "<b>"));
+                userTruckNumber.setText(Html.fromHtml("Current truck number:\n" + "<b>" + truckNumberStr + "<b>"));
+                userTrailerLicense.setText(Html.fromHtml("Current trailer license:\n" + "<b>" + trailerLicenseStr + "<b>"));
+                userDriverLicense.setText(Html.fromHtml("Driver license:\n" + "<b>" + driverLicenseStr + "<b>"));
+                userDriverName.setText(Html.fromHtml("Driver name:\n" + "<b>" + driverNameStr + "<b>"));
+                userDispatcherPhone.setText(Html.fromHtml("Dispatcher's phone number:\n" + "<b>\n" + dispatcherNumberStr + "<b>"));
             }
         });
 

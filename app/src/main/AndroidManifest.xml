@@ -23,24 +23,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".Screens.OrderSummary"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity android:name=".Screens.OrderEntry"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".Screens.LoggedIn"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateAlwaysVisible">
         </activity>
         <activity
             android:name=".Screens.CreateAccount"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".Screens.MainActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateAlwaysVisible">
         </activity>
 

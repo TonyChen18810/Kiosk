@@ -149,7 +149,9 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                                 errorView(holder);
                                 errorOrders.add(currentOrder);
                             } else if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 0) {
-                                errorOrders.add(currentOrder);
+
+                            } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
+                                differentAptTime(holder);
                             }
                         }
                     } else {

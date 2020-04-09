@@ -11,7 +11,6 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -26,7 +25,6 @@ import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.States;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetShippingTruckDriver;
-
 import java.util.Collections;
 import java.util.List;
 

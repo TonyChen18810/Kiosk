@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.example.kiosk.Helpers.CustomOrderKeyboard;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
@@ -67,6 +69,8 @@ public class CancelDialog extends Dialog implements android.view.View.OnClickLis
                     ProgressBar progressBar = activity.findViewById(R.id.progressBar);
                     EditText orderNumber = activity.findViewById(R.id.OrderNumberBox);
                     Button selectDestinationBtn = activity.findViewById(R.id.SelectDestinationBtn);
+                    CustomOrderKeyboard keyboard = activity.findViewById(R.id.keyboard);
+                    keyboard.setVisibility(View.VISIBLE);
                     cancelOrderBtn.setEnabled(false);
                     cancelOrderBtn.setVisibility(View.GONE);
                     checkOrderBtn.setVisibility(View.VISIBLE);

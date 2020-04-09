@@ -22,6 +22,7 @@ import com.example.kiosk.Screens.MainActivity;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,6 +31,7 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
     private Context context;
     private RecyclerView recyclerView;
     private RecyclerViewHorizontalAdapter adapter;
+    private List<Order> outlierOrders;
 
     public ConnectedOrders(@NonNull Context context, RecyclerView recyclerView, RecyclerViewHorizontalAdapter adapter) {
         super(context);
@@ -63,6 +65,7 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
         }
 
         ArrayList<Order> connectedOrders = new ArrayList<>(Order.getAssociatedOrdersList());
+        outlierOrders = new ArrayList<>(connectedOrders);
 
         RecyclerView recyclerView2 = findViewById(R.id.AssociatedOrdersView);
         LinearLayoutManager verticalLayoutManager2 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -81,6 +84,7 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                 List<Order> selectedOrders = new ArrayList<>(RecyclerViewAssociatedAdapter.getSelectedOrders());
                 for (int i = 0; i < selectedOrders.size(); i++) {
                     Order.addOrderToList(selectedOrders.get(i));
+                    outlierOrders.remove(selectedOrders.get(i));
                 }
                 boolean showEarlyDialog = false;
                 adapter.notifyDataSetChanged();
@@ -89,11 +93,19 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                 recyclerView.scheduleLayoutAnimation();
                 for (int i = 0; i < Order.getAssociatedOrdersList().size(); i++) {
                     showEarlyDialog = Order.getAssociatedOrdersList().get(i).getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getAssociatedOrdersList().get(i).getAppointmentTime()) == -1;
+                    System.out.println("SHOW EARLY DIALOG: " + showEarlyDialog);
+                    if (showEarlyDialog) {
+                        break;
+                    }
                 }
                 if (showEarlyDialog) {
                     OrderEntry.appointmentTimeListener.setValue(-2);
+                    OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is one
                 }
                 Order.clearAssociatedOrderList();
+                for (int i = 0; i < outlierOrders.size(); i++) {
+                    Order.addOrderToOutlierList(outlierOrders.get(i));
+                }
                 dismiss();
                 break;
             case R.id.cancelBtn:

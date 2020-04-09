@@ -23,7 +23,7 @@
                 android:padding="20dp"
                 android:text="Help information text"
                 android:textAlignment="center"
-                android:textSize="80sp" />
+                android:textSize="50sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
                     android:text="Confirm"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/white"
-                    android:textSize="80sp" />
+                    android:textSize="50sp" />
             </LinearLayout>
 
         </LinearLayout>

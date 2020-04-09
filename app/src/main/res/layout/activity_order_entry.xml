@@ -8,6 +8,20 @@
     xmlns:card_view="http://schemas.android.com/tools"
     tools:context=".Screens.OrderEntry">
 
+    <com.example.kiosk.Helpers.CustomOrderKeyboard
+        android:id="@+id/keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:elevation="5dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView10"
         android:layout_width="wrap_content"
@@ -131,14 +145,11 @@
                     android:ems="8"
                     android:hint="Order Number"
                     android:textSize="80sp"
-                    android:imeOptions="actionNone"
-                    android:inputType="numberDecimal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.182"
-                    tools:ignore="TextFields" />
+                    app:layout_constraintVertical_bias="0.182" />
 
                 <ImageButton
                     android:id="@+id/CheckOrderBtn"

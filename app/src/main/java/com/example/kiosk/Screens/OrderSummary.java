@@ -23,6 +23,7 @@ import com.example.kiosk.Webservices.DeleteOrderDetails;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.UpdateMasterOrder;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderSummary extends AppCompatActivity {
@@ -69,7 +70,13 @@ public class OrderSummary extends AppCompatActivity {
 
         findViewById(R.id.ConfirmBtn).setOnClickListener(v -> {
             List<Order> orderList = Order.getOrdersList();
-            // List<Order> orderList = Order.getPossibleOrdersList();
+            List<Order> outlierList = new ArrayList<>(Order.getOutlierOrders());
+            for (int i = 0; i < outlierList.size(); i++) {
+                if (outlierList.get(i).getMasterNumber().equals(GetOrderDetails.getMasterNumber())) {
+                    System.out.println(outlierList.get(i).getSOPNumber() + "'s master number equals current master number: " + outlierList.get(i).getMasterNumber() + " and " + GetOrderDetails.getMasterNumber());
+                    outlierList.remove(outlierList.get(i));
+                }
+            }
             for (int i = 0; i < orderList.size(); i++) {
                 new DeleteOrderDetails(orderList.get(i).getSOPNumber()).execute();
             }
@@ -80,18 +87,23 @@ public class OrderSummary extends AppCompatActivity {
                     new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), false).execute();
                 }
             }
+            System.out.println("Here are the outlier orders, they will now be updated");
+            for (int i = 0; i < outlierList.size(); i++) {
+                // update outlier orders
+                System.out.println(outlierList.get(i).getSOPNumber());
+            }
             setContentView(R.layout.final_screen);
 
             final Button logoutBtn = findViewById(R.id.LogoutBtn);
             final TextView textView = findViewById(R.id.textView);
             textView.setVisibility(View.INVISIBLE);
 
-            timer = new CountDownTimer(60000, 1000){
-                public void onTick(long millisUntilFinished){
+            timer = new CountDownTimer(60000, 1000) {
+                public void onTick(long millisUntilFinished) {
                     counter++;
                     textView.setText(String.valueOf(counter));
                 }
-                public void onFinish(){
+                public void onFinish() {
                     textView.setText("done");
                     logoutBtn.performClick();
                 }

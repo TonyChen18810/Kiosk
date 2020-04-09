@@ -3,7 +3,9 @@ package com.example.kiosk;
 import com.example.kiosk.Helpers.Rounder;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Order {
 
@@ -26,6 +28,7 @@ public class Order {
     private static ArrayList<Order> ordersList = new ArrayList<>();
     private static ArrayList<Order> possibleOrdersList = new ArrayList<>();
     private static ArrayList<Order> associatedOrdersList = new ArrayList<>();
+    private static Set<Order> outlierOrders = new HashSet<>();
     private static double totalWeight = 0.0;
     private static double totalPalletCount = 0.0;
 
@@ -131,6 +134,7 @@ public class Order {
         possibleOrdersList.clear();
         associatedOrdersList.clear();
         ordersList.clear();
+        outlierOrders.clear();
         CURRENT_ORDER = null;
         GetOrderDetails.setNewMasterNumber(null);
     }
@@ -151,21 +155,22 @@ public class Order {
         return associatedOrdersList;
     }
 
+    public static Set<Order> getOutlierOrders() {
+        return outlierOrders;
+    }
+
     public static Order getCurrentOrder() {
         return CURRENT_ORDER;
     }
 
     public static void addOrderToList(Order order) {
         totalWeight += order.getEstimatedWeight();
-        /*
-        if (order.getEstimatedPallets() < 1 && order.getEstimatedPallets() > 0) {
-            totalPalletCount += 1;
-        } else {
-            totalPalletCount += order.getEstimatedPallets();
-        }
-        */
         totalPalletCount += order.getEstimatedPallets();
         ordersList.add(order);
+    }
+
+    public static void addOrderToOutlierList(Order order) {
+        outlierOrders.add(order);
     }
 
     public static void removeMasterOrderFromList(int i) {
@@ -174,11 +179,7 @@ public class Order {
         ordersList.remove(i);
     }
 
-    public static void addPossibleMasterOrderToList(Order order) {
-        possibleOrdersList.add(order);
-    }
-
-    public static void addAssociatedMasterOrderToList(Order order) {
+    public static void addAssociatedOrderToList(Order order) {
         associatedOrdersList.add(order);
     }
 }
