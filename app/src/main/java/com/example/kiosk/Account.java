@@ -98,4 +98,20 @@ public class Account {
     public static void setCurrentAccount(Account account) {
         CURRENT_ACCOUNT = account;
     }
+
+    public void updateCurrentInfo(String email, String driverName, String phoneNumber, String truckName, String truckNumber, String driverLicense, String driverState,
+                                  String trailerLicense, String trailerState, String dispatcherPhoneNumber, String languagePreference, String communicationPreference) {
+        this.email = email;
+        this.driverName = driverName;
+        this.phoneNumber = phoneNumber;
+        this.truckName = truckName;
+        this.truckNumber = truckNumber;
+        this.driverLicense = driverLicense;
+        this.driverState = driverState;
+        this.trailerLicense = trailerLicense;
+        this.trailerState = trailerState;
+        this.dispatcherPhoneNumber = dispatcherPhoneNumber;
+        this.languagePreference = languagePreference;
+        this.communicationPreference = communicationPreference;
+    }
 }

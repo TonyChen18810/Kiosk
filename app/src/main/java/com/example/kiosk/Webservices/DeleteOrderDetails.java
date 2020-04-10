@@ -1,13 +1,25 @@
 package com.example.kiosk.Webservices;
 
 import android.os.AsyncTask;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
+/**
+ * DeleteOrderDetails.java
+ *
+ * @param String SOPnumber
+ *
+ * Uses "DeleteMasterOrderDetails" web service to delete the master number of
+ * provided SOP number
+ *
+ * Called from OrderSummary.java after pressing the "Confirm" button
+ *
+ * This is used to delete the master number of an order before giving
+ * the order a new master number (possibly tying together multiple orders)
+ * and checking it in
+ */
 public class DeleteOrderDetails extends AsyncTask<Void, Void, Void> {
 
     private String SOPnumber;

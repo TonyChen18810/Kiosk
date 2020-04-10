@@ -31,6 +31,19 @@ import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 import static java.util.Arrays.asList;
 
+/**
+ *
+ * MainActivity.java
+ *
+ * This activity is used for logging in or creating account
+ *
+ * If "Yes" is pressed on the FirstScreen activity, only the Email Address
+ * and Phone Number fields will show in this activity. If "No" is pressed,
+ * it will also show the confirm fields for email & phone number
+ *
+ * Calls the GetShippingTruckDriver web service when "Next" is pressed
+ * to check for existing account
+ */
 public class MainActivity extends AppCompatActivity {
 
     private EditText emailAddressBox, phoneNumberBox, confirmEmailAddress, confirmPhoneNumber;

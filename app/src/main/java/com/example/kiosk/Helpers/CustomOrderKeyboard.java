@@ -8,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
 import com.example.kiosk.R;
 
 public class CustomOrderKeyboard extends LinearLayout implements View.OnClickListener {
@@ -28,12 +26,10 @@ public class CustomOrderKeyboard extends LinearLayout implements View.OnClickLis
         init(context, attrs);
     }
 
-    // keyboard keys (buttons)
     private Button mButtonA;
     private Button mButtonB;
     private Button mButtonC;
     private Button mButtonE;
-    private Button mButtonDEL;
     private LinearLayout mButtonBack;
     private Button mButton1;
     private Button mButton2;
@@ -46,22 +42,17 @@ public class CustomOrderKeyboard extends LinearLayout implements View.OnClickLis
     private Button mButton9;
     private Button mButton0;
 
-    // This will map the button resource id to the String value that we want to
-    // input when that button is clicked.
     SparseArray<String> keyValues = new SparseArray<>();
 
-    // Our communication link to the EditText
     InputConnection inputConnection;
 
     private void init(Context context, AttributeSet attrs) {
 
-        // initialize buttons
         LayoutInflater.from(context).inflate(R.layout.keyboard, this, true);
         mButtonA = findViewById(R.id.button_A);
         mButtonB = findViewById(R.id.button_B);
         mButtonC = findViewById(R.id.button_C);
         mButtonE = findViewById(R.id.button_E);
-        mButtonDEL = findViewById(R.id.button_DEL);
         mButtonBack = findViewById(R.id.button_back_layout);
         mButton1 = findViewById(R.id.button_1);
         mButton2 = findViewById(R.id.button_2);
@@ -74,12 +65,10 @@ public class CustomOrderKeyboard extends LinearLayout implements View.OnClickLis
         mButton9 = findViewById(R.id.button_9);
         mButton0 = findViewById(R.id.button_0);
 
-        // set button click listeners
         mButtonA.setOnClickListener(this);
         mButtonB.setOnClickListener(this);
         mButtonC.setOnClickListener(this);
         mButtonE.setOnClickListener(this);
-        mButtonDEL.setOnClickListener(this);
         mButtonBack.setOnClickListener(this);
         // mButtonBack.setOnLongClickListener();
         mButton1.setOnClickListener(this);
@@ -93,12 +82,10 @@ public class CustomOrderKeyboard extends LinearLayout implements View.OnClickLis
         mButton9.setOnClickListener(this);
         mButton0.setOnClickListener(this);
 
-        // map buttons IDs to input strings
         keyValues.put(R.id.button_A, "A");
         keyValues.put(R.id.button_B, "B");
         keyValues.put(R.id.button_C, "C");
         keyValues.put(R.id.button_E, "E");
-        keyValues.put(R.id.button_DEL, "/DEL");
         keyValues.put(R.id.button_1, "1");
         keyValues.put(R.id.button_2, "2");
         keyValues.put(R.id.button_3, "3");

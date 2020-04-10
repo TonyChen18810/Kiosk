@@ -1,12 +1,9 @@
 package com.example.kiosk.Webservices;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
@@ -15,9 +12,21 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
-
-import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
-
+/**
+ * GetOrderDetailsByMasterNumber.java
+ *
+ * @param String inMasterNumber, Activity activity
+ *
+ * Uses "GetOrderDetailsByMasterNumber" web service to retrieve all orders
+ * connected to the provided master number
+ *
+ * Called from OrderEntry.java after the "Add Order" button is pressed.
+ * Returns a list of any orders that are under the provided master number,
+ * otherwise returns an empty list.
+ *
+ * Used to populate the RecyclerView in ConnectedOrders.java, shown as a
+ * pop-up list after pressing "Add Order" in OrderEntry.java
+ */
 public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
 
     private String inMasterNumber;
@@ -75,18 +84,18 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                     String estimatedPallets = ((SoapObject) (response.getProperty(i))).getProperty(12).toString();
                     boolean canBeInserted = true;
                     for (int j = 0; j < Order.getOrdersList().size(); j++) {
-                        if (Order.getOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
+                        if (Order.getOrdersList().get(j).getSOPNumber().equals(SOPNumber) || isCheckedIn.equals("true")) {
                             canBeInserted = false;
                         }
                     }
                     for (int j = 0; j < Order.getPossibleOrdersList().size(); j++) {
-                        if (Order.getPossibleOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
+                        if (Order.getPossibleOrdersList().get(j).getSOPNumber().equals(SOPNumber) || isCheckedIn.equals("true")) {
                             canBeInserted = false;
                         }
                     }
 
                     for (int j = 0; j < Order.getAssociatedOrdersList().size(); j++) {
-                        if (Order.getAssociatedOrdersList().get(j).getSOPNumber().equals(SOPNumber)) {
+                        if (Order.getAssociatedOrdersList().get(j).getSOPNumber().equals(SOPNumber) || isCheckedIn.equals("true")) {
                             canBeInserted = false;
                         }
                     }

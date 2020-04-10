@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.InputFilter;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -28,7 +27,17 @@ import com.example.kiosk.R;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
 import java.text.ParseException;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
-
+/**
+ * CreateAccount.java
+ *
+ * User has the opportunity to update any information that has changed
+ * on their account since the last time they logged in
+ *
+ * This activity is started when the user selects "Next" in MainActivity.java
+ * while there is no confirm fields and only "Email Address" and "Phone Number" fields
+ *
+ * Update account information, calls UpdateShippingTruckDriver.java when "Next" is pressed
+ */
 public class LoggedIn extends AppCompatActivity {
 
     private Button logoutBtn;
@@ -86,16 +95,16 @@ public class LoggedIn extends AppCompatActivity {
                 select.setVisibility(View.GONE);
                 String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
                 emailStr = emailAddress.getText().toString();
-                phoneStr = phoneNumber.getText().toString();
+                phoneStr = PhoneNumberFormat.extract(phoneNumber.getText().toString());
                 truckNameStr = truckName.getText().toString();
                 truckNumberStr = truckNumber.getText().toString();
                 trailerLicenseStr = trailerLicense.getText().toString();
                 driverLicenseStr = driverLicense.getText().toString();
                 driverNameStr = driverName.getText().toString();
-                dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
-                new UpdateShippingTruckDriver(LoggedIn.this, Account.getCurrentAccount().getEmail(), emailStr, driverNameStr,
-                        PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(), trailerLicenseStr, selectState2.getText().toString(),
-                        PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(++PREFERRED_COMMUNICATION)).execute();
+                dispatcherNumberStr = PhoneNumberFormat.extract(dispatcherPhoneNumber.getText().toString());
+                Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
+                        trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
+                new UpdateShippingTruckDriver(Account.getCurrentAccount()).execute();
                 System.out.println("SENDING LANGUAGE PREFERENCE: " + Language.getCurrentLanguage()+1);
                 Account.getCurrentAccount().setTruckName(truckNameStr);
                 Account.getCurrentAccount().setTruckNumber(truckNumberStr);

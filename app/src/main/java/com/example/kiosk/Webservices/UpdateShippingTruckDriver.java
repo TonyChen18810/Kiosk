@@ -1,36 +1,30 @@
 package com.example.kiosk.Webservices;
 
-import android.app.Activity;
 import android.os.AsyncTask;
+import com.example.kiosk.Account;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-import java.lang.ref.WeakReference;
-
+/**
+ * UpdateShippingTruckDriver.java
+ *
+ * @param Account account
+ *
+ * Uses "UpdateShippingTruckDriver" web service to either create a new truck
+ * driver entry or update an existing one
+ *
+ * Called from either CreateAccount.java or LoggedIn.java after pressing "Next" button
+ *
+ * Creates/Updates user account information
+ */
 public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
 
-    private WeakReference<Activity> mWeakActivity;
-    private String oldEmail, email, driverName, phone, truckName, truckNumber, driversLicense,
-            driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, commmunicationPreference;
+    private Account account;
 
-    public UpdateShippingTruckDriver(Activity activity, String oldEmail, String email, String driverName, String phone, String truckName, String truckNumber, String driversLicense,
-                                     String driversLicenseState, String trailerLicense, String trailerLicenseState, String dispatcherPhone, String languagePreference, String commmunicationPreference) {
-        mWeakActivity = new WeakReference<>(activity);
-        this.oldEmail = oldEmail;
-        this.email = email;
-        this.driverName = driverName;
-        this.phone = phone;
-        this.truckName = truckName;
-        this.truckNumber = truckNumber;
-        this.driversLicense = driversLicense;
-        this.driversLicenseState = driversLicenseState;
-        this.trailerLicense = trailerLicense;
-        this.trailerLicenseState = trailerLicenseState;
-        this.dispatcherPhone = dispatcherPhone;
-        this.languagePreference = languagePreference;
-        this.commmunicationPreference = commmunicationPreference;
+    public UpdateShippingTruckDriver(Account account) {
+        this.account = account;
     }
 
     @Override
@@ -42,19 +36,19 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
 
         SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("inOldEmail", oldEmail);
-        request.addProperty("inNewEmail", email);
-        request.addProperty("inDriverName", driverName);
-        request.addProperty("inDriverPhone", phone);
-        request.addProperty("inTruckName", truckName);
-        request.addProperty("inTruckNumber", truckNumber);
-        request.addProperty("inDriversLicense", driversLicense);
-        request.addProperty("inDriversLicenseState", driversLicenseState);
-        request.addProperty("inTrailerLicense", trailerLicense);
-        request.addProperty("inTrailerLicenseState", trailerLicenseState);
-        request.addProperty("inDispatcherPhone", dispatcherPhone);
-        request.addProperty("inLanguagePreference", languagePreference);
-        request.addProperty("inContactPreference", commmunicationPreference);
+        request.addProperty("inOldEmail", account.getEmail());
+        request.addProperty("inNewEmail", account.getEmail());
+        request.addProperty("inDriverName", account.getDriverName());
+        request.addProperty("inDriverPhone", account.getPhoneNumber());
+        request.addProperty("inTruckName", account.getTruckName());
+        request.addProperty("inTruckNumber", account.getTruckNumber());
+        request.addProperty("inDriversLicense", account.getDriverLicense());
+        request.addProperty("inDriversLicenseState", account.getDriverState());
+        request.addProperty("inTrailerLicense", account.getTrailerLicense());
+        request.addProperty("inTrailerLicenseState", account.getTrailerState());
+        request.addProperty("inDispatcherPhone", account.getDispatcherPhoneNumber());
+        request.addProperty("inLanguagePreference", account.getLanguagePreference());
+        request.addProperty("inContactPreference", account.getCommunicationPreference());
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
@@ -62,7 +56,6 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         HttpTransportSE transportSE = new HttpTransportSE(URL);
 
         // this returns a 0 or non-zero... no account info being returned here
-
         try {
             transportSE.call(soapAction, envelope);
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
@@ -77,8 +70,7 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
             System.out.println("Trying again...");
             Thread thread = new Thread(() -> {
-                new UpdateShippingTruckDriver(mWeakActivity.get(), email, email, driverName, phone, truckName, truckNumber,
-                        driversLicense, driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone,languagePreference, commmunicationPreference).execute();
+                new UpdateShippingTruckDriver(account).execute();
             });
             try {
                 thread.start();
@@ -89,26 +81,5 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         }
         return null;
 
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        Activity activity = mWeakActivity.get();
-        if (activity != null) {
-            // ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-            // progressBar.setVisibility(View.GONE);
-        }
-        // reset
-        email = "";
-        driverName = "";
-        phone = "";
-        truckName = "";
-        truckNumber = "";
-        driversLicense = "";
-        driversLicenseState = "";
-        trailerLicense = "";
-        trailerLicenseState = "";
-        dispatcherPhone = "";
     }
 }

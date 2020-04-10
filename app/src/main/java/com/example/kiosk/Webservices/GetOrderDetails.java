@@ -14,7 +14,15 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
-
+/**
+ * GetOrderDetails.java
+ *
+ * @param Activity activity, String enteredSOPNumber
+ *
+ * Uses "GetMasterOrderDetails" web service to get information on provided SOP number (enteredSOPNumber)
+ *
+ * Called when the checkOrderBtn is pressed in OrderEntry.java (green arrow next to order number field)
+ */
 public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<Activity> mWeakActivity;
@@ -103,6 +111,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
             System.out.println("Internet connection issue...");
             connection = false;
+            // if web service call fails, wait 3 seconds and try again - this continues until the call is successful
             Thread thread = new Thread(() -> new GetOrderDetails(mWeakActivity.get(), enteredSOPNumber).execute());
             try {
                 Thread.sleep(3000);
@@ -118,9 +127,11 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         Activity activity = mWeakActivity.get();
+
+        // checks if the order has any errors (late, unscheduled apt, checked in, etc.)
+        // if order is good, it can be added - otherwise pop-up message is displayed
         boolean isGoodOrder = false;
 
-        // left off here, check truck outstanding status
         System.out.println("connection: " + connection);
         if (connection) {
             if (truckStatus == null || truckStatus.equals("null")) {
@@ -189,7 +200,6 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                             System.out.println("Order already checked in");
                             OrderEntry.validOrderNumber.setValue(3);
                         }
-
                     } else {
                         // Order doesn't exist, invalid
                         OrderEntry.validOrderNumber.setValue(0);
@@ -202,6 +212,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
             if (isGoodOrder) {
                 System.out.println("MASTER_NUMBER: " + MASTER_NUMBER);
                 System.out.println("masterNumber: " + masterNumber);
+                // sets current order
                 Order order = new Order(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
                         customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
                 OrderEntry.validOrderNumber.setValue(1);
@@ -238,6 +249,8 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         System.out.println("Logged in minute: " + loggedMinuteInt);
 
 
+        // aptCode -1 = early
+        // aptCode 1 = late
         if (aptHourInt - 1 > loggedHourInt) {
             aptCode = -1;
         } else if (aptHourInt - 1 == loggedHourInt) {
@@ -251,18 +264,6 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                 aptCode = 1;
             }
         }
-/*
-        if (timeL < timeA - 1) {
-            System.out.println("EARLY");
-            aptCode = -1;
-        } else if (timeL > timeA + 1) {
-            System.out.println("LATE");
-            aptCode = 1;
-        } else {
-            System.out.println("ON TIME");
-            aptCode = 0;
-        }
- */
         return aptCode;
     }
 }

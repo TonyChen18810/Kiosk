@@ -33,7 +33,18 @@ import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
 import java.util.ArrayList;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
-
+/**
+ * CreateAccount.java
+ *
+ * User enters information for the first time to create a check-in
+ * account with D'Arrigo
+ *
+ * This activity is started when the user selects "No" in FirstScreen.java
+ * and enters/confirms an email address and phone number in MainActivity.java
+ *
+ * Enter information to create an account, calls UpdateShippingTruckDriver.java
+ * when "Next" button is pressed
+ */
 public class CreateAccount extends AppCompatActivity {
 
     private String email, phone;
@@ -343,8 +354,9 @@ public class CreateAccount extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
                 // pass a weak reference?
-                new UpdateShippingTruckDriver(CreateAccount.this, emailStr, emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
-                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1)).execute();
+                Account account = new Account(emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
+                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
+                new UpdateShippingTruckDriver(account).execute();
                 System.out.println("SENDING LANGUAGE PREFERENCE: " + Language.getCurrentLanguage()+1);
                 userEmail.setText(Html.fromHtml("Email address:\n" + "<b>" + email + "<b>"));
                 userNumber.setText(Html.fromHtml("Phone number:\n" + "<b>" + phone + "<b>"));

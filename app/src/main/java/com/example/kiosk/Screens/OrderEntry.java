@@ -40,7 +40,26 @@ import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * OrderEntry.java
+ *
+ * User enters order information to check-in orders.
+ *
+ * This activity is started when the user selects "Next" in
+ * LoggedIn.java
+ *
+ * After entering an order number and pressing the green arrow (checkOrderBtn),
+ * calls GetOrderDetails.java. If this returns order information, GetPossibleShipTos.java
+ * will be called, returning 6 destinations (5 incorrect, 1 correct). If the correct destination
+ * is chosen, the order may be added. When the user presses "Add Order", GetOrderDetailsByMasterNumber.java
+ * will be called and will return a list of orders that share a master number (an empty list if no others share it).
+ * ConnectedOrders.java and it's RecyclerView will be populated by the returned list of orders, those of which
+ * can be selected to be added as well.
+ *
+ * If the user presses "Submit Orders" and none of the entered orders have a master number,
+ * GetNextMasterOrderNumber.java will be called and return a master number. If any of the orders
+ * have a master number, this won't be called.
+ */
 public class OrderEntry extends AppCompatActivity {
 
     private int currentLanguage = Language.getCurrentLanguage();

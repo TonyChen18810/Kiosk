@@ -2,22 +2,26 @@ package com.example.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-
-import com.example.kiosk.Order;
-import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 import java.lang.ref.WeakReference;
-
+/**
+ * GetNextMasterOrderNumber.java
+ *
+ * @param Activity activity
+ *
+ * Uses "GetNextMasterOrderNumber" web service to retrieve a master number
+ *
+ * Called from SubmitDialog.java when "Yes" is pressed (Are you sure you want to submit these orders?)
+ * This dialog is shown after the "Submit Order(s)" button is pressed in OrderEntry.java
+ *
+ * This is used if none of the currently added orders have a master number to use for tying the
+ * orders together. This retrieves a master number to use and applies to orders via UpdateMasterOrder.java
+ */
 public class GetNextMasterOrderNumber extends AsyncTask<Void, Void, Void> {
 
     private static String nextMasterNumber;
@@ -73,10 +77,5 @@ public class GetNextMasterOrderNumber extends AsyncTask<Void, Void, Void> {
             // OrderEntry.setDialogListener(true);
             OrderEntry.submitDialogListener.setValue(true);
         }
-        /*
-        for (int i = 0; i < Order.getPossibleOrdersList().size(); i++) {
-            Order.getPossibleOrdersList().get(i).setMasterNumber(nextMasterNumber);
-        }
-         */
     }
 }

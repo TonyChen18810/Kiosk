@@ -6,7 +6,18 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
+/**
+ * UpdateMasterOrder.java
+ *
+ * @param String inMasterNumber, String inEmail, String inSOPnumber, String isCheckedIn, boolean lastCall
+ *
+ * Uses "UpdateMasterOrder" web service to connect provided order number (inSOPnumber)
+ * to provided master number (inMasterNumber) and sets the "isCheckedIn" value of the order to true
+ *
+ * Called from OrderSummary.java after pressing "Confirm"
+ *
+ * Checks in an order
+ */
 public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
 
     private String inMasterNumber;

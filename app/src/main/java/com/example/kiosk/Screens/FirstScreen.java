@@ -15,7 +15,18 @@ import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetOrderDetails;
-
+/**
+ * FirstScreen.java
+ *
+ * Initial screen that is shown when app is opened, restarted, or anytime the "Logout"
+ * button is used anywhere else in the app
+ *
+ * Both the "Yes" and "No" button will start MainActivity.java.
+ * The "Yes" and "No" buttons dictate whether the confirm email/phone
+ * number fields are shown in MainActivity.java
+ *
+ * Prompts user asking if they have an existing account or not
+ */
 public class FirstScreen extends AppCompatActivity {
 
     private String version;

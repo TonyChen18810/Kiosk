@@ -44,16 +44,6 @@ public class OrderSummary extends AppCompatActivity {
         setContentView(R.layout.activity_order_summary);
         setup();
 
-        System.out.println("Here are the outlier orders:");
-        for (int i = 0; i < Order.getOutlierOrders().size(); i++) {
-            System.out.println(Order.getOutlierOrders().get(i).getSOPNumber());
-        }
-
-        System.out.println("Here are the orders to be checked in:");
-        for (int i = 0; i < Order.getOrdersList().size(); i++) {
-            System.out.println(Order.getOrdersList().get(i).getSOPNumber());
-        }
-
         RecyclerView recyclerView = findViewById(R.id.OrdersView);
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(OrderSummary.this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(verticalLayoutManager);
@@ -72,21 +62,12 @@ public class OrderSummary extends AppCompatActivity {
             dialog.show();
         });
         backBtn.setOnClickListener(v12 -> {
-            System.out.println("Back button clicked!");
-            // finish();
             startActivity(new Intent(OrderSummary.this, OrderEntry.class));
         });
 
         findViewById(R.id.ConfirmBtn).setOnClickListener(v -> {
             List<Order> orderList = Order.getOrdersList();
             List<Order> outlierList = new ArrayList<>(Order.getOutlierOrders());
-            /*
-            for (int i = 0; i < outlierList.size(); i++) {
-                if (outlierList.get(i).getMasterNumber().equals(GetOrderDetails.getMasterNumber())) {
-                    System.out.println(outlierList.get(i).getSOPNumber() + "'s master number equals current master number: " + outlierList.get(i).getMasterNumber() + " and " + GetOrderDetails.getMasterNumber());
-                    outlierList.remove(outlierList.get(i));
-                }
-            }*/
 
             System.out.println("Here are the outlier orders, they will now be updated:");
             for (int i = 0; i < outlierList.size(); i++) {
@@ -94,7 +75,6 @@ public class OrderSummary extends AppCompatActivity {
                 System.out.println(outlierList.get(i).getSOPNumber());
             }
             for (int i = 0; i < outlierList.size(); i++) {
-                // update outlier orders
                 new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), outlierList.get(i).getSOPNumber(), "false",false).execute();
             }
 

@@ -131,7 +131,6 @@
                 android:textSize="50sp"
                 android:background="@color/light_gray"
                 android:textColor="@color/black"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:text="" />
 
         </LinearLayout>
@@ -191,7 +190,6 @@
             android:textSize="50sp"
             android:background="@color/light_gray"
             android:textColor="@color/black"
-            android:foreground="?android:attr/selectableItemBackground"
             android:text="" />
 
     </LinearLayout>
@@ -208,7 +206,6 @@
             android:textSize="50sp"
             android:background="@color/light_gray"
             android:textColor="@color/black"
-            android:foreground="?android:attr/selectableItemBackground"
             android:text="" />
 
         <Button
@@ -224,14 +221,13 @@
 
 
         <Button
-            android:id="@+id/button_DEL"
+            android:id="@+id/button_blankspace_5"
             android:layout_width="260dp"
             android:layout_height="115dp"
             android:textSize="50sp"
             android:background="@color/light_gray"
             android:textColor="@color/black"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:text="/DEL" />
+            android:text="" />
 
         <Button
             android:id="@+id/button_E"
@@ -250,7 +246,6 @@
             android:textSize="50sp"
             android:background="@color/light_gray"
             android:textColor="@color/black"
-            android:foreground="?android:attr/selectableItemBackground"
             android:text="" />
     </LinearLayout>
 

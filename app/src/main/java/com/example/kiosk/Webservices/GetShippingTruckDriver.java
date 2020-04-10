@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.example.kiosk.Account;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.MainActivity;
@@ -14,7 +12,16 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
-
+/**
+ * GetShippingTruckDriver.java
+ *
+ * @param Activity activity, String enteredEmail
+ *
+ * Uses "GetShippingTruckDriver" web service to get information of a truck driven
+ * given the provided email (enteredEmail)
+ *
+ * Called from MainActivity.java when the "Next" button is pressed
+ */
 public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<Activity> mWeakActivity;
