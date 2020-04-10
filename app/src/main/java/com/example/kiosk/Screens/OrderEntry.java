@@ -393,7 +393,6 @@ public class OrderEntry extends AppCompatActivity {
         checkOrderBtn.setOnClickListener(v -> {
             checkOrderBtn.setEnabled(false);
             orderNumber.setEnabled(false);
-            // initialSelection = false;
             boolean added = false;
             for (int i = 0; i < Order.getOrdersList().size(); i++) {
                 if (Order.getOrdersList().get(i).getSOPNumber().equals(orderNumber.getText().toString())) {
@@ -413,11 +412,8 @@ public class OrderEntry extends AppCompatActivity {
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
                 orderNumber.setText("");
-                // showSoftKeyboard(orderNumber);
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setEnabled(true);
-                //orderNumber.requestFocus();
-                // showSoftKeyboard(orderNumber);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
                 try {
@@ -433,14 +429,9 @@ public class OrderEntry extends AppCompatActivity {
             CancelDialog dialog = new CancelDialog(OrderEntry.this, OrderEntry.this, buyerName);
             dialog.show();
             dialog.setCancelable(false);
-            //showSoftKeyboard(orderNumber);
-            //orderNumber.requestFocus();
-            //showSoftKeyboard(orderNumber);
         });
 
         selectDestinationBtn.setOnClickListener(v -> {
-            // destinationSpinner.performClick();
-            // destinationListView.performClick();
             ListViewDialog dialog = new ListViewDialog(OrderEntry.this, selectDestinationBtn, 0);
             dialog.show();
         });

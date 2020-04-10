@@ -10,8 +10,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_1"
@@ -46,6 +45,16 @@
             android:text="3"
             android:textStyle="bold"/>
 
+        <Button
+            android:id="@+id/button_A"
+            android:layout_width="260dp"
+            android:layout_height="115dp"
+            android:textSize="50sp"
+            android:background="@color/light_gray"
+            android:textColor="@color/black"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="A" />
+
         <LinearLayout
             android:id="@+id/button_back_layout"
             android:layout_width="260dp"
@@ -69,8 +78,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button_4"
@@ -105,23 +113,33 @@
                 android:text="6"
                 android:textStyle="bold"/>
 
+
             <Button
-                android:id="@+id/button_A"
+                android:id="@+id/button_B"
                 android:layout_width="260dp"
                 android:layout_height="115dp"
                 android:textSize="50sp"
                 android:background="@color/light_gray"
                 android:textColor="@color/black"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:text="A" />
+                android:text="B" />
+
+            <Button
+                android:id="@+id/button_blankspace_2"
+                android:layout_width="260dp"
+                android:layout_height="115dp"
+                android:textSize="50sp"
+                android:background="@color/light_gray"
+                android:textColor="@color/black"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="" />
 
         </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_7"
@@ -157,32 +175,41 @@
             android:textStyle="bold"/>
 
         <Button
-            android:id="@+id/button_B"
+            android:id="@+id/button_C"
             android:layout_width="260dp"
             android:layout_height="115dp"
             android:textSize="50sp"
             android:background="@color/light_gray"
             android:textColor="@color/black"
             android:foreground="?android:attr/selectableItemBackground"
-            android:text="B" />
+            android:text="C" />
+
+        <Button
+            android:id="@+id/button_blankspace_3"
+            android:layout_width="260dp"
+            android:layout_height="115dp"
+            android:textSize="50sp"
+            android:background="@color/light_gray"
+            android:textColor="@color/black"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_E"
+            android:id="@+id/button_blankspace_1"
             android:layout_width="260dp"
             android:layout_height="115dp"
             android:textSize="50sp"
             android:background="@color/light_gray"
             android:textColor="@color/black"
             android:foreground="?android:attr/selectableItemBackground"
-            android:text="E" />
+            android:text="" />
 
         <Button
             android:id="@+id/button_0"
@@ -206,16 +233,25 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:text="/DEL" />
 
-
         <Button
-            android:id="@+id/button_C"
+            android:id="@+id/button_E"
             android:layout_width="260dp"
             android:layout_height="115dp"
             android:textSize="50sp"
             android:background="@color/light_gray"
             android:textColor="@color/black"
             android:foreground="?android:attr/selectableItemBackground"
-            android:text="C" />
+            android:text="E" />
+
+        <Button
+            android:id="@+id/button_blankspace_4"
+            android:layout_width="260dp"
+            android:layout_height="115dp"
+            android:textSize="50sp"
+            android:background="@color/light_gray"
+            android:textColor="@color/black"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="" />
     </LinearLayout>
 
     </LinearLayout>

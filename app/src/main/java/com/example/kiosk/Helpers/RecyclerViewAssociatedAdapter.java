@@ -62,22 +62,27 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                 unhighlightView(holder);
             }
         } else {
-            if (currentOrder.getAppointment().equals("true") && currentOrder.getAppointmentTime().equals("00:00:00")) {
-                scheduleAptText(holder);
-                errorView(holder);
+            if (currentOrder.getCheckedIn().equals("true") || currentOrder.getTruckStatus().equals("Fulfilled")) {
+                alreadyCheckedInText(holder);
                 errorOrders.add(currentOrder);
-            } else if (currentOrder.getAppointment().equals("true")) {
-                if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 1) {
-                    lateText(holder);
+            } else {
+                if (currentOrder.getAppointment().equals("true") && currentOrder.getAppointmentTime().equals("00:00:00")) {
+                    scheduleAptText(holder);
                     errorView(holder);
                     errorOrders.add(currentOrder);
-                } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
-                    differentAptTimeText(holder);
-                    errorView(holder);
-                    errorOrders.add(currentOrder);
-                } else {
-                    alreadyCheckedInText(holder);
-                    errorOrders.add(currentOrder);
+                } else if (currentOrder.getAppointment().equals("true")) {
+                    if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 1) {
+                        lateText(holder);
+                        errorView(holder);
+                        errorOrders.add(currentOrder);
+                    } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
+                        differentAptTimeText(holder);
+                        errorView(holder);
+                        errorOrders.add(currentOrder);
+                    } else {
+                        alreadyCheckedInText(holder);
+                        errorOrders.add(currentOrder);
+                    }
                 }
             }
             holder.errorMsg.setVisibility(View.VISIBLE);
@@ -145,13 +150,11 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                                 errorView(holder);
                                 errorOrders.add(currentOrder);
                             } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
-                                differentAptTime(holder);
-                                errorView(holder);
-                                errorOrders.add(currentOrder);
+                                // differentAptTime(holder);
+                                // errorView(holder);
+                                // errorOrders.add(currentOrder);
                             } else if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 0) {
-
-                            } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
-                                differentAptTime(holder);
+                                // on time
                             }
                         }
                     } else {
@@ -204,9 +207,9 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
 
     private void scheduleAptText(MyViewHolder holder) {
         if (Language.getCurrentLanguage() == 0) {
-            holder.errorMsg.setText("Order requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.");
+            holder.errorMsg.setText("Appointment has not been scheduled. Please call 831-455-4305 to schedule appointment.");
         } else if (Language.getCurrentLanguage() == 1) {
-            holder.errorMsg.setText("El pedido requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.");
+            holder.errorMsg.setText("La cita no ha sido programada. Llame al 831-455-4305 para programar una cita.");
         } else if (Language.getCurrentLanguage() == 2) {
             holder.errorMsg.setText("La commande nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour planifier un rendez-vous.");
         }
@@ -215,14 +218,14 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
     private void scheduleApt(MyViewHolder holder) {
         String message = null;
         if (Language.getCurrentLanguage() == 0) {
-            message = "Order #" + holder.orderNumber.getText().toString() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
-            holder.errorMsg.setText("Order requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.");
+            message = "Order #" + holder.orderNumber.getText().toString() + " requires an appointment but hasn't had one scheduled, please call 831-455-4305 to schedule an appointment.";
+            holder.errorMsg.setText("Appointment has not been scheduled. Please call 831-455-4305 to schedule appointment.");
         } else if (Language.getCurrentLanguage() == 1) {
             message = "Pedido #" + holder.orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
-            holder.errorMsg.setText("El pedido requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.");
+            holder.errorMsg.setText("La cita no ha sido programada. Llame al 831-455-4305 para programar una cita.");
         } else if (Language.getCurrentLanguage() == 2) {
             message = "Ordre #" + holder.orderNumber.getText().toString() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
-            holder.errorMsg.setText("La commande nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour planifier un rendez-vous.");
+            holder.errorMsg.setText("Le rendez-vous n'a pas été prévu. Veuillez appeler le 831-455-4305 pour fixer un rendez-vous.");
         }
         HelpDialog dialog = new HelpDialog(message, holder.itemView.getContext());
         dialog.show();

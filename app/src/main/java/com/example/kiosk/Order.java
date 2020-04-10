@@ -28,7 +28,7 @@ public class Order {
     private static ArrayList<Order> ordersList = new ArrayList<>();
     private static ArrayList<Order> possibleOrdersList = new ArrayList<>();
     private static ArrayList<Order> associatedOrdersList = new ArrayList<>();
-    private static Set<Order> outlierOrders = new HashSet<>();
+    private static List<Order> outlierOrders = new ArrayList<>();
     private static double totalWeight = 0.0;
     private static double totalPalletCount = 0.0;
 
@@ -155,7 +155,7 @@ public class Order {
         return associatedOrdersList;
     }
 
-    public static Set<Order> getOutlierOrders() {
+    public static List<Order> getOutlierOrders() {
         return outlierOrders;
     }
 

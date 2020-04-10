@@ -3,7 +3,6 @@ package com.example.kiosk.Dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.ActionMode;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -18,20 +17,18 @@ import com.example.kiosk.Helpers.RecyclerViewAssociatedAdapter;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
-import com.example.kiosk.Screens.MainActivity;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ConnectedOrders extends Dialog implements android.view.View.OnClickListener {
 
     private Context context;
     private RecyclerView recyclerView;
     private RecyclerViewHorizontalAdapter adapter;
-    private List<Order> outlierOrders;
+    // private List<Order> outlierOrders;
+    private List<Order> connectedOrders;
 
     public ConnectedOrders(@NonNull Context context, RecyclerView recyclerView, RecyclerViewHorizontalAdapter adapter) {
         super(context);
@@ -64,8 +61,12 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
             cancelBtn.setText("Annuler");
         }
 
-        ArrayList<Order> connectedOrders = new ArrayList<>(Order.getAssociatedOrdersList());
-        outlierOrders = new ArrayList<>(connectedOrders);
+        connectedOrders = new ArrayList<>(Order.getAssociatedOrdersList());
+        System.out.println("Here's the associated orders:");
+        for (int i = 0; i < connectedOrders.size(); i++) {
+            System.out.println(connectedOrders.get(i).getSOPNumber());
+        }
+        // outlierOrders = new ArrayList<>(connectedOrders);
 
         RecyclerView recyclerView2 = findViewById(R.id.AssociatedOrdersView);
         LinearLayoutManager verticalLayoutManager2 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -84,7 +85,13 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                 List<Order> selectedOrders = new ArrayList<>(RecyclerViewAssociatedAdapter.getSelectedOrders());
                 for (int i = 0; i < selectedOrders.size(); i++) {
                     Order.addOrderToList(selectedOrders.get(i));
-                    outlierOrders.remove(selectedOrders.get(i));
+                }
+                for (int i = 0; i < connectedOrders.size(); i++) {
+                    if (!selectedOrders.contains(connectedOrders.get(i))) {
+                        if (connectedOrders.get(i).getCheckedIn().equals("false") && !Order.getOutlierOrders().contains(connectedOrders.get(i))) {
+                            Order.addOrderToOutlierList(connectedOrders.get(i));
+                        }
+                    }
                 }
                 boolean showEarlyDialog = false;
                 adapter.notifyDataSetChanged();
@@ -103,12 +110,22 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                     OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is one
                 }
                 Order.clearAssociatedOrderList();
+                /*
                 for (int i = 0; i < outlierOrders.size(); i++) {
                     Order.addOrderToOutlierList(outlierOrders.get(i));
                 }
+                */
                 dismiss();
                 break;
             case R.id.cancelBtn:
+                selectedOrders = new ArrayList<>(RecyclerViewAssociatedAdapter.getSelectedOrders());
+                for (int i = 0; i < connectedOrders.size(); i++) {
+                    if (!selectedOrders.contains(connectedOrders.get(i))) {
+                        if (connectedOrders.get(i).getCheckedIn().equals("false") && !Order.getOutlierOrders().contains(connectedOrders.get(i))) {
+                            Order.addOrderToOutlierList(connectedOrders.get(i));
+                        }
+                    }
+                }
                 setContentView(R.layout.activity_order_entry);
                 Order.clearAssociatedOrderList();
                 dismiss();

@@ -15,14 +15,16 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
     private String inUserID = "Kiosk";
     private String inSOPnumber;
     private String inLocation = "01";
-    private Boolean lastCall;
+    private String isCheckedIn;
+    private boolean lastCall;
 
     private boolean connection = false;
 
-    public UpdateMasterOrder(String inMasterNumber, String inEmail, String inSOPnumber, Boolean lastCall) {
+    public UpdateMasterOrder(String inMasterNumber, String inEmail, String inSOPnumber, String isCheckedIn, boolean lastCall) {
         this.inMasterNumber = inMasterNumber;
         this.inEmail = inEmail;
         this.inSOPnumber = inSOPnumber;
+        this.isCheckedIn = isCheckedIn;
         this.lastCall = lastCall;
     }
 
@@ -41,6 +43,7 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
         request.addProperty("inUserID", inUserID);
         request.addProperty("inSopNumber", inSOPnumber);
         request.addProperty("inLocation", inLocation);
+        request.addProperty("inCheckedIn", isCheckedIn);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
@@ -65,7 +68,7 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
             connection = false;
             System.out.println("Trying again...");
             Thread thread = new Thread(() -> {
-                new UpdateMasterOrder(inMasterNumber, inEmail, inSOPnumber, lastCall).execute();
+                new UpdateMasterOrder(inMasterNumber, inEmail, inSOPnumber, isCheckedIn, lastCall).execute();
             });
             try {
                 thread.start();
