@@ -2,7 +2,12 @@ package com.example.kiosk.Helpers;
 
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-
+/**
+ * LicenseTransformationMethod.java
+ *
+ * Used for the license plate number EditTexts in CreateAccount.java to hide all
+ * characters with a '*' other than the last 3
+ */
 public class LicenseTransformationMethod extends PasswordTransformationMethod {
     @Override
     public CharSequence getTransformation(CharSequence source, View view) {

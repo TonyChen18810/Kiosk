@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.CreateAccount;
@@ -17,6 +16,15 @@ import com.example.kiosk.Screens.LoggedIn;
 import com.example.kiosk.Screens.OrderEntry;
 import java.util.List;
 
+/**
+ * ListViewDialog.java
+ *
+ * @params Activity activity, Button button, int listCode (listCode decides whether
+ * to use ListViewDialog for a state selector or order destination selector)
+ *
+ * Used as a "drop-down" list for the state selectors in LoggedIn.java and
+ * CreateAccount.java, as well as the "Select Destination" button for OrderEntry.java
+ */
 public class ListViewDialog extends Dialog {
 
     private Activity activity;
@@ -123,6 +131,5 @@ public class ListViewDialog extends Dialog {
                 }
             });
         }
-
     }
 }

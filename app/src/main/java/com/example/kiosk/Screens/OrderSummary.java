@@ -24,7 +24,22 @@ import com.example.kiosk.Webservices.UpdateMasterOrder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ *
+ * OrderSummary.java
+ *
+ * This activity is used for reviewing the entered orders and their information.
+ *
+ * The user can press "Back" to return to the Order Entry screen in the case of
+ * an incorrect order entered, taking the user back to OrderEntry.java.
+ *
+ * The list of orders and their information is contained within a RecyclerView and
+ * managed by RecyclerViewSummaryAdapter.java.
+ *
+ * If the user presses "Confirm", both the DeleteOrderDetails.java web service and
+ * the UpdateMasterOrder.java web service will be called on each order, updating their
+ * master numbers and setting their "isCheckedIn" value to true.
+ */
 public class OrderSummary extends AppCompatActivity {
 
     TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight,

@@ -1,5 +1,12 @@
 package com.example.kiosk.Helpers;
-
+/**
+ * PhoneNumberFormat.java
+ *
+ * Mostly used for the extract function
+ *
+ * Convert between (123) 456-7890 and 1234567890 formatting
+ * for phone numbers
+ */
 public class PhoneNumberFormat {
 
     public static String formatPhoneNumber(String phoneNumber) {

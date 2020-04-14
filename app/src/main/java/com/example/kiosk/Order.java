@@ -3,10 +3,29 @@ package com.example.kiosk;
 import com.example.kiosk.Helpers.Rounder;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+/**
+ * Order.java
+ *
+ * Stores information for each order, retrieved from either GetOrderDetails.java
+ * web service or GetOrderDetailsByMasterNumber.java.
+ * 
+ * ordersList stores all orders entered and all orders selected from associatedOrdersList by the driver
+ *
+ * associatedOrdersList stores all orders returned by GetOrderDetailsByMasterNumber that aren't checked-in.
+ *
+ * outlierOrders stores all orders that are in associatedOrdersList and eventually fall
+ * under a different master number once the orders are updated in OrderSummary.java.
+ * The orders that were not selected by the user will not be updated to the new master number
+ * and need to be, so this list will be used to keep track of those orders.
+ * 
+ * totalWeight and totalPalletCount track the total added amount of all the added
+ * orders. These are adjusted when addOrderToList() or removeOrderFromList() is called.
+ *
+ * reset() is used when FirstScreen.java is called (either from starting the app or from pressing "logout" button
+ * clears all lists and values to prepare the app for a different user
+ */
 public class Order {
 
     private String masterNumber;
@@ -169,14 +188,15 @@ public class Order {
         ordersList.add(order);
     }
 
-    public static void addOrderToOutlierList(Order order) {
-        outlierOrders.add(order);
-    }
 
-    public static void removeMasterOrderFromList(int i) {
+    public static void removeOrderFromList(int i) {
         totalWeight -= ordersList.get(i).getEstimatedWeight();
         totalPalletCount -= ordersList.get(i).getEstimatedPallets();
         ordersList.remove(i);
+    }
+
+    public static void addOrderToOutlierList(Order order) {
+        outlierOrders.add(order);
     }
 
     public static void addAssociatedOrderToList(Order order) {

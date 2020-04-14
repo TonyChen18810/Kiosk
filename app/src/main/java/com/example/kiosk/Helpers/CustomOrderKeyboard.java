@@ -11,6 +11,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import com.example.kiosk.R;
 
+/**
+ * CustomOrderKeyboard.java
+ *
+ * A custom keyboard used for entering order numbers in OrderEntry.java
+ * Contains 0-9 numeric values and A, B, C, E for alpha characters with a
+ * backspace button for deleting.
+ */
 public class CustomOrderKeyboard extends LinearLayout implements View.OnClickListener {
 
     public CustomOrderKeyboard(Context context) {
@@ -26,22 +33,6 @@ public class CustomOrderKeyboard extends LinearLayout implements View.OnClickLis
         init(context, attrs);
     }
 
-    private Button mButtonA;
-    private Button mButtonB;
-    private Button mButtonC;
-    private Button mButtonE;
-    private LinearLayout mButtonBack;
-    private Button mButton1;
-    private Button mButton2;
-    private Button mButton3;
-    private Button mButton4;
-    private Button mButton5;
-    private Button mButton6;
-    private Button mButton7;
-    private Button mButton8;
-    private Button mButton9;
-    private Button mButton0;
-
     SparseArray<String> keyValues = new SparseArray<>();
 
     InputConnection inputConnection;
@@ -49,21 +40,21 @@ public class CustomOrderKeyboard extends LinearLayout implements View.OnClickLis
     private void init(Context context, AttributeSet attrs) {
 
         LayoutInflater.from(context).inflate(R.layout.keyboard, this, true);
-        mButtonA = findViewById(R.id.button_A);
-        mButtonB = findViewById(R.id.button_B);
-        mButtonC = findViewById(R.id.button_C);
-        mButtonE = findViewById(R.id.button_E);
-        mButtonBack = findViewById(R.id.button_back_layout);
-        mButton1 = findViewById(R.id.button_1);
-        mButton2 = findViewById(R.id.button_2);
-        mButton3 = findViewById(R.id.button_3);
-        mButton4 = findViewById(R.id.button_4);
-        mButton5 = findViewById(R.id.button_5);
-        mButton6 = findViewById(R.id.button_6);
-        mButton7 = findViewById(R.id.button_7);
-        mButton8 = findViewById(R.id.button_8);
-        mButton9 = findViewById(R.id.button_9);
-        mButton0 = findViewById(R.id.button_0);
+        Button mButtonA = findViewById(R.id.button_A);
+        Button mButtonB = findViewById(R.id.button_B);
+        Button mButtonC = findViewById(R.id.button_C);
+        Button mButtonE = findViewById(R.id.button_E);
+        LinearLayout mButtonBack = findViewById(R.id.button_back_layout);
+        Button mButton1 = findViewById(R.id.button_1);
+        Button mButton2 = findViewById(R.id.button_2);
+        Button mButton3 = findViewById(R.id.button_3);
+        Button mButton4 = findViewById(R.id.button_4);
+        Button mButton5 = findViewById(R.id.button_5);
+        Button mButton6 = findViewById(R.id.button_6);
+        Button mButton7 = findViewById(R.id.button_7);
+        Button mButton8 = findViewById(R.id.button_8);
+        Button mButton9 = findViewById(R.id.button_9);
+        Button mButton0 = findViewById(R.id.button_0);
 
         mButtonA.setOnClickListener(this);
         mButtonB.setOnClickListener(this);

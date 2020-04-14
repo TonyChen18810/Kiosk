@@ -1,6 +1,8 @@
 package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -14,7 +16,11 @@ import com.example.kiosk.Account;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
+import com.example.kiosk.Settings;
 import com.example.kiosk.Webservices.GetOrderDetails;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * FirstScreen.java
  *
@@ -31,7 +37,7 @@ public class FirstScreen extends AppCompatActivity {
 
     private String version;
     private View englishCheckbox, spanishCheckbox, frenchCheckbox;
-    private TextView appointmentWarningText, existingAccountText;
+    private TextView appointmentWarningText, existingAccountText, versionText;
     private Button noBtn, yesBtn;
 
 
@@ -40,6 +46,28 @@ public class FirstScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_screen);
         setup();
+
+        Fragment settingsFragment = new Settings(FirstScreen.this);
+        FragmentManager fm = getSupportFragmentManager();
+        final boolean[] fragmentOpen = {false};
+        AtomicInteger settingsClickCount = new AtomicInteger();
+        settingsClickCount.set(0);
+        versionText.setOnClickListener(v -> {
+            settingsClickCount.getAndIncrement();
+            if (settingsClickCount.get() == 3) {
+                settingsClickCount.set(0);
+                System.out.println("Backstack count: " + fm.getBackStackEntryCount());
+                if (!fragmentOpen[0]) {
+                    fragmentOpen[0] = true;
+                    // fm.beginTransaction().attach(settingsFragment).commit();
+                    fm.beginTransaction().add(R.id.placeholder, settingsFragment, settingsFragment.getClass().getSimpleName()).addToBackStack(null).commit();
+                } else {
+                    fragmentOpen[0] = false;
+                    // fm.beginTransaction().detach(settingsFragment).commit();
+                    fm.popBackStack();
+                }
+            }
+        });
 
         englishCheckbox.setOnTouchListener((v, event) -> {
             v.performClick();
@@ -110,7 +138,7 @@ public class FirstScreen extends AppCompatActivity {
      * the last checkbox passed as a parameter is the one to be checked
      * all others are unchecked
      */
-    private void setChecked(View... checkBox) {
+    public void setChecked(View... checkBox) {
         for (int i = 0; i < checkBox.length; i++) {
             if (i == checkBox.length-1) {
                 checkBox[i].setPressed(true);
@@ -145,7 +173,7 @@ public class FirstScreen extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        TextView versionText = findViewById(R.id.VersionText);
+        versionText = findViewById(R.id.VersionText);
         versionText.setText("Version: " + version);
 
         appointmentWarningText = findViewById(R.id.AppointmentText);

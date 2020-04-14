@@ -193,6 +193,42 @@
         <item>MX</item>
     </string-array>
 
+    <string-array name="cooler_locations">
+        <item>
+            <font size = "20">
+                01
+            </font>
+        </item>
+        <item>
+            <font size = "20">
+                06
+            </font>
+        </item>
+    </string-array>
+
+    <string-array name="kiosk_numbers">
+        <item>
+            <font size = "20">
+                01
+            </font>
+        </item>
+        <item>
+            <font size = "20">
+                02
+            </font>
+        </item>
+        <item>
+            <font size = "20">
+                03
+            </font>
+        </item>
+        <item>
+            <font size = "20">
+                04
+            </font>
+        </item>
+    </string-array>
+
     <!-- English -->
     <string name="email_doesnt_match_eng">*Entered email addresses do not match</string>
     <string name="phone_doesnt_match_eng">*Entered phone numbers do not match</string>

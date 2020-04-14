@@ -56,6 +56,10 @@ import java.util.List;
  * ConnectedOrders.java and it's RecyclerView will be populated by the returned list of orders, those of which
  * can be selected to be added as well.
  *
+ * Each entered order is shown at the bottom of the screen with a "Delete" button, allowing
+ * the user to remove it. This list of orders is contained within a RecyclerView and managed
+ * with RecyclerViewHorizontalAdapter.java
+ *
  * If the user presses "Submit Orders" and none of the entered orders have a master number,
  * GetNextMasterOrderNumber.java will be called and return a master number. If any of the orders
  * have a master number, this won't be called.
@@ -331,7 +335,7 @@ public class OrderEntry extends AppCompatActivity {
         });
 
         submitBtn.setOnClickListener(v -> {
-            SubmitDialog dialog = new SubmitDialog(OrderEntry.this, v, OrderEntry.this);
+            SubmitDialog dialog = new SubmitDialog(OrderEntry.this, OrderEntry.this);
             dialog.show();
         });
 
@@ -465,7 +469,7 @@ public class OrderEntry extends AppCompatActivity {
     public static void removeItem(View v) {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
 
-        Order.removeMasterOrderFromList(selectedItemPosition);
+        Order.removeOrderFromList(selectedItemPosition);
         adapter.notifyItemRemoved(selectedItemPosition);
 
         if (Order.getOrdersList().size() == 0) {

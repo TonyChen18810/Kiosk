@@ -1,5 +1,13 @@
 package com.example.kiosk;
 
+/**
+ * Account.java
+ *
+ * @params String email, String driverName, String phoneNumber
+ *
+ * Manages account information for each shipping truck driver,
+ * populated using GetShippingTruckDriver.java web service
+ */
 public class Account {
 
     private String email;

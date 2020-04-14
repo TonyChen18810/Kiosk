@@ -16,7 +16,8 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysVisible"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Screens.FirstScreen">
+        <activity android:name=".Screens.FirstScreen"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

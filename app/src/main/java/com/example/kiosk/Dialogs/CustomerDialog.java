@@ -12,13 +12,20 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.example.kiosk.Helpers.CustomOrderKeyboard;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Webservices.GetPossibleShipTos;
 
+/**
+ * CustomerDialog.java
+ *
+ * @params they all in the constructor yo I don't wanna type that
+ *
+ * Called/shown in OrderEntry.java after pressing checkOrderBtn (green arrow) and the order
+ * is valid (exists, not late or checked-in/Outstanding)
+ */
 public class CustomerDialog extends Dialog implements android.view.View.OnClickListener {
 
     public Dialog d;

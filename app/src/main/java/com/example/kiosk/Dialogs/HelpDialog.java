@@ -10,6 +10,11 @@ import android.widget.TextView;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.R;
 
+/**
+ * HelpDialog.java
+ *
+ * @params String helpText (text to be displayed in dialog), Context context
+ */
 public class HelpDialog extends Dialog implements android.view.View.OnClickListener {
 
     private String helpText;

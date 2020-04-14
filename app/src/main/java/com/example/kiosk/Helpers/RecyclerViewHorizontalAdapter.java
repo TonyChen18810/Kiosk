@@ -15,7 +15,18 @@ import com.example.kiosk.Order;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.R;
 import java.util.List;
-
+/**
+ * RecyclerViewHorizontalAdapter.java
+ *
+ * Adapter used for managing the RecyclerView in OrderEntry.java.
+ *
+ * Each view displays the Order Number, Customer Name, and Destination
+ * with a Delete button at the bottom
+ *
+ * The delete button removes that order from the list. If the user wants to
+ * add it back to the list, the order number must be typed in again.
+ *
+ */
 public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<RecyclerViewHorizontalAdapter.MyViewHolder> {
 
     private List<Order> orders;

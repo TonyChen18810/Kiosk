@@ -13,12 +13,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kiosk.Dialogs.HelpDialog;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import static com.example.kiosk.Webservices.GetOrderDetails.checkApppointmentTime;
-
+/**
+ * RecyclerViewAssociatedAdapter.java
+ *
+ * Adapter used for managing the RecyclerView in ConnectedOrders.java,
+ * the pop-up that is called if GetOrderDetailsByMasterNumber.java returns
+ * any orders connected to the entered order number in OrderEntry.java
+ *
+ * holder.itemView.setOnClickListener() checks order status (early, late, on-time, etc.)
+ * and will change color depending on the status. If the order is on-time or early,
+ * it will be highlighted in green. Any error and the order turns gray,
+ * displaying an error message and cannot be selected again.
+ *
+ * Any valid order that has been selected can be unselected (toggleable)
+ *
+ * Any order that is already checked-in will not be shown on this list.
+ */
 public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<RecyclerViewAssociatedAdapter.MyViewHolder> {
 
     private List<Order> associatedOrders;
@@ -89,35 +103,6 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
             errorView(holder);
         }
 
-        String buyerNameEdit, buyerStr = currentOrder.getCustomerName();
-        String[] words = buyerStr.split(" ");
-        List<String> filteredWords = new ArrayList<>();
-        for (String word : words) {
-            if (!word.equals("&") && !word.equals("and")) {
-                filteredWords.add(word);
-            }
-        }
-        if (buyerStr.length() > 13) {
-            StringBuilder buyerNameStrBuilder = new StringBuilder();
-            char[] buyerNameCharArray = filteredWords.toString().toCharArray();
-            for (int i = 0; i < buyerNameCharArray.length; i++) {
-                if (buyerNameCharArray[i] != '&') {
-                    buyerNameStrBuilder.append(buyerNameCharArray[i]);
-                }
-                if ((i + 1) != buyerNameCharArray.length  && filteredWords.size() < 4) {
-                    if (buyerNameCharArray[i] == ' ' || buyerNameCharArray[i+1] == '-') {
-                        buyerNameStrBuilder.append('\n');
-                    }
-                } else if (filteredWords.size() > 3) {
-                    if (buyerNameCharArray[i] == ' ') {
-                        buyerNameStrBuilder.append('\n');
-                    }
-                }
-            }
-            buyerNameEdit = buyerNameStrBuilder.toString();
-        } else {
-            buyerNameEdit = buyerStr;
-        }
         // format destination
         if (currentOrder.getDestination().length() > 11) {
             char[] destArray = currentOrder.getDestination().toCharArray();
@@ -136,56 +121,44 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         // click
         holder.itemView.setOnClickListener(view -> {
             System.out.println("Clicked order: " + currentOrder.getSOPNumber());
-
             if (!errorOrders.contains(currentOrder)) {
-                if (currentOrder.getTruckStatus().equals("Outstanding")) {
-                    if (currentOrder.getCheckedIn().equals("false")) {
-                        if (currentOrder.getAppointment().equals("true") && currentOrder.getAppointmentTime().equals("00:00:00")) {
-                            scheduleApt(holder);
-                            errorView(holder);
-                            errorOrders.add(currentOrder);
-                        } else if (currentOrder.getAppointment().equals("true")) {
-                            if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 1) {
-                                late(holder);
-                                errorView(holder);
-                                errorOrders.add(currentOrder);
-                            } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
-                                // differentAptTime(holder);
-                                // errorView(holder);
-                                // errorOrders.add(currentOrder);
-                            } else if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 0) {
-                                // on time
-                            }
-                        }
-                    } else {
-                        errorOrders.add(currentOrder);
-                        alreadyCheckedIn(holder);
-                    }
-                } else {
-                    errorOrders.add(currentOrder);
-                    alreadyCheckedIn(holder);
-                }
-
-                if (!errorOrders.contains(currentOrder)) {
-                    if (selectedOrders.contains(currentOrder)) {
-                        selectedOrders.remove(currentOrder);
-                        unhighlightView(holder);
-                        if (selectedOrders.size() == 0) {
-                            addBtn.setEnabled(false);
-                        } else {
-                            addBtn.setEnabled(true);
-                        }
-                        notifyDataSetChanged();
-                    } else if (!selectedOrders.contains(currentOrder)) {
-                        selectedOrders.add(currentOrder);
-                        highlightView(holder);
-                        addBtn.setEnabled(true);
-                        notifyDataSetChanged();
-                    }
-                } else {
+                if (currentOrder.getAppointment().equals("true") && currentOrder.getAppointmentTime().equals("00:00:00")) {
+                    scheduleApt(holder);
                     errorView(holder);
                     errorOrders.add(currentOrder);
+                } else if (currentOrder.getAppointment().equals("true")) {
+                    if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 1) {
+                        late(holder);
+                        errorView(holder);
+                        errorOrders.add(currentOrder);
+                    } else if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 0) {
+                        // on time
+                    }
                 }
+            } else {
+                errorOrders.add(currentOrder);
+                alreadyCheckedIn(holder);
+            }
+
+            if (!errorOrders.contains(currentOrder)) {
+                if (selectedOrders.contains(currentOrder)) {
+                    selectedOrders.remove(currentOrder);
+                    unhighlightView(holder);
+                    if (selectedOrders.size() == 0) {
+                        addBtn.setEnabled(false);
+                    } else {
+                        addBtn.setEnabled(true);
+                    }
+                    notifyDataSetChanged();
+                } else if (!selectedOrders.contains(currentOrder)) {
+                    selectedOrders.add(currentOrder);
+                    highlightView(holder);
+                    addBtn.setEnabled(true);
+                    notifyDataSetChanged();
+                }
+            } else {
+                errorView(holder);
+                errorOrders.add(currentOrder);
             }
         });
     }

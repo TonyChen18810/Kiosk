@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Screens.FirstScreen;
-import com.example.kiosk.Screens.MainActivity;
 import com.example.kiosk.R;
 
 public class LogoutDialog extends Dialog implements android.view.View.OnClickListener {

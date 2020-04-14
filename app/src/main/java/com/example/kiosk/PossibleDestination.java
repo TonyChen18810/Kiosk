@@ -1,5 +1,12 @@
 package com.example.kiosk;
 
+/**
+ * PossibleDestination.java
+ *
+ * Objects to store in possibleDestinations list of GetPossibleShipTos.java
+ * The list will store 6 PossibleDestination objects, 1 of which will have
+ * matchesOrder == "true", the other 5 false.
+ */
 public class PossibleDestination {
 
     private String SOPNumber;

@@ -14,6 +14,14 @@ import com.example.kiosk.R;
 import java.text.DecimalFormat;
 import java.util.List;
 
+/**
+ * RecyclerViewSummaryAdapter.java
+ *
+ * Adapter used for managing the RecyclerView in OrderSummary.java.
+ *
+ * Each view displays the Order Number, Customer Name, Appointment Time,
+ * Destination, Estimated Pallet Count and Estimated Weight.
+ */
 public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerViewSummaryAdapter.MyViewHolder> {
 
     private List<Order> orders;

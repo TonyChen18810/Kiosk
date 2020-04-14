@@ -9,6 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * States.java
+ *
+ * Keeps track of states and provinces used for the state selection buttons on
+ * LoggedIn.java nd CreateAccount.java. The states appear with their full name
+ * in the drop-downs, but are submitted through the UpdateShippingTruckDriver.java
+ * web service with just their abbreviations.
+ */
 public class States {
 
     private static Map<String, String> stateMap;

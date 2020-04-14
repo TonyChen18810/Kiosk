@@ -11,6 +11,11 @@ import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.R;
 
+/**
+ * DeleteDialog.java
+ *
+ * @params String orderNumberStr, Context context, View view
+ */
 public class DeleteDialog extends Dialog implements android.view.View.OnClickListener {
 
     private String orderNumberStr;

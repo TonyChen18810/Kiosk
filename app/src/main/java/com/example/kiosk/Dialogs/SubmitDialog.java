@@ -14,19 +14,28 @@ import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.Webservices.GetNextMasterOrderNumber;
 import com.example.kiosk.Webservices.GetOrderDetails;
-
 import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * SubmitDialog.java
+ *
+ * @params Context context, Activity activity (used for WeakReference)
+ *
+ * Called from OrderEntry.java after pressing the "Submit" button
+ *
+ * OnClick ("No"): Dismiss
+ * OnClick ("Yes"): Checks if any orders in list has a master number, the first one
+ * it finds with one will use that for UpdateMasterOrder.java in OrderSummary.java
+ * If no order in the list has a master number, call GetNextMasterOrderNumber.java
+ * to return and set new master number to use.
+ */
 public class SubmitDialog extends Dialog implements android.view.View.OnClickListener {
 
-    private String orderNumberStr;
-    private Activity activity;
     private static WeakReference<Activity> mWeakActivity;
 
-    public SubmitDialog(Context context, View view, Activity activity) {
+    public SubmitDialog(Context context, Activity activity) {
         super(context);
-        this.activity = activity;
         mWeakActivity = new WeakReference<>(activity);
     }
 

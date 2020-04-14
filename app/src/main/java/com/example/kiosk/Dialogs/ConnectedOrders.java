@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewAssociatedAdapter;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
@@ -22,12 +20,19 @@ import com.example.kiosk.Webservices.GetOrderDetails;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ConnectedOrders.java
+ *
+ * @params Context context, RecyclerView recyclerView, RecyclerViewHorizontalAdapter adapter
+ *
+ * Called/shown if GetOrderDetailsByMasterNumber.java returns any orders that aren't already
+ * checked-in. The returned orders are displayed in a RecyclerView managed by RecyclerViewAssociatedAdapter.java
+ */
 public class ConnectedOrders extends Dialog implements android.view.View.OnClickListener {
 
     private Context context;
     private RecyclerView recyclerView;
     private RecyclerViewHorizontalAdapter adapter;
-    // private List<Order> outlierOrders;
     private List<Order> connectedOrders;
 
     public ConnectedOrders(@NonNull Context context, RecyclerView recyclerView, RecyclerViewHorizontalAdapter adapter) {
@@ -66,7 +71,6 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
         for (int i = 0; i < connectedOrders.size(); i++) {
             System.out.println(connectedOrders.get(i).getSOPNumber());
         }
-        // outlierOrders = new ArrayList<>(connectedOrders);
 
         RecyclerView recyclerView2 = findViewById(R.id.AssociatedOrdersView);
         LinearLayoutManager verticalLayoutManager2 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -110,11 +114,6 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                     OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is one
                 }
                 Order.clearAssociatedOrderList();
-                /*
-                for (int i = 0; i < outlierOrders.size(); i++) {
-                    Order.addOrderToOutlierList(outlierOrders.get(i));
-                }
-                */
                 dismiss();
                 break;
             case R.id.cancelBtn:

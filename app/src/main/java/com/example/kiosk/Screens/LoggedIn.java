@@ -24,6 +24,7 @@ import com.example.kiosk.Helpers.LicenseTransformationMethod;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.R;
+import com.example.kiosk.Webservices.GetServerTime;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
 import java.text.ParseException;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
@@ -58,13 +59,7 @@ public class LoggedIn extends AppCompatActivity {
         setContentView(R.layout.activity_logged_in);
         setup();
 
-        // Time.setTestingTime("07:00:00");
-
-        try {
-            Time.setTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        new GetServerTime().execute();
 
         checkboxListener = new MutableLiveData<>();
         checkboxListener.observe(LoggedIn.this, needsUpdated -> {

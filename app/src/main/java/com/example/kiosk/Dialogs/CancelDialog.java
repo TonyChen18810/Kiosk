@@ -3,24 +3,31 @@ package com.example.kiosk.Dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EdgeEffect;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.example.kiosk.Helpers.CustomOrderKeyboard;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
-
 import java.lang.ref.WeakReference;
 
+/**
+ * CancelDialog.java
+ *
+ * @params Activity activity, Context context, TextView buyerName
+ *
+ * This dialog is called and shown whenever the "red x" button is pressed
+ * on OrderEntry.java, letting the user confirm the order being cleared
+ * from entry.
+ *
+ * Passes Activity to use for a WeakReference and enable/disable certain UI elements.
+ */
 public class CancelDialog extends Dialog implements android.view.View.OnClickListener {
 
     private WeakReference<Activity> mWeakActivity;
