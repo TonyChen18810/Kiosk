@@ -195,12 +195,12 @@
 
     <string-array name="cooler_locations">
         <item>
-            <font size = "20">
+            <font size = "30">
                 01
             </font>
         </item>
         <item>
-            <font size = "20">
+            <font size = "30">
                 06
             </font>
         </item>
@@ -208,22 +208,22 @@
 
     <string-array name="kiosk_numbers">
         <item>
-            <font size = "20">
+            <font size = "30">
                 01
             </font>
         </item>
         <item>
-            <font size = "20">
+            <font size = "30">
                 02
             </font>
         </item>
         <item>
-            <font size = "20">
+            <font size = "30">
                 03
             </font>
         </item>
         <item>
-            <font size = "20">
+            <font size = "30">
                 04
             </font>
         </item>

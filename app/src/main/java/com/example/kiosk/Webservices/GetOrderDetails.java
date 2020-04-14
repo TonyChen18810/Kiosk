@@ -113,11 +113,13 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
             connection = false;
             // if web service call fails, wait 3 seconds and try again - this continues until the call is successful
             Thread thread = new Thread(() -> new GetOrderDetails(mWeakActivity.get(), enteredSOPNumber).execute());
+            Time.setError(e.toString(), getClass().toString());
             try {
                 Thread.sleep(3000);
                 thread.start();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
+                Time.setError(ex.toString(), getClass().toString());
             }
         }
         return null;
@@ -136,6 +138,9 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         if (connection) {
             if (truckStatus == null || truckStatus.equals("null")) {
                 isGoodOrder = false;
+                System.out.println("Order doesn't exist, let's double check it's values: ");
+                System.out.println("truckStatus: " + truckStatus);
+                System.out.println("SOPnumber: " + SOPNumber);
                 OrderEntry.validOrderNumber.setValue(0);
             } else {
                 System.out.println("truckStatus: " + truckStatus);
@@ -202,6 +207,9 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                         }
                     } else {
                         // Order doesn't exist, invalid
+                        System.out.println("Order doesn't exist, let's double check it's values: ");
+                        System.out.println("truckStatus: " + truckStatus);
+                        System.out.println("SOPnumber: " + SOPNumber);
                         OrderEntry.validOrderNumber.setValue(0);
                     }
                 } else if (!truckStatus.equals("Outstanding")) {
@@ -253,16 +261,23 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         // aptCode 1 = late
         if (aptHourInt - 1 > loggedHourInt) {
             aptCode = -1;
+            System.out.println("early");
         } else if (aptHourInt - 1 == loggedHourInt) {
             if (aptMinuteInt > loggedMinuteInt) {
                 aptCode = -1;
+                System.out.println("early");
             }
         } else if (aptHourInt + 1 < loggedHourInt) {
             aptCode = 1;
+            System.out.println("late");
         } else if (aptHourInt + 1 <= loggedHourInt) {
             if (aptMinuteInt < loggedMinuteInt) {
                 aptCode = 1;
+                System.out.println("late");
             }
+        }
+        if (aptCode == 0) {
+            System.out.println("on-time");
         }
         return aptCode;
     }

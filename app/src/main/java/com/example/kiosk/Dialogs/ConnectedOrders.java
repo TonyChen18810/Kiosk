@@ -89,10 +89,13 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                 List<Order> selectedOrders = new ArrayList<>(RecyclerViewAssociatedAdapter.getSelectedOrders());
                 for (int i = 0; i < selectedOrders.size(); i++) {
                     Order.addOrderToList(selectedOrders.get(i));
+                    if (Order.getOutlierOrders().contains(selectedOrders.get(i))) {
+                        Order.removeOrderFromOutlierList(selectedOrders.get(i));
+                    }
                 }
                 for (int i = 0; i < connectedOrders.size(); i++) {
                     if (!selectedOrders.contains(connectedOrders.get(i))) {
-                        if (connectedOrders.get(i).getCheckedIn().equals("false") && !Order.getOutlierOrders().contains(connectedOrders.get(i))) {
+                        if (connectedOrders.get(i).getCheckedIn().equals("false") && !Order.getOutlierOrders().contains(connectedOrders.get(i)) && !Order.getOrdersList().contains(connectedOrders.get(i))) {
                             Order.addOrderToOutlierList(connectedOrders.get(i));
                         }
                     }
@@ -102,10 +105,11 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                 adapter.notifyItemInserted(adapter.getItemCount() - 1);
                 recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
                 recyclerView.scheduleLayoutAnimation();
-                for (int i = 0; i < Order.getAssociatedOrdersList().size(); i++) {
-                    showEarlyDialog = Order.getAssociatedOrdersList().get(i).getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getAssociatedOrdersList().get(i).getAppointmentTime()) == -1;
-                    System.out.println("SHOW EARLY DIALOG: " + showEarlyDialog);
-                    if (showEarlyDialog) {
+                for (int i = 0; i < selectedOrders.size(); i++) {
+                    if ((selectedOrders.get(i).getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(selectedOrders.get(i).getAppointmentTime()) == -1)
+                            || GetOrderDetails.checkApppointmentTime(Order.getOrdersList().get((Order.getOrdersList().size()-1) - selectedOrders.size()).getAppointmentTime()) == -1) {
+                        showEarlyDialog = true;
+                        System.out.println("SHOW EARLY DIALOG: " + showEarlyDialog);
                         break;
                     }
                 }
@@ -120,10 +124,14 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                 selectedOrders = new ArrayList<>(RecyclerViewAssociatedAdapter.getSelectedOrders());
                 for (int i = 0; i < connectedOrders.size(); i++) {
                     if (!selectedOrders.contains(connectedOrders.get(i))) {
-                        if (connectedOrders.get(i).getCheckedIn().equals("false") && !Order.getOutlierOrders().contains(connectedOrders.get(i))) {
+                        if (connectedOrders.get(i).getCheckedIn().equals("false") && !Order.getOutlierOrders().contains(connectedOrders.get(i)) && !Order.getOrdersList().contains(connectedOrders.get(i))) {
                             Order.addOrderToOutlierList(connectedOrders.get(i));
                         }
                     }
+                }
+                if (GetOrderDetails.checkApppointmentTime(Order.getOrdersList().get(Order.getOrdersList().size()-1).getAppointmentTime()) == -1) {
+                    OrderEntry.appointmentTimeListener.setValue(-2);
+                    OrderEntry.appointmentTimeListener.setValue(-100);
                 }
                 setContentView(R.layout.activity_order_entry);
                 Order.clearAssociatedOrderList();

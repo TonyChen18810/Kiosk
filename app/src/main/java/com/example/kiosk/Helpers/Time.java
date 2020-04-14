@@ -1,6 +1,5 @@
 package com.example.kiosk.Helpers;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,13 +12,16 @@ import java.util.Date;
  */
 public class Time {
 
+    private static String errorMsg;
+    private static String errorClass;
+
     private static String currentTime;
 
     public static void setTime(String time) {
         SimpleDateFormat parseFormat = new SimpleDateFormat("HH:mm");
-        // String currentDateandTime = parseFormat.format(new Date());
+        String currentDateandTime = parseFormat.format(new Date());
         // System.out.println("currentDateandTime: " + time);
-        currentTime = time;
+        currentTime = currentDateandTime; // was time
     }
 
     public static void setTestingTime(String time) {
@@ -28,5 +30,18 @@ public class Time {
 
     public static String getCurrentTime() {
         return currentTime;
+    }
+
+    public static void setError(String error, String errorC) {
+        errorMsg = error;
+        errorClass = errorC;
+    }
+
+    public static String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public static String getErrorClass() {
+        return errorClass;
     }
 }

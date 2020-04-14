@@ -23,7 +23,10 @@ import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.UpdateMasterOrder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 /**
  *
  * OrderSummary.java
@@ -84,6 +87,30 @@ public class OrderSummary extends AppCompatActivity {
             List<Order> orderList = Order.getOrdersList();
             List<Order> outlierList = new ArrayList<>(Order.getOutlierOrders());
 
+            Set<String> outlierSet = new HashSet<>();
+
+            for (int i = 0; i < outlierList.size(); i++) {
+                boolean contains = false;
+                for (int j = 0; j < orderList.size(); j++) {
+                    if (orderList.get(j).getSOPNumber().equals(outlierList.get(i).getSOPNumber())) {
+                        contains = true;
+                        break;
+                    }
+                }
+                if (!contains) {
+                    outlierSet.add(outlierList.get(i).getSOPNumber());
+                }
+            }
+
+            for (String SOP : outlierSet) {
+                new DeleteOrderDetails(SOP).execute();
+                System.out.println(SOP);
+            }
+
+            for (String SOP : outlierSet) {
+                new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), SOP, "false",false).execute();
+            }
+/*
             System.out.println("Here are the outlier orders, they will now be updated:");
             for (int i = 0; i < outlierList.size(); i++) {
                 new DeleteOrderDetails(outlierList.get(i).getSOPNumber()).execute();
@@ -92,7 +119,7 @@ public class OrderSummary extends AppCompatActivity {
             for (int i = 0; i < outlierList.size(); i++) {
                 new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), outlierList.get(i).getSOPNumber(), "false",false).execute();
             }
-
+*/
             System.out.println("Here are the orders to be checked in, they will now be updated:");
             for (int i = 0; i < orderList.size(); i++) {
                 new DeleteOrderDetails(orderList.get(i).getSOPNumber()).execute();

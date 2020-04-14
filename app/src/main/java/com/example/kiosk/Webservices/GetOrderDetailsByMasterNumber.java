@@ -134,12 +134,14 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             } else if (Order.getAssociatedOrdersList().size() > 0){
                 System.out.println("There's associated orders!!");
                 OrderEntry.sharedMasterNumber.setValue(true);
+                /*
                 if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
                     if (OrderEntry.appointmentTimeListener.getValue() != -2) {
                         OrderEntry.appointmentTimeListener.setValue(-2);
                         OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
                     }
                 }
+                */
             }
             Activity activity = mWeakActivity.get();
             if (activity != null) {

@@ -359,7 +359,7 @@ public class CreateAccount extends AppCompatActivity {
                 new UpdateShippingTruckDriver(account).execute();
                 System.out.println("SENDING LANGUAGE PREFERENCE: " + Language.getCurrentLanguage()+1);
                 userEmail.setText(Html.fromHtml("Email address:\n" + "<b>" + email + "<b>"));
-                userNumber.setText(Html.fromHtml("Phone number:\n" + "<b>" + phone + "<b>"));
+                userNumber.setText(Html.fromHtml("Phone number:\n" + "<b>" + PhoneNumberFormat.formatPhoneNumber(phone) + "<b>"));
                 userTruckName.setText(Html.fromHtml("Current truck name:\n" + "<b>" + truckNameStr + "<b>"));
                 userTruckNumber.setText(Html.fromHtml("Current truck number:\n" + "<b>" + truckNumberStr + "<b>"));
                 userTrailerLicense.setText(Html.fromHtml("Current trailer license:\n" + "<b>" + trailerLicenseStr + "<b>"));

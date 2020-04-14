@@ -199,6 +199,10 @@ public class Order {
         outlierOrders.add(order);
     }
 
+    public static void removeOrderFromOutlierList(Order order) {
+        outlierOrders.remove(order);
+    }
+
     public static void addAssociatedOrderToList(Order order) {
         associatedOrdersList.add(order);
     }

@@ -171,7 +171,7 @@ public class OrderEntry extends AppCompatActivity {
                 checkOrderBtn.setEnabled(true);
                 String message = null;
                 if (Language.getCurrentLanguage() == 0) {
-                    message = "Order #" + orderNumber.getText().toString() + " requires an appointment but has not had one scheduled, please call 831-455-4305 to schedule an appointment.";
+                    message = "Order #" + orderNumber.getText().toString() + " requires an appointment but hasn't had one scheduled, please call 831-455-4305 to schedule an appointment.";
                 } else if (Language.getCurrentLanguage() == 1) {
                     message = "Pedido #" + orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
                 } else if (Language.getCurrentLanguage() == 2) {
@@ -347,9 +347,15 @@ public class OrderEntry extends AppCompatActivity {
             if (!recyclerView.isShown()) {
                 Order.getOrdersList().remove(0);
                 Order.addOrderToList(Order.getCurrentOrder());
+                if (Order.getOutlierOrders().contains(Order.getCurrentOrder())) {
+                    Order.removeOrderFromOutlierList(Order.getCurrentOrder());
+                }
                 addOrderListener.setValue(false);
             } else {
                 Order.addOrderToList(Order.getCurrentOrder());
+                if (Order.getOutlierOrders().contains(Order.getCurrentOrder())) {
+                    Order.removeOrderFromOutlierList(Order.getCurrentOrder());
+                }
                 addOrderListener.setValue(false);
             }
 

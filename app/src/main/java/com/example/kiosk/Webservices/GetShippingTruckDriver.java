@@ -5,13 +5,18 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
 import com.example.kiosk.Account;
+import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.MainActivity;
+import com.example.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
+import java.util.Set;
+
 /**
  * GetShippingTruckDriver.java
  *
@@ -93,6 +98,8 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                     null, null, null, null, null, null);
             Account.setCurrentAccount(account);
             System.out.println("Trying again...");
+            Time.setError(e.toString(), getClass().toString());
+            Settings.saveSettings(mWeakActivity.get());
             Thread thread = new Thread(() -> {
                 new GetShippingTruckDriver(mWeakActivity.get(), enteredEmail).execute();
             });
@@ -101,6 +108,8 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                 Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
+                Time.setError(ex.toString(), getClass().toString());
+                Settings.saveSettings(mWeakActivity.get());
                 // Toast.makeText()
             }
         }

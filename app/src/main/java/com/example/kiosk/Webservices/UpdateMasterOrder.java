@@ -1,6 +1,9 @@
 package com.example.kiosk.Webservices;
 
 import android.os.AsyncTask;
+
+import com.example.kiosk.Helpers.Time;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;

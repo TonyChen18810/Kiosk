@@ -40,6 +40,8 @@ public class FirstScreen extends AppCompatActivity {
     private TextView appointmentWarningText, existingAccountText, versionText;
     private Button noBtn, yesBtn;
 
+    public static int settingsClickCount = 0;
+    public static FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,22 +50,23 @@ public class FirstScreen extends AppCompatActivity {
         setup();
 
         Fragment settingsFragment = new Settings(FirstScreen.this);
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         final boolean[] fragmentOpen = {false};
-        AtomicInteger settingsClickCount = new AtomicInteger();
-        settingsClickCount.set(0);
+        settingsClickCount = 0;
         versionText.setOnClickListener(v -> {
-            settingsClickCount.getAndIncrement();
-            if (settingsClickCount.get() == 3) {
-                settingsClickCount.set(0);
+            settingsClickCount++;
+            System.out.println("Settings click counter: " + settingsClickCount);
+            if (settingsClickCount == 3) {
+                settingsClickCount = 0;
                 System.out.println("Backstack count: " + fm.getBackStackEntryCount());
                 if (!fragmentOpen[0]) {
                     fragmentOpen[0] = true;
-                    // fm.beginTransaction().attach(settingsFragment).commit();
-                    fm.beginTransaction().add(R.id.placeholder, settingsFragment, settingsFragment.getClass().getSimpleName()).addToBackStack(null).commit();
+                    // fm.beginTransaction().detach(settingsFragment).attach(settingsFragment).commit();
+                    fm.beginTransaction().setCustomAnimations(R.anim.fragment_close_enter, R.anim.fragment_close_exit).add(R.id.placeholder, settingsFragment, settingsFragment.getClass().getSimpleName()).addToBackStack(null).commit();
                 } else {
                     fragmentOpen[0] = false;
                     // fm.beginTransaction().detach(settingsFragment).commit();
+                    fm.popBackStack();
                     fm.popBackStack();
                 }
             }
