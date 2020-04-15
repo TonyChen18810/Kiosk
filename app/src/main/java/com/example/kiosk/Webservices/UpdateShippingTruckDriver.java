@@ -2,6 +2,8 @@ package com.example.kiosk.Webservices;
 
 import android.os.AsyncTask;
 import com.example.kiosk.Account;
+import com.example.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -69,14 +71,16 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Trying again...");
+            Settings.setError(e.toString(), getClass().toString(), null);
             Thread thread = new Thread(() -> {
                 new UpdateShippingTruckDriver(account).execute();
             });
             try {
                 thread.start();
-                // Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
+                Settings.setError(ex.toString(), getClass().toString(), null);
             }
         }
         return null;

@@ -1,6 +1,9 @@
 package com.example.kiosk.Webservices;
 
 import android.os.AsyncTask;
+
+import com.example.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -53,6 +56,17 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Settings.setError(e.toString(), getClass().toString(), null);
+            Thread thread = new Thread(() -> {
+                new DriverNotification(inMasterNumber).execute();
+            });
+            thread.start();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+                Settings.setError(ex.toString(), getClass().toString(), null);
+            }
         }
         return null;
     }

@@ -5,18 +5,14 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
 import com.example.kiosk.Account;
-import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.MainActivity;
 import com.example.kiosk.Settings;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
-import java.util.Set;
-
 /**
  * GetShippingTruckDriver.java
  *
@@ -67,30 +63,28 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
             SoapObject response = (SoapObject) envelope.getResponse();
             if (response != null) {
                 connection = true;
-            }
-            if (response.getPropertyCount() > 0) {
-                // really don't need all this, just make the object?
-                email = ((SoapObject) (response.getProperty(0))).getProperty(0).toString();
-                driverName = ((SoapObject) (response.getProperty(0))).getProperty(1).toString();
-                phone = ((SoapObject) (response.getProperty(0))).getProperty(2).toString();
-                truckName = ((SoapObject) (response.getProperty(0))).getProperty(3).toString();
-                truckNumber = ((SoapObject) (response.getProperty(0))).getProperty(4).toString();
-                driversLicense = ((SoapObject) (response.getProperty(0))).getProperty(5).toString();
-                driversLicenseState = ((SoapObject) (response.getProperty(0))).getProperty(6).toString();
-                trailerLicense = ((SoapObject) (response.getProperty(0))).getProperty(7).toString();
-                trailerLicenseState = ((SoapObject) (response.getProperty(0))).getProperty(8).toString();
-                dispatcherPhone = ((SoapObject) (response.getProperty(0))).getProperty(9).toString();
-                languagePreference = ((SoapObject) (response.getProperty(0))).getProperty(10).toString();
-                communicationPreference = ((SoapObject) (response.getProperty(0))).getProperty(11).toString();
-                Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
+                if (response.getPropertyCount() > 0) {
+                    email = ((SoapObject) (response.getProperty(0))).getProperty(0).toString();
+                    driverName = ((SoapObject) (response.getProperty(0))).getProperty(1).toString();
+                    phone = ((SoapObject) (response.getProperty(0))).getProperty(2).toString();
+                    truckName = ((SoapObject) (response.getProperty(0))).getProperty(3).toString();
+                    truckNumber = ((SoapObject) (response.getProperty(0))).getProperty(4).toString();
+                    driversLicense = ((SoapObject) (response.getProperty(0))).getProperty(5).toString();
+                    driversLicenseState = ((SoapObject) (response.getProperty(0))).getProperty(6).toString();
+                    trailerLicense = ((SoapObject) (response.getProperty(0))).getProperty(7).toString();
+                    trailerLicenseState = ((SoapObject) (response.getProperty(0))).getProperty(8).toString();
+                    dispatcherPhone = ((SoapObject) (response.getProperty(0))).getProperty(9).toString();
+                    languagePreference = ((SoapObject) (response.getProperty(0))).getProperty(10).toString();
+                    communicationPreference = ((SoapObject) (response.getProperty(0))).getProperty(11).toString();
+                    Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
                         driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, communicationPreference);
-                Account.setCurrentAccount(account);
+                    Account.setCurrentAccount(account);
+                }
             } else {
                 Account account = new Account(email, driverName, phone, truckName, truckNumber, driversLicense,
                         driversLicenseState, trailerLicense, trailerLicenseState, dispatcherPhone, languagePreference, communicationPreference);
                 Account.setCurrentAccount(account);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             connection = false;
@@ -98,8 +92,7 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                     null, null, null, null, null, null);
             Account.setCurrentAccount(account);
             System.out.println("Trying again...");
-            Time.setError(e.toString(), getClass().toString());
-            Settings.saveSettings(mWeakActivity.get());
+            Settings.setError(e.toString(), getClass().toString(), mWeakActivity.get());
             Thread thread = new Thread(() -> {
                 new GetShippingTruckDriver(mWeakActivity.get(), enteredEmail).execute();
             });
@@ -108,9 +101,7 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                 Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Time.setError(ex.toString(), getClass().toString());
-                Settings.saveSettings(mWeakActivity.get());
-                // Toast.makeText()
+                Settings.setError(ex.toString(), getClass().toString(), mWeakActivity.get());
             }
         }
         return null;

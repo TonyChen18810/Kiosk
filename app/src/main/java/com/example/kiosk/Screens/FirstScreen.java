@@ -3,7 +3,7 @@ package com.example.kiosk.Screens;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
+import androidx.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -12,15 +12,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.kiosk.Account;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Settings;
 import com.example.kiosk.Webservices.GetOrderDetails;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * FirstScreen.java
  *
@@ -40,6 +39,8 @@ public class FirstScreen extends AppCompatActivity {
     private TextView appointmentWarningText, existingAccountText, versionText;
     private Button noBtn, yesBtn;
 
+    public static MutableLiveData<Boolean> settingsListener = null;
+
     public static int settingsClickCount = 0;
     public static FragmentManager fm;
 
@@ -49,59 +50,87 @@ public class FirstScreen extends AppCompatActivity {
         setContentView(R.layout.activity_first_screen);
         setup();
 
-        Fragment settingsFragment = new Settings(FirstScreen.this);
+        final Fragment[] settingsFragment = new Fragment[1];
         fm = getSupportFragmentManager();
         final boolean[] fragmentOpen = {false};
         settingsClickCount = 0;
         versionText.setOnClickListener(v -> {
-            settingsClickCount++;
+            if (!fragmentOpen[0]) {
+                settingsClickCount++;
+                if (settingsClickCount == 3) {
+                     settingsFragment[0] = new Settings(FirstScreen.this);
+                    settingsClickCount = 0;
+                    System.out.println("Backstack count: " + fm.getBackStackEntryCount());
+                    if (!fragmentOpen[0]) {
+                        fragmentOpen[0] = true;
+                        // fm.beginTransaction().setCustomAnimations(R.anim.fragment_close_enter, R.anim.fragment_close_exit).add(R.id.placeholder, settingsFragment, settingsFragment.getClass().getSimpleName()).addToBackStack(null).commit();
+                        fm.beginTransaction().setCustomAnimations(R.anim.layout_slide_in, R.anim.fragment_close_exit).replace(R.id.placeholder, settingsFragment[0]).commit();
+                    }
+                }
+            }
             System.out.println("Settings click counter: " + settingsClickCount);
-            if (settingsClickCount == 3) {
-                settingsClickCount = 0;
-                System.out.println("Backstack count: " + fm.getBackStackEntryCount());
-                if (!fragmentOpen[0]) {
-                    fragmentOpen[0] = true;
-                    // fm.beginTransaction().detach(settingsFragment).attach(settingsFragment).commit();
-                    fm.beginTransaction().setCustomAnimations(R.anim.fragment_close_enter, R.anim.fragment_close_exit).add(R.id.placeholder, settingsFragment, settingsFragment.getClass().getSimpleName()).addToBackStack(null).commit();
-                } else {
-                    fragmentOpen[0] = false;
-                    // fm.beginTransaction().detach(settingsFragment).commit();
-                    fm.popBackStack();
-                    fm.popBackStack();
+        });
+
+        settingsListener = new MutableLiveData<>();
+        settingsListener.observe(FirstScreen.this, savedIsClicked -> {
+            if (savedIsClicked) {
+                fragmentOpen[0] = false;
+                fm.beginTransaction().setCustomAnimations(R.anim.layout_slide_in, R.anim.fragment_close_exit).remove(settingsFragment[0]).commit();
+                Toast.makeText(FirstScreen.this, "Settings have been saved", Toast.LENGTH_SHORT).show();
+                if (Language.getCurrentLanguage() == 0) {
+                    setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
+                } else if (Language.getCurrentLanguage() == 1) {
+                    setChecked(englishCheckbox, frenchCheckbox, spanishCheckbox);
+                } else if (Language.getCurrentLanguage() == 2) {
+                    setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
+                }
+            } else {
+                if (Language.getCurrentLanguage() == 0) {
+                    setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
+                } else if (Language.getCurrentLanguage() == 1) {
+                    setChecked(englishCheckbox, frenchCheckbox, spanishCheckbox);
+                } else if (Language.getCurrentLanguage() == 2) {
+                    setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
                 }
             }
         });
 
+        // clicked checkbox
         englishCheckbox.setOnTouchListener((v, event) -> {
             v.performClick();
             setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
             return true;
         });
 
+        // clicked text next to check box
         findViewById(R.id.EnglishText).setOnTouchListener((v, event) -> {
             v.performClick();
             setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
             return true;
         });
 
+        // clicked checkbox
         spanishCheckbox.setOnTouchListener((v, event) -> {
             v.performClick();
             setChecked(frenchCheckbox, englishCheckbox, spanishCheckbox);
             return true;
         });
 
+        // clicked text next to check box
         findViewById(R.id.SpanishText).setOnTouchListener((v, event) -> {
             v.performClick();
             setChecked(frenchCheckbox, englishCheckbox, spanishCheckbox);
             return true;
         });
 
+        // clicked checkbox
         frenchCheckbox.setOnTouchListener((v, event) -> {
             v.performClick();
             setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
             return true;
         });
 
+        // clicked text next to check box
         findViewById(R.id.FrenchText).setOnTouchListener((v, event) -> {
             v.performClick();
             setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
@@ -175,6 +204,7 @@ public class FirstScreen extends AppCompatActivity {
             version = pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+            Settings.setError(e.toString(), getClass().toString(), FirstScreen.this);
         }
         versionText = findViewById(R.id.VersionText);
         versionText.setText("Version: " + version);
@@ -215,50 +245,6 @@ public class FirstScreen extends AppCompatActivity {
             existingAccountText.setText(R.string.existing_account_fr);
             noBtn.setText(R.string.no_fr);
             yesBtn.setText(R.string.yes_fr);
-        }
-    }
-
-    public void testTimes() {
-        String aptTime;
-        String logTime;
-
-        aptTime = "00:00:00";
-        logTime = "24:59:00";
-        char[] aptC = aptTime.toCharArray();
-        char[] timeC = logTime.toCharArray();
-        String aptHour = ((aptC[0] - '0') + "" + (aptC[1] - '0'));
-        String loggedInHour = ((timeC[0] - '0') + "" + (timeC[1] - '0'));
-        String aptMinute = ((aptC[3] - '0') + "" + (aptC[4] - '0'));
-        String loggedInMinute = ((timeC[3] - '0') + "" + (timeC[4] - '0'));
-
-        int aptHourInt = Integer.parseInt(aptHour);
-        int aptMinuteInt = Integer.parseInt(aptMinute);
-        int loggedHourInt = Integer.parseInt(loggedInHour);
-        int loggedMinuteInt = Integer.parseInt(loggedInMinute);
-
-        for (int i = 0; i < 50; i++) {
-            System.out.println("Appointment Time: " + aptHourInt + ":" + aptMinuteInt);
-            System.out.println("Logged In Time: " + loggedHourInt + ":" + loggedMinuteInt);
-            if (aptHourInt - 1 > loggedHourInt) {
-                System.out.println("Early!");
-            } else if (aptHourInt - 1 == loggedHourInt) {
-                if (aptMinuteInt > loggedMinuteInt) {
-                    System.out.println("Early!");
-                }
-            } else if (aptHourInt + 1 < loggedHourInt) {
-                System.out.println("Late!");
-            } else if (aptHourInt + 1 <= loggedHourInt) {
-                if (aptMinuteInt < loggedMinuteInt) {
-                    System.out.println("Late!");
-                }
-            } else {
-                System.out.println("On Time!");
-            }
-            aptHourInt += 1;
-            aptMinuteInt += 1;
-            loggedHourInt -= 1;
-            loggedMinuteInt -= 1;
-            System.out.println("-----------------------------------------------------------------------");
         }
     }
 }

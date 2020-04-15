@@ -9,6 +9,8 @@ import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
+import com.example.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -57,7 +59,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
 
     public static void setNewMasterNumber(String newMasterNumber) {
         MASTER_NUMBER = newMasterNumber;
-        System.out.println("New Master Number: " + MASTER_NUMBER);
+        System.out.println("NEW MASTER NUMBER: " + MASTER_NUMBER);
     }
 
     public static String getMasterNumber() {
@@ -113,13 +115,13 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
             connection = false;
             // if web service call fails, wait 3 seconds and try again - this continues until the call is successful
             Thread thread = new Thread(() -> new GetOrderDetails(mWeakActivity.get(), enteredSOPNumber).execute());
-            Time.setError(e.toString(), getClass().toString());
+            Settings.setError(e.toString(), getClass().toString(), mWeakActivity.get());
             try {
                 Thread.sleep(3000);
                 thread.start();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
-                Time.setError(ex.toString(), getClass().toString());
+                Settings.setError(ex.toString(), getClass().toString(), mWeakActivity.get());
             }
         }
         return null;

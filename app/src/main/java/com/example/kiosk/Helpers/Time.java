@@ -12,36 +12,16 @@ import java.util.Date;
  */
 public class Time {
 
-    private static String errorMsg;
-    private static String errorClass;
-
     private static String currentTime;
 
     public static void setTime(String time) {
         SimpleDateFormat parseFormat = new SimpleDateFormat("HH:mm");
         String currentDateandTime = parseFormat.format(new Date());
         // System.out.println("currentDateandTime: " + time);
-        currentTime = currentDateandTime; // was time
-    }
-
-    public static void setTestingTime(String time) {
-        currentTime = time;
+        currentTime = time; // was currentDateandTime
     }
 
     public static String getCurrentTime() {
         return currentTime;
-    }
-
-    public static void setError(String error, String errorC) {
-        errorMsg = error;
-        errorClass = errorC;
-    }
-
-    public static String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public static String getErrorClass() {
-        return errorClass;
     }
 }

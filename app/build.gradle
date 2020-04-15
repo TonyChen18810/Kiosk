@@ -8,8 +8,8 @@ android {
         minSdkVersion 25
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 25
-        versionCode 16
-        versionName '0.0.26'
+        versionCode 17
+        versionName '0.0.27'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -2,6 +2,7 @@ package com.example.kiosk.Webservices;
 
 import android.os.AsyncTask;
 import com.example.kiosk.Helpers.Time;
+import com.example.kiosk.Settings;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -41,6 +42,7 @@ public class GetServerTime extends AsyncTask<Void, Void, Void> {
             Time.setTime(time);
         } catch (Exception e) {
             e.printStackTrace();
+            Settings.setError(e.toString(), getClass().toString(), null);
             Thread thread = new Thread(() -> {
                 new GetServerTime().execute();
             });
@@ -49,6 +51,7 @@ public class GetServerTime extends AsyncTask<Void, Void, Void> {
                 Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
+                Settings.setError(ex.toString(), getClass().toString(), null);
             }
         }
         return null;

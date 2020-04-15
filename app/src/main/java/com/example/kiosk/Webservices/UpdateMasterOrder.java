@@ -3,6 +3,7 @@ package com.example.kiosk.Webservices;
 import android.os.AsyncTask;
 
 import com.example.kiosk.Helpers.Time;
+import com.example.kiosk.Settings;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -81,14 +82,16 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
             connection = false;
             System.out.println("Trying again...");
+            Settings.setError(e.toString(), getClass().toString(), null);
             Thread thread = new Thread(() -> {
                 new UpdateMasterOrder(inMasterNumber, inEmail, inSOPnumber, isCheckedIn, lastCall).execute();
             });
             try {
                 thread.start();
-                // Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
+                Settings.setError(ex.toString(), getClass().toString(), null);
             }
         }
         return null;

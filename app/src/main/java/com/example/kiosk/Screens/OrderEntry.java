@@ -36,6 +36,7 @@ import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
+import com.example.kiosk.Settings;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 import java.util.ArrayList;
@@ -88,6 +89,10 @@ public class OrderEntry extends AppCompatActivity {
 
     public static int DESTINATION_ATTEMPTS = 0;
 
+    public static RecyclerViewHorizontalAdapter getAdapter() {
+        return adapter;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,13 +109,11 @@ public class OrderEntry extends AppCompatActivity {
         System.out.println("MASTER NUMBER AT ORDER ENTRY: " + GetOrderDetails.getMasterNumber());
 
         addOrderListener = new MutableLiveData<>();
-        // addOrderListener.setValue(true);
         submitDialogListener = new MutableLiveData<>();
-        submitDialogListener.setValue(false);
         validOrderNumber = new MutableLiveData<>();
         destinationListener = new MutableLiveData<>();
-
         appointmentTimeListener = new MutableLiveData<>();
+        sharedMasterNumber = new MutableLiveData<>();
 
         addOrderListener.observe(OrderEntry.this, empty -> {
             if (empty) {
@@ -127,8 +130,6 @@ public class OrderEntry extends AppCompatActivity {
         submitDialogListener.observe(OrderEntry.this, dialogChoice -> {
             if (dialogChoice) {
                 progressBar.setVisibility(View.INVISIBLE);
-                // Intent intent = new Intent(OrderEntry.this, OrderSummary.class);
-                // startActivity(intent);
                 setContentView(R.layout.rules_regulations);
                 Button rulesAcceptBtn = findViewById(R.id.AcceptBtn);
                 rulesAcceptBtn.setEnabled(true);
@@ -203,20 +204,6 @@ public class OrderEntry extends AppCompatActivity {
         });
 
         appointmentTimeListener.observe(OrderEntry.this, aptCode -> {
-            /*
-            if (aptCode == -1) {
-                String helpText = "";
-                if (Language.getCurrentLanguage() == 0) {
-                    helpText = "This order has a later appointment time. This submitted order will not be checked in until 1 hour prior to appointment time.";
-                } else if (Language.getCurrentLanguage() == 1) {
-                    helpText = "La cita para este pedido se programó para más tarde. El pedido enviado no se registrará hasta 1 hora antes del horario de la cita.";
-                } else if (Language.getCurrentLanguage() == 2) {
-                    helpText = "Le rendez-vous pour cette commande est plus tard. La commande soumise ne sera pas validée jusqu’à 1 heure avant l’heure du rendez-vous.";
-                }
-                HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
-                dialog.show();
-            }
-             */
             if (aptCode == 1) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 0) {
@@ -243,8 +230,6 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.show();
             }
         });
-
-        sharedMasterNumber = new MutableLiveData<>();
 
         sharedMasterNumber.observe(OrderEntry.this, shared -> {
             if (shared) {
@@ -302,9 +287,6 @@ public class OrderEntry extends AppCompatActivity {
                     selectDestinationBtn.setVisibility(View.GONE);
 
                     orderNumber.setEnabled(true);
-                    // orderNumber.setFocusable(true);
-                    //orderNumber.requestFocus();
-                    // showSoftKeyboard(orderNumber);
                     checkOrderBtn.setEnabled(false);
                     addOrderBtn.setEnabled(false);
                     DESTINATION_ATTEMPTS = 0;
@@ -388,6 +370,7 @@ public class OrderEntry extends AppCompatActivity {
                 new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute();
             } catch (Exception e) {
                 e.printStackTrace();
+                Settings.setError(e.toString(), getClass().toString(), OrderEntry.this);
             }
         });
 

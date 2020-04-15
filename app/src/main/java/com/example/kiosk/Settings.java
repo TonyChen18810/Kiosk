@@ -6,9 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,9 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.Screens.FirstScreen;
-
 import java.lang.ref.WeakReference;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 /**
@@ -44,9 +39,12 @@ public class Settings extends Fragment {
 
     private static String coolerLocation;
     private static String kioskNumber;
-    private static final String password = "0000";
+    private static final String password = "4535";
 
-    public static SharedPreferences settings;
+    private static String errorMsg;
+    private static String errorClass;
+
+    private static SharedPreferences settings;
 
     private static WeakReference<Activity> mWeakActivity;
 
@@ -58,18 +56,35 @@ public class Settings extends Fragment {
         return kioskNumber;
     }
 
+    public static void setError(String error, String errorC, Context context) {
+        errorMsg = error;
+        errorClass = errorC;
+        saveSettings(context);
+    }
+
+    private static String getErrorMsg() {
+        return errorMsg;
+    }
+
+    private static String getErrorClass() {
+        return errorClass;
+    }
+
     public Settings(Activity activity) {
         mWeakActivity = new WeakReference<>(activity);
     }
 
-    public static void saveSettings(Context context) {
+    private static void saveSettings(Context context) {
+        if (context == null) {
+            context = mWeakActivity.get();
+        }
         settings = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("cooler_location", coolerLocation);
         editor.putString("kiosk_number", kioskNumber);
-        editor.putString("error_msg", Time.getErrorMsg());
-        editor.putString("error_class", Time.getErrorClass());
-        editor.commit();
+        editor.putString("error_msg", getErrorMsg());
+        editor.putString("error_class", getErrorClass());
+        editor.apply();
     }
 
     @Override
@@ -86,29 +101,25 @@ public class Settings extends Fragment {
         TextView errorText = view.findViewById(R.id.ErrorLog);
         TextView errorTitle = view.findViewById(R.id.ErrorTitle);
         TextView errorClass = view.findViewById(R.id.ErrorClass);
-        errorText.setText(Time.getErrorMsg());
-        errorClass.setText(Time.getErrorClass());
+        errorText.setText(getErrorMsg());
+        errorClass.setText(getErrorClass());
         ImageButton exitBtn = view.findViewById(R.id.ExitBtn);
         Button saveBtn = view.findViewById(R.id.SaveBtn);
         Spinner locationCoolerSpinner = view.findViewById(R.id.CoolerLocationSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.cooler_locations, android.R.layout.select_dialog_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mWeakActivity.get(), R.array.cooler_locations, android.R.layout.select_dialog_item);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_item);
         locationCoolerSpinner.setAdapter(adapter);
-        Fragment current = this;
         exitBtn.setVisibility(View.INVISIBLE);
 
         saveBtn.setOnClickListener(v -> {
-            FirstScreen.settingsClickCount = 0;
-            System.out.println("settings click count: " + FirstScreen.settingsClickCount);
             settings = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("cooler_location", coolerLocation);
             editor.putString("kiosk_number", kioskNumber);
-            editor.putString("error_msg", Time.getErrorMsg());
-            editor.putString("error_class", Time.getErrorClass());
+            editor.putString("error_msg", getErrorMsg());
+            editor.putString("error_class", getErrorClass());
             editor.commit();
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.fragment_close_enter, R.anim.fragment_close_exit).remove(current);
-            transaction.commit();
+            FirstScreen.settingsListener.setValue(true);
         });
 /*
         exitBtn.setOnClickListener(v -> {
@@ -126,6 +137,7 @@ public class Settings extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 coolerLocation = coolerArray[position];
                 System.out.println("Cooler location set to: " + getCoolerLocation());
+                FirstScreen.settingsListener.setValue(false);
             }
 
             @Override
@@ -146,6 +158,7 @@ public class Settings extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 kioskNumber = kioskNumberArray[position];
                 System.out.println("Kiosk number set to: " + getKioskNumber());
+                FirstScreen.settingsListener.setValue(false);
             }
 
             @Override
@@ -218,6 +231,6 @@ public class Settings extends Fragment {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
         coolerLocation = settings.getString("cooler_location", "0");
         kioskNumber = settings.getString("kiosk_number", "0");
-        Time.setError(settings.getString("error_msg", "0"), settings.getString("error_class", "0"));
+        setError(settings.getString("error_msg", "0"), settings.getString("error_class", "0"), getContext());
     }
 }

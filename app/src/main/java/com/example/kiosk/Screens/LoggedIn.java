@@ -22,11 +22,10 @@ import com.example.kiosk.Helpers.KeyboardListener;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.LicenseTransformationMethod;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
-import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.R;
+import com.example.kiosk.Webservices.GetMasterNumberByEmail;
 import com.example.kiosk.Webservices.GetServerTime;
 import com.example.kiosk.Webservices.UpdateShippingTruckDriver;
-import java.text.ParseException;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 /**
  * CreateAccount.java
@@ -60,6 +59,7 @@ public class LoggedIn extends AppCompatActivity {
         setup();
 
         new GetServerTime().execute();
+        new GetMasterNumberByEmail(CURRENT_ACCOUNT.getEmail()).execute();
 
         checkboxListener = new MutableLiveData<>();
         checkboxListener.observe(LoggedIn.this, needsUpdated -> {
@@ -171,7 +171,7 @@ public class LoggedIn extends AppCompatActivity {
      * the last checkbox passed as a parameter is the one to be checked
      * all others are unchecked
      */
-    private void setChecked(View... checkBox) {
+    public void setChecked(View... checkBox) {
         for (int i = 0; i < checkBox.length; i++) {
             if (i == checkBox.length-1) {
                 checkBox[i].setPressed(true);

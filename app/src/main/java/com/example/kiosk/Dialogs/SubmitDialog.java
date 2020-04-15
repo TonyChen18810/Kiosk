@@ -69,15 +69,19 @@ public class SubmitDialog extends Dialog implements android.view.View.OnClickLis
         switch (v.getId()) {
             case R.id.btn_yes:
                 AtomicBoolean masterNull = new AtomicBoolean(true);
-                for (int i = 0; i < Order.getOrdersList().size(); i++) {
-                    if (Order.getOrdersList().get(i).getMasterNumber() == null || Order.getOrdersList().get(i).getMasterNumber().equals("anyType{}") || Order.getOrdersList().get(i).getMasterNumber().equals("")) {
-                        masterNull.set(true);
-                    } else {
-                        masterNull.set(false);
-                        GetOrderDetails.setNewMasterNumber(Order.getOrdersList().get(i).getMasterNumber());
-                        System.out.println(Order.getOrdersList().get(i).getSOPNumber());
-                        break;
+                if (GetOrderDetails.getMasterNumber() == null) {
+                    for (int i = 0; i < Order.getOrdersList().size(); i++) {
+                        if (Order.getOrdersList().get(i).getMasterNumber() == null || Order.getOrdersList().get(i).getMasterNumber().equals("anyType{}") || Order.getOrdersList().get(i).getMasterNumber().equals("")) {
+                            masterNull.set(true);
+                        } else {
+                            masterNull.set(false);
+                            GetOrderDetails.setNewMasterNumber(Order.getOrdersList().get(i).getMasterNumber());
+                            System.out.println(Order.getOrdersList().get(i).getSOPNumber());
+                            break;
+                        }
                     }
+                } else {
+                    masterNull.set(false);
                 }
                 if (masterNull.get()) {
                     // Thread thread = new Thread(() -> new GetNextMasterOrderNumber(OrderEntry.this).execute());

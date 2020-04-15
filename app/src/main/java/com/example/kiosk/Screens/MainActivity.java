@@ -24,11 +24,9 @@ import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.PhoneNumberFormat;
 import com.example.kiosk.Helpers.States;
 import com.example.kiosk.R;
-import com.example.kiosk.Settings;
 import com.example.kiosk.Webservices.GetShippingTruckDriver;
 import java.util.Collections;
 import java.util.List;
-
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 import static java.util.Arrays.asList;
 

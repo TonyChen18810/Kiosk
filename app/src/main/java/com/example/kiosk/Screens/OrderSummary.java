@@ -101,7 +101,7 @@ public class OrderSummary extends AppCompatActivity {
                     outlierSet.add(outlierList.get(i).getSOPNumber());
                 }
             }
-
+            System.out.println("Here are the outlier orders, they will now be updated:");
             for (String SOP : outlierSet) {
                 new DeleteOrderDetails(SOP).execute();
                 System.out.println(SOP);

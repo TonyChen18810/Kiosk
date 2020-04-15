@@ -60,8 +60,6 @@ public class LogoutDialog extends Dialog implements android.view.View.OnClickLis
             case R.id.btn_no:
                 dismiss();
                 break;
-            default:
-                break;
         }
         dismiss();
     }

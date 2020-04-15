@@ -16,7 +16,6 @@ import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
 import java.lang.ref.WeakReference;
-
 /**
  * CancelDialog.java
  *

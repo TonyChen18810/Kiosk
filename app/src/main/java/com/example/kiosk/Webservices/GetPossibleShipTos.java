@@ -8,6 +8,8 @@ import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.PossibleDestination;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
+import com.example.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -79,14 +81,16 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
             connection = false;
             System.out.println("Trying again...");
+            Settings.setError(e.toString(), getClass().toString(), mWeakActivity.get());
             Thread thread = new Thread(() -> {
                 new GetPossibleShipTos(mWeakActivity.get(), enteredSOPNumber).execute();
             });
             try {
                 thread.start();
-                // Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
+                Settings.setError(ex.toString(), getClass().toString(), mWeakActivity.get());
             }
         }
         return null;

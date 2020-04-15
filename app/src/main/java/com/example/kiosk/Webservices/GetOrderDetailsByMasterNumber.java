@@ -7,6 +7,8 @@ import android.widget.EditText;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
+import com.example.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -38,6 +40,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
     public GetOrderDetailsByMasterNumber(String inMasterNumber, Activity activity) {
         this.inMasterNumber = inMasterNumber;
         mWeakActivity = new WeakReference<>(activity);
+        this.connection = false;
     }
 
     @Override
@@ -111,14 +114,16 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
             connection = false;
             System.out.println("Trying again...");
+            Settings.setError(e.toString(), getClass().toString(), mWeakActivity.get());
             Thread thread = new Thread(() -> {
                 new GetOrderDetailsByMasterNumber(inMasterNumber, mWeakActivity.get()).execute();
             });
             try {
                 thread.start();
-                // Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
+                Settings.setError(ex.toString(), getClass().toString(), mWeakActivity.get());
             }
         }
         return null;
@@ -131,6 +136,13 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             if (propertyCount < 1 && Order.getAssociatedOrdersList().size() < 1) {
                 System.out.println("No associated orders");
                 OrderEntry.sharedMasterNumber.setValue(false);
+                if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
+                    OrderEntry.appointmentTimeListener.setValue(-2);
+                    OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
+                } else if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == 1) {
+                    OrderEntry.appointmentTimeListener.setValue(1);
+                    OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
+                }
             } else if (Order.getAssociatedOrdersList().size() > 0){
                 System.out.println("There's associated orders!!");
                 OrderEntry.sharedMasterNumber.setValue(true);
