@@ -16,24 +16,10 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.*;
 import com.example.kiosk.Account;
-import com.example.kiosk.Dialogs.CancelDialog;
-import com.example.kiosk.Dialogs.ConnectedOrders;
-import com.example.kiosk.Dialogs.CustomerDialog;
-import com.example.kiosk.Dialogs.DeleteDialog;
-import com.example.kiosk.Dialogs.HelpDialog;
-import com.example.kiosk.Dialogs.ListViewDialog;
-import com.example.kiosk.Dialogs.LogoutDialog;
-import com.example.kiosk.Dialogs.SubmitDialog;
-import com.example.kiosk.Helpers.CustomOrderKeyboard;
-import com.example.kiosk.Helpers.Language;
-import com.example.kiosk.Helpers.PhoneNumberFormat;
-import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
+import com.example.kiosk.Dialogs.*;
+import com.example.kiosk.Helpers.*;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Settings;
@@ -83,7 +69,6 @@ public class OrderEntry extends AppCompatActivity {
     private static MutableLiveData<Boolean> addOrderListener = null;
     public static MutableLiveData<Boolean> submitDialogListener = null;
     public static MutableLiveData<Integer> validOrderNumber = null;
-    public static MutableLiveData<Boolean> sharedMasterNumber = null;
     public static MutableLiveData<String> destinationListener = null;
     public static MutableLiveData<Integer> appointmentTimeListener = null;
 
@@ -113,7 +98,6 @@ public class OrderEntry extends AppCompatActivity {
         validOrderNumber = new MutableLiveData<>();
         destinationListener = new MutableLiveData<>();
         appointmentTimeListener = new MutableLiveData<>();
-        sharedMasterNumber = new MutableLiveData<>();
 
         addOrderListener.observe(OrderEntry.this, empty -> {
             if (empty) {
@@ -228,14 +212,6 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
-            }
-        });
-
-        sharedMasterNumber.observe(OrderEntry.this, shared -> {
-            if (shared) {
-                ConnectedOrders dialog = new ConnectedOrders(OrderEntry.this, recyclerView, adapter);
-                dialog.show();
-                dialog.setCancelable(false);
             }
         });
 

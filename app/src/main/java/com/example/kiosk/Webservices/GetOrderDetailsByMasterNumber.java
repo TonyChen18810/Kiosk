@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.kiosk.Dialogs.ConnectedOrders;
+import com.example.kiosk.Helpers.RecyclerViewHorizontalAdapter;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
@@ -135,7 +140,6 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
         if (connection) {
             if (propertyCount < 1 && Order.getAssociatedOrdersList().size() < 1) {
                 System.out.println("No associated orders");
-                OrderEntry.sharedMasterNumber.setValue(false);
                 if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
                     OrderEntry.appointmentTimeListener.setValue(-2);
                     OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
@@ -145,15 +149,14 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                 }
             } else if (Order.getAssociatedOrdersList().size() > 0){
                 System.out.println("There's associated orders!!");
-                OrderEntry.sharedMasterNumber.setValue(true);
-                /*
-                if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
-                    if (OrderEntry.appointmentTimeListener.getValue() != -2) {
-                        OrderEntry.appointmentTimeListener.setValue(-2);
-                        OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
-                    }
+                Activity activity = mWeakActivity.get();
+                if (activity != null) {
+                    RecyclerView recyclerView = activity.findViewById(R.id.OrdersView);
+                    RecyclerViewHorizontalAdapter adapter = OrderEntry.getAdapter();
+                    ConnectedOrders dialog = new ConnectedOrders(activity, recyclerView, adapter);
+                    dialog.show();
+                    dialog.setCancelable(false);
                 }
-                */
             }
             Activity activity = mWeakActivity.get();
             if (activity != null) {
@@ -162,21 +165,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                 orderNumber.setEnabled(true);
                 orderNumber.setFocusable(true);
                 orderNumber.requestFocus();
-                /*
-                if (orderNumber.requestFocus()) {
-                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null) {
-                        imm.showSoftInput(orderNumber, SHOW_IMPLICIT);
-                    }
-                }
-
-                 */
             }
-            /*
-            if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
-                OrderEntry.appointmentTimeListener.setValue(-2);
-            }
-             */
         }
     }
 }

@@ -1,15 +1,15 @@
 package com.example.kiosk.Webservices;
 
+import android.app.Activity;
 import android.os.AsyncTask;
-
-import com.example.kiosk.Helpers.Time;
 import com.example.kiosk.Settings;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+import java.lang.ref.WeakReference;
+
 /**
  * UpdateMasterOrder.java
  *
@@ -33,14 +33,17 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
     private String isCheckedIn;
     private boolean lastCall;
 
+    private WeakReference<Activity> mWeakReference;
+
     private boolean connection = false;
 
-    public UpdateMasterOrder(String inMasterNumber, String inEmail, String inSOPnumber, String isCheckedIn, boolean lastCall) {
+    public UpdateMasterOrder(String inMasterNumber, String inEmail, String inSOPnumber, Activity activity, String isCheckedIn, boolean lastCall) {
         this.inMasterNumber = inMasterNumber;
         this.inEmail = inEmail;
         this.inSOPnumber = inSOPnumber;
         this.isCheckedIn = isCheckedIn;
         this.lastCall = lastCall;
+        mWeakReference = new WeakReference<>(activity);
     }
 
     @Override
@@ -84,7 +87,7 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
             System.out.println("Trying again...");
             Settings.setError(e.toString(), getClass().toString(), null);
             Thread thread = new Thread(() -> {
-                new UpdateMasterOrder(inMasterNumber, inEmail, inSOPnumber, isCheckedIn, lastCall).execute();
+                new UpdateMasterOrder(inMasterNumber, inEmail, inSOPnumber, mWeakReference.get(), isCheckedIn, lastCall).execute();
             });
             try {
                 thread.start();
@@ -102,7 +105,7 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
         if (connection) {
             if (this.lastCall) {
-                new DriverNotification(GetOrderDetails.getMasterNumber()).execute();
+                new DriverNotification(GetOrderDetails.getMasterNumber(), mWeakReference.get()).execute();
             }
         }
     }

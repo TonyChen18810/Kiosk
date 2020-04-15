@@ -46,7 +46,6 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
  * when "Next" button is pressed
  */
 public class CreateAccount extends AppCompatActivity {
-
     private String email, phone;
     private Button logoutBtn, nextBtn;
     private TextView createAccount, verifyText, preferText, helpText;
@@ -419,11 +418,11 @@ public class CreateAccount extends AppCompatActivity {
     }
 
     public void setCommunication() {
-        if (Account.getCurrentAccount().getCommunicationPreference().equals("0")) {
+        if (PREFERRED_COMMUNICATION == 0) {
             setChecked(emailCheckbox, bothCheckbox, textCheckbox);
-        } else if (Account.getCurrentAccount().getCommunicationPreference().equals("1")) {
+        } else if (PREFERRED_COMMUNICATION == 1) {
             setChecked(textCheckbox, bothCheckbox, emailCheckbox);
-        } else if (Account.getCurrentAccount().getCommunicationPreference().equals("2")) {
+        } else if (PREFERRED_COMMUNICATION == 2) {
             setChecked(emailCheckbox, textCheckbox, bothCheckbox);
         }
     }
@@ -437,13 +436,10 @@ public class CreateAccount extends AppCompatActivity {
             }
         }
         if (checkBox[checkBox.length-1] == textCheckbox) {
-            Account.getCurrentAccount().setCommunicationPreference("0");
             PREFERRED_COMMUNICATION = 0;
         } else if (checkBox[checkBox.length-1] == emailCheckbox) {
-            Account.getCurrentAccount().setCommunicationPreference("1");
             PREFERRED_COMMUNICATION = 1;
         } else if (checkBox[checkBox.length-1] == bothCheckbox) {
-            Account.getCurrentAccount().setCommunicationPreference("2");
             PREFERRED_COMMUNICATION = 2;
         }
     }

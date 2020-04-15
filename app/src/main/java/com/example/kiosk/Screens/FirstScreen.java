@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.kiosk.Account;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Order;

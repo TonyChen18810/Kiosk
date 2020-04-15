@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.example.kiosk.Account;
 import com.example.kiosk.Dialogs.LogoutDialog;
+import com.example.kiosk.Dialogs.ProgressDialog;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Helpers.RecyclerViewSummaryAdapter;
 import com.example.kiosk.Helpers.Rounder;
@@ -55,6 +56,8 @@ public class OrderSummary extends AppCompatActivity {
 
     private int counter;
     CountDownTimer timer;
+
+    public static ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +111,7 @@ public class OrderSummary extends AppCompatActivity {
             }
 
             for (String SOP : outlierSet) {
-                new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), SOP, "false",false).execute();
+                new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), SOP, OrderSummary.this,"false",false).execute();
             }
 /*
             System.out.println("Here are the outlier orders, they will now be updated:");
@@ -127,15 +130,17 @@ public class OrderSummary extends AppCompatActivity {
             }
             for (int i = 0; i < orderList.size(); i++) {
                 if (i == orderList.size()-1) {
-                    new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), "true",true).execute();
+                    new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), OrderSummary.this, "true",true).execute();
                 } else {
-                    new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), "true", false).execute();
+                    new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), OrderSummary.this, "true", false).execute();
                 }
             }
             setContentView(R.layout.final_screen);
-
+            dialog = new ProgressDialog("Submitting your orders...", OrderSummary.this);
+            dialog.show();
             final Button logoutBtn = findViewById(R.id.LogoutBtn);
             final TextView textView = findViewById(R.id.textView);
+            logoutBtn.setEnabled(false);
             textView.setVisibility(View.INVISIBLE);
 
             timer = new CountDownTimer(60000, 1000) {

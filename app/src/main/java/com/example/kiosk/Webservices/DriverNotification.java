@@ -1,14 +1,17 @@
 package com.example.kiosk.Webservices;
 
+import android.app.Activity;
 import android.os.AsyncTask;
-
+import android.widget.Button;
+import com.example.kiosk.R;
+import com.example.kiosk.Screens.OrderSummary;
 import com.example.kiosk.Settings;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+import java.lang.ref.WeakReference;
 /**
  * DriverNotification.java
  *
@@ -25,8 +28,11 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
     private String inMasterNumber;
     private String inCoolerLocation = "01";
 
-    DriverNotification(String inMasterNumber) {
+    private WeakReference<Activity> mWeakReference;
+
+    DriverNotification(String inMasterNumber, Activity activity) {
         this.inMasterNumber = inMasterNumber;
+        mWeakReference = new WeakReference<>(activity);
     }
 
     @Override
@@ -58,7 +64,7 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
             Settings.setError(e.toString(), getClass().toString(), null);
             Thread thread = new Thread(() -> {
-                new DriverNotification(inMasterNumber).execute();
+                new DriverNotification(inMasterNumber, mWeakReference.get()).execute();
             });
             thread.start();
             try {
@@ -69,5 +75,16 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
             }
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        Activity activity = mWeakReference.get();
+        if (activity != null) {
+            Button logoutBtn = activity.findViewById(R.id.LogoutBtn);
+            logoutBtn.setEnabled(true);
+            OrderSummary.dialog.dismiss();;
+        }
     }
 }
