@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
+
+import android.app.Application;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -19,6 +21,9 @@ import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Settings;
 import com.example.kiosk.Webservices.GetOrderDetails;
+
+import java.util.Date;
+
 /**
  * FirstScreen.java
  *
@@ -203,7 +208,7 @@ public class FirstScreen extends AppCompatActivity {
             version = pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            Settings.setError(e.toString(), getClass().toString(), FirstScreen.this);
+            Settings.setError(e.toString(), getClass().toString(), new Date().toString(), FirstScreen.this);
         }
         versionText = findViewById(R.id.VersionText);
         versionText.setText("Version: " + version);

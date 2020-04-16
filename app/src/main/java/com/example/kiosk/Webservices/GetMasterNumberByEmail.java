@@ -7,6 +7,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.util.Date;
+
 /**
  * GetMasterNumberByEmail.java
  *
@@ -58,7 +60,7 @@ public class GetMasterNumberByEmail extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Trying again...");
-            Settings.setError(e.toString(), getClass().toString(), null);
+            // Settings.setError(e.toString(), getClass().toString(), new Date().toString(),null);
             Thread thread = new Thread(() -> {
                 new GetMasterNumberByEmail(email).execute();
             });
@@ -67,7 +69,7 @@ public class GetMasterNumberByEmail extends AsyncTask<Void, Void, Void> {
                 Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Settings.setError(ex.toString(), getClass().toString(), null);
+                // Settings.setError(ex.toString(), getClass().toString(), new Date().toString(), null);
             }
         }
         return null;

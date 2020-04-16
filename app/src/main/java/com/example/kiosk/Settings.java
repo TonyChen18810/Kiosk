@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -22,6 +23,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.kiosk.Screens.FirstScreen;
 import java.lang.ref.WeakReference;
+import java.util.Date;
+
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 /**
  * Settings.java
@@ -44,6 +47,8 @@ public class Settings extends Fragment {
     private static String errorMsg;
     private static String errorClass;
 
+    private static String errorDate;
+
     private static SharedPreferences settings;
 
     private static WeakReference<Activity> mWeakActivity;
@@ -56,9 +61,10 @@ public class Settings extends Fragment {
         return kioskNumber;
     }
 
-    public static void setError(String error, String errorC, Context context) {
+    public static void setError(String error, String errorC, String date, Context context) {
         errorMsg = error;
         errorClass = errorC;
+        errorDate = date;
         saveSettings(context);
     }
 
@@ -68,6 +74,10 @@ public class Settings extends Fragment {
 
     private static String getErrorClass() {
         return errorClass;
+    }
+
+    private static String getErrorDate() {
+        return errorDate;
     }
 
     public Settings(Activity activity) {
@@ -84,6 +94,7 @@ public class Settings extends Fragment {
         editor.putString("kiosk_number", kioskNumber);
         editor.putString("error_msg", getErrorMsg());
         editor.putString("error_class", getErrorClass());
+        editor.putString("date", new Date().toString());
         editor.apply();
     }
 
@@ -103,6 +114,7 @@ public class Settings extends Fragment {
         TextView errorClass = view.findViewById(R.id.ErrorClass);
         errorText.setText(getErrorMsg());
         errorClass.setText(getErrorClass());
+        // errorTitle.setText(errorTitle.getText().toString() + " " + getErrorDate());
         ImageButton exitBtn = view.findViewById(R.id.ExitBtn);
         Button saveBtn = view.findViewById(R.id.SaveBtn);
         Spinner locationCoolerSpinner = view.findViewById(R.id.CoolerLocationSpinner);
@@ -118,6 +130,7 @@ public class Settings extends Fragment {
             editor.putString("kiosk_number", kioskNumber);
             editor.putString("error_msg", getErrorMsg());
             editor.putString("error_class", getErrorClass());
+            editor.putString("error_date", getErrorDate());
             editor.commit();
             FirstScreen.settingsListener.setValue(true);
         });
@@ -231,6 +244,6 @@ public class Settings extends Fragment {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
         coolerLocation = settings.getString("cooler_location", "0");
         kioskNumber = settings.getString("kiosk_number", "0");
-        setError(settings.getString("error_msg", "0"), settings.getString("error_class", "0"), getContext());
+        setError(settings.getString("error_msg", "0"), settings.getString("error_class", "0"), settings.getString("error_date", "0"), getContext());
     }
 }

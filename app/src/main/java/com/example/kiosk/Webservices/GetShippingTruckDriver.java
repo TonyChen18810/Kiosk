@@ -13,6 +13,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
+import java.util.Date;
+
 /**
  * GetShippingTruckDriver.java
  *
@@ -92,7 +94,7 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                     null, null, null, null, null, null);
             Account.setCurrentAccount(account);
             System.out.println("Trying again...");
-            Settings.setError(e.toString(), getClass().toString(), mWeakActivity.get());
+            Settings.setError(e.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             Thread thread = new Thread(() -> {
                 new GetShippingTruckDriver(mWeakActivity.get(), enteredEmail).execute();
             });
@@ -101,7 +103,7 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                 Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Settings.setError(ex.toString(), getClass().toString(), mWeakActivity.get());
+                Settings.setError(ex.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             }
         }
         return null;

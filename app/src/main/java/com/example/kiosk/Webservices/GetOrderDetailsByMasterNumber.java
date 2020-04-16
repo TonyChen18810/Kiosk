@@ -19,6 +19,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
+import java.util.Date;
+
 /**
  * GetOrderDetailsByMasterNumber.java
  *
@@ -119,7 +121,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
             connection = false;
             System.out.println("Trying again...");
-            Settings.setError(e.toString(), getClass().toString(), mWeakActivity.get());
+            Settings.setError(e.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             Thread thread = new Thread(() -> {
                 new GetOrderDetailsByMasterNumber(inMasterNumber, mWeakActivity.get()).execute();
             });
@@ -128,7 +130,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                 Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Settings.setError(ex.toString(), getClass().toString(), mWeakActivity.get());
+                Settings.setError(ex.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             }
         }
         return null;

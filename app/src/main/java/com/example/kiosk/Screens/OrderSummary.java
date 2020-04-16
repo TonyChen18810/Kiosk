@@ -55,7 +55,7 @@ public class OrderSummary extends AppCompatActivity {
     private Button logoutBtn;
 
     private int counter;
-    CountDownTimer timer;
+    public static CountDownTimer timer;
 
     public static ProgressDialog dialog;
 
@@ -138,6 +138,7 @@ public class OrderSummary extends AppCompatActivity {
             setContentView(R.layout.final_screen);
             dialog = new ProgressDialog("Submitting your orders...", OrderSummary.this);
             dialog.show();
+            dialog.setCancelable(false);
             final Button logoutBtn = findViewById(R.id.LogoutBtn);
             final TextView textView = findViewById(R.id.textView);
             logoutBtn.setEnabled(false);
@@ -152,7 +153,7 @@ public class OrderSummary extends AppCompatActivity {
                     textView.setText("done");
                     logoutBtn.performClick();
                 }
-            }.start();
+            };
 
             TextView tv1 = findViewById(R.id.textView1);
             TextView tv2 = findViewById(R.id.textView2);
@@ -232,6 +233,12 @@ public class OrderSummary extends AppCompatActivity {
             confirmBtn.setText(R.string.confirm_eng);
             logoutBtn.setText(R.string.logout_eng);
             backBtn.setText(R.string.back_eng);
+            orderNumber.setTextSize(40);
+            buyerName.setTextSize(40);
+            estPallets.setTextSize(40);
+            aptTime.setTextSize(40);
+            destination.setTextSize(40);
+            estWeight.setTextSize(40);
         } else if (currentLanguage == 1) {
             confirmOrders.setText(R.string.confirm_orders_sp);
             confirmationNumberText.setText(R.string.confirmation_num_sp);
@@ -247,6 +254,12 @@ public class OrderSummary extends AppCompatActivity {
             confirmBtn.setText(R.string.confirm_sp);
             logoutBtn.setText(R.string.logout_sp);
             backBtn.setText(R.string.back_sp);
+            orderNumber.setTextSize(36);
+            buyerName.setTextSize(36);
+            estPallets.setTextSize(36);
+            aptTime.setTextSize(36);
+            destination.setTextSize(36);
+            estWeight.setTextSize(36);
         } else if (currentLanguage == 2) {
             confirmOrders.setText(R.string.confirm_orders_fr);
             confirmationNumberText.setText(R.string.confirmation_num_fr);
@@ -262,6 +275,12 @@ public class OrderSummary extends AppCompatActivity {
             confirmBtn.setText(R.string.confirm_fr);
             logoutBtn.setText(R.string.logout_fr);
             backBtn.setText(R.string.back_fr);
+            orderNumber.setTextSize(30);
+            buyerName.setTextSize(30);
+            estPallets.setTextSize(30);
+            aptTime.setTextSize(30);
+            destination.setTextSize(30);
+            estWeight.setTextSize(30);
         }
     }
 }

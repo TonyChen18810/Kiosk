@@ -409,8 +409,8 @@
     <string name="confirmation_num_fr">Numéro de confirmation:</string>
     <string name="order_number_fr">Numéro de\ncommande</string>
     <string name="buyer_name_fr">Nom du client</string>
-    <string name="est_pallets_fr">Nb de\npalettes estimé</string>
-    <string name="apt_time_fr">Heure du\nrendez-vous</string>
+    <string name="est_pallets_fr">Palettes\nestimé</string>
+    <string name="apt_time_fr">Heure du rendez-vous</string>
     <string name="destination_fr">Destination</string>
     <string name="est_weight_fr">Poids estimé</string>
     <string name="total_orders_fr">Nombre total de commandes:</string>

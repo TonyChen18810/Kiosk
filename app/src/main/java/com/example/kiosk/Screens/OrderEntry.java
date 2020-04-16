@@ -26,6 +26,7 @@ import com.example.kiosk.Settings;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 /**
  * OrderEntry.java
@@ -182,7 +183,6 @@ public class OrderEntry extends AppCompatActivity {
                 orderNumber.setText("");
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setEnabled(true);
-                //orderNumber.requestFocus();
             }
             progressBar.setVisibility(View.GONE);
         });
@@ -346,7 +346,7 @@ public class OrderEntry extends AppCompatActivity {
                 new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute();
             } catch (Exception e) {
                 e.printStackTrace();
-                Settings.setError(e.toString(), getClass().toString(), OrderEntry.this);
+                Settings.setError(e.toString(), getClass().toString(), new Date().toString(), OrderEntry.this);
             }
         });
 

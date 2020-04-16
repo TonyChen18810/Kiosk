@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
 import com.example.kiosk.R;
-
 public class ProgressDialog extends Dialog{
 
     private String progressText;

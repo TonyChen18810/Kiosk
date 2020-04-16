@@ -76,27 +76,19 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                 unhighlightView(holder);
             }
         } else {
-            if (currentOrder.getCheckedIn().equals("true") || currentOrder.getTruckStatus().equals("Fulfilled")) {
-                alreadyCheckedInText(holder);
+            if (currentOrder.getAppointment().equals("true") && currentOrder.getAppointmentTime().equals("00:00:00")) {
+                scheduleAptText(holder);
+                errorView(holder);
                 errorOrders.add(currentOrder);
-            } else {
-                if (currentOrder.getAppointment().equals("true") && currentOrder.getAppointmentTime().equals("00:00:00")) {
-                    scheduleAptText(holder);
+            } else if (currentOrder.getAppointment().equals("true")) {
+                if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 1) {
+                    lateText(holder);
                     errorView(holder);
                     errorOrders.add(currentOrder);
-                } else if (currentOrder.getAppointment().equals("true")) {
-                    if (checkApppointmentTime(currentOrder.getAppointmentTime()) == 1) {
-                        lateText(holder);
-                        errorView(holder);
-                        errorOrders.add(currentOrder);
-                    } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
-                        differentAptTimeText(holder);
-                        errorView(holder);
-                        errorOrders.add(currentOrder);
-                    } else {
-                        alreadyCheckedInText(holder);
-                        errorOrders.add(currentOrder);
-                    }
+                } else if (Order.getOrdersList().get(Order.getOrdersList().size() - 1).getAppointment().equals("true") && !currentOrder.getAppointmentTime().equals(Order.getCurrentAppointmentTime())) {
+                    differentAptTimeText(holder);
+                    errorView(holder);
+                    errorOrders.add(currentOrder);
                 }
             }
             holder.errorMsg.setVisibility(View.VISIBLE);
@@ -137,7 +129,6 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
                 }
             } else {
                 errorOrders.add(currentOrder);
-                alreadyCheckedIn(holder);
             }
 
             if (!errorOrders.contains(currentOrder)) {
@@ -225,32 +216,6 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         } else if (Language.getCurrentLanguage() == 2) {
             helpText = "L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.";
             holder.errorMsg.setText("L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.");
-        }
-        HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
-        dialog.show();
-    }
-
-    private void alreadyCheckedInText(MyViewHolder holder) {
-        if (Language.getCurrentLanguage() == 0) {
-            holder.errorMsg.setText("The order has already been checked in");
-        } else if (Language.getCurrentLanguage() == 1) {
-            holder.errorMsg.setText("El pedido ya ha sido facturado");
-        } else if (Language.getCurrentLanguage() == 2) {
-            holder.errorMsg.setText("La ordre a déjà été enregistrée");
-        }
-    }
-
-    private void alreadyCheckedIn(MyViewHolder holder) {
-        String helpText = "";
-        if (Language.getCurrentLanguage() == 0) {
-            helpText = "The order has already been checked in";
-            holder.errorMsg.setText("The order has already been checked in");
-        } else if (Language.getCurrentLanguage() == 1) {
-            helpText = "El pedido ya ha sido facturado";
-            holder.errorMsg.setText("El pedido ya ha sido facturado");
-        } else if (Language.getCurrentLanguage() == 2) {
-            helpText = "La ordre a déjà été enregistrée";
-            holder.errorMsg.setText("La ordre a déjà été enregistrée");
         }
         HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
         dialog.show();

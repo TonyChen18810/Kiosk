@@ -16,6 +16,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
+import java.util.Date;
+
 /**
  * GetOrderDetails.java
  *
@@ -115,13 +117,13 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
             connection = false;
             // if web service call fails, wait 3 seconds and try again - this continues until the call is successful
             Thread thread = new Thread(() -> new GetOrderDetails(mWeakActivity.get(), enteredSOPNumber).execute());
-            Settings.setError(e.toString(), getClass().toString(), mWeakActivity.get());
+            Settings.setError(e.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             try {
                 Thread.sleep(3000);
                 thread.start();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
-                Settings.setError(ex.toString(), getClass().toString(), mWeakActivity.get());
+                Settings.setError(ex.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             }
         }
         return null;

@@ -8,6 +8,9 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import java.util.Date;
+
 /**
  * GetServerTime.java
  *
@@ -42,7 +45,7 @@ public class GetServerTime extends AsyncTask<Void, Void, Void> {
             Time.setTime(time);
         } catch (Exception e) {
             e.printStackTrace();
-            Settings.setError(e.toString(), getClass().toString(), null);
+            // Settings.setError(e.toString(), getClass().toString(), new Date().toString(),null);
             Thread thread = new Thread(() -> {
                 new GetServerTime().execute();
             });
@@ -51,7 +54,7 @@ public class GetServerTime extends AsyncTask<Void, Void, Void> {
                 Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Settings.setError(ex.toString(), getClass().toString(), null);
+                // Settings.setError(ex.toString(), getClass().toString(), new Date().toString(), null);
             }
         }
         return null;

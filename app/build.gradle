@@ -8,8 +8,8 @@ android {
         minSdkVersion 25
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 25
-        versionCode 18
-        versionName '0.0.28'
+        versionCode 20
+        versionName '0.0.30'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -52,4 +52,9 @@ dependencies {
         exclude group: 'stax', module: 'stax'
         exclude group: 'xpp3', module: 'xpp3'
     }
+
+    def acraVersion = '5.5.0'
+    implementation "ch.acra:acra-mail:$acraVersion"
+    implementation "ch.acra:acra-dialog:$acraVersion"
+
 }
