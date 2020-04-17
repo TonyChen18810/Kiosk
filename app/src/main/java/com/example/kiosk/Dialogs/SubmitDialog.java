@@ -69,11 +69,14 @@ public class SubmitDialog extends Dialog implements android.view.View.OnClickLis
         switch (v.getId()) {
             case R.id.btn_yes:
                 AtomicBoolean masterNull = new AtomicBoolean(true);
+                System.out.println("Here's current master number: " + GetOrderDetails.getMasterNumber());
                 if (GetOrderDetails.getMasterNumber() == null) {
                     for (int i = 0; i < Order.getOrdersList().size(); i++) {
                         if (Order.getOrdersList().get(i).getMasterNumber() == null || Order.getOrdersList().get(i).getMasterNumber().equals("anyType{}") || Order.getOrdersList().get(i).getMasterNumber().equals("")) {
+                            System.out.println("MasterNull set to true... will eventually get a new one");
                             masterNull.set(true);
                         } else {
+                            System.out.println("MasterNull set to false... break,");
                             masterNull.set(false);
                             GetOrderDetails.setNewMasterNumber(Order.getOrdersList().get(i).getMasterNumber());
                             System.out.println(Order.getOrdersList().get(i).getSOPNumber());

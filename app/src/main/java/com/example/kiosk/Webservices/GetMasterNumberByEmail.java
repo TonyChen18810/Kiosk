@@ -50,12 +50,12 @@ public class GetMasterNumberByEmail extends AsyncTask<Void, Void, Void> {
             transportSE.call(soapAction, envelope);
             SoapObject response = (SoapObject) envelope.getResponse();
             if (response.getPropertyCount() < 1) {
-                System.out.println("User does not have a master number already");
+                System.out.println("USER DOES NOT HAVE A MASTER NUMBER");
             } else {
-                System.out.println("User has a master number...");
+                System.out.println("USER HAS A MASTER NUMBER...");
                 String masterNumber = ((SoapObject) (response.getProperty(0))).getProperty(0).toString();
                 GetOrderDetails.setNewMasterNumber(masterNumber);
-                System.out.println("The user's master number is: " + GetOrderDetails.getMasterNumber());
+                System.out.println("THE USER'S MASTER NUMBER IS " + GetOrderDetails.getMasterNumber());
             }
         } catch (Exception e) {
             e.printStackTrace();

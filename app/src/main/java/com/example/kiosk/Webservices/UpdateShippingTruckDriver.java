@@ -1,16 +1,21 @@
 package com.example.kiosk.Webservices;
 
+import android.app.Activity;
 import android.os.AsyncTask;
-import com.example.kiosk.Account;
-import com.example.kiosk.Settings;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
+import com.example.kiosk.Account;
+import com.example.kiosk.R;
+import com.example.kiosk.Screens.CreateAccount;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
-import java.util.Date;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 /**
  * UpdateShippingTruckDriver.java
@@ -28,8 +33,13 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
 
     private Account account;
 
-    public UpdateShippingTruckDriver(Account account) {
+    private WeakReference<Activity> mWeakActivity;
+
+    private boolean connection = false;
+
+    public UpdateShippingTruckDriver(Account account, Activity activity) {
         this.account = account;
+        mWeakActivity = new WeakReference<>(activity);
     }
 
     @Override
@@ -64,7 +74,7 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         try {
             transportSE.call(soapAction, envelope);
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
-
+            connection = response != null;
             if (response.toString().equals("0")) {
                 System.out.println("Success, account created/updated");
             } else {
@@ -76,7 +86,7 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
             System.out.println("Trying again...");
             // Settings.setError(e.toString(), getClass().toString(), new Date().toString(), null);
             Thread thread = new Thread(() -> {
-                new UpdateShippingTruckDriver(account).execute();
+                new UpdateShippingTruckDriver(account, mWeakActivity.get()).execute();
             });
             try {
                 thread.start();
@@ -87,5 +97,26 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
             }
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        if (connection) {
+            Activity activity = mWeakActivity.get();
+            if (activity != null) {
+                System.out.println("Here's the class name: " + activity.getLocalClassName());
+            }
+            if (activity != null && activity.getLocalClassName().equals("Screens.CreateAccount")) {
+                Button logoutBtn = activity.findViewById(R.id.LogoutBtn);
+                ProgressBar progressBar = activity.findViewById(R.id.ProgressBar);
+                logoutBtn.setEnabled(true);
+                progressBar.setVisibility(View.INVISIBLE);
+                CreateAccount.accountCreatedListener.setValue(true);
+                // CreateAccount.progessBar.hide();
+                // CreateAccount.hideKeyboard(activity);
+                // System.out.println("Here's the current focus: " + activity.getCurrentFocus());
+            }
+        }
     }
 }

@@ -2,6 +2,9 @@ package com.example.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -66,15 +69,16 @@ public class CreateAccount extends AppCompatActivity {
     private TextView txtText, emailText, bothText, selectText;
     private View textCheckbox, emailCheckbox, bothCheckbox;
 
-    private ProgressBar progressBar;
-
     private Button selectState1, selectState2;
     private boolean initialSelection1 = false, initialSelection2 = false;
     private boolean clicked1 = false, clicked2 = false;
 
     public static MutableLiveData<Boolean> checkboxListener;
+    public static MutableLiveData<Boolean> accountCreatedListener;
 
     private int PREFERRED_COMMUNICATION = -1;
+
+    ProgressBar progressBar;
 
     private static int currentLanguage = Language.getCurrentLanguage();
 
@@ -301,6 +305,12 @@ public class CreateAccount extends AppCompatActivity {
                     selectText.setVisibility(View.VISIBLE);
                 }
             } else {
+                disableButtons(nextBtn, selectState1, selectState2, logoutBtn);
+                disableEditTexts(emailAddress, phoneNumber, truckName, truckNumber, trailerLicense, driverLicense, driverName, dispatcherPhoneNumber);
+                disableImageButtons(dispatcherPhoneNumberHelp, driverLicenseHelp, driverNameHelp, trailerLicenseHelp, truckNameHelp, truckNumberHelp);
+                textCheckbox.setEnabled(false);
+                emailCheckbox.setEnabled(false);
+                bothCheckbox.setEnabled(false);
                 fields.clear();
                 errorFields.clear();
                 setStatus(1, errorFields);
@@ -314,7 +324,11 @@ public class CreateAccount extends AppCompatActivity {
                 driverLicenseStr = driverLicense.getText().toString();
                 driverNameStr = driverName.getText().toString();
                 dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
-
+                // pass a weak reference?
+                Account account = new Account(emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
+                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
+                progressBar.setVisibility(View.VISIBLE);
+                new UpdateShippingTruckDriver(account, CreateAccount.this).execute();
                 selectText.setVisibility(View.INVISIBLE);
                 if (PREFERRED_COMMUNICATION == 0) {
                     textCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
@@ -324,6 +338,13 @@ public class CreateAccount extends AppCompatActivity {
                     bothCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
                 }
                 selectText.setVisibility(View.GONE);
+            }
+        });
+
+        accountCreatedListener = new MutableLiveData<>();
+        accountCreatedListener.observe(CreateAccount.this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
                 setContentView(R.layout.account_created_msg);
                 TextView successText = findViewById(R.id.textView);
                 Button loginBtn = findViewById(R.id.LogoutBtn);
@@ -350,12 +371,9 @@ public class CreateAccount extends AppCompatActivity {
                 TextView userDriverLicense = findViewById(R.id.driverLicense);
                 TextView userDriverName = findViewById(R.id.driverName);
                 TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
-
-                progressBar.setVisibility(View.VISIBLE);
-                // pass a weak reference?
-                Account account = new Account(emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
-                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
-                new UpdateShippingTruckDriver(account).execute();
+                // dialog = new ProgressDialog("Creating account...", CreateAccount.this);
+                // dialog.show();
+                // dialog.setCancelable(false);
                 System.out.println("SENDING LANGUAGE PREFERENCE: " + Language.getCurrentLanguage()+1);
                 userEmail.setText(Html.fromHtml("Email address:\n" + "<b>" + email + "<b>"));
                 userNumber.setText(Html.fromHtml("Phone number:\n" + "<b>" + PhoneNumberFormat.formatPhoneNumber(phone) + "<b>"));
@@ -417,6 +435,23 @@ public class CreateAccount extends AppCompatActivity {
         });
     }
 
+    public void disableEditTexts(EditText... editTexts) {
+        for (EditText editText : editTexts) {
+            editText.setEnabled(false);
+        }
+    }
+    public void disableButtons(Button... buttons) {
+        for (Button button : buttons) {
+            button.setEnabled(false);
+        }
+    }
+
+    public void disableImageButtons(ImageButton... imageButtons) {
+        for (ImageButton imageButton : imageButtons) {
+            imageButton.setEnabled(false);
+        }
+    }
+
     public void setCommunication() {
         if (PREFERRED_COMMUNICATION == 0) {
             setChecked(emailCheckbox, bothCheckbox, textCheckbox);
@@ -462,6 +497,19 @@ public class CreateAccount extends AppCompatActivity {
             if (imm != null) {
                 imm.showSoftInput(view, SHOW_IMPLICIT);
             }
+        }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
@@ -568,7 +616,7 @@ public class CreateAccount extends AppCompatActivity {
         trailerStateSpinner = findViewById(R.id.StateSpinner);
         driverStateSpinner = findViewById(R.id.StateSpinner2);
         helpText = findViewById(R.id.HelpText);
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.ProgressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
         trailerStateSpinner.setVisibility(View.INVISIBLE);

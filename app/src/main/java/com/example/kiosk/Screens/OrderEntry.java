@@ -23,6 +23,7 @@ import com.example.kiosk.Helpers.*;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Settings;
+import com.example.kiosk.Webservices.GetMasterNumberByEmail;
 import com.example.kiosk.Webservices.GetOrderDetails;
 import com.example.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 import java.util.ArrayList;
@@ -443,6 +444,16 @@ public class OrderEntry extends AppCompatActivity {
                     "","","0","0"));
             addOrderListener.setValue(true);
         }
+
+        System.out.println("Order List: ");
+        for (int i = 0; i < Order.getOrdersList().size(); i++) {
+            System.out.println(Order.getOrdersList().get(i).getSOPNumber());
+        }
+
+        System.out.println("Outlier List: ");
+        for (int i = 0; i < Order.getOutlierOrders().size(); i++) {
+            System.out.println(Order.getOutlierOrders().get(i).getSOPNumber());
+        }
     }
 /*
     public void showSoftKeyboard(View view) {
@@ -497,6 +508,11 @@ public class OrderEntry extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+        System.out.println("Master number set to null: " + GetOrderDetails.getMasterNumber());
+        GetOrderDetails.setNewMasterNumber(null);
+        System.out.println("Checking account for master number...: ");
+        new GetMasterNumberByEmail(Account.getCurrentAccount().getEmail()).execute();
 
         orderNumber = findViewById(R.id.OrderNumberBox);
         logoutBtn = findViewById(R.id.LogoutBtn);

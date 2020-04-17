@@ -59,7 +59,7 @@ public class LoggedIn extends AppCompatActivity {
         setup();
 
         new GetServerTime().execute();
-        new GetMasterNumberByEmail(CURRENT_ACCOUNT.getEmail()).execute();
+        // new GetMasterNumberByEmail(CURRENT_ACCOUNT.getEmail()).execute();
 
         checkboxListener = new MutableLiveData<>();
         checkboxListener.observe(LoggedIn.this, needsUpdated -> {
@@ -99,7 +99,7 @@ public class LoggedIn extends AppCompatActivity {
                 dispatcherNumberStr = PhoneNumberFormat.extract(dispatcherPhoneNumber.getText().toString());
                 Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
                         trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
-                new UpdateShippingTruckDriver(Account.getCurrentAccount()).execute();
+                new UpdateShippingTruckDriver(Account.getCurrentAccount(), LoggedIn.this).execute();
                 System.out.println("SENDING LANGUAGE PREFERENCE: " + Language.getCurrentLanguage()+1);
                 Account.getCurrentAccount().setTruckName(truckNameStr);
                 Account.getCurrentAccount().setTruckNumber(truckNumberStr);

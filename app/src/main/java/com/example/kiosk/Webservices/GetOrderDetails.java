@@ -10,14 +10,12 @@ import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Screens.OrderEntry;
 import com.example.kiosk.Settings;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
 import java.util.Date;
-
 /**
  * GetOrderDetails.java
  *
@@ -68,7 +66,6 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         return MASTER_NUMBER;
     }
 
-    @SuppressLint("WrongThread")
     @Override
     protected Void doInBackground(Void... voids) {
         String namespace = "http://tempuri.org/";
@@ -160,49 +157,27 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                                 System.out.println("Has an appointment, now check for late/early/on-time");
                                 if (checkApppointmentTime(appointmentTime) == -1) {
                                     System.out.println("You're early");
-                                    if (MASTER_NUMBER == null) {
-                                        if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
-                                            System.out.println("We need a new master number...");
-                                            // new GetNextMasterOrderNumber().execute();
-                                        } else {
-                                            MASTER_NUMBER = masterNumber;
-                                        }
-                                    }
                                     isGoodOrder = true;
-                                    // OrderEntry.appointmentTimeListener.setValue(-2);
-                                    // OrderEntry.appointmentTimeListener.setValue(-1);
                                 } else if (checkApppointmentTime(appointmentTime) == 1) {
                                     System.out.println("You're late");
                                     isGoodOrder = false;
                                     OrderEntry.appointmentTimeListener.setValue(1);
                                 } else if (checkApppointmentTime(appointmentTime) == 0) {
                                     System.out.println("On time");
-                                    if (MASTER_NUMBER == null) {
-                                        if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
-                                            System.out.println("We need a new master number...");
-                                            // new GetNextMasterOrderNumber().execute();
-                                            isGoodOrder = true;
-                                        } else {
-                                            MASTER_NUMBER = masterNumber;
-                                        }
-                                    }
                                     isGoodOrder = true;
                                 }
                             } else {
                                 System.out.println("No appointment - continue");
                                 if (MASTER_NUMBER == null) {
                                     if (masterNumber.equals("anyType{}") || masterNumber.equals("")) {
-                                        System.out.println("We need a new master number...");
-                                        // new GetNextMasterOrderNumber().execute();
                                         isGoodOrder = true;
                                     } else {
-                                        MASTER_NUMBER = masterNumber;
+                                        // MASTER_NUMBER = masterNumber;
                                         isGoodOrder = true;
                                     }
                                 } else {
                                     isGoodOrder = true;
                                 }
-                                // Order.addMasterOrderToList(masterOrder);
                             }
                         } else if (isCheckedIn.equals("true") || !truckStatus.equals("Outstanding")) {
                             isGoodOrder = false;
