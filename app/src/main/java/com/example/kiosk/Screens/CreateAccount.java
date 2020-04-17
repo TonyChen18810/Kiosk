@@ -184,6 +184,7 @@ public class CreateAccount extends AppCompatActivity {
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         driverLicenseHelp.setOnClickListener(v -> {
@@ -197,6 +198,7 @@ public class CreateAccount extends AppCompatActivity {
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         truckNameHelp.setOnClickListener(v -> {
@@ -210,6 +212,7 @@ public class CreateAccount extends AppCompatActivity {
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         truckNumberHelp.setOnClickListener(v -> {
@@ -223,6 +226,7 @@ public class CreateAccount extends AppCompatActivity {
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         trailerLicenseHelp.setOnClickListener(v -> {
@@ -236,6 +240,7 @@ public class CreateAccount extends AppCompatActivity {
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         dispatcherPhoneNumberHelp.setOnClickListener(v -> {
@@ -249,6 +254,7 @@ public class CreateAccount extends AppCompatActivity {
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
@@ -275,6 +281,7 @@ public class CreateAccount extends AppCompatActivity {
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(CreateAccount.this, v);
             dialog.show();
+            dialog.setCancelable(false);
             // Intent intent = new Intent(CreateAccount.this, MainActivity.class);
             // startActivity(intent);
         });
@@ -426,12 +433,14 @@ public class CreateAccount extends AppCompatActivity {
             // trailerStateSpinner.performClick();
             ListViewDialog dialog = new ListViewDialog(CreateAccount.this, selectState1, 2);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         selectState2.setOnClickListener(v -> {
             // driverStateSpinner.performClick();
             ListViewDialog dialog = new ListViewDialog(CreateAccount.this, selectState2, 2);
             dialog.show();
+            dialog.setCancelable(false);
         });
     }
 

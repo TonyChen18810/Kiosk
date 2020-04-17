@@ -193,6 +193,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         }
         HelpDialog dialog = new HelpDialog(message, holder.itemView.getContext());
         dialog.show();
+        dialog.setCancelable(false);
     }
 
     private void lateText(MyViewHolder holder) {
@@ -219,6 +220,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         }
         HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
         dialog.show();
+        dialog.setCancelable(false);
     }
 
     private void differentAptTimeText(MyViewHolder holder) {
@@ -245,6 +247,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         }
         HelpDialog dialog = new HelpDialog(helpText, holder.itemView.getContext());
         dialog.show();
+        dialog.setCancelable(false);
     }
 
     @Override

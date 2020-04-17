@@ -74,6 +74,7 @@ public class LoggedIn extends AppCompatActivity {
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(LoggedIn.this, v);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         nextBtn.setOnClickListener(v -> {
@@ -148,11 +149,13 @@ public class LoggedIn extends AppCompatActivity {
         selectState1.setOnClickListener(v -> {
             ListViewDialog dialog = new ListViewDialog(LoggedIn.this, selectState1, 1);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         selectState2.setOnClickListener(v -> {
             ListViewDialog dialog = new ListViewDialog(LoggedIn.this, selectState2, 1);
             dialog.show();
+            dialog.setCancelable(false);
         });
     }
 

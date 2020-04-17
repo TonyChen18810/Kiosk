@@ -80,6 +80,7 @@ public class OrderSummary extends AppCompatActivity {
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(OrderSummary.this, v);
             dialog.show();
+            dialog.setCancelable(false);
         });
         backBtn.setOnClickListener(v12 -> {
             startActivity(new Intent(OrderSummary.this, OrderEntry.class));

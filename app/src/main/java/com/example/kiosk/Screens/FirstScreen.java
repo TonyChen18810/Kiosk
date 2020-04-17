@@ -16,11 +16,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.kiosk.Account;
+import com.example.kiosk.BuildConfig;
 import com.example.kiosk.Helpers.Language;
 import com.example.kiosk.Order;
 import com.example.kiosk.R;
 import com.example.kiosk.Settings;
 import com.example.kiosk.Webservices.GetOrderDetails;
+
+import org.acra.ACRA;
+import org.acra.config.CoreConfigurationBuilder;
+import org.acra.data.StringFormat;
 
 import java.util.Date;
 
@@ -52,6 +57,7 @@ public class FirstScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_screen);
+
         setup();
 
         final Fragment[] settingsFragment = new Fragment[1];

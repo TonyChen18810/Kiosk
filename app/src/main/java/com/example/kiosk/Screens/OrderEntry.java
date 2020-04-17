@@ -142,6 +142,7 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                 dialog.show();
+                dialog.setCancelable(false);
                 orderNumber.setEnabled(true);
                 checkOrderBtn.setEnabled(true);
                 // good order
@@ -152,6 +153,7 @@ public class OrderEntry extends AppCompatActivity {
                 CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, Order.getCurrentOrder().getCustomerName(),
                         buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar, cancelOrderBtn, keyboard);
                 dialog.setCanceledOnTouchOutside(false);
+                dialog.setCancelable(false);
                 dialog.show();
                 // order needs to schedule appointment
             } else if (valid == 2) {
@@ -166,6 +168,7 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                 dialog.show();
+                dialog.setCancelable(false);
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setEnabled(true);
                 orderNumber.setText("");
@@ -181,6 +184,7 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
+                dialog.setCancelable(false);
                 orderNumber.setText("");
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setEnabled(true);
@@ -200,6 +204,7 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
+                dialog.setCancelable(false);
                 orderNumber.setText("");
                 orderNumber.setEnabled(true);
             } else if (aptCode == -2) {
@@ -213,6 +218,7 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
+                dialog.setCancelable(false);
             }
         });
 
@@ -259,6 +265,7 @@ public class OrderEntry extends AppCompatActivity {
                     }
                     HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                     dialog.show();
+                    dialog.setCancelable(false);
                     orderNumber.setText("");
                     buyerName.setVisibility(View.GONE);
                     selectDestinationBtn.setVisibility(View.GONE);
@@ -278,6 +285,7 @@ public class OrderEntry extends AppCompatActivity {
                     }
                     HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                     dialog.show();
+                    dialog.setCancelable(false);
                 }
             }
         });
@@ -291,11 +299,13 @@ public class OrderEntry extends AppCompatActivity {
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(OrderEntry.this, v);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         submitBtn.setOnClickListener(v -> {
             SubmitDialog dialog = new SubmitDialog(OrderEntry.this, OrderEntry.this);
             dialog.show();
+            dialog.setCancelable(false);
         });
 
         addOrderBtn.setOnClickListener(v -> {
@@ -400,6 +410,7 @@ public class OrderEntry extends AppCompatActivity {
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
+                dialog.setCancelable(false);
                 orderNumber.setText("");
                 checkOrderBtn.setEnabled(true);
                 orderNumber.setEnabled(true);
@@ -423,6 +434,7 @@ public class OrderEntry extends AppCompatActivity {
         selectDestinationBtn.setOnClickListener(v -> {
             ListViewDialog dialog = new ListViewDialog(OrderEntry.this, selectDestinationBtn, 0);
             dialog.show();
+            dialog.setCancelable(false);
         });
     }
 
@@ -430,6 +442,7 @@ public class OrderEntry extends AppCompatActivity {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
         DeleteDialog dialog = new DeleteDialog(Order.getOrdersList().get(selectedItemPosition).getSOPNumber(), context, v);
         dialog.show();
+        dialog.setCancelable(false);
     }
 
     public static void removeItem(View v) {
