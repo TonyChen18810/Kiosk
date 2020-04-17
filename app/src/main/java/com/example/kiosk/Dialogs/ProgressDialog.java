@@ -6,6 +6,19 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
 import com.example.kiosk.R;
+
+/**
+ * ProgressDialog.java
+ *
+ * @param String progressText, Context context
+ *
+ * Called from OrderSummary.java
+ *
+ * Displayed while processing DeleteOrderDetails.java
+ * and UpdateMasterOrder.java web service calls
+ *
+ * Closes after DriverNotification.java web service has finished
+ */
 public class ProgressDialog extends Dialog{
 
     private String progressText;
