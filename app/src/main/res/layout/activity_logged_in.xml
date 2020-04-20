@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
     android:weightSum="1"
-    tools:context=".Screens.CreateAccount">
+    tools:context="com.dbc.kiosk.Screens.CreateAccount">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    tools:context=".Screens.CreateAccount">
+    tools:context="com.dbc.kiosk.Screens.CreateAccount">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView4"

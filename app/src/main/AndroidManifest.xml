@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.kiosk">
+    package="com.dbc.kiosk">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -9,7 +9,6 @@
         tools:ignore="ProtectedPermissions" />
 
     <application
-        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,31 +18,31 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysVisible"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Screens.FirstScreen"
+        <activity android:name="com.dbc.kiosk.Screens.FirstScreen"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Screens.OrderSummary"
+        <activity android:name="com.dbc.kiosk.Screens.OrderSummary"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name=".Screens.OrderEntry"
+        <activity android:name="com.dbc.kiosk.Screens.OrderEntry"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateHidden">
         </activity>
-        <activity android:name=".Screens.LoggedIn"
+        <activity android:name="com.dbc.kiosk.Screens.LoggedIn"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateAlwaysVisible">
         </activity>
         <activity
-            android:name=".Screens.CreateAccount"
+            android:name="com.dbc.kiosk.Screens.CreateAccount"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
-            android:name=".Screens.MainActivity"
+            android:name="com.dbc.kiosk.Screens.MainActivity"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateAlwaysVisible">
         </activity>

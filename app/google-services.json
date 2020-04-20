@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "346046945209",
+    "firebase_url": "https://check-in-kiosk-96534.firebaseio.com",
+    "project_id": "check-in-kiosk-96534",
+    "storage_bucket": "check-in-kiosk-96534.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346046945209:android:5de76bb8b90d8e8e7d4868",
+        "android_client_info": {
+          "package_name": "com.dbc.kiosk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346046945209-jajigcibgs04407go9eji2rs0em98cbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYqvjwVOh_6HLYOtm8LlQ1epIYd7M0hqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346046945209-jajigcibgs04407go9eji2rs0em98cbn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
