@@ -2,9 +2,12 @@ package com.dbc.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+
+import com.crashlytics.android.Crashlytics;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.CreateAccount;
@@ -14,6 +17,8 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * UpdateShippingTruckDriver.java
@@ -30,13 +35,15 @@ import java.lang.ref.WeakReference;
 public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
 
     private Account account;
+    private String oldEmail;
 
     private WeakReference<Activity> mWeakActivity;
 
     private boolean connection = false;
 
-    public UpdateShippingTruckDriver(Account account, Activity activity) {
+    public UpdateShippingTruckDriver(Account account, String oldEmail, Activity activity) {
         this.account = account;
+        this.oldEmail = oldEmail;
         mWeakActivity = new WeakReference<>(activity);
     }
 
@@ -49,7 +56,7 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
 
         SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("inOldEmail", account.getEmail());
+        request.addProperty("inOldEmail", oldEmail);
         request.addProperty("inNewEmail", account.getEmail());
         request.addProperty("inDriverName", account.getDriverName());
         request.addProperty("inDriverPhone", account.getPhoneNumber());
@@ -84,7 +91,7 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
             System.out.println("Trying again...");
             // Settings.setError(e.toString(), getClass().toString(), new Date().toString(), null);
             Thread thread = new Thread(() -> {
-                new UpdateShippingTruckDriver(account, mWeakActivity.get()).execute();
+                new UpdateShippingTruckDriver(account, oldEmail, mWeakActivity.get()).execute();
             });
             try {
                 thread.start();

@@ -22,6 +22,7 @@ import com.dbc.kiosk.Dialogs.*;
 import com.dbc.kiosk.Helpers.*;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Settings;
 import com.dbc.kiosk.Webservices.GetMasterNumberByEmail;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
@@ -84,7 +85,8 @@ public class OrderEntry extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_entry);
-
+        Report report = new Report(this);
+        report.setDriverTags();
         setup();
 
         CustomOrderKeyboard keyboard = findViewById(R.id.keyboard);

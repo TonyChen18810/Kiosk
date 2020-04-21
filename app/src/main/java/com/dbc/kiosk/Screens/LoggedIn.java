@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Dialogs.ListViewDialog;
 import com.dbc.kiosk.Dialogs.LogoutDialog;
@@ -60,6 +61,7 @@ public class LoggedIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         Fabric.with(this, new Crashlytics());
         Account CURRENT_ACCOUNT = Account.getCurrentAccount();
         Crashlytics.setString("Email", CURRENT_ACCOUNT.getEmail());
@@ -70,6 +72,9 @@ public class LoggedIn extends AppCompatActivity {
         Crashlytics.setString("Truck Name", CURRENT_ACCOUNT.getTruckName());
         Crashlytics.setString("Truck Number", CURRENT_ACCOUNT.getTruckNumber());
         Crashlytics.setString("Dispatcher Phone", CURRENT_ACCOUNT.getDispatcherPhoneNumber());
+         */
+        Report report = new Report(this);
+        report.setDriverTags();
         setContentView(R.layout.activity_logged_in);
         setup();
 
@@ -93,7 +98,6 @@ public class LoggedIn extends AppCompatActivity {
         });
 
         nextBtn.setOnClickListener(v -> {
-            // int crash = 9/0;
             if (PREFERRED_COMMUNICATION == -1) {
                 select.setVisibility(View.VISIBLE);
             } else {
@@ -114,9 +118,10 @@ public class LoggedIn extends AppCompatActivity {
                 driverLicenseStr = driverLicense.getText().toString();
                 driverNameStr = driverName.getText().toString();
                 dispatcherNumberStr = PhoneNumberFormat.extract(dispatcherPhoneNumber.getText().toString());
+                String oldEmail = Account.getCurrentAccount().getEmail();
                 Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
                         trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
-                new UpdateShippingTruckDriver(Account.getCurrentAccount(), LoggedIn.this).execute();
+                new UpdateShippingTruckDriver(Account.getCurrentAccount(), oldEmail, LoggedIn.this).execute();
                 System.out.println("SENDING LANGUAGE PREFERENCE: " + Language.getCurrentLanguage()+1);
                 Account.getCurrentAccount().setTruckName(truckNameStr);
                 Account.getCurrentAccount().setTruckNumber(truckNumberStr);
@@ -361,8 +366,8 @@ public class LoggedIn extends AppCompatActivity {
         driverStateListView.setVisibility(View.GONE);
         trailerStateListView.setVisibility(View.GONE);
 
-        emailAddress.setEnabled(false);
-        phoneNumber.setEnabled(false);
+        // emailAddress.setEnabled(false);
+        // phoneNumber.setEnabled(false);
         driverLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         trailerLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 
@@ -384,7 +389,7 @@ public class LoggedIn extends AppCompatActivity {
         trailerStateSpinner.setVisibility(View.INVISIBLE);
         driverStateSpinner.setVisibility(View.INVISIBLE);
 
-        showSoftKeyboard(driverName);
+        showSoftKeyboard(truckName);
         dispatcherPhoneNumber.setOnEditorActionListener(new KeyboardListener());
 
         emailAddress.setTextColor(getResources().getColor(R.color.black));

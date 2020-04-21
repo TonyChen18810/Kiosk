@@ -17,7 +17,6 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
 import java.util.Date;
-
 /**
  * GetOrderDetailsByMasterNumber.java
  *
@@ -39,7 +38,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
     private static int propertyCount;
     private WeakReference<Activity> mWeakActivity;
 
-    private boolean connection = false;
+    private boolean connection;
 
     public GetOrderDetailsByMasterNumber(String inMasterNumber, Activity activity) {
         this.inMasterNumber = inMasterNumber;

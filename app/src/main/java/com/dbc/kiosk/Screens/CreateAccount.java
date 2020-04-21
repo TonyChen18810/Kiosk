@@ -335,7 +335,7 @@ public class CreateAccount extends AppCompatActivity {
                 Account account = new Account(emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
                         driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
                 progressBar.setVisibility(View.VISIBLE);
-                new UpdateShippingTruckDriver(account, CreateAccount.this).execute();
+                new UpdateShippingTruckDriver(account, emailStr,CreateAccount.this).execute();
                 selectText.setVisibility(View.INVISIBLE);
                 if (PREFERRED_COMMUNICATION == 0) {
                     textCheckbox.setBackgroundResource(R.drawable.checkbox_filler);

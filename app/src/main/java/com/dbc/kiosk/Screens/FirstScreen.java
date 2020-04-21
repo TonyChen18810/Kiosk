@@ -16,14 +16,12 @@ import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Settings;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
 import com.crashlytics.android.Crashlytics;
-
 import java.util.Date;
-
 import io.fabric.sdk.android.Fabric;
-
 /**
  * FirstScreen.java
  *
@@ -51,7 +49,6 @@ public class FirstScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_first_screen);
 
         setup();

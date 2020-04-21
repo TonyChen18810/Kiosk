@@ -420,7 +420,6 @@
     <string name="thanks_bye2_fr">Merci d\’avoir envoyé votre commande. Vous recevrez une notification une fois que votre commande aura été approuvée par un représentant D’Arrigo.</string>
     <string name="please_logout_fr">Veuillez vous déconnecter quand vous avez fini.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back_eng">Back</string>
     <string name="back_sp">Volver</string>

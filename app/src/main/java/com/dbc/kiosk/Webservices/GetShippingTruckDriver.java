@@ -2,8 +2,11 @@ package com.dbc.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import com.crashlytics.android.Crashlytics;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.MainActivity;
@@ -14,6 +17,9 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
 import java.util.Date;
+
+import io.fabric.sdk.android.Fabric;
+
 /**
  * GetShippingTruckDriver.java
  *

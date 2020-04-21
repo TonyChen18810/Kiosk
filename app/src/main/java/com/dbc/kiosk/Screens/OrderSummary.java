@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Dialogs.LogoutDialog;
 import com.dbc.kiosk.Dialogs.ProgressDialog;
@@ -27,6 +30,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import io.fabric.sdk.android.Fabric;
+
 /**
  *
  * OrderSummary.java
@@ -78,6 +84,7 @@ public class OrderSummary extends AppCompatActivity {
         confirmationNum.setText(GetOrderDetails.getMasterNumber());
 
         logoutBtn.setOnClickListener(v -> {
+            int crash = 9/0;
             LogoutDialog dialog = new LogoutDialog(OrderSummary.this, v);
             dialog.show();
             dialog.setCancelable(false);
