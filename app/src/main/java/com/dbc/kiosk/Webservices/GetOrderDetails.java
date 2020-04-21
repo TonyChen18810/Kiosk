@@ -7,6 +7,7 @@ import android.widget.ProgressBar;
 import com.dbc.kiosk.Helpers.Time;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Settings;
 import org.ksoap2.SoapEnvelope;

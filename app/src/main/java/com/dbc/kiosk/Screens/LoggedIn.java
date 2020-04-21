@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.crashlytics.android.Crashlytics;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Dialogs.ListViewDialog;
 import com.dbc.kiosk.Dialogs.LogoutDialog;
@@ -23,8 +25,12 @@ import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Helpers.LicenseTransformationMethod;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Webservices.GetServerTime;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
+
+import io.fabric.sdk.android.Fabric;
+
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 /**
  * CreateAccount.java
@@ -54,6 +60,16 @@ public class LoggedIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
+        Account CURRENT_ACCOUNT = Account.getCurrentAccount();
+        Crashlytics.setString("Email", CURRENT_ACCOUNT.getEmail());
+        Crashlytics.setString("Phone", CURRENT_ACCOUNT.getPhoneNumber());
+        Crashlytics.setString("Name", CURRENT_ACCOUNT.getDriverName());
+        Crashlytics.setString("Driver License", CURRENT_ACCOUNT.getDriverLicense() + " " + CURRENT_ACCOUNT.getDriverState());
+        Crashlytics.setString("Trailer License", CURRENT_ACCOUNT.getTrailerLicense() + " " + CURRENT_ACCOUNT.getTrailerState());
+        Crashlytics.setString("Truck Name", CURRENT_ACCOUNT.getTruckName());
+        Crashlytics.setString("Truck Number", CURRENT_ACCOUNT.getTruckNumber());
+        Crashlytics.setString("Dispatcher Phone", CURRENT_ACCOUNT.getDispatcherPhoneNumber());
         setContentView(R.layout.activity_logged_in);
         setup();
 
@@ -77,6 +93,7 @@ public class LoggedIn extends AppCompatActivity {
         });
 
         nextBtn.setOnClickListener(v -> {
+            // int crash = 9/0;
             if (PREFERRED_COMMUNICATION == -1) {
                 select.setVisibility(View.VISIBLE);
             } else {

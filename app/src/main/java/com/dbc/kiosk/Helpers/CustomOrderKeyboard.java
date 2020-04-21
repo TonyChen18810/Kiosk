@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.dbc.kiosk.R;
-
 /**
  * CustomOrderKeyboard.java
  *
@@ -34,17 +35,14 @@ public class CustomOrderKeyboard extends LinearLayout implements View.OnClickLis
     }
 
     SparseArray<String> keyValues = new SparseArray<>();
-
     InputConnection inputConnection;
 
     private void init(Context context, AttributeSet attrs) {
-
         LayoutInflater.from(context).inflate(R.layout.keyboard, this, true);
         Button mButtonA = findViewById(R.id.button_A);
         Button mButtonB = findViewById(R.id.button_B);
         Button mButtonC = findViewById(R.id.button_C);
         Button mButtonE = findViewById(R.id.button_E);
-        LinearLayout mButtonBack = findViewById(R.id.button_back_layout);
         Button mButton1 = findViewById(R.id.button_1);
         Button mButton2 = findViewById(R.id.button_2);
         Button mButton3 = findViewById(R.id.button_3);
@@ -55,13 +53,12 @@ public class CustomOrderKeyboard extends LinearLayout implements View.OnClickLis
         Button mButton8 = findViewById(R.id.button_8);
         Button mButton9 = findViewById(R.id.button_9);
         Button mButton0 = findViewById(R.id.button_0);
+        LinearLayout mButtonBack = findViewById(R.id.button_back_layout);
 
         mButtonA.setOnClickListener(this);
         mButtonB.setOnClickListener(this);
         mButtonC.setOnClickListener(this);
         mButtonE.setOnClickListener(this);
-        mButtonBack.setOnClickListener(this);
-        // mButtonBack.setOnLongClickListener();
         mButton1.setOnClickListener(this);
         mButton2.setOnClickListener(this);
         mButton3.setOnClickListener(this);
@@ -72,6 +69,7 @@ public class CustomOrderKeyboard extends LinearLayout implements View.OnClickLis
         mButton8.setOnClickListener(this);
         mButton9.setOnClickListener(this);
         mButton0.setOnClickListener(this);
+        mButtonBack.setOnClickListener(this);
 
         keyValues.put(R.id.button_A, "A");
         keyValues.put(R.id.button_B, "B");
@@ -108,12 +106,17 @@ public class CustomOrderKeyboard extends LinearLayout implements View.OnClickLis
         } else {
             String value = keyValues.get(v.getId());
             inputConnection.commitText(value, 1);
+            // mButtonEnter.setEnabled(true);
+            // buttonEnterImage.setBackgroundResource(R.drawable.arrow_right);
         }
     }
 
     // The activity (or some parent or controller) must give us
     // a reference to the current EditText's InputConnection
-    public void setInputConnection(InputConnection ic) {
+    public void setInputConnection(InputConnection ic, ImageButton button) {
         this.inputConnection = ic;
+        // checkOrderBtn = button;
+        // mButtonEnter.setEnabled(false);
+        // buttonEnterImage.setBackgroundResource(R.drawable.arrow_right_disabled);
     }
 }

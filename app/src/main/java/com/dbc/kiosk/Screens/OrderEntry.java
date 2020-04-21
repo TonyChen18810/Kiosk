@@ -91,7 +91,7 @@ public class OrderEntry extends AppCompatActivity {
         orderNumber.setRawInputType(InputType.TYPE_CLASS_TEXT);
         orderNumber.setTextIsSelectable(true);
         InputConnection ic = orderNumber.onCreateInputConnection(new EditorInfo());
-        keyboard.setInputConnection(ic);
+        keyboard.setInputConnection(ic, checkOrderBtn);
 
         System.out.println("MASTER NUMBER AT ORDER ENTRY: " + GetOrderDetails.getMasterNumber());
 
@@ -300,6 +300,7 @@ public class OrderEntry extends AppCompatActivity {
         /// orderNumber.setOnEditorActionListener(new KeyboardListener());
 
         logoutBtn.setOnClickListener(v -> {
+            int crash = 9/0;
             LogoutDialog dialog = new LogoutDialog(OrderEntry.this, v);
             dialog.show();
             dialog.setCancelable(false);
@@ -395,6 +396,8 @@ public class OrderEntry extends AppCompatActivity {
         checkOrderBtn.setOnClickListener(v -> {
             checkOrderBtn.setEnabled(false);
             orderNumber.setEnabled(false);
+            // CustomOrderKeyboard.mButtonEnter.setEnabled(false);
+            // CustomOrderKeyboard.buttonEnterImage.setBackgroundResource(R.drawable.arrow_right_disabled);
             boolean added = false;
             for (int i = 0; i < Order.getOrdersList().size(); i++) {
                 if (Order.getOrdersList().get(i).getSOPNumber().equals(orderNumber.getText().toString())) {
@@ -521,6 +524,8 @@ public class OrderEntry extends AppCompatActivity {
     }
 
     private void setup(){
+        // Report.setDriverTags();
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
