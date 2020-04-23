@@ -1,11 +1,18 @@
 package com.dbc.kiosk.Webservices;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 
+import com.dbc.kiosk.Screens.OrderEntry;
+
+import org.acra.ACRA;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import java.lang.ref.WeakReference;
 
 /**
  * GetMasterNumberByEmail.java
@@ -23,9 +30,11 @@ import org.ksoap2.transport.HttpTransportSE;
 public class GetMasterNumberByEmail extends AsyncTask<Void, Void, Void> {
 
     private String email;
+    private WeakReference<Activity> mWeakActivity;
 
-    public GetMasterNumberByEmail(String email) {
+    public GetMasterNumberByEmail(Activity activity, String email) {
         this.email = email;
+        mWeakActivity = new WeakReference<>(activity);
     }
 
     @Override
@@ -60,7 +69,7 @@ public class GetMasterNumberByEmail extends AsyncTask<Void, Void, Void> {
             System.out.println("Trying again...");
             // Settings.setError(e.toString(), getClass().toString(), new Date().toString(),null);
             Thread thread = new Thread(() -> {
-                new GetMasterNumberByEmail(email).execute();
+                new GetMasterNumberByEmail(mWeakActivity.get(), email).execute();
             });
             thread.start();
             try {
@@ -71,5 +80,15 @@ public class GetMasterNumberByEmail extends AsyncTask<Void, Void, Void> {
             }
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        Activity activity = mWeakActivity.get();
+        if (activity != null) {
+            Intent intent = new Intent(activity, OrderEntry.class);
+            activity.startActivity(intent);
+        }
     }
 }

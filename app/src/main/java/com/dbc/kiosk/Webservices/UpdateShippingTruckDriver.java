@@ -2,12 +2,9 @@ package com.dbc.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-
-import com.crashlytics.android.Crashlytics;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.CreateAccount;
@@ -17,9 +14,6 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
-
-import io.fabric.sdk.android.Fabric;
-
 /**
  * UpdateShippingTruckDriver.java
  *
@@ -111,6 +105,13 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
             Activity activity = mWeakActivity.get();
             if (activity != null) {
                 System.out.println("Here's the class name: " + activity.getLocalClassName());
+            }
+            if (activity != null && activity.getLocalClassName().equals("Screens.LoggedIn")) {
+                // activity.findViewById(R.id.progressBar).setVisibility(View.GONE);
+                System.out.println("Master number set to null: " + GetOrderDetails.getMasterNumber());
+                GetOrderDetails.setNewMasterNumber(null);
+                System.out.println("Checking account for master number...: ");
+                new GetMasterNumberByEmail(mWeakActivity.get(), Account.getCurrentAccount().getEmail()).execute();
             }
             if (activity != null && activity.getLocalClassName().equals("Screens.CreateAccount")) {
                 Button logoutBtn = activity.findViewById(R.id.LogoutBtn);

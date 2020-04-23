@@ -184,13 +184,14 @@
             android:text="C" />
 
         <Button
-            android:id="@+id/button_blankspace_3"
+            android:id="@+id/button_enter"
             android:layout_width="260dp"
             android:layout_height="115dp"
             android:textSize="50sp"
-            android:background="@color/light_gray"
-            android:textColor="@color/black"
-            android:text="" />
+            android:background="@drawable/mybutton2"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:imeOptions="actionDone"
+            android:text="Enter" />
 
     </LinearLayout>
 

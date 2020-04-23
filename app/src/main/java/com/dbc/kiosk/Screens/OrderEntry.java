@@ -133,6 +133,7 @@ public class OrderEntry extends AppCompatActivity {
             // non-existing order
             if (valid == 0) {
                 checkOrderBtn.setEnabled(true);
+                CustomOrderKeyboard.enableEnterButton();
                 orderNumber.setText("");
                 String message = null;
                 if (Language.getCurrentLanguage() == 0) {
@@ -146,11 +147,13 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.show();
                 dialog.setCancelable(false);
                 orderNumber.setEnabled(true);
-                checkOrderBtn.setEnabled(true);
+                checkOrderBtn.setEnabled(false);
+                CustomOrderKeyboard.disableEnterButton();
                 // good order
             } else if (valid == 1) {
                 orderNumber.setEnabled(false);
                 checkOrderBtn.setEnabled(false);
+                CustomOrderKeyboard.disableEnterButton();
                 checkOrderBtn.setBackgroundResource(R.drawable.arrow_down_disabled);
                 CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, Order.getCurrentOrder().getCustomerName(),
                         buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar, cancelOrderBtn, keyboard);
@@ -160,6 +163,7 @@ public class OrderEntry extends AppCompatActivity {
                 // order needs to schedule appointment
             } else if (valid == 2) {
                 checkOrderBtn.setEnabled(true);
+                CustomOrderKeyboard.enableEnterButton();
                 String message = null;
                 if (Language.getCurrentLanguage() == 0) {
                     message = "Order #" + orderNumber.getText().toString() + " requires an appointment but hasn't had one scheduled, please call 831-455-4305 to schedule an appointment.";
@@ -172,6 +176,7 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.show();
                 dialog.setCancelable(false);
                 checkOrderBtn.setEnabled(true);
+                CustomOrderKeyboard.enableEnterButton();
                 orderNumber.setEnabled(true);
                 orderNumber.setText("");
                 // showSoftKeyboard(orderNumber);
@@ -189,6 +194,7 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.setCancelable(false);
                 orderNumber.setText("");
                 checkOrderBtn.setEnabled(true);
+                CustomOrderKeyboard.enableEnterButton();
                 orderNumber.setEnabled(true);
             }
             progressBar.setVisibility(View.GONE);
@@ -273,6 +279,7 @@ public class OrderEntry extends AppCompatActivity {
                     selectDestinationBtn.setVisibility(View.GONE);
                     orderNumber.setEnabled(true);
                     checkOrderBtn.setEnabled(false);
+                    CustomOrderKeyboard.disableEnterButton();
                     addOrderBtn.setEnabled(false);
                     checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
                     cancelOrderBtn.setVisibility(View.GONE);
@@ -302,7 +309,6 @@ public class OrderEntry extends AppCompatActivity {
         /// orderNumber.setOnEditorActionListener(new KeyboardListener());
 
         logoutBtn.setOnClickListener(v -> {
-            int crash = 9/0;
             LogoutDialog dialog = new LogoutDialog(OrderEntry.this, v);
             dialog.show();
             dialog.setCancelable(false);
@@ -354,6 +360,7 @@ public class OrderEntry extends AppCompatActivity {
 
             possibleCustomerDestinations.clear();
             checkOrderBtn.setEnabled(false);
+            CustomOrderKeyboard.disableEnterButton();
             addOrderBtn.setEnabled(false);
             cancelOrderBtn.setEnabled(false);
             cancelOrderBtn.setVisibility(View.GONE);
@@ -378,6 +385,7 @@ public class OrderEntry extends AppCompatActivity {
                     checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
                     selectDestinationBtn.setVisibility(View.GONE);
                     checkOrderBtn.setEnabled(false);
+                    CustomOrderKeyboard.disableEnterButton();
                     if (recyclerView.isShown()) {
                         submitBtn.setEnabled(true);
                     } else {
@@ -386,6 +394,7 @@ public class OrderEntry extends AppCompatActivity {
                 } else {
                     checkOrderBtn.setBackgroundResource(R.drawable.arrow_right);
                     checkOrderBtn.setEnabled(true);
+                    CustomOrderKeyboard.enableEnterButton();
                     submitBtn.setEnabled(false);
                 }
             }
@@ -397,6 +406,7 @@ public class OrderEntry extends AppCompatActivity {
 
         checkOrderBtn.setOnClickListener(v -> {
             checkOrderBtn.setEnabled(false);
+            CustomOrderKeyboard.disableEnterButton();
             orderNumber.setEnabled(false);
             // CustomOrderKeyboard.mButtonEnter.setEnabled(false);
             // CustomOrderKeyboard.buttonEnterImage.setBackgroundResource(R.drawable.arrow_right_disabled);
@@ -421,6 +431,7 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.setCancelable(false);
                 orderNumber.setText("");
                 checkOrderBtn.setEnabled(true);
+                CustomOrderKeyboard.enableEnterButton();
                 orderNumber.setEnabled(true);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
@@ -532,11 +543,6 @@ public class OrderEntry extends AppCompatActivity {
         // getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-        System.out.println("Master number set to null: " + GetOrderDetails.getMasterNumber());
-        GetOrderDetails.setNewMasterNumber(null);
-        System.out.println("Checking account for master number...: ");
-        new GetMasterNumberByEmail(Account.getCurrentAccount().getEmail()).execute();
-
         orderNumber = findViewById(R.id.OrderNumberBox);
         logoutBtn = findViewById(R.id.LogoutBtn);
         TextView emailStr = findViewById(R.id.EmailStr);
@@ -569,6 +575,7 @@ public class OrderEntry extends AppCompatActivity {
         addOrderBtn.setEnabled(false);
         submitBtn.setEnabled(false);
         checkOrderBtn.setEnabled(false);
+        CustomOrderKeyboard.disableEnterButton();
         checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
         changeLanguage(currentLanguage);
         if (currentLanguage == 2) {

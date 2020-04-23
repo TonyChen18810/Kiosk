@@ -2,11 +2,8 @@ package com.dbc.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-
-import com.crashlytics.android.Crashlytics;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.MainActivity;
@@ -17,9 +14,6 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
 import java.util.Date;
-
-import io.fabric.sdk.android.Fabric;
-
 /**
  * GetShippingTruckDriver.java
  *
@@ -33,13 +27,13 @@ import io.fabric.sdk.android.Fabric;
 public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<Activity> mWeakActivity;
-    private String enteredEmail;
+    private String inEmail;
 
     private boolean connection = false;
 
-    public GetShippingTruckDriver(Activity activity, String enteredEmail) {
+    public GetShippingTruckDriver(Activity activity, String inEmail) {
         mWeakActivity = new WeakReference<>(activity);
-        this.enteredEmail = enteredEmail;
+        this.inEmail = inEmail;
     }
 
     private static String email = "", driverName = "", phone = "", truckName = "", truckNumber = "", driversLicense = "", driversLicenseState = "",
@@ -58,7 +52,7 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
 
         SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("inEmail", enteredEmail);
+        request.addProperty("inEmail", inEmail);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
@@ -101,7 +95,7 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
             System.out.println("Trying again...");
             Settings.setError(e.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             Thread thread = new Thread(() -> {
-                new GetShippingTruckDriver(mWeakActivity.get(), enteredEmail).execute();
+                new GetShippingTruckDriver(mWeakActivity.get(), inEmail).execute();
             });
             thread.start();
             try {

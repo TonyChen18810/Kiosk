@@ -3,21 +3,21 @@ package com.dbc.kiosk.Screens;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Dialogs.ListViewDialog;
 import com.dbc.kiosk.Dialogs.LogoutDialog;
@@ -27,11 +27,11 @@ import com.dbc.kiosk.Helpers.LicenseTransformationMethod;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Report;
+import com.dbc.kiosk.Webservices.CheckForExistingAccount;
 import com.dbc.kiosk.Webservices.GetServerTime;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
-
-import io.fabric.sdk.android.Fabric;
-
+import java.util.Collections;
+import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 /**
  * CreateAccount.java
@@ -51,40 +51,70 @@ public class LoggedIn extends AppCompatActivity {
     private TextView loggedInText;
     private EditText emailAddress, phoneNumber, truckName, truckNumber, trailerLicense, driverLicense, driverName, dispatcherPhoneNumber;
     private TextView verifyText, preferText, text, email, both, select, emailHint, phoneHint, driverNameHint, driverLicenseHint,
-                        truckNameHint, truckNumberHint, trailerLicenseHint, dispatcherHint;
+                        truckNameHint, truckNumberHint, trailerLicenseHint, dispatcherHint, emailInUseWarning, phoneInUseWarning;
+    private String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
     private View textCheckbox, emailCheckbox, bothCheckbox;
     private Button selectState1, selectState2;
     public static MutableLiveData<Boolean> checkboxListener;
+
+    public static MutableLiveData<Integer> emailListener;
+    public static MutableLiveData<Integer> phoneListener;
+
+    private ProgressBar progressBar;
+
     private static int PREFERRED_COMMUNICATION = -1;
     private Account CURRENT_ACCOUNT = Account.getCurrentAccount();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-        Fabric.with(this, new Crashlytics());
-        Account CURRENT_ACCOUNT = Account.getCurrentAccount();
-        Crashlytics.setString("Email", CURRENT_ACCOUNT.getEmail());
-        Crashlytics.setString("Phone", CURRENT_ACCOUNT.getPhoneNumber());
-        Crashlytics.setString("Name", CURRENT_ACCOUNT.getDriverName());
-        Crashlytics.setString("Driver License", CURRENT_ACCOUNT.getDriverLicense() + " " + CURRENT_ACCOUNT.getDriverState());
-        Crashlytics.setString("Trailer License", CURRENT_ACCOUNT.getTrailerLicense() + " " + CURRENT_ACCOUNT.getTrailerState());
-        Crashlytics.setString("Truck Name", CURRENT_ACCOUNT.getTruckName());
-        Crashlytics.setString("Truck Number", CURRENT_ACCOUNT.getTruckNumber());
-        Crashlytics.setString("Dispatcher Phone", CURRENT_ACCOUNT.getDispatcherPhoneNumber());
-         */
         Report report = new Report(this);
         report.setDriverTags();
         setContentView(R.layout.activity_logged_in);
         setup();
 
         new GetServerTime().execute();
-        // new GetMasterNumberByEmail(CURRENT_ACCOUNT.getEmail()).execute();
 
         checkboxListener = new MutableLiveData<>();
         checkboxListener.observe(LoggedIn.this, needsUpdated -> {
             if (needsUpdated) {
                 setCommunication();
+            }
+        });
+
+        emailAddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setStatus(-1, Collections.singletonList(emailAddress));
+                emailInUseWarning.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        phoneNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setStatus(-1, Collections.singletonList(phoneNumber));
+                phoneInUseWarning.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -97,7 +127,67 @@ public class LoggedIn extends AppCompatActivity {
             dialog.setCancelable(false);
         });
 
+        emailListener = new MutableLiveData<>();
+        phoneListener = new MutableLiveData<>();
+
+        emailListener.observe(LoggedIn.this, integer -> {
+            if (integer == 0) {
+                // in use
+                System.out.println("Email in use...");
+                setStatus(0, Collections.singletonList(emailAddress));
+                emailInUseWarning.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                nextBtn.setEnabled(true);
+            } else if (integer == 1) {
+                // good email
+                System.out.println("Good email...");
+                setStatus(-1, Collections.singletonList(emailAddress));
+                emailInUseWarning.setVisibility(View.GONE);
+            }
+
+            if (phoneListener.getValue() != null && emailListener.getValue() != null) {
+                if (emailListener.getValue() == 1 && phoneListener.getValue() == 1) {
+                    // start activity
+                    System.out.println("Start next activity...");
+                    String oldEmail = Account.getCurrentAccount().getEmail();
+                    Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
+                            trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
+                    progressBar.setVisibility(View.VISIBLE);
+                    new UpdateShippingTruckDriver(Account.getCurrentAccount(), oldEmail, LoggedIn.this).execute();
+                }
+            }
+        });
+
+        phoneListener.observe(LoggedIn.this, integer -> {
+            if (integer == 0) {
+                // in use
+                System.out.println("Phone in use...");
+                setStatus(0, Collections.singletonList(phoneNumber));
+                phoneInUseWarning.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                nextBtn.setEnabled(true);
+            } else if (integer == 1) {
+                // good phone
+                System.out.println("Good phone...");
+                setStatus(-1, Collections.singletonList(phoneNumber));
+                phoneInUseWarning.setVisibility(View.GONE);
+            }
+
+            if (phoneListener.getValue() != null && emailListener.getValue() != null) {
+                if (emailListener.getValue() == 1 && phoneListener.getValue() == 1) {
+                    // start activity
+                    System.out.println("Start next activity...");
+                    String oldEmail = Account.getCurrentAccount().getEmail();
+                    Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
+                            trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
+                    progressBar.setVisibility(View.VISIBLE);
+                    new UpdateShippingTruckDriver(Account.getCurrentAccount(), oldEmail, LoggedIn.this).execute();
+                }
+            }
+        });
+
         nextBtn.setOnClickListener(v -> {
+            nextBtn.setEnabled(false);
             if (PREFERRED_COMMUNICATION == -1) {
                 select.setVisibility(View.VISIBLE);
             } else {
@@ -109,7 +199,6 @@ public class LoggedIn extends AppCompatActivity {
                     bothCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
                 }
                 select.setVisibility(View.GONE);
-                String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
                 emailStr = emailAddress.getText().toString();
                 phoneStr = PhoneNumberFormat.extract(phoneNumber.getText().toString());
                 truckNameStr = truckName.getText().toString();
@@ -118,16 +207,29 @@ public class LoggedIn extends AppCompatActivity {
                 driverLicenseStr = driverLicense.getText().toString();
                 driverNameStr = driverName.getText().toString();
                 dispatcherNumberStr = PhoneNumberFormat.extract(dispatcherPhoneNumber.getText().toString());
-                String oldEmail = Account.getCurrentAccount().getEmail();
-                Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
-                        trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
-                new UpdateShippingTruckDriver(Account.getCurrentAccount(), oldEmail, LoggedIn.this).execute();
-                System.out.println("SENDING LANGUAGE PREFERENCE: " + Language.getCurrentLanguage()+1);
-                Account.getCurrentAccount().setTruckName(truckNameStr);
-                Account.getCurrentAccount().setTruckNumber(truckNumberStr);
-                nextBtn.setEnabled(false);
-                Intent intent = new Intent(LoggedIn.this, OrderEntry.class);
-                startActivity(intent);
+                System.out.println("Next button pressed");
+                if (!Account.getCurrentAccount().getEmail().toLowerCase().equals(emailAddress.getText().toString().toLowerCase()) || !Account.getCurrentAccount().getPhoneNumber().equals(phoneStr)) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    if (!Account.getCurrentAccount().getEmail().toLowerCase().equals(emailAddress.getText().toString().toLowerCase())) {
+                        System.out.println("Email changed...");
+                        new CheckForExistingAccount(LoggedIn.this, emailStr.toLowerCase(), 0).execute();
+                    } else {
+                        emailListener.setValue(1);
+                    }
+                    if (!Account.getCurrentAccount().getPhoneNumber().equals(phoneStr)) {
+                        System.out.println("Phone changed...");
+                        new CheckForExistingAccount(LoggedIn.this, phoneStr, 1).execute();
+                    } else {
+                        phoneListener.setValue(1);
+                    }
+                } else if (Account.getCurrentAccount().getEmail().toLowerCase().equals(emailAddress.getText().toString().toLowerCase()) && Account.getCurrentAccount().getPhoneNumber().equals(phoneStr)) {
+                    System.out.println("Neither was changed...");
+                    String oldEmail = Account.getCurrentAccount().getEmail();
+                    Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
+                            trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
+                    progressBar.setVisibility(View.VISIBLE);
+                    new UpdateShippingTruckDriver(Account.getCurrentAccount(), oldEmail, LoggedIn.this).execute();
+                }
             }
         });
 
@@ -212,6 +314,18 @@ public class LoggedIn extends AppCompatActivity {
         } else if (checkBox[checkBox.length-1] == bothCheckbox) {
             PREFERRED_COMMUNICATION = 2;
             Account.getCurrentAccount().setCommunicationPreference("2");
+        }
+    }
+
+    private void setStatus(int status, List<EditText> editTexts) {
+        for (int i = 0; i < editTexts.size(); i++) {
+            if (status == 1) {
+                editTexts.get(i).getBackground().setColorFilter(getResources().getColor(R.color.okay), PorterDuff.Mode.SRC_ATOP);
+            } else if (status == 0){
+                editTexts.get(i).getBackground().setColorFilter(getResources().getColor(R.color.error), PorterDuff.Mode.SRC_ATOP);
+            } else if (status == -1){
+                editTexts.get(i).getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+            }
         }
     }
 
@@ -356,6 +470,14 @@ public class LoggedIn extends AppCompatActivity {
         truckNumberHint = findViewById(R.id.TruckNumberHint);
         trailerLicenseHint = findViewById(R.id.TrailerLicenseHint);
         dispatcherHint = findViewById(R.id.DispatcherHint);
+
+        emailInUseWarning = findViewById(R.id.EmailInUseWarning);
+        emailInUseWarning.setVisibility(View.GONE);
+        phoneInUseWarning = findViewById(R.id.PhoneInUseWarning);
+        phoneInUseWarning.setVisibility(View.GONE);
+
+        progressBar = findViewById(R.id.ProgressBar);
+        progressBar.setVisibility(View.GONE);
 
         ListView driverStateListView = findViewById(R.id.DriverStateListView);
         ListView trailerStateListView = findViewById(R.id.TrailerStateListView);
