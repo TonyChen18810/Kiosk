@@ -223,6 +223,21 @@
         app:layout_constraintVertical_bias="0.495" />
 
     <TextView
+        android:id="@+id/PhoneAlreadyExists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="*Phone already exists"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="40sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.495" />
+
+    <TextView
         android:id="@+id/SpanishText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -19,7 +19,6 @@ import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * ConnectedOrders.java
  *
@@ -133,7 +132,7 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                     OrderEntry.appointmentTimeListener.setValue(-2);
                     OrderEntry.appointmentTimeListener.setValue(-100);
                 }
-                setContentView(R.layout.activity_order_entry);
+                // setContentView(R.layout.activity_order_entry);
                 Order.clearAssociatedOrderList();
                 dismiss();
                 break;

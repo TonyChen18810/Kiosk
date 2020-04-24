@@ -3,6 +3,8 @@ package com.dbc.kiosk.Webservices;
 import android.app.Activity;
 import android.os.AsyncTask;
 
+import com.dbc.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -58,9 +60,10 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
         request.addProperty("inMasterNumber", inMasterNumber);
         request.addProperty("inEmail", inEmail);
         request.addProperty("inComment", inComment);
-        request.addProperty("inUserID", inUserID);
+        request.addProperty("inUserID", Settings.getKioskNumber());
+        System.out.println("Settings.getKioskNumber: " + Settings.getKioskNumber());
         request.addProperty("inSopNumber", inSOPnumber);
-        request.addProperty("inLocation", inLocation);
+        request.addProperty("inLocation", "01");
         request.addProperty("inCheckedIn", isCheckedIn);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);

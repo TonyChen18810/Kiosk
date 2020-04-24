@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.R;
-
 /**
  * HelpDialog.java
  *

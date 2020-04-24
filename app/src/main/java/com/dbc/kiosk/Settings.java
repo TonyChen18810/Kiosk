@@ -51,12 +51,20 @@ public class Settings extends Fragment {
 
     private static WeakReference<Activity> mWeakActivity;
 
-    private static String getCoolerLocation() {
+    public static String getCoolerLocation() {
         return coolerLocation;
     }
 
-    private static String getKioskNumber() {
+    public static String getKioskNumber() {
         return kioskNumber;
+    }
+
+    public static void setCoolerLocation(String location) {
+        coolerLocation = location;
+    }
+
+    public static void setKioskNumber(String num) {
+        kioskNumber = num;
     }
 
     public static void setError(String error, String errorC, String date, Context context) {
@@ -93,7 +101,7 @@ public class Settings extends Fragment {
         editor.putString("error_msg", getErrorMsg());
         editor.putString("error_class", getErrorClass());
         editor.putString("date", new Date().toString());
-        editor.apply();
+        editor.commit();
     }
 
     @Override
@@ -105,7 +113,7 @@ public class Settings extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        getPrefs();
+        getPrefs(getContext());
 
         TextView errorText = view.findViewById(R.id.ErrorLog);
         TextView errorTitle = view.findViewById(R.id.ErrorTitle);
@@ -146,7 +154,7 @@ public class Settings extends Fragment {
         locationCoolerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                coolerLocation = coolerArray[position];
+                coolerLocation = coolerArray[position].trim();
                 System.out.println("Cooler location set to: " + getCoolerLocation());
                 FirstScreen.settingsListener.setValue(false);
             }
@@ -167,7 +175,7 @@ public class Settings extends Fragment {
         kioskNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                kioskNumber = kioskNumberArray[position];
+                kioskNumber = kioskNumberArray[position].trim();
                 System.out.println("Kiosk number set to: " + getKioskNumber());
                 FirstScreen.settingsListener.setValue(false);
             }
@@ -179,12 +187,12 @@ public class Settings extends Fragment {
         });
 
         for (int i = 0; i < coolerArray.length; i++) {
-            if (coolerArray[i].equals(Settings.getCoolerLocation())) {
+            if (coolerArray[i].trim().equals(Settings.getCoolerLocation().trim())) {
                 locationCoolerSpinner.setSelection(i);
             }
         }
         for (int i = 0; i < kioskNumberArray.length; i++) {
-            if (kioskNumberArray[i].equals(Settings.getKioskNumber())) {
+            if (kioskNumberArray[i].trim().equals(Settings.getKioskNumber().trim())) {
                 kioskNumberSpinner.setSelection(i);
             }
         }
@@ -238,10 +246,10 @@ public class Settings extends Fragment {
         super.onDestroyView();
     }
 
-    void getPrefs() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
-        coolerLocation = settings.getString("cooler_location", "0");
-        kioskNumber = settings.getString("kiosk_number", "0");
-        setError(settings.getString("error_msg", "0"), settings.getString("error_class", "0"), settings.getString("error_date", "0"), getContext());
+    public static void getPrefs(Context context) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        coolerLocation = settings.getString("cooler_location", "01");
+        kioskNumber = settings.getString("kiosk_number", "01");
+        setError(settings.getString("error_msg", "0"), settings.getString("error_class", "0"), settings.getString("error_date", "0"), context);
     }
 }

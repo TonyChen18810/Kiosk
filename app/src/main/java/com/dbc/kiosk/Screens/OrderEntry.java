@@ -24,7 +24,6 @@ import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Settings;
-import com.dbc.kiosk.Webservices.GetMasterNumberByEmail;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
 import com.dbc.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 import java.util.ArrayList;
@@ -406,6 +405,7 @@ public class OrderEntry extends AppCompatActivity {
 
         checkOrderBtn.setOnClickListener(v -> {
             checkOrderBtn.setEnabled(false);
+            checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
             CustomOrderKeyboard.disableEnterButton();
             orderNumber.setEnabled(false);
             // CustomOrderKeyboard.mButtonEnter.setEnabled(false);

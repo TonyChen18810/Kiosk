@@ -146,7 +146,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                     OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
                 }
             } else if (Order.getAssociatedOrdersList().size() > 0){
-                System.out.println("There's associated orders!!");
+                System.out.println("There's associated orders!");
                 Activity activity = mWeakActivity.get();
                 if (activity != null) {
                     RecyclerView recyclerView = activity.findViewById(R.id.OrdersView);

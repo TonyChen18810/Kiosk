@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.widget.Button;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderSummary;
+import com.dbc.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -45,7 +47,7 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inMasterNumber", inMasterNumber);
-        request.addProperty("inCoolerLocation", inCoolerLocation);
+        request.addProperty("inCoolerLocation", "01");
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;

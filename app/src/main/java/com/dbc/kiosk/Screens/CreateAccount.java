@@ -3,8 +3,6 @@ package com.dbc.kiosk.Screens;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -32,8 +30,10 @@ import com.dbc.kiosk.Helpers.KeyboardListener;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Webservices.CheckForExistingAccount;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 /**
@@ -506,19 +506,6 @@ public class CreateAccount extends AppCompatActivity {
             if (imm != null) {
                 imm.showSoftInput(view, SHOW_IMPLICIT);
             }
-        }
-    }
-
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 

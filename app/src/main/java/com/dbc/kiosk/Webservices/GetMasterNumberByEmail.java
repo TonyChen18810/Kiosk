@@ -3,17 +3,12 @@ package com.dbc.kiosk.Webservices;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-
 import com.dbc.kiosk.Screens.OrderEntry;
-
-import org.acra.ACRA;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 import java.lang.ref.WeakReference;
-
 /**
  * GetMasterNumberByEmail.java
  *
@@ -25,14 +20,14 @@ import java.lang.ref.WeakReference;
  * of a master number string. This is used in the case a user returns to the kiosk to
  * check in additional orders, as the new orders will need to be connected with the old.
  *
- * Called from LoggedIn.java
+ * Called from UpdateShippingTruckDriver.java
  */
 public class GetMasterNumberByEmail extends AsyncTask<Void, Void, Void> {
 
     private String email;
     private WeakReference<Activity> mWeakActivity;
 
-    public GetMasterNumberByEmail(Activity activity, String email) {
+    GetMasterNumberByEmail(Activity activity, String email) {
         this.email = email;
         mWeakActivity = new WeakReference<>(activity);
     }

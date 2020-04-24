@@ -2,6 +2,8 @@ package com.dbc.kiosk.Webservices;
 
 import android.os.AsyncTask;
 
+import com.dbc.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;

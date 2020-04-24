@@ -7,7 +7,6 @@ import android.widget.ProgressBar;
 import com.dbc.kiosk.Helpers.Time;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
-import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Settings;
 import org.ksoap2.SoapEnvelope;
@@ -76,7 +75,8 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inSOPNumber", enteredSOPNumber);
-        request.addProperty("inCoolerLocation", coolerNumber);
+        request.addProperty("inCoolerLocation", "01");
+        // System.out.println("Settings.getCoolerLocation(): " + Settings.getCoolerLocation());
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;

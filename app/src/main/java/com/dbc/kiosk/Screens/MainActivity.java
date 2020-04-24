@@ -2,12 +2,13 @@ package com.dbc.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Trace;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,12 +26,14 @@ import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.Helpers.States;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Webservices.CheckForExistingAccount;
 import com.dbc.kiosk.Webservices.GetShippingTruckDriver;
+import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
+
 import java.util.Collections;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 import static java.util.Arrays.asList;
-
 /**
  *
  * MainActivity.java
@@ -47,12 +50,14 @@ import static java.util.Arrays.asList;
 public class MainActivity extends AppCompatActivity {
 
     private EditText emailAddressBox, phoneNumberBox, confirmEmailAddress, confirmPhoneNumber;
-    private TextView appointmentText, noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone, accountAlreadyExists;
+    private TextView appointmentText, noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone, accountAlreadyExists, phoneAlreadyExists;
     private Button nextBtn, backBtn;
     public ProgressBar progressBar;
     private boolean newAccount;
     public static MutableLiveData<Boolean> accountExists;
     private View englishCheckbox, spanishCheckbox, frenchCheckbox;
+    public static MutableLiveData<Boolean> emailListener;
+    public static MutableLiveData<Boolean> phoneListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,14 +104,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (newAccount) {
                 if (accountExists) {
-                System.out.println("Account already exists, if this is you please go back and log in.");
-                setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(accountAlreadyExists));
-                confirmEmailAddress.setText("");
-                confirmPhoneNumber.setText("");
-                emailAddressBox.requestFocus();
-                nextBtn.setEnabled(true);
-                backBtn.setEnabled(true);
-                progressBar.setVisibility(View.GONE);
+                    System.out.println("Account already exists, if this is you please go back and log in.");
+                    setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(accountAlreadyExists));
+                    confirmEmailAddress.setText("");
+                    confirmPhoneNumber.setText("");
+                    emailAddressBox.requestFocus();
+                    nextBtn.setEnabled(true);
+                    backBtn.setEnabled(true);
+                    progressBar.setVisibility(View.GONE);
                 } else if (!accountExists){
                     setStatus(1, asList(emailAddressBox, confirmEmailAddress, phoneNumberBox, confirmPhoneNumber), asList(noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone));
                     Intent createAccountIntent = new Intent(MainActivity.this, CreateAccount.class);
@@ -151,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                     if (doesEmailMatch()) {
                         setStatus(-1, asList(emailAddressBox, confirmEmailAddress), asList(noEmailWarning, unmatchingEmail));
                     }
+                    setStatus(-1, Collections.singletonList(emailAddressBox), Collections.singletonList(accountAlreadyExists));
                 }
             }
             @Override
@@ -195,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
                     if (doesPhoneMatch() && validNumber()) {
                         setStatus(-1, asList(phoneNumberBox, confirmPhoneNumber), asList(noPhoneNumberWarning, unmatchingPhone));
                     }
+                    setStatus(-1, Collections.singletonList(phoneNumberBox), Collections.singletonList(phoneAlreadyExists));
                 }
                 if (validNumber()) {
                     setStatus(-1, Collections.singletonList(phoneNumberBox), Collections.singletonList(noPhoneNumberWarning));
@@ -332,6 +339,69 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, FirstScreen.class));
         });
 
+        emailListener = new MutableLiveData<>();
+        emailListener.observe(MainActivity.this, available -> {
+            if (!available) {
+                System.out.println("Email in use...");
+                confirmEmailAddress.setText("");
+                setStatus(0, Collections.singletonList(emailAddressBox), Collections.emptyList());
+                // emailInUseWarning.setVisibility(View.VISIBLE);
+                accountAlreadyExists.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                nextBtn.setEnabled(true);
+                backBtn.setEnabled(true);
+            } else if (available) {
+                // good email
+                System.out.println("Good email...");
+                accountAlreadyExists.setVisibility(View.INVISIBLE);
+                setStatus(-1, Collections.singletonList(emailAddressBox), Collections.emptyList());
+                // emailInUseWarning.setVisibility(View.GONE);
+            }
+
+            if (phoneListener.getValue() != null && emailListener.getValue() != null) {
+                if (emailListener.getValue() && phoneListener.getValue()) {
+                    // start activity
+                    System.out.println("Start next activity...");
+                    Intent intent = new Intent(MainActivity.this, CreateAccount.class);
+                    intent.putExtra("Email Address", emailAddressBox.getText().toString());
+                    intent.putExtra("Phone Number", phoneNumberBox.getText().toString());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        phoneListener = new MutableLiveData<>();
+        phoneListener.observe(MainActivity.this, available -> {
+            if (!available) {
+                // in use
+                System.out.println("Phone in use...");
+                phoneAlreadyExists.setVisibility(View.VISIBLE);
+                confirmPhoneNumber.setText("");
+                setStatus(0, Collections.singletonList(phoneNumberBox), Collections.emptyList());
+                // phoneInUseWarning.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                nextBtn.setEnabled(true);
+                backBtn.setEnabled(true);
+            } else if (available) {
+                // good phone
+                System.out.println("Good phone...");
+                phoneAlreadyExists.setVisibility(View.INVISIBLE);
+                setStatus(-1, Collections.singletonList(phoneNumberBox), Collections.emptyList());
+                // phoneInUseWarning.setVisibility(View.GONE);
+            }
+
+            if (phoneListener.getValue() != null && emailListener.getValue() != null) {
+                if (emailListener.getValue() && phoneListener.getValue()) {
+                    // start activity
+                    System.out.println("Start next activity...");
+                    Intent intent = new Intent(MainActivity.this, CreateAccount.class);
+                    intent.putExtra("Email Address", emailAddressBox.getText().toString());
+                    intent.putExtra("Phone Number", phoneNumberBox.getText().toString());
+                    startActivity(intent);
+                }
+            }
+        });
+
         nextBtn.setOnClickListener(v -> {
             nextBtn.setEnabled(false);
             backBtn.setEnabled(false);
@@ -350,7 +420,10 @@ public class MainActivity extends AppCompatActivity {
             } else if (newAccount) {
                 if (validNumber() && validEmail() && doesEmailMatch() && doesPhoneMatch()) {
                     progressBar.setVisibility(View.VISIBLE);
-                    new GetShippingTruckDriver(MainActivity.this, emailAddressBox.getText().toString().toLowerCase()).execute();
+                    // check if email is already in use
+                    new CheckForExistingAccount(MainActivity.this, emailAddressBox.getText().toString().toLowerCase(), 0, newAccount).execute();
+                    // check if phone number is already in use
+                    new CheckForExistingAccount(MainActivity.this, PhoneNumberFormat.extract(phoneNumberBox.getText().toString()), 1, newAccount).execute();
                 } else {
                     if (!validEmail()){
                         setStatus(0, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
@@ -455,6 +528,7 @@ public class MainActivity extends AppCompatActivity {
         setStatus(-1, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
         animation(phoneNumberBox, "translationY", 165f);
         animation(noPhoneNumberWarning, "translationY", 165f);
+        animation(phoneAlreadyExists, "translationY", 165f);
         animation(confirmPhoneNumber, "translationY", 330f);
         animation(nextBtn, "translationY", 330f);
         animation(backBtn, "translationY", 330f);
@@ -526,6 +600,7 @@ public class MainActivity extends AppCompatActivity {
         unmatchingEmail = findViewById(R.id.UnmatchingEmail);
         unmatchingPhone = findViewById(R.id.UnmatchingPhone);
         accountAlreadyExists = findViewById(R.id.AccountAlreadyExists);
+        phoneAlreadyExists = findViewById(R.id.PhoneAlreadyExists);
 
         englishCheckbox = findViewById(R.id.EnglishCheckbox);
         spanishCheckbox = findViewById(R.id.SpanishCheckbox);
@@ -541,7 +616,7 @@ public class MainActivity extends AppCompatActivity {
         englishCheckbox.setPressed(true);
         States.setSates(MainActivity.this);
 
-        setStatus(1, Collections.emptyList(), asList(noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone, confirmEmailAddress, confirmPhoneNumber, accountAlreadyExists));
+        setStatus(1, Collections.emptyList(), asList(noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone, confirmEmailAddress, confirmPhoneNumber, accountAlreadyExists, phoneAlreadyExists));
 
         showSoftKeyboard(emailAddressBox);
         changeLanguage(Language.getCurrentLanguage());
@@ -577,6 +652,7 @@ public class MainActivity extends AppCompatActivity {
                 nextBtn.setText(R.string.next_eng);
                 backBtn.setText(R.string.back_eng);
                 accountAlreadyExists.setText(R.string.account_already_exists_eng);
+                phoneAlreadyExists.setText("*An account with this phone number already exists");
                 break;
             case 1:
                 // Spanish
@@ -592,6 +668,7 @@ public class MainActivity extends AppCompatActivity {
                 nextBtn.setText("Siguente");
                 backBtn.setText(R.string.back_sp);
                 accountAlreadyExists.setText(R.string.account_already_exists_sp);
+                phoneAlreadyExists.setText("*Ya existe una cuenta con este número de teléfono");
                 break;
             case 2:
                 // French
@@ -607,6 +684,7 @@ public class MainActivity extends AppCompatActivity {
                 nextBtn.setText(R.string.next_fr);
                 backBtn.setText(R.string.back_fr);
                 accountAlreadyExists.setText(R.string.account_already_exists_fr);
+                phoneAlreadyExists.setText("*Un compte avec ce numéro de téléphone existe déjà");
                 break;
         }
     }

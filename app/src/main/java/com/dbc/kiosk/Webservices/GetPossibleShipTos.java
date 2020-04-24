@@ -52,7 +52,7 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inSOPNumber", enteredSOPNumber);
-        request.addProperty("inCoolerLocation", coolerNumber);
+        request.addProperty("inCoolerLocation", "01");
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;

@@ -1,12 +1,16 @@
 package com.dbc.kiosk.Screens;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -16,12 +20,14 @@ import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
-import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Settings;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
-import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 import java.util.Date;
-import io.fabric.sdk.android.Fabric;
 /**
  * FirstScreen.java
  *
@@ -51,7 +57,27 @@ public class FirstScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_screen);
 
+        System.out.println(FirebaseInstanceId.getInstance().getInstanceId());
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(FirstScreen.this, "getInstanceId failed", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        Toast.makeText(FirstScreen.this, "Here's the token: " + token, Toast.LENGTH_SHORT).show();
+                        System.out.println(token);
+                    }
+                });
+
         setup();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FirstScreen.this);
+        Settings.setKioskNumber(settings.getString("kiosk_number", "01"));
+        System.out.println("Kiosk number: " + Settings.getKioskNumber());
 
         final Fragment[] settingsFragment = new Fragment[1];
         fm = getSupportFragmentManager();

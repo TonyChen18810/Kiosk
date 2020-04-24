@@ -212,13 +212,13 @@ public class LoggedIn extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     if (!Account.getCurrentAccount().getEmail().toLowerCase().equals(emailAddress.getText().toString().toLowerCase())) {
                         System.out.println("Email changed...");
-                        new CheckForExistingAccount(LoggedIn.this, emailStr.toLowerCase(), 0).execute();
+                        new CheckForExistingAccount(LoggedIn.this, emailStr.toLowerCase(), 0, false).execute();
                     } else {
                         emailListener.setValue(1);
                     }
                     if (!Account.getCurrentAccount().getPhoneNumber().equals(phoneStr)) {
                         System.out.println("Phone changed...");
-                        new CheckForExistingAccount(LoggedIn.this, phoneStr, 1).execute();
+                        new CheckForExistingAccount(LoggedIn.this, phoneStr, 1, false).execute();
                     } else {
                         phoneListener.setValue(1);
                     }
