@@ -93,7 +93,6 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                     null, null, null, null, null, null);
             Account.setCurrentAccount(account);
             System.out.println("Trying again...");
-            Settings.setError(e.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             Thread thread = new Thread(() -> {
                 new GetShippingTruckDriver(mWeakActivity.get(), inEmail).execute();
             });
@@ -102,7 +101,6 @@ public class GetShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                 Thread.sleep(3000);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Settings.setError(ex.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             }
         }
         return null;

@@ -369,7 +369,6 @@ public class OrderEntry extends AppCompatActivity {
                 new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute();
             } catch (Exception e) {
                 e.printStackTrace();
-                Settings.setError(e.toString(), getClass().toString(), new Date().toString(), OrderEntry.this);
             }
         });
 

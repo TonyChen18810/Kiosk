@@ -48,11 +48,11 @@ public class ListViewDialog extends Dialog {
             listViewTitle.setVisibility(View.VISIBLE);
             if (button.getId() == R.id.SelectDestinationBtn) {
                 if (Language.getCurrentLanguage() == 0) {
-                    listViewTitle.setText("Select Customer Destination");
+                    listViewTitle.setText("Select customer destination");
                 } else if (Language.getCurrentLanguage() == 1) {
-                    listViewTitle.setText("Seleccionar Destino del Cliente");
+                    listViewTitle.setText("Seleccionar destino del cliente");
                 } else if (Language.getCurrentLanguage() == 2) {
-                    listViewTitle.setText("Sélectionnez la Destination du Client");
+                    listViewTitle.setText("Sélectionnez la destination du client");
                 }
             }
             List<String> possibleCustomerDestinations = OrderEntry.possibleCustomerDestinations;

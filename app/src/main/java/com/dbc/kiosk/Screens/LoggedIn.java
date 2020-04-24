@@ -50,14 +50,13 @@ public class LoggedIn extends AppCompatActivity {
     private Button nextBtn;
     private TextView loggedInText;
     private EditText emailAddress, phoneNumber, truckName, truckNumber, trailerLicense, driverLicense, driverName, dispatcherPhoneNumber;
-    private TextView verifyText, preferText, text, email, both, select, emailHint, phoneHint, driverNameHint, driverLicenseHint,
-                        truckNameHint, truckNumberHint, trailerLicenseHint, dispatcherHint, emailInUseWarning, phoneInUseWarning;
+    private TextView verifyText, preferText, text, email, both, standardRatesApply, emailHint, phoneHint, driverNameHint, driverLicenseHint,
+                        truckNameHint, truckNumberHint, trailerLicenseHint, dispatcherHint, phoneInUseWarning;
     private String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
     private View textCheckbox, emailCheckbox, bothCheckbox;
     private Button selectState1, selectState2;
     public static MutableLiveData<Boolean> checkboxListener;
 
-    public static MutableLiveData<Integer> emailListener;
     public static MutableLiveData<Integer> phoneListener;
 
     private ProgressBar progressBar;
@@ -91,7 +90,6 @@ public class LoggedIn extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 setStatus(-1, Collections.singletonList(emailAddress));
-                emailInUseWarning.setVisibility(View.GONE);
             }
 
             @Override
@@ -127,36 +125,7 @@ public class LoggedIn extends AppCompatActivity {
             dialog.setCancelable(false);
         });
 
-        emailListener = new MutableLiveData<>();
         phoneListener = new MutableLiveData<>();
-
-        emailListener.observe(LoggedIn.this, integer -> {
-            if (integer == 0) {
-                // in use
-                System.out.println("Email in use...");
-                setStatus(0, Collections.singletonList(emailAddress));
-                emailInUseWarning.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-                nextBtn.setEnabled(true);
-            } else if (integer == 1) {
-                // good email
-                System.out.println("Good email...");
-                setStatus(-1, Collections.singletonList(emailAddress));
-                emailInUseWarning.setVisibility(View.GONE);
-            }
-
-            if (phoneListener.getValue() != null && emailListener.getValue() != null) {
-                if (emailListener.getValue() == 1 && phoneListener.getValue() == 1) {
-                    // start activity
-                    System.out.println("Start next activity...");
-                    String oldEmail = Account.getCurrentAccount().getEmail();
-                    Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
-                            trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
-                    progressBar.setVisibility(View.VISIBLE);
-                    new UpdateShippingTruckDriver(Account.getCurrentAccount(), oldEmail, LoggedIn.this).execute();
-                }
-            }
-        });
 
         phoneListener.observe(LoggedIn.this, integer -> {
             if (integer == 0) {
@@ -171,65 +140,47 @@ public class LoggedIn extends AppCompatActivity {
                 System.out.println("Good phone...");
                 setStatus(-1, Collections.singletonList(phoneNumber));
                 phoneInUseWarning.setVisibility(View.GONE);
-            }
-
-            if (phoneListener.getValue() != null && emailListener.getValue() != null) {
-                if (emailListener.getValue() == 1 && phoneListener.getValue() == 1) {
-                    // start activity
-                    System.out.println("Start next activity...");
-                    String oldEmail = Account.getCurrentAccount().getEmail();
-                    Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
-                            trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
-                    progressBar.setVisibility(View.VISIBLE);
-                    new UpdateShippingTruckDriver(Account.getCurrentAccount(), oldEmail, LoggedIn.this).execute();
-                }
+                System.out.println("Start next activity...");
+                Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
+                        trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
+                progressBar.setVisibility(View.VISIBLE);
+                new UpdateShippingTruckDriver(Account.getCurrentAccount(), emailStr, LoggedIn.this).execute();
             }
         });
 
         nextBtn.setOnClickListener(v -> {
             nextBtn.setEnabled(false);
-            if (PREFERRED_COMMUNICATION == -1) {
-                select.setVisibility(View.VISIBLE);
-            } else {
-                if (PREFERRED_COMMUNICATION == 0) {
-                    textCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                } else if (PREFERRED_COMMUNICATION == 1) {
-                    emailCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                } else if (PREFERRED_COMMUNICATION == 2) {
-                    bothCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+            if (PREFERRED_COMMUNICATION == 0) {
+                textCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+            } else if (PREFERRED_COMMUNICATION == 1) {
+                emailCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+            } else if (PREFERRED_COMMUNICATION == 2) {
+                bothCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
+            }
+            emailStr = emailAddress.getText().toString();
+            phoneStr = PhoneNumberFormat.extract(phoneNumber.getText().toString());
+            truckNameStr = truckName.getText().toString();
+            truckNumberStr = truckNumber.getText().toString();
+            trailerLicenseStr = trailerLicense.getText().toString();
+            driverLicenseStr = driverLicense.getText().toString();
+            driverNameStr = driverName.getText().toString();
+            dispatcherNumberStr = PhoneNumberFormat.extract(dispatcherPhoneNumber.getText().toString());
+            System.out.println("Next button pressed");
+            if (!Account.getCurrentAccount().getEmail().toLowerCase().equals(emailAddress.getText().toString().toLowerCase()) || !Account.getCurrentAccount().getPhoneNumber().equals(phoneStr)) {
+                progressBar.setVisibility(View.VISIBLE);
+                if (!Account.getCurrentAccount().getPhoneNumber().equals(phoneStr)) {
+                    System.out.println("Phone changed...");
+                    new CheckForExistingAccount(LoggedIn.this, phoneStr, 1, false).execute();
+                } else {
+                    phoneListener.setValue(1);
                 }
-                select.setVisibility(View.GONE);
-                emailStr = emailAddress.getText().toString();
-                phoneStr = PhoneNumberFormat.extract(phoneNumber.getText().toString());
-                truckNameStr = truckName.getText().toString();
-                truckNumberStr = truckNumber.getText().toString();
-                trailerLicenseStr = trailerLicense.getText().toString();
-                driverLicenseStr = driverLicense.getText().toString();
-                driverNameStr = driverName.getText().toString();
-                dispatcherNumberStr = PhoneNumberFormat.extract(dispatcherPhoneNumber.getText().toString());
-                System.out.println("Next button pressed");
-                if (!Account.getCurrentAccount().getEmail().toLowerCase().equals(emailAddress.getText().toString().toLowerCase()) || !Account.getCurrentAccount().getPhoneNumber().equals(phoneStr)) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    if (!Account.getCurrentAccount().getEmail().toLowerCase().equals(emailAddress.getText().toString().toLowerCase())) {
-                        System.out.println("Email changed...");
-                        new CheckForExistingAccount(LoggedIn.this, emailStr.toLowerCase(), 0, false).execute();
-                    } else {
-                        emailListener.setValue(1);
-                    }
-                    if (!Account.getCurrentAccount().getPhoneNumber().equals(phoneStr)) {
-                        System.out.println("Phone changed...");
-                        new CheckForExistingAccount(LoggedIn.this, phoneStr, 1, false).execute();
-                    } else {
-                        phoneListener.setValue(1);
-                    }
-                } else if (Account.getCurrentAccount().getEmail().toLowerCase().equals(emailAddress.getText().toString().toLowerCase()) && Account.getCurrentAccount().getPhoneNumber().equals(phoneStr)) {
-                    System.out.println("Neither was changed...");
-                    String oldEmail = Account.getCurrentAccount().getEmail();
-                    Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
-                            trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
-                    progressBar.setVisibility(View.VISIBLE);
-                    new UpdateShippingTruckDriver(Account.getCurrentAccount(), oldEmail, LoggedIn.this).execute();
-                }
+            } else if (Account.getCurrentAccount().getEmail().toLowerCase().equals(emailAddress.getText().toString().toLowerCase()) && Account.getCurrentAccount().getPhoneNumber().equals(phoneStr)) {
+                System.out.println("Phone was not changed...");
+                String oldEmail = Account.getCurrentAccount().getEmail();
+                Account.getCurrentAccount().updateCurrentInfo(emailStr, driverNameStr, phoneStr, truckNameStr, truckNumberStr, driverLicenseStr, selectState1.getText().toString(),
+                        trailerLicenseStr, selectState2.getText().toString(), dispatcherNumberStr, Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
+                progressBar.setVisibility(View.VISIBLE);
+                new UpdateShippingTruckDriver(Account.getCurrentAccount(), oldEmail, LoggedIn.this).execute();
             }
         });
 
@@ -358,12 +309,12 @@ public class LoggedIn extends AppCompatActivity {
                 driverLicense.setHint("Driver license number");
                 driverName.setHint("Driver's name");
                 dispatcherPhoneNumber.setHint("Dispatcher's phone number");
-                verifyText.setText(R.string.verify_submit_eng);
+                verifyText.setText(R.string.verify_next_eng);
                 preferText.setText(R.string.comm_preference_eng);
                 text.setText(R.string.text_msg_eng);
                 email.setText(R.string.email_eng);
                 both.setText(R.string.text_and_email_eng);
-                select.setText(R.string.select_one_eng);
+                standardRatesApply.setText(R.string.standard_rates_apply_eng);
                 selectState1.setText(R.string.state_eng);
                 selectState2.setText(R.string.state_eng);
                 emailHint.setText(R.string.hint_email_eng);
@@ -386,21 +337,21 @@ public class LoggedIn extends AppCompatActivity {
                 driverLicense.setHint("Número de licencia de conducir");
                 driverName.setHint("Nombre del conductor");
                 dispatcherPhoneNumber.setHint("Número de teléfono del despachador");
-                verifyText.setText(R.string.verify_submit_sp);
+                verifyText.setText(R.string.verify_next_sp);
                 preferText.setText(R.string.comm_preference_sp);
                 text.setText(R.string.text_msg_sp);
                 email.setText(R.string.email_sp);
                 both.setText(R.string.text_and_email_sp);
-                select.setText(R.string.select_one_sp);
+                standardRatesApply.setText(R.string.standard_rates_apply_sp);
                 selectState1.setText(R.string.state_sp);
                 selectState2.setText(R.string.state_sp);
-                emailHint.setText("Dirección de correo electrónico");
+                emailHint.setText("Dirección de email");
                 phoneHint.setText("Número de teléfono");
                 driverNameHint.setText("Nombre del conductor");
                 driverLicenseHint.setText("Número de licencia de conducir");
                 truckNameHint.setText("Nombre del camión");
-                truckNumberHint.setText("Numero de camion");
-                trailerLicenseHint.setText("Número de licencia de remolque");
+                truckNumberHint.setText("Número  de camión");
+                trailerLicenseHint.setText("Número de matrícula del tráiler");
                 dispatcherHint.setText("Número de teléfono del despachador");
                 break;
             case 2:
@@ -414,12 +365,12 @@ public class LoggedIn extends AppCompatActivity {
                 driverLicense.setHint("Numéro de permis de conduire");
                 driverName.setHint("Nom du conducteur");
                 dispatcherPhoneNumber.setHint("Numéro de téléphone du répartiteur");
-                verifyText.setText(R.string.verify_submit_fr);
+                verifyText.setText(R.string.verify_next_fr);
                 preferText.setText(R.string.comm_preference_fr);
                 text.setText(R.string.text_msg_fr);
                 email.setText(R.string.email_fr);
                 both.setText(R.string.text_and_email_fr);
-                select.setText(R.string.select_one_fr);
+                standardRatesApply.setText(R.string.standard_rates_apply_fr);
                 selectState1.setText(R.string.state_fr);
                 selectState2.setText(R.string.state_fr);
                 emailHint.setText("Adresse électronique");
@@ -457,7 +408,7 @@ public class LoggedIn extends AppCompatActivity {
         textCheckbox = findViewById(R.id.TextCheckbox);
         emailCheckbox = findViewById(R.id.EmailCheckbox);
         bothCheckbox = findViewById(R.id.BothCheckbox);
-        select = findViewById(R.id.SelectText);
+        standardRatesApply = findViewById(R.id.SelectText);
         preferText = findViewById(R.id.PreferInfoText);
         selectState1 = findViewById(R.id.StateButton1);
         selectState2 = findViewById(R.id.StateButton2);
@@ -471,8 +422,6 @@ public class LoggedIn extends AppCompatActivity {
         trailerLicenseHint = findViewById(R.id.TrailerLicenseHint);
         dispatcherHint = findViewById(R.id.DispatcherHint);
 
-        emailInUseWarning = findViewById(R.id.EmailInUseWarning);
-        emailInUseWarning.setVisibility(View.GONE);
         phoneInUseWarning = findViewById(R.id.PhoneInUseWarning);
         phoneInUseWarning.setVisibility(View.GONE);
 
@@ -503,8 +452,6 @@ public class LoggedIn extends AppCompatActivity {
         userPhone.setText(PhoneNumberFormat.formatPhoneNumber(Account.getCurrentAccount().getPhoneNumber()));
         userTruck.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
 
-        select.setVisibility(View.GONE);
-
         Spinner trailerStateSpinner = findViewById(R.id.StateSpinner);
         Spinner driverStateSpinner = findViewById(R.id.StateSpinner2);
 
@@ -527,6 +474,8 @@ public class LoggedIn extends AppCompatActivity {
         driverLicense.setText(CURRENT_ACCOUNT.getDriverLicense());
         driverName.setText(CURRENT_ACCOUNT.getDriverName());
         dispatcherPhoneNumber.setText(PhoneNumberFormat.formatPhoneNumber(CURRENT_ACCOUNT.getDispatcherPhoneNumber()));
+
+        emailAddress.setEnabled(false);
 
         changeLanguage(Language.getCurrentLanguage());
         selectState1.setText(CURRENT_ACCOUNT.getDriverState());

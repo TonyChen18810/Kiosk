@@ -57,16 +57,6 @@
                 android:textSize="50sp"
                 android:maxLength="50" />
 
-            <TextView
-                android:id="@+id/EmailInUseWarning"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:text="*Email address already in use"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="20sp"
-                android:textAlignment="textEnd"
-                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/PhoneHint"
@@ -444,6 +434,7 @@
                     android:textSize="36sp" />
 
                 <TextView
+                    android:id="@+id/SelectText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
@@ -503,15 +494,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/SelectText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="*Please select one"
-                android:textColor="@color/error"
-                android:textSize="36sp" />
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -542,20 +524,20 @@
 
     <TextView
         android:id="@+id/VerifyText"
-        android:layout_width="wrap_content"
+        android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="8sp"
         android:text="*By clicking 'Next' I verify that\nall information is correct and accurate"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/andy_accent"
-        android:textSize="30sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/NextBtn"
-        app:layout_constraintHorizontal_bias="0.951"
+        app:layout_constraintHorizontal_bias="0.915"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CommunicationCard"
-        app:layout_constraintVertical_bias="0.083"
+        app:layout_constraintVertical_bias="0.077"
         tools:ignore="HardcodedText" />
 
     <Button

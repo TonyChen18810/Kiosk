@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
@@ -30,8 +28,7 @@
             android:layout_height="match_parent"
             android:layout_margin="20dp"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/EmailAddressBox"
@@ -91,14 +88,14 @@
 
                 <Button
                     android:id="@+id/StateButton1"
-                    android:layout_width="110dp"
+                    android:layout_width="130dp"
                     android:layout_height="match_parent"
                     android:background="@color/andy_accent"
                     android:padding="7dp"
                     android:text="State"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/white"
-                    android:textSize="40sp" />
+                    android:textSize="35sp" />
 
             </LinearLayout>
 
@@ -150,14 +147,14 @@
                 <Button
                     android:id="@+id/StateButton2"
                     style="@style/Widget.AppCompat.Button.Small"
-                    android:layout_width="110dp"
+                    android:layout_width="130dp"
                     android:layout_height="match_parent"
                     android:background="@color/andy_accent"
                     android:padding="7dp"
                     android:text="State"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/white"
-                    android:textSize="40sp" />
+                    android:textSize="35sp" />
 
             </LinearLayout>
 
@@ -331,6 +328,7 @@
                     android:textSize="36sp" />
 
                 <TextView
+                    android:id="@+id/StandardRatesApply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"

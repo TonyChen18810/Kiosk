@@ -117,9 +117,7 @@ public class Settings extends Fragment {
 
         TextView errorText = view.findViewById(R.id.ErrorLog);
         TextView errorTitle = view.findViewById(R.id.ErrorTitle);
-        TextView errorClass = view.findViewById(R.id.ErrorClass);
         errorText.setText(getErrorMsg());
-        errorClass.setText(getErrorClass());
         // errorTitle.setText(errorTitle.getText().toString() + " " + getErrorDate());
         ImageButton exitBtn = view.findViewById(R.id.ExitBtn);
         Button saveBtn = view.findViewById(R.id.SaveBtn);
@@ -203,7 +201,6 @@ public class Settings extends Fragment {
         cardView2.setVisibility(View.GONE);
         errorText.setVisibility(View.GONE);
         errorTitle.setVisibility(View.GONE);
-        errorClass.setVisibility(View.GONE);
         saveBtn.setVisibility(View.GONE);
         adminPW.setVisibility(View.VISIBLE);
         adminPW.requestFocus();
@@ -227,7 +224,6 @@ public class Settings extends Fragment {
                     cardView2.setVisibility(View.VISIBLE);
                     errorText.setVisibility(View.VISIBLE);
                     errorTitle.setVisibility(View.VISIBLE);
-                    errorClass.setVisibility(View.VISIBLE);
                     saveBtn.setVisibility(View.VISIBLE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
@@ -250,6 +246,5 @@ public class Settings extends Fragment {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         coolerLocation = settings.getString("cooler_location", "01");
         kioskNumber = settings.getString("kiosk_number", "01");
-        setError(settings.getString("error_msg", "0"), settings.getString("error_class", "0"), settings.getString("error_date", "0"), context);
     }
 }

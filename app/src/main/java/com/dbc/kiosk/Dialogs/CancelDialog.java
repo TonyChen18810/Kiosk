@@ -51,7 +51,7 @@ public class CancelDialog extends Dialog implements android.view.View.OnClickLis
             yes.setText(R.string.yes_eng);
             no.setText(R.string.no_eng);
         } else if (Language.getCurrentLanguage() == 1) {
-            cancelOrder.setText("¿Está seguro de que desea cancelar esta entrada de pedido?");
+            cancelOrder.setText("¿Está seguro de que quiere cancelar esta entrada de pedido?");
             yes.setText(R.string.yes_sp);
             no.setText(R.string.no_sp);
         } else if (Language.getCurrentLanguage() == 2) {

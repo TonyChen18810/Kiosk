@@ -60,7 +60,6 @@ public class GetNextMasterOrderNumber extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
             connection = false;
             System.out.println("Failed retrieving new master number...trying again...");
-            Settings.setError(e.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             Thread thread = new Thread(() -> {
                 new GetNextMasterOrderNumber(mWeakActivity.get()).execute();
             });
@@ -69,7 +68,6 @@ public class GetNextMasterOrderNumber extends AsyncTask<Void, Void, Void> {
                 Thread.sleep(3000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
-                Settings.setError(ex.toString(), getClass().toString(), new Date().toString(), mWeakActivity.get());
             }
         }
         return null;

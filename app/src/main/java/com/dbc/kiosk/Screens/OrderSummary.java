@@ -62,6 +62,9 @@ public class OrderSummary extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Report report = new Report(this);
+        report.setDriverTags();
+        report.setOrderTags();
         setContentView(R.layout.activity_order_summary);
         setup();
 

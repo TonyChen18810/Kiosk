@@ -47,10 +47,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView8"
-        android:layout_width="wrap_content"
+        android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:clipToPadding="true"
-        app:cardCornerRadius="4dp"
         app:cardElevation="3dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -66,203 +65,212 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/emailHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Email address"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="30sp" />
+
+            <TextView
                 android:id="@+id/emailAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:text="Email address: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.131"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                android:textSize="50sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/phoneHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Phone number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/phoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:text="Phone number: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.131"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                android:textSize="50sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/truckNameHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Truck name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/truckName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:text="Current truck name: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.131"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                android:textSize="50sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/truckNumberHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Truck number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/truckNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:text="Current truck number: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.131"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                android:textSize="50sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/trailerLicenseHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Trailer license number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/trailerLicense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:text="Current trailer license: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.131"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                android:textSize="50sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/driverLicenseHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Driver license number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/driverLicense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:text="Driver license: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.131"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                android:textSize="50sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/driverNameHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Driver name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/driverName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:text="Driver name: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.131"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                android:textSize="50sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:background="#C97A7171" />
+
+            <TextView
+                android:id="@+id/dispatcherPhoneHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Dispatcher phone number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/dispatcherPhoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 android:text="Current dispatcher's phone number: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="50sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.131"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356" />
+                android:textSize="50sp" />
 
         </LinearLayout>
 

@@ -8,8 +8,8 @@ android {
         minSdkVersion 25
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 25
-        versionCode 22
-        versionName '0.0.32'
+        versionCode 33
+        versionName '0.0.33'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -53,7 +53,7 @@ dependencies {
         exclude group: 'xpp3', module: 'xpp3'
     }
 
-    implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    implementation 'com.google.firebase:firebase-analytics:17.4.0'
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta04'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.firebase:firebase-messaging:20.1.5'

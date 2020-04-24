@@ -104,15 +104,9 @@ public class CheckForExistingAccount extends AsyncTask<Void, Void, Void> {
                     MainActivity.phoneListener.setValue(true);
                 }
             } else {
-                if (propertyCount > 0 && email_phone == 0 && !Account.getCurrentAccount().getEmail().toLowerCase().equals(retrievedEmail)) {
-                    System.out.println("The email is already in use.");
-                    LoggedIn.emailListener.setValue(0);
-                } else if (propertyCount > 0 && email_phone == 1 && !Account.getCurrentAccount().getPhoneNumber().equals(retrievedPhone)) {
+                if (propertyCount > 0 && email_phone == 1 && !Account.getCurrentAccount().getPhoneNumber().equals(retrievedPhone)) {
                     System.out.println("The phone number is already in use.");
                     LoggedIn.phoneListener.setValue(0);
-                } else if (propertyCount <= 0 && email_phone == 0) {
-                    System.out.println("The email is not in use.");
-                    LoggedIn.emailListener.setValue(1);
                 } else if (propertyCount <= 0 && email_phone == 1) {
                     System.out.println("The phone number is not in use.");
                     LoggedIn.phoneListener.setValue(1);

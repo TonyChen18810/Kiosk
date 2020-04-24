@@ -186,10 +186,10 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
             message = "Order #" + holder.orderNumber.getText().toString() + " requires an appointment but hasn't had one scheduled, please call 831-455-4305 to schedule an appointment.";
             holder.errorMsg.setText("Appointment has not been scheduled. Please call 831-455-4305 to schedule appointment.");
         } else if (Language.getCurrentLanguage() == 1) {
-            message = "Pedido #" + holder.orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
+            message = "El pedido #" + holder.orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
             holder.errorMsg.setText("La cita no ha sido programada. Llame al 831-455-4305 para programar una cita.");
         } else if (Language.getCurrentLanguage() == 2) {
-            message = "Ordre #" + holder.orderNumber.getText().toString() + " nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour fixer un rendez-vous.";
+            message = "La commande #" + holder.orderNumber.getText().toString() + " nécessite un rendez-vous, mais aucun n’a été pris. Veuillez appeler le 831-455-4305 pour prendre rendez-vous.";
             holder.errorMsg.setText("Le rendez-vous n'a pas été prévu. Veuillez appeler le 831-455-4305 pour fixer un rendez-vous.");
         }
         HelpDialog dialog = new HelpDialog(message, holder.itemView.getContext());
@@ -201,7 +201,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
         if (Language.getCurrentLanguage() == 0) {
             holder.errorMsg.setText("Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.");
         } else if (Language.getCurrentLanguage() == 1) {
-            holder.errorMsg.setText("Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.");
+            holder.errorMsg.setText("Nadie fue a la cita. Llame al 831-455-4305 para reprogramar una cita.");
         } else if (Language.getCurrentLanguage() == 2) {
             holder.errorMsg.setText("L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.");
         }
@@ -214,7 +214,7 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
             holder.errorMsg.setText("Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.");
         } else if (Language.getCurrentLanguage() == 1) {
             helpText = "Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.";
-            holder.errorMsg.setText("Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.");
+            holder.errorMsg.setText("Nadie fue a la cita. Llame al 831-455-4305 para reprogramar una cita.");
         } else if (Language.getCurrentLanguage() == 2) {
             helpText = "L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.";
             holder.errorMsg.setText("L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.");

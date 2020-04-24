@@ -1,5 +1,4 @@
 package com.dbc.kiosk.Screens;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -10,24 +9,23 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.crashlytics.android.Crashlytics;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Settings;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Date;
+import io.fabric.sdk.android.Fabric;
 /**
  * FirstScreen.java
  *
@@ -41,6 +39,8 @@ import java.util.Date;
  * Prompts user asking if they have an existing account or not
  */
 public class FirstScreen extends AppCompatActivity {
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private String version;
     private View englishCheckbox, spanishCheckbox, frenchCheckbox;
@@ -56,7 +56,9 @@ public class FirstScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_screen);
-
+        Report report = new Report(FirstScreen.this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+/**
         System.out.println(FirebaseInstanceId.getInstance().getInstanceId());
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -73,7 +75,7 @@ public class FirstScreen extends AppCompatActivity {
                         System.out.println(token);
                     }
                 });
-
+*/
         setup();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FirstScreen.this);
         Settings.setKioskNumber(settings.getString("kiosk_number", "01"));
@@ -180,6 +182,7 @@ public class FirstScreen extends AppCompatActivity {
         });
 
         noBtn.setOnClickListener(v -> {
+            int crash = 9/0;
             Intent intent = new Intent(FirstScreen.this, MainActivity.class);
             intent.putExtra("accountStatus", "new");
             startActivity(intent);
@@ -233,7 +236,6 @@ public class FirstScreen extends AppCompatActivity {
             version = pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            Settings.setError(e.toString(), getClass().toString(), new Date().toString(), FirstScreen.this);
         }
         versionText = findViewById(R.id.VersionText);
         versionText.setText("Version: " + version);

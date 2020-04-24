@@ -2,8 +2,6 @@ package com.dbc.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
@@ -26,10 +24,9 @@ import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.Helpers.States;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Webservices.CheckForExistingAccount;
 import com.dbc.kiosk.Webservices.GetShippingTruckDriver;
-import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
-
 import java.util.Collections;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
@@ -62,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Report report = new Report(MainActivity.this);
         setContentView(R.layout.activity_main);
 
         String accountStatus = getIntent().getExtras().getString("accountStatus");

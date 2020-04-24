@@ -30,10 +30,8 @@ import com.dbc.kiosk.Helpers.KeyboardListener;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.R;
-import com.dbc.kiosk.Webservices.CheckForExistingAccount;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 /**
@@ -66,7 +64,7 @@ public class CreateAccount extends AppCompatActivity {
 
     String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
 
-    private TextView txtText, emailText, bothText, selectText;
+    private TextView txtText, emailText, bothText, selectText, standardRatesApply;
     private View textCheckbox, emailCheckbox, bothCheckbox;
 
     private Button selectState1, selectState2;
@@ -79,8 +77,6 @@ public class CreateAccount extends AppCompatActivity {
     private int PREFERRED_COMMUNICATION = -1;
 
     ProgressBar progressBar;
-
-    private static int currentLanguage = Language.getCurrentLanguage();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,11 +125,11 @@ public class CreateAccount extends AppCompatActivity {
                     clicked1 = true;
                 } else {
                     initialSelection1 = true;
-                    if (currentLanguage == 0) {
+                    if (Language.getCurrentLanguage() == 0) {
                         selectState1.setText(R.string.state_eng);
-                    } else if (currentLanguage == 1) {
+                    } else if (Language.getCurrentLanguage() == 1) {
                         selectState1.setText(R.string.state_sp);
-                    } else if (currentLanguage == 2) {
+                    } else if (Language.getCurrentLanguage() == 2) {
                         selectState1.setText(R.string.state_fr);
                     }
                 }
@@ -157,11 +153,11 @@ public class CreateAccount extends AppCompatActivity {
                     clicked2 = true;
                 } else {
                     initialSelection2 = true;
-                    if (currentLanguage == 0) {
+                    if (Language.getCurrentLanguage() == 0) {
                         selectState2.setText(R.string.state_eng);
-                    } else if (currentLanguage == 1) {
+                    } else if (Language.getCurrentLanguage() == 1) {
                         selectState2.setText(R.string.state_sp);
-                    } else if (currentLanguage == 2) {
+                    } else if (Language.getCurrentLanguage() == 2) {
                         selectState2.setText(R.string.state_fr);
                     }
                 }
@@ -175,11 +171,11 @@ public class CreateAccount extends AppCompatActivity {
 
         driverNameHelp.setOnClickListener(v -> {
             String message = null;
-            if (currentLanguage == 0) {
+            if (Language.getCurrentLanguage() == 0) {
                 message = "Please enter your first and last name.";
-            } else if (currentLanguage == 1) {
+            } else if (Language.getCurrentLanguage() == 1) {
                 message = "Escriba su nombre y apellido.";
-            } else if (currentLanguage == 2) {
+            } else if (Language.getCurrentLanguage() == 2) {
                 message = "Veuillez saisir votre prénom et nom.";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -189,11 +185,11 @@ public class CreateAccount extends AppCompatActivity {
 
         driverLicenseHelp.setOnClickListener(v -> {
             String message = null;
-            if (currentLanguage == 0) {
+            if (Language.getCurrentLanguage() == 0) {
                 message = "Please enter your driver license number";
-            } else if (currentLanguage == 1) {
+            } else if (Language.getCurrentLanguage() == 1) {
                 message = "Escriba el número de su licencia de conducir";
-            } else if (currentLanguage == 2) {
+            } else if (Language.getCurrentLanguage() == 2) {
                 message = "Veuillez saisir votre numéro de permis de conduire";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -203,11 +199,11 @@ public class CreateAccount extends AppCompatActivity {
 
         truckNameHelp.setOnClickListener(v -> {
             String message = null;
-            if (currentLanguage == 0) {
+            if (Language.getCurrentLanguage() == 0) {
                 message = "Please enter the company name of your truck (NOT the make/model)";
-            } else if (currentLanguage == 1) {
+            } else if (Language.getCurrentLanguage() == 1) {
                 message = "Escriba el nombre de la empresa de su camión (NO la marca/el modelo)";
-            } else if (currentLanguage == 2) {
+            } else if (Language.getCurrentLanguage() == 2) {
                 message = "Veuillez saisir le nom de l’entreprise de votre camion (PAS la marque/le modèle)";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -217,11 +213,11 @@ public class CreateAccount extends AppCompatActivity {
 
         truckNumberHelp.setOnClickListener(v -> {
             String message = null;
-            if (currentLanguage == 0) {
+            if (Language.getCurrentLanguage() == 0) {
                 message = "Please enter the number of your truck";
-            } else if (currentLanguage == 1) {
+            } else if (Language.getCurrentLanguage() == 1) {
                 message = "Escriba el número de su camión";
-            } else if (currentLanguage == 2) {
+            } else if (Language.getCurrentLanguage() == 2) {
                 message = "Veuillez saisir le numéro de votre camion";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -231,11 +227,11 @@ public class CreateAccount extends AppCompatActivity {
 
         trailerLicenseHelp.setOnClickListener(v -> {
             String message = null;
-            if (currentLanguage == 0) {
+            if (Language.getCurrentLanguage() == 0) {
                 message = "Please enter the license plate number of your trailer";
-            } else if (currentLanguage == 1) {
+            } else if (Language.getCurrentLanguage() == 1) {
                 message = "Escriba el número de matrícula de su tráiler";
-            } else if (currentLanguage == 2) {
+            } else if (Language.getCurrentLanguage() == 2) {
                 message = "Veuillez saisir le numéro d’immatriculation de votre remorque";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -245,11 +241,11 @@ public class CreateAccount extends AppCompatActivity {
 
         dispatcherPhoneNumberHelp.setOnClickListener(v -> {
             String message = null;
-            if (currentLanguage == 0) {
+            if (Language.getCurrentLanguage() == 0) {
                 message = "Please enter the phone number of your current dispatcher";
-            } else if (currentLanguage == 1) {
+            } else if (Language.getCurrentLanguage() == 1) {
                 message = "Escriba el número de teléfono de su despachante actual";
-            } else if (currentLanguage == 2) {
+            } else if (Language.getCurrentLanguage() == 2) {
                 message = "Veuillez saisir le numéro de téléphone de votre répartiteur actuel";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -349,48 +345,31 @@ public class CreateAccount extends AppCompatActivity {
         });
 
         accountCreatedListener = new MutableLiveData<>();
-        accountCreatedListener.observe(CreateAccount.this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                setContentView(R.layout.account_created_msg);
-                TextView successText = findViewById(R.id.textView);
-                Button loginBtn = findViewById(R.id.LogoutBtn);
-                if (Language.getCurrentLanguage() == 0) {
-                    successText.setText("Congratulations! You have successfully created an account. You are now ready to log in.");
-                    loginBtn.setText("Log in");
-                } else if (Language.getCurrentLanguage() == 1) {
-                    successText.setText("¡Felicidades! Has creado una cuenta con éxito. Ahora está listo para iniciar sesión.");
-                    loginBtn.setText("Iniciar sesión");
-                } else if (Language.getCurrentLanguage() == 2) {
-                    successText.setText("Félicitations! Vous avez réussi à créer un compte. Vous êtes maintenant prêt à vous connecter.");
-                    loginBtn.setText("Connexion");
-                }
+        accountCreatedListener.observe(CreateAccount.this, aBoolean -> {
+            setContentView(R.layout.account_created_msg);
+            accountCreatedSetup();
 
-                findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
-                    startActivity(new Intent(CreateAccount.this, FirstScreen.class));
-                });
+            findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
+                startActivity(new Intent(CreateAccount.this, FirstScreen.class));
+            });
 
-                TextView userEmail = findViewById(R.id.emailAddress);
-                TextView userNumber = findViewById(R.id.phoneNumber);
-                TextView userTruckName = findViewById(R.id.truckName);
-                TextView userTruckNumber = findViewById(R.id.truckNumber);
-                TextView userTrailerLicense = findViewById(R.id.trailerLicense);
-                TextView userDriverLicense = findViewById(R.id.driverLicense);
-                TextView userDriverName = findViewById(R.id.driverName);
-                TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
-                // dialog = new ProgressDialog("Creating account...", CreateAccount.this);
-                // dialog.show();
-                // dialog.setCancelable(false);
-                System.out.println("SENDING LANGUAGE PREFERENCE: " + Language.getCurrentLanguage()+1);
-                userEmail.setText(Html.fromHtml("Email address:\n" + "<b>" + email + "<b>"));
-                userNumber.setText(Html.fromHtml("Phone number:\n" + "<b>" + PhoneNumberFormat.formatPhoneNumber(phone) + "<b>"));
-                userTruckName.setText(Html.fromHtml("Current truck name:\n" + "<b>" + truckNameStr + "<b>"));
-                userTruckNumber.setText(Html.fromHtml("Current truck number:\n" + "<b>" + truckNumberStr + "<b>"));
-                userTrailerLicense.setText(Html.fromHtml("Current trailer license:\n" + "<b>" + trailerLicenseStr + "<b>"));
-                userDriverLicense.setText(Html.fromHtml("Driver license:\n" + "<b>" + driverLicenseStr + "<b>"));
-                userDriverName.setText(Html.fromHtml("Driver name:\n" + "<b>" + driverNameStr + "<b>"));
-                userDispatcherPhone.setText(Html.fromHtml("Dispatcher's phone number:\n" + "<b>\n" + dispatcherNumberStr + "<b>"));
-            }
+            TextView userEmail = findViewById(R.id.emailAddress);
+            TextView userNumber = findViewById(R.id.phoneNumber);
+            TextView userTruckName = findViewById(R.id.truckName);
+            TextView userTruckNumber = findViewById(R.id.truckNumber);
+            TextView userTrailerLicense = findViewById(R.id.trailerLicense);
+            TextView userDriverLicense = findViewById(R.id.driverLicense);
+            TextView userDriverName = findViewById(R.id.driverName);
+            TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
+
+            userEmail.setText(email);
+            userNumber.setText(PhoneNumberFormat.formatPhoneNumber(phone));
+            userTruckName.setText(truckNameStr);
+            userTruckNumber.setText(truckNumberStr);
+            userTrailerLicense.setText(trailerLicenseStr);
+            userDriverLicense.setText(driverLicenseStr);
+            userDriverName.setText(driverNameStr);
+            userDispatcherPhone.setText(dispatcherNumberStr);
         });
 
         textCheckbox.setOnTouchListener((v, event) -> {
@@ -520,7 +499,6 @@ public class CreateAccount extends AppCompatActivity {
         switch(Language.getCurrentLanguage()) {
             case 0:
                 //English
-                System.out.println("ENGLISH!!!!");
                 logoutBtn.setText(R.string.logout_eng);
                 nextBtn.setText(R.string.next_eng);
                 createAccount.setText(R.string.create_account_eng);
@@ -539,6 +517,7 @@ public class CreateAccount extends AppCompatActivity {
                 selectText.setText(R.string.select_one_eng);
                 selectState1.setText(R.string.state_eng);
                 selectState2.setText(R.string.state_eng);
+                standardRatesApply.setText(R.string.standard_rates_apply_eng);
                 break;
             case 1:
                 //Spanish
@@ -561,6 +540,7 @@ public class CreateAccount extends AppCompatActivity {
                 selectText.setText(R.string.select_one_sp);
                 selectState1.setText(R.string.state_sp);
                 selectState2.setText(R.string.state_sp);
+                standardRatesApply.setText(R.string.standard_rates_apply_sp);
                 break;
             case 2:
                 //French
@@ -583,6 +563,7 @@ public class CreateAccount extends AppCompatActivity {
                 selectText.setText(R.string.select_one_fr);
                 selectState1.setText(R.string.state_fr);
                 selectState2.setText(R.string.state_fr);
+                standardRatesApply.setText(R.string.standard_rates_apply_fr);
                 break;
         }
     }
@@ -612,6 +593,7 @@ public class CreateAccount extends AppCompatActivity {
         trailerStateSpinner = findViewById(R.id.StateSpinner);
         driverStateSpinner = findViewById(R.id.StateSpinner2);
         helpText = findViewById(R.id.HelpText);
+        standardRatesApply = findViewById(R.id.StandardRatesApply);
         progressBar = findViewById(R.id.ProgressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
@@ -644,5 +626,52 @@ public class CreateAccount extends AppCompatActivity {
         phoneNumber.setTextColor(getResources().getColor(R.color.black));
 
         changeLanguage();
+    }
+
+    public void accountCreatedSetup() {
+        TextView successText = findViewById(R.id.textView);
+        Button loginBtn = findViewById(R.id.LogoutBtn);
+        TextView emailAddress = findViewById(R.id.emailHint);
+        TextView phoneNumber = findViewById(R.id.phoneHint);
+        TextView truckName = findViewById(R.id.truckNameHint);
+        TextView truckNumber = findViewById(R.id.truckNumberHint);
+        TextView trailerLicense = findViewById(R.id.trailerLicenseHint);
+        TextView driverLicense = findViewById(R.id.driverLicenseHint);
+        TextView driverName = findViewById(R.id.driverNameHint);
+        TextView dispatcherPhoneNumber = findViewById(R.id.dispatcherPhoneHint);
+        if (Language.getCurrentLanguage() == 0) {
+            successText.setText(R.string.congrats_account_eng);
+            loginBtn.setText(R.string.log_in_eng);
+            emailAddress.setText(R.string.hint_email_eng);
+            phoneNumber.setText(R.string.hint_phone_eng);
+            truckName.setText(R.string.hint_truck_name_eng);
+            truckNumber.setText(R.string.hint_truck_number_eng);
+            trailerLicense.setText(R.string.hint_trailer_license_eng);
+            driverLicense.setText(R.string.hint_driver_license_eng);
+            driverName.setText(R.string.hint_driver_name_eng);
+            dispatcherPhoneNumber.setText(R.string.hint_dispatcher_eng);
+        } else if (Language.getCurrentLanguage() == 1) {
+            successText.setText(R.string.congrats_account_sp);
+            loginBtn.setText(R.string.log_in_sp);
+            emailAddress.setText(R.string.hint_email_sp);
+            phoneNumber.setText(R.string.hint_phone_sp);
+            truckName.setText(R.string.hint_truck_name_sp);
+            truckNumber.setText(R.string.hint_truck_number_sp);
+            trailerLicense.setText(R.string.hint_trailer_license_sp);
+            driverLicense.setText(R.string.hint_driver_license_sp);
+            driverName.setText(R.string.hint_driver_name_sp);
+            dispatcherPhoneNumber.setText(R.string.hint_dispatcher_sp);
+        } else if (Language.getCurrentLanguage() == 2) {
+            successText.setText(R.string.congrats_account_fr);
+            loginBtn.setText(R.string.log_in_fr);
+            emailAddress.setText(R.string.hint_email_fr);
+            phoneNumber.setText(R.string.hint_phone_fr);
+            truckName.setText(R.string.hint_truck_name_fr);
+            truckNumber.setText(R.string.hint_truck_number_fr);
+            trailerLicense.setText(R.string.hint_trailer_license_fr);
+            driverLicense.setText(R.string.hint_driver_license_fr);
+            driverName.setText(R.string.hint_driver_name_fr);
+            dispatcherPhoneNumber.setText(R.string.hint_dispatcher_fr);
+        }
     }
 }

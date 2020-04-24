@@ -56,7 +56,7 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
             cancelBtn.setText("Cancel");
             associatedOrdersText.setText("The following order(s) are also connected with order #" + Order.getOrdersList().get(Order.getOrdersList().size()-1).getSOPNumber() + ". You can tap any order to add it to your orders.");
         } else if (Language.getCurrentLanguage() == 1) {
-            associatedOrdersText.setText("Los siguientes pedidos también están relacionados con pedido #" + Order.getOrdersList().get(Order.getOrdersList().size()-1).getSOPNumber() + ". Puede hacer clic en cualquier pedido para agregarlo a su lista de pedidos.");
+            associatedOrdersText.setText("Los siguientes pedidos también están relacionados con el pedido #" + Order.getOrdersList().get(Order.getOrdersList().size()-1).getSOPNumber() + ". Puede hacer clic en cualquier pedido para agregarlo a su lista de pedidos.");
             addBtn.setText("Agregar");
             cancelBtn.setText("Cancelar");
         } else if (Language.getCurrentLanguage() == 2) {
