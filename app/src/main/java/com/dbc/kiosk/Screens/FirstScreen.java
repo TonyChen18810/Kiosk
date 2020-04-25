@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.crashlytics.android.Crashlytics;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Order;
@@ -22,10 +21,10 @@ import com.dbc.kiosk.R;
 import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Settings;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
-import java.util.Date;
-import io.fabric.sdk.android.Fabric;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.iid.FirebaseInstanceId;
 /**
  * FirstScreen.java
  *
@@ -39,9 +38,6 @@ import io.fabric.sdk.android.Fabric;
  * Prompts user asking if they have an existing account or not
  */
 public class FirstScreen extends AppCompatActivity {
-
-    private FirebaseAnalytics mFirebaseAnalytics;
-
     private String version;
     private View englishCheckbox, spanishCheckbox, frenchCheckbox;
     private TextView appointmentWarningText, existingAccountText, versionText;
@@ -55,27 +51,13 @@ public class FirstScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(getApplicationContext());
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
         setContentView(R.layout.activity_first_screen);
         Report report = new Report(FirstScreen.this);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-/**
         System.out.println(FirebaseInstanceId.getInstance().getInstanceId());
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(FirstScreen.this, "getInstanceId failed", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
 
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-                        Toast.makeText(FirstScreen.this, "Here's the token: " + token, Toast.LENGTH_SHORT).show();
-                        System.out.println(token);
-                    }
-                });
-*/
         setup();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FirstScreen.this);
         Settings.setKioskNumber(settings.getString("kiosk_number", "01"));
@@ -182,7 +164,6 @@ public class FirstScreen extends AppCompatActivity {
         });
 
         noBtn.setOnClickListener(v -> {
-            int crash = 9/0;
             Intent intent = new Intent(FirstScreen.this, MainActivity.class);
             intent.putExtra("accountStatus", "new");
             startActivity(intent);
