@@ -1,12 +1,16 @@
 package com.dbc.kiosk;
 
 import android.content.Context;
-
 import com.crashlytics.android.Crashlytics;
 import com.dbc.kiosk.Helpers.Time;
-
 import io.fabric.sdk.android.Fabric;
 
+/**
+ * Report.java
+ *
+ * Used to set tags for Crashlytics in the case
+ * of an application crash
+ */
 public class Report {
 
     public Report(Context context) {
@@ -26,6 +30,7 @@ public class Report {
             Crashlytics.setString("Dispatcher Phone", CURRENT_ACCOUNT.getDispatcherPhoneNumber());
 
             Crashlytics.setString("Current Time", Time.getCurrentTime());
+            Crashlytics.setString("Current Date", Time.getCurrentDate());
         }
     }
 

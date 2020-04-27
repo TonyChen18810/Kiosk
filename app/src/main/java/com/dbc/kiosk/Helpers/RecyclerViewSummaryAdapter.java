@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Screens.OrderSummary;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -81,10 +82,16 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
                 }
             }
             holder.destination.setText(destStrBuilder.toString());
+            // holder.destination.setText(order.getDestination());
         } else {
             holder.destination.setText(order.getDestination());
         }
 
+        // adjust for longer spanish wording
+        if (Language.getCurrentLanguage() == 1) {
+            holder.itemView.findViewById(R.id.EstPallets).getLayoutParams().width = 140;
+            holder.itemView.findViewById(R.id.EstWeight).getLayoutParams().width = 130;
+        }
 
         // holder.destination.setText(order.getDestination());
         if (order.getAppointmentTime().equals("00:00:00")) {
@@ -95,7 +102,7 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
 
         DecimalFormat formatter = new DecimalFormat("#,###");
         holder.estPallets.setText(Double.toString(Rounder.round(order.getEstimatedPallets(), 1)));
-        holder.estWeight.setText(formatter.format(order.getEstimatedWeight()) + " lbs");
+        holder.estWeight.setText(formatter.format(order.getEstimatedWeight()) + " lb");
     }
 
     @Override

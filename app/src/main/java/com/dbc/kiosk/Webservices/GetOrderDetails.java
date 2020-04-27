@@ -8,13 +8,11 @@ import com.dbc.kiosk.Helpers.Time;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderEntry;
-import com.dbc.kiosk.Settings;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
-import java.util.Date;
 /**
  * GetOrderDetails.java
  *
@@ -30,7 +28,6 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
     private String enteredSOPNumber;
 
     private static String MASTER_NUMBER = null;
-    private static String coolerNumber = "01";
 
     private int propertyCount;
 
@@ -143,7 +140,10 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                 OrderEntry.validOrderNumber.setValue(0);
             } else {
                 System.out.println("truckStatus: " + truckStatus);
-                if (truckStatus.equals("Outstanding")) {
+                System.out.println("Order date: " + orderDate);
+                System.out.println("Today's date: " + Time.getCurrentDate());
+                if (truckStatus.equals("Outstanding") && orderDate.equals(Time.getCurrentDate())) {
+                    System.out.println("The dates are equal!");
                     System.out.println("propertyCount: " + propertyCount);
                     if (propertyCount > 0) {
                         System.out.println("THIS IS FOR ORDER NUMBER: " + SOPNumber);
@@ -192,6 +192,9 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                 } else if (!truckStatus.equals("Outstanding")) {
                     System.out.println("Order already checked in / not Outstanding");
                     OrderEntry.validOrderNumber.setValue(3);
+                } else if (!orderDate.equals(Time.getCurrentDate())) {
+                    System.out.println("Dates do not match!");
+                    OrderEntry.validOrderNumber.setValue(0);
                 }
             }
             if (isGoodOrder) {

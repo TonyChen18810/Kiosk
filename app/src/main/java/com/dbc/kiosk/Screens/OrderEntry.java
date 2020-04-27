@@ -23,11 +23,9 @@ import com.dbc.kiosk.Helpers.*;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Report;
-import com.dbc.kiosk.Settings;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
 import com.dbc.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 /**
  * OrderEntry.java
@@ -178,7 +176,6 @@ public class OrderEntry extends AppCompatActivity {
                 CustomOrderKeyboard.enableEnterButton();
                 orderNumber.setEnabled(true);
                 orderNumber.setText("");
-                // showSoftKeyboard(orderNumber);
             } else if (valid == 3) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 0) {
@@ -228,9 +225,9 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.setCancelable(false);
             }
         });
-
-        System.out.println("Order list size: " + Order.getOrdersList().size());
-
+        // Used to initialize recycler view with data, empty order won't be visible.
+        // If recycler view is empty (an actual order gets removed, causing it to be empty),
+        // an empty order will be added until an actual order is added to the list
         if (Order.getOrdersList().size() == 0) {
             Order.addOrderToList(new Order("","","",
                     "", "","","","","",
@@ -305,8 +302,6 @@ public class OrderEntry extends AppCompatActivity {
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
 
-        /// orderNumber.setOnEditorActionListener(new KeyboardListener());
-
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(OrderEntry.this, v);
             dialog.show();
@@ -365,6 +360,7 @@ public class OrderEntry extends AppCompatActivity {
             cancelOrderBtn.setVisibility(View.GONE);
             checkOrderBtn.setVisibility(View.VISIBLE);
 
+            // check if entered order has any connected orders
             try {
                 new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute();
             } catch (Exception e) {
@@ -407,8 +403,6 @@ public class OrderEntry extends AppCompatActivity {
             checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
             CustomOrderKeyboard.disableEnterButton();
             orderNumber.setEnabled(false);
-            // CustomOrderKeyboard.mButtonEnter.setEnabled(false);
-            // CustomOrderKeyboard.buttonEnterImage.setBackgroundResource(R.drawable.arrow_right_disabled);
             boolean added = false;
             for (int i = 0; i < Order.getOrdersList().size(); i++) {
                 if (Order.getOrdersList().get(i).getSOPNumber().equals(orderNumber.getText().toString())) {
@@ -440,7 +434,6 @@ public class OrderEntry extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            // checkOrderBtn.setEnabled(true);
         });
 
         cancelOrderBtn.setOnClickListener(v -> {
@@ -486,18 +479,7 @@ public class OrderEntry extends AppCompatActivity {
             System.out.println(Order.getOutlierOrders().get(i).getSOPNumber());
         }
     }
-/*
-    public void showSoftKeyboard(View view) {
-        if (view.requestFocus()) {
-            InputMethodManager imm = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.showSoftInput(view, SHOW_IMPLICIT);
-            }
-        }
-    }
 
- */
     private void changeLanguage(int val) {
         System.out.println("val: " + val);
         switch(val) {
@@ -536,10 +518,7 @@ public class OrderEntry extends AppCompatActivity {
     }
 
     private void setup(){
-        // Report.setDriverTags();
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         orderNumber = findViewById(R.id.OrderNumberBox);
@@ -567,7 +546,6 @@ public class OrderEntry extends AppCompatActivity {
 
         possibleCustomerDestinations = new ArrayList<>();
 
-        //showSoftKeyboard(orderNumber);
         emailStr.setText(Account.getCurrentAccount().getEmail());
         phoneNumberStr.setText(PhoneNumberFormat.formatPhoneNumber(Account.getCurrentAccount().getPhoneNumber()));
         truckNumberStr.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
@@ -585,7 +563,6 @@ public class OrderEntry extends AppCompatActivity {
             submitBtn.setTextSize(60);
         }
         orderNumber.setShowSoftInputOnFocus(false);
-        // findViewById(R.id.cardView3).setVisibility(View.INVISIBLE);
     }
 
     public void rulesRegulationsSetup() {

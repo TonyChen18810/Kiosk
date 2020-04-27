@@ -1,6 +1,7 @@
 package com.dbc.kiosk.Helpers;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -13,15 +14,21 @@ import java.util.Date;
 public class Time {
 
     private static String currentTime;
+    private static String currentDate;
 
     public static void setTime(String time) {
-        SimpleDateFormat parseFormat = new SimpleDateFormat("HH:mm");
-        String currentDateandTime = parseFormat.format(new Date());
-        // System.out.println("currentDateandTime: " + time);
-        currentTime = time; // was currentDateandTime
+        currentTime = time;
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        currentDate = sdf.format(c.getTime());
+        System.out.println("today's date: " + currentDate);
     }
 
     public static String getCurrentTime() {
         return currentTime;
+    }
+
+    public static String getCurrentDate() {
+        return currentDate;
     }
 }

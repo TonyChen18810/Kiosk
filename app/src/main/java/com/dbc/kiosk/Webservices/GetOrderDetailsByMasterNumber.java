@@ -7,6 +7,7 @@ import android.widget.EditText;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dbc.kiosk.Dialogs.ConnectedOrders;
 import com.dbc.kiosk.Helpers.RecyclerViewHorizontalAdapter;
+import com.dbc.kiosk.Helpers.Time;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderEntry;
@@ -89,19 +90,16 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                     String estimatedWeight = ((SoapObject) (response.getProperty(i))).getProperty(11).toString();
                     String estimatedPallets = ((SoapObject) (response.getProperty(i))).getProperty(12).toString();
                     boolean canBeInserted = true;
+                    System.out.println("Order date: " + orderDate);
+                    System.out.println("Today's date: " + Time.getCurrentDate());
                     for (int j = 0; j < Order.getOrdersList().size(); j++) {
-                        if (Order.getOrdersList().get(j).getSOPNumber().equals(SOPNumber) || isCheckedIn.equals("true")) {
-                            canBeInserted = false;
-                        }
-                    }
-                    for (int j = 0; j < Order.getPossibleOrdersList().size(); j++) {
-                        if (Order.getPossibleOrdersList().get(j).getSOPNumber().equals(SOPNumber) || isCheckedIn.equals("true")) {
+                        if (Order.getOrdersList().get(j).getSOPNumber().equals(SOPNumber) || isCheckedIn.equals("true") || !orderDate.equals(Time.getCurrentDate())) {
                             canBeInserted = false;
                         }
                     }
 
                     for (int j = 0; j < Order.getAssociatedOrdersList().size(); j++) {
-                        if (Order.getAssociatedOrdersList().get(j).getSOPNumber().equals(SOPNumber) || isCheckedIn.equals("true")) {
+                        if (Order.getAssociatedOrdersList().get(j).getSOPNumber().equals(SOPNumber) || isCheckedIn.equals("true") || !orderDate.equals(Time.getCurrentDate())) {
                             canBeInserted = false;
                         }
                     }

@@ -1,5 +1,6 @@
 package com.dbc.kiosk.Dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
         this.adapter = adapter;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

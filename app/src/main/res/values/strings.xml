@@ -341,7 +341,7 @@
     <string name="cooperation_sp">Su cooperación hará que la carga sea más rápida y segura.</string>
     <string name="verify_read_sp">*Haciendo clic en \'Aceptar\' abajo, usted confirma que ha leído y entiende el protocolo establecido por las instalaciones y que toda la información que escribió anteriormente es verdadera y correcta.</string>
     <string name="submit_sp">Enviar</string>
-    <string name="confirm_orders_sp">Confirme el/los siguiente(s) pedido(s)::</string>
+    <string name="confirm_orders_sp">Confirme el/los siguiente(s) pedido(s):</string>
     <string name="confirmation_num_sp">Número de confirmación:</string>
     <string name="order_number_sp">Número\nde pedido</string>
     <string name="buyer_name_sp">Nombre del cliente</string>

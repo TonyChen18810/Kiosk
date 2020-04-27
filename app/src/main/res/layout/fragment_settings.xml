@@ -142,12 +142,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Version 0.0.33 updates:\n
-  \n&#8226; Fixes keyboard not displaying and Check Order Button not resetting after failing to enter the correct destination for an order.\n
-  \n&#8226; Implement Firebase Crashlytics for crash reports.\n
-  \n&#8226; \'Enter\' button on keyboard, same function as Check Order Button. (green arrow next to order number field)\n
-  \n&#8226; Lets the user change their phone number, no longer lets them change their email address. (must create a new account)\n
-  \n&#8226; Can change kiosk number/name, but not cooler location yet.\n
-  \n&#8226; Language updates/fixes"
+        \n&#8226; Implement Firebase Crashlytics for crash reports.\n
+        \n&#8226; Language updates/fixes\n
+        \n&#8226; An order with a different date than the current date cannot be submitted and will not show on the connected orders list"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

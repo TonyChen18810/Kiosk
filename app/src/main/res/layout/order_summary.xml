@@ -34,7 +34,7 @@
                 android:gravity="center"
                 android:text="Order Number"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="40sp" />
+                android:textSize="38sp" />
 
             <View
                 android:layout_width="4dp"
@@ -51,14 +51,14 @@
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
                 android:layout_marginLeft="3dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="3dp"
+                android:layout_marginBottom="15dp"
                 android:gravity="center"
                 android:text="Customer\nConsignee"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="40sp" />
+                android:textSize="38sp" />
 
             <View
                 android:layout_width="4dp"
@@ -79,7 +79,7 @@
                 android:gravity="center"
                 android:text="Apt.\nTime"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="40sp" />
+                android:textSize="38sp" />
 
             <View
                 android:layout_width="4dp"
@@ -92,14 +92,14 @@
 
             <TextView
                 android:id="@+id/Destination"
-                android:layout_width="210dp"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="3dp"
                 android:gravity="center"
-                android:text="Destination"
+                android:text="@string/destination_eng"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="40sp" />
+                android:textSize="36sp" />
 
             <View
                 android:layout_width="4dp"
@@ -118,7 +118,7 @@
                 android:gravity="center"
                 android:text="Est.\nPallets"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="40sp" />
+                android:textSize="38sp" />
 
             <View
                 android:layout_width="4dp"
@@ -138,7 +138,7 @@
                 android:gravity="center"
                 android:text="Est.\nWeight"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="40sp" />
+                android:textSize="38sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
