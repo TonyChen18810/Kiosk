@@ -63,7 +63,7 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
         request.addProperty("inUserID", Settings.getKioskNumber());
         System.out.println("Settings.getKioskNumber: " + Settings.getKioskNumber());
         request.addProperty("inSopNumber", inSOPnumber);
-        request.addProperty("inLocation", "01");
+        request.addProperty("inLocation", Settings.getCoolerLocation());
         request.addProperty("inCheckedIn", isCheckedIn);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);

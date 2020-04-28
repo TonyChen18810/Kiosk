@@ -59,22 +59,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Initialize Firebase Crashlytics, set tags
         Report report = new Report(MainActivity.this);
         setContentView(R.layout.activity_main);
-
+        // Property added to new Intent() in FirstScreen.java
+        // aka did the user click yes or no
         String accountStatus = getIntent().getExtras().getString("accountStatus");
         System.out.println(accountStatus);
         setup();
 
+        // user clicked no
         if (accountStatus.equals("new")) {
             newAccount = true;
             newAccountExpand();
+            // user clicked yes
         } else if (accountStatus.equals("exists")) {
             newAccount = false;
         }
 
+        // Listens for response from GetShippingTruckDriver.java web service
+        // to know if the entered account info exists or not
         accountExists = new MutableLiveData<>();
-
         accountExists.observe(MainActivity.this, accountExists -> {
             if (!newAccount) {
                 if (!accountExists) {
@@ -127,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // avoids letting user press the 'return' or green arrow key on
+        // standard keyboard when focus is on confirmPhoneNumber (if they could
+        // use this it would close the keyboard)
         confirmPhoneNumber.setOnEditorActionListener(new KeyboardListener());
 
         emailAddressBox.addTextChangedListener(new TextWatcher() {
@@ -171,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // format the phone numbers for (xxx)xxx-xxxx
         phoneNumberBox.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         confirmPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
@@ -326,6 +335,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+        // takes user back to FirstScreen.java
         backBtn.setOnClickListener(v -> {
             if (Language.getCurrentLanguage() == 0) {
                 englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
@@ -337,6 +347,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, FirstScreen.class));
         });
 
+        // Listens for response from CheckForExistingAccount.java web service,
+        // checks if the email is already in use with another account
         emailListener = new MutableLiveData<>();
         emailListener.observe(MainActivity.this, available -> {
             if (!available) {
@@ -368,6 +380,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Listens for response from CheckForExistingAccount.java web service,
+        // checks if the phone number is already in use with another account
         phoneListener = new MutableLiveData<>();
         phoneListener.observe(MainActivity.this, available -> {
             if (!available) {
@@ -522,7 +536,6 @@ public class MainActivity extends AppCompatActivity {
      * only called if newAccount = true (if "No" is clicked on FirstScreen.java)
      */
     public void newAccountExpand() {
-        // confirmEmailAddress.requestFocus();
         setStatus(-1, Collections.singletonList(emailAddressBox), Collections.singletonList(noEmailWarning));
         animation(phoneNumberBox, "translationY", 165f);
         animation(noPhoneNumberWarning, "translationY", 165f);

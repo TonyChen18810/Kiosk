@@ -47,7 +47,7 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inMasterNumber", inMasterNumber);
-        request.addProperty("inCoolerLocation", "01");
+        request.addProperty("inCoolerLocation", Settings.getCoolerLocation());
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;

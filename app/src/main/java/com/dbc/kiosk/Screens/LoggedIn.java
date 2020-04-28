@@ -27,9 +27,12 @@ import com.dbc.kiosk.Helpers.LicenseTransformationMethod;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Report;
+import com.dbc.kiosk.Settings;
 import com.dbc.kiosk.Webservices.CheckForExistingAccount;
 import com.dbc.kiosk.Webservices.GetServerTime;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.Collections;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
@@ -55,12 +58,10 @@ public class LoggedIn extends AppCompatActivity {
     private String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
     private View textCheckbox, emailCheckbox, bothCheckbox;
     private Button selectState1, selectState2;
-    public static MutableLiveData<Boolean> checkboxListener;
-
-    public static MutableLiveData<Integer> phoneListener;
-
     private ProgressBar progressBar;
 
+    public static MutableLiveData<Boolean> checkboxListener;
+    public static MutableLiveData<Integer> phoneListener;
     private static int PREFERRED_COMMUNICATION = -1;
     private Account CURRENT_ACCOUNT = Account.getCurrentAccount();
 
@@ -71,7 +72,15 @@ public class LoggedIn extends AppCompatActivity {
         report.setDriverTags();
         setContentView(R.layout.activity_logged_in);
         setup();
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.METHOD, "User logged in");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
+        System.out.println("Kiosk number: " + Settings.getKioskNumber());
+        System.out.println("Cooler location: " + Settings.getCoolerLocation());
 
+        // Records time at which user logged in (used for comparing to
+        // entered order appointment times to check for late/early/on-time)
         new GetServerTime().execute();
 
         checkboxListener = new MutableLiveData<>();

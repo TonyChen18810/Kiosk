@@ -50,8 +50,6 @@ public class OrderSummary extends AppCompatActivity {
             totalOrders, totalPallets, totalWeight, ordersCount, totalPalletsCount, totalWeightCount;
     Button confirmBtn, backBtn;
 
-    private int currentLanguage = Language.getCurrentLanguage();
-
     private Button logoutBtn;
 
     private int counter;
@@ -96,6 +94,8 @@ public class OrderSummary extends AppCompatActivity {
 
             Set<String> outlierSet = new HashSet<>();
 
+            // doubly make sure there are no duplicate outlier orders, and also no outlier orders
+            // in the order list to be checked-in/submitted
             for (int i = 0; i < outlierList.size(); i++) {
                 boolean contains = false;
                 for (int j = 0; j < orderList.size(); j++) {
@@ -108,6 +108,7 @@ public class OrderSummary extends AppCompatActivity {
                     outlierSet.add(outlierList.get(i).getSOPNumber());
                 }
             }
+
             System.out.println("Here are the outlier orders, they will now be updated:");
             for (String SOP : outlierSet) {
                 new DeleteOrderDetails(SOP).execute();
@@ -140,7 +141,15 @@ public class OrderSummary extends AppCompatActivity {
                 }
             }
             setContentView(R.layout.final_screen);
-            dialog = new ProgressDialog("Submitting your orders...", OrderSummary.this);
+            String message = "";
+            if (Language.getCurrentLanguage() == 0) {
+                message = "Submitting your orders...";
+            } else if (Language.getCurrentLanguage() == 1) {
+                message = "Enviando sus pedidos...";
+            } else if (Language.getCurrentLanguage() == 2) {
+                message = "Soumettre vos commandes...";
+            }
+            dialog = new ProgressDialog(message, OrderSummary.this);
             dialog.show();
             dialog.setCancelable(false);
             final Button logoutBtn = findViewById(R.id.LogoutBtn);
@@ -161,7 +170,7 @@ public class OrderSummary extends AppCompatActivity {
 
             TextView tv1 = findViewById(R.id.textView1);
             TextView tv2 = findViewById(R.id.textView2);
-            if (currentLanguage == 0) {
+            if (Language.getCurrentLanguage() == 0) {
                 if (Order.getOrdersList().size() > 1) {
                     tv1.setText(R.string.thanks_bye_eng);
                 } else {
@@ -169,7 +178,7 @@ public class OrderSummary extends AppCompatActivity {
                 }
                 tv2.setText(R.string.please_logout_eng);
                 logoutBtn.setText(R.string.logout_eng);
-            } else if (currentLanguage == 1) {
+            } else if (Language.getCurrentLanguage() == 1) {
                 if (Order.getOrdersList().size() > 1) {
                     tv1.setText(R.string.thanks_bye_sp);
                 } else {
@@ -177,7 +186,7 @@ public class OrderSummary extends AppCompatActivity {
                 }
                 tv2.setText(R.string.please_logout_sp);
                 logoutBtn.setText(R.string.logout_sp);
-            } else if (currentLanguage == 2) {
+            } else if (Language.getCurrentLanguage() == 2) {
                 if (Order.getOrdersList().size() > 1) {
                     tv1.setText(R.string.thanks_bye_fr);
                 } else {
@@ -219,10 +228,10 @@ public class OrderSummary extends AppCompatActivity {
 
         ordersCount.setText(Integer.toString(Order.getOrdersList().size()));
         DecimalFormat formatter = new DecimalFormat("#,###");
-        totalPalletsCount.setText(Double.toString(Rounder.round(Order.getTotalPalletCount(), 1)));
+        totalPalletsCount.setText(Double.toString(Rounder.round(Order.getTotalPalletCount(), 2)));
         totalWeightCount.setText(formatter.format(Order.getTotalWeight()) + " lbs");
 
-        if (currentLanguage == 0) {
+        if (Language.getCurrentLanguage() == 0) {
             confirmOrders.setText(R.string.confirm_orders_eng);
             confirmationNumberText.setText(R.string.confirmation_num_eng);
             orderNumber.setText(R.string.order_number_eng);
@@ -243,7 +252,7 @@ public class OrderSummary extends AppCompatActivity {
             aptTime.setTextSize(40);
             destination.setTextSize(40);
             estWeight.setTextSize(40);
-        } else if (currentLanguage == 1) {
+        } else if (Language.getCurrentLanguage() == 1) {
             confirmOrders.setText(R.string.confirm_orders_sp);
             confirmationNumberText.setText(R.string.confirmation_num_sp);
             orderNumber.setText(R.string.order_number_sp);
@@ -264,7 +273,7 @@ public class OrderSummary extends AppCompatActivity {
             aptTime.setTextSize(36);
             destination.setTextSize(36);
             estWeight.setTextSize(36);
-        } else if (currentLanguage == 2) {
+        } else if (Language.getCurrentLanguage() == 2) {
             confirmOrders.setText(R.string.confirm_orders_fr);
             confirmationNumberText.setText(R.string.confirmation_num_fr);
             orderNumber.setText(R.string.order_number_fr);

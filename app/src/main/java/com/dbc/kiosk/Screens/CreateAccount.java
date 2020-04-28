@@ -2,13 +2,11 @@ package com.dbc.kiosk.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.text.Html;
 import android.text.InputFilter;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,6 +29,7 @@ import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
@@ -62,6 +61,8 @@ public class CreateAccount extends AppCompatActivity {
     private ImageButton truckNameHelp, truckNumberHelp, trailerLicenseHelp,
             driverLicenseHelp, driverNameHelp, dispatcherPhoneNumberHelp;
 
+    ProgressBar progressBar;
+
     String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
 
     private TextView txtText, emailText, bothText, selectText, standardRatesApply;
@@ -76,12 +77,14 @@ public class CreateAccount extends AppCompatActivity {
 
     private int PREFERRED_COMMUNICATION = -1;
 
-    ProgressBar progressBar;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -348,6 +351,10 @@ public class CreateAccount extends AppCompatActivity {
         accountCreatedListener.observe(CreateAccount.this, aBoolean -> {
             setContentView(R.layout.account_created_msg);
             accountCreatedSetup();
+
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.METHOD, "User created an account");
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
 
             findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                 startActivity(new Intent(CreateAccount.this, FirstScreen.class));

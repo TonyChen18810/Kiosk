@@ -141,10 +141,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Version 0.0.33 updates:\n
-        \n&#8226; Implement Firebase Crashlytics for crash reports.\n
+        android:text="Version 0.0.35 updates:\n
         \n&#8226; Language updates/fixes\n
-        \n&#8226; An order with a different date than the current date cannot be submitted and will not show on the connected orders list"
+        \n&#8226; An order with a different date than the current date cannot be submitted and will not show on the connected orders list\n
+        \n&#8226; Cooler location can now be changed in the settings menu"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

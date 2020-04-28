@@ -7,13 +7,13 @@ import com.dbc.kiosk.PossibleDestination;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 /**
  * GetPossibleShipTos.java
@@ -52,7 +52,7 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inSOPNumber", enteredSOPNumber);
-        request.addProperty("inCoolerLocation", "01");
+        request.addProperty("inCoolerLocation", Settings.getCoolerLocation());
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;

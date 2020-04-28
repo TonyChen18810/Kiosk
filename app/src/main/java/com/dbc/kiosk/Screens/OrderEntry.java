@@ -23,6 +23,7 @@ import com.dbc.kiosk.Helpers.*;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Report;
+import com.dbc.kiosk.Settings;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
 import com.dbc.kiosk.Webservices.GetOrderDetailsByMasterNumber;
 import java.util.ArrayList;
@@ -85,6 +86,9 @@ public class OrderEntry extends AppCompatActivity {
         Report report = new Report(this);
         report.setDriverTags();
         setup();
+
+        System.out.println("Kiosk number: " + Settings.getKioskNumber());
+        System.out.println("Cooler location: " + Settings.getCoolerLocation());
 
         CustomOrderKeyboard keyboard = findViewById(R.id.keyboard);
         orderNumber.setRawInputType(InputType.TYPE_CLASS_TEXT);

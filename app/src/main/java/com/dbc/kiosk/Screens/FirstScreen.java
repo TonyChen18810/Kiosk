@@ -55,14 +55,19 @@ public class FirstScreen extends AppCompatActivity {
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
         setContentView(R.layout.activity_first_screen);
+        // Initialize Firebase Crashlytics, set tags
         Report report = new Report(FirstScreen.this);
         System.out.println(FirebaseInstanceId.getInstance().getInstanceId());
 
         setup();
+        // load settings (kiosk name/number and cooler location)
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FirstScreen.this);
         Settings.setKioskNumber(settings.getString("kiosk_number", "01"));
+        Settings.setCoolerLocation(settings.getString("cooler_location", "01"));
         System.out.println("Kiosk number: " + Settings.getKioskNumber());
+        System.out.println("Cooler location: " + Settings.getCoolerLocation());
 
+        // settings page - opens if version number is clicked 3 times
         final Fragment[] settingsFragment = new Fragment[1];
         fm = getSupportFragmentManager();
         final boolean[] fragmentOpen = {false};
@@ -84,6 +89,7 @@ public class FirstScreen extends AppCompatActivity {
             System.out.println("Settings click counter: " + settingsClickCount);
         });
 
+        // listens for "save" button click in settings menu
         settingsListener = new MutableLiveData<>();
         settingsListener.observe(FirstScreen.this, savedIsClicked -> {
             if (savedIsClicked) {

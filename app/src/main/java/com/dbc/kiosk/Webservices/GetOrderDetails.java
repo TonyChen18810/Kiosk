@@ -8,6 +8,7 @@ import com.dbc.kiosk.Helpers.Time;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderEntry;
+import com.dbc.kiosk.Settings;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -72,8 +73,8 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inSOPNumber", enteredSOPNumber);
-        request.addProperty("inCoolerLocation", "01");
-        // System.out.println("Settings.getCoolerLocation(): " + Settings.getCoolerLocation());
+        request.addProperty("inCoolerLocation", Settings.getCoolerLocation());
+        System.out.println("Settings.getCoolerLocation(): " + Settings.getCoolerLocation());
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
@@ -130,23 +131,28 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         // if order is good, it can be added - otherwise pop-up message is displayed
         boolean isGoodOrder = false;
 
+        if (propertyCount < 1) {
+            // order doesn't exist
+            OrderEntry.validOrderNumber.setValue(0);
+        }
+
         System.out.println("connection: " + connection);
         if (connection) {
             if (truckStatus == null || truckStatus.equals("null")) {
                 isGoodOrder = false;
-                System.out.println("Order doesn't exist, let's double check it's values: ");
-                System.out.println("truckStatus: " + truckStatus);
-                System.out.println("SOPnumber: " + SOPNumber);
-                OrderEntry.validOrderNumber.setValue(0);
+                // System.out.println("Order doesn't exist, let's double check it's values: ");
+                // System.out.println("truckStatus: " + truckStatus);
+                // System.out.println("SOPnumber: " + SOPNumber);
+                // OrderEntry.validOrderNumber.setValue(0);
             } else {
-                System.out.println("truckStatus: " + truckStatus);
-                System.out.println("Order date: " + orderDate);
-                System.out.println("Today's date: " + Time.getCurrentDate());
+                // System.out.println("truckStatus: " + truckStatus);
+                // System.out.println("Order date: " + orderDate);
+                // System.out.println("Today's date: " + Time.getCurrentDate());
                 if (truckStatus.equals("Outstanding") && orderDate.equals(Time.getCurrentDate())) {
-                    System.out.println("The dates are equal!");
-                    System.out.println("propertyCount: " + propertyCount);
+                    // System.out.println("The dates are equal!");
+                    // System.out.println("propertyCount: " + propertyCount);
                     if (propertyCount > 0) {
-                        System.out.println("THIS IS FOR ORDER NUMBER: " + SOPNumber);
+                        // System.out.println("THIS IS FOR ORDER NUMBER: " + SOPNumber);
                         if (isCheckedIn.equals("false")) {
                             if (isAppointment.equals("true") && appointmentTime.equals("00:00:00")) {
                                 System.out.println("Need to make appointment");

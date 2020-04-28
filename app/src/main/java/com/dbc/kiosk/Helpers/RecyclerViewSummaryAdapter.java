@@ -101,7 +101,7 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         DecimalFormat formatter = new DecimalFormat("#,###");
-        holder.estPallets.setText(Double.toString(Rounder.round(order.getEstimatedPallets(), 1)));
+        holder.estPallets.setText(Double.toString(Rounder.round(order.getEstimatedPallets(), 2)));
         holder.estWeight.setText(formatter.format(order.getEstimatedWeight()) + " lb");
     }
 

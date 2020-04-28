@@ -159,7 +159,7 @@ public class Order {
     }
 
     public double getEstimatedPallets() {
-        return Rounder.round(Double.parseDouble(estimatedPallets), 1);
+        return Rounder.round(Double.parseDouble(estimatedPallets), 2);
     }
 
     public static double getTotalWeight() {

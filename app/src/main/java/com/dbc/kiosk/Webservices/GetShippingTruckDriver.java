@@ -7,13 +7,11 @@ import android.widget.ProgressBar;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.MainActivity;
-import com.dbc.kiosk.Settings;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
-import java.util.Date;
 /**
  * GetShippingTruckDriver.java
  *
