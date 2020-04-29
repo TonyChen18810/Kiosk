@@ -3,6 +3,8 @@ package com.dbc.kiosk.Webservices;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+
+import com.dbc.kiosk.Helpers.Time;
 import com.dbc.kiosk.Screens.OrderEntry;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -54,10 +56,19 @@ public class GetMasterNumberByEmail extends AsyncTask<Void, Void, Void> {
             if (response.getPropertyCount() < 1) {
                 System.out.println("USER DOES NOT HAVE A MASTER NUMBER");
             } else {
-                System.out.println("USER HAS A MASTER NUMBER...");
-                String masterNumber = ((SoapObject) (response.getProperty(0))).getProperty(0).toString();
-                GetOrderDetails.setNewMasterNumber(masterNumber);
-                System.out.println("THE USER'S MASTER NUMBER IS " + GetOrderDetails.getMasterNumber());
+                for (int i = 0; i < response.getPropertyCount(); i++) {
+                    String truckStatus = ((SoapObject) (response.getProperty(i))).getProperty(5).toString();
+                    System.out.println("truckStatus: " + truckStatus);
+                    String orderDate = ((SoapObject) (response.getProperty(i))).getProperty(9).toString();
+                    System.out.println("orderDate: " + orderDate);
+                    if (!truckStatus.equals("Fulfilled") && orderDate.equals(Time.getCurrentDate())) {
+                        System.out.println("USER HAS A MASTER NUMBER...");
+                        String masterNumber = ((SoapObject) (response.getProperty(i))).getProperty(0).toString();
+                        GetOrderDetails.setNewMasterNumber(masterNumber);
+                        System.out.println("THE USER'S MASTER NUMBER IS " + GetOrderDetails.getMasterNumber());
+                        break;
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

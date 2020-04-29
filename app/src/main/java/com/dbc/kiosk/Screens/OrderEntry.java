@@ -161,6 +161,7 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.setCancelable(false);
                 dialog.show();
+                progressBar.setVisibility(View.GONE);
                 // order needs to schedule appointment
             } else if (valid == 2) {
                 checkOrderBtn.setEnabled(true);
@@ -205,6 +206,15 @@ public class OrderEntry extends AppCompatActivity {
                 } else if (Language.getCurrentLanguage() == 2) {
                     helpText = "Le numéro de commande est pour une date future, vous ne pouvez soumettre des commandes que pour aujourd'hui.";
                 }
+                HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
+                dialog.show();
+                dialog.setCancelable(false);
+                orderNumber.setText("");
+                checkOrderBtn.setEnabled(true);
+                CustomOrderKeyboard.enableEnterButton();
+                orderNumber.setEnabled(true);
+            } else if (valid == 5) {
+                String helpText = "A different driver has already checked-in with this confirmation number";
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
                 dialog.setCancelable(false);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
+import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Helpers.Time;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
@@ -140,19 +141,19 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         if (connection) {
             if (truckStatus == null || truckStatus.equals("null")) {
                 isGoodOrder = false;
-                // System.out.println("Order doesn't exist, let's double check it's values: ");
-                // System.out.println("truckStatus: " + truckStatus);
-                // System.out.println("SOPnumber: " + SOPNumber);
+                System.out.println("Order doesn't exist, let's double check it's values: ");
+                System.out.println("truckStatus: " + truckStatus);
+                System.out.println("SOPnumber: " + SOPNumber);
                 // OrderEntry.validOrderNumber.setValue(0);
             } else {
-                // System.out.println("truckStatus: " + truckStatus);
-                // System.out.println("Order date: " + orderDate);
-                // System.out.println("Today's date: " + Time.getCurrentDate());
+                System.out.println("truckStatus: " + truckStatus);
+                System.out.println("Order date: " + orderDate);
+                System.out.println("Today's date: " + Time.getCurrentDate());
                 if (truckStatus.equals("Outstanding") && orderDate.equals(Time.getCurrentDate())) {
-                    // System.out.println("The dates are equal!");
-                    // System.out.println("propertyCount: " + propertyCount);
+                    System.out.println("The dates are equal!");
+                    System.out.println("propertyCount: " + propertyCount);
                     if (propertyCount > 0) {
-                        // System.out.println("THIS IS FOR ORDER NUMBER: " + SOPNumber);
+                        System.out.println("THIS IS FOR ORDER NUMBER: " + SOPNumber);
                         if (isCheckedIn.equals("false")) {
                             if (isAppointment.equals("true") && appointmentTime.equals("00:00:00")) {
                                 System.out.println("Need to make appointment");
@@ -209,11 +210,22 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                 // sets current order
                 Order order = new Order(masterNumber, SOPNumber, coolerLocation, destination, consignee, truckStatus,
                         customerName, isCheckedIn, isAppointment, orderDate, appointmentTime, estimatedWeight, estimatedPallets);
-                OrderEntry.validOrderNumber.setValue(1);
-            }
-            if (activity != null) {
-                ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-                progressBar.setVisibility(View.GONE);
+                // OrderEntry.validOrderNumber.setValue(1); // this initializes the step to let people add the order
+                // to their list of orders - here is where the customer pop-up is called
+                // instead, now check if there are connected orders (master #?) and IF any of those connected orders are checked-in,
+                // make sure they were checked-in by this driver. If they weren't checked in by this driver, invalid order #.
+                // If none are checked-in -> valid order #.
+
+                // Is there a master number? if so, most likely connected orders.
+                if (masterNumber != null && !masterNumber.equals("anyType{}") && !masterNumber.equals("")) {
+                    new CheckConnectedOrders(Account.getCurrentAccount().getEmail(), masterNumber, true).execute();
+                } else {
+                    if (activity != null) {
+                        ProgressBar progressBar = activity.findViewById(R.id.progressBar);
+                        progressBar.setVisibility(View.GONE);
+                    }
+                    OrderEntry.validOrderNumber.setValue(1);
+                }
             }
         }
     }
