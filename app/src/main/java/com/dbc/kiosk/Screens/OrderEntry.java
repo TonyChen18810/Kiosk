@@ -171,7 +171,7 @@ public class OrderEntry extends AppCompatActivity {
                 } else if (Language.getCurrentLanguage() == 1) {
                     message = "Pedido #" + orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
                 } else if (Language.getCurrentLanguage() == 2) {
-                    message = "Commande #" + orderNumber.getText().toString() + " nécessite un rendez-vous, mais aucun rendez-vous n’a été prévu. Veuillez appeler le 831 455-4305 pour en programmer un.\n";
+                    message = "Commande #" + orderNumber.getText().toString() + " nécessite un rendez-vous, mais aucun rendez-vous n’a été prévu. Veuillez appeler le 831 455-4305 pour en programmer un.";
                 }
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
                 dialog.show();
@@ -183,11 +183,27 @@ public class OrderEntry extends AppCompatActivity {
             } else if (valid == 3) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 0) {
-                    helpText = "The order has already been checked in";
+                    helpText = "The order has already been checked in.";
                 } else if (Language.getCurrentLanguage() == 1) {
-                    helpText = "El pedido ya se ha registrado";
+                    helpText = "El pedido ya se ha registrado.";
                 } else if (Language.getCurrentLanguage() == 2) {
-                    helpText = "Cette commande a déjà été validée";
+                    helpText = "Cette commande a déjà été validée.";
+                }
+                HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
+                dialog.show();
+                dialog.setCancelable(false);
+                orderNumber.setText("");
+                checkOrderBtn.setEnabled(true);
+                CustomOrderKeyboard.enableEnterButton();
+                orderNumber.setEnabled(true);
+            } else if (valid == 4) {
+                String helpText = "";
+                if (Language.getCurrentLanguage() == 0) {
+                    helpText = "Order number is for a future date, you can only submit orders for today.";
+                } else if (Language.getCurrentLanguage() == 1) {
+                    helpText = "El número de pedido es para una fecha futura, solo puede enviar pedidos para hoy.";
+                } else if (Language.getCurrentLanguage() == 2) {
+                    helpText = "Le numéro de commande est pour une date future, vous ne pouvez soumettre des commandes que pour aujourd'hui.";
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();

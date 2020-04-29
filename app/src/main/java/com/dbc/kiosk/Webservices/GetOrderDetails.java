@@ -200,7 +200,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                     OrderEntry.validOrderNumber.setValue(3);
                 } else if (!orderDate.equals(Time.getCurrentDate())) {
                     System.out.println("Dates do not match!");
-                    OrderEntry.validOrderNumber.setValue(0);
+                    OrderEntry.validOrderNumber.setValue(4);
                 }
             }
             if (isGoodOrder) {
