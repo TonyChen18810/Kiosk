@@ -137,21 +137,38 @@
         app:layout_constraintVertical_bias="0.269" />
 
     <TextView
+        android:id="@+id/VersionUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Version updates:"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        app:layout_constraintVertical_bias="0.142" />
+
+    <TextView
         android:id="@+id/ErrorTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Version 0.0.35 updates:\n
-        \n&#8226; Language updates/fixes\n
-        \n&#8226; An order with a different date than the current date cannot be submitted and will not show on the connected orders list\n
-        \n&#8226; Cooler location can now be changed in the settings menu"
+        android:text="
+        \n&#8226; Does not let driver add a future order (different day), shows warning.\n
+        \n&#8226; User receives a different confirmation for each different day they enter orders. If they\n
+        return the same day they entered other orders, it uses the same confirmation number that was used for those.\n
+        \n&#8226; Driver cannot enter an order that is connected to another driver.\n
+        \n&#8226; Cooler location can now be changed in the settings menu."
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2"
-        app:layout_constraintVertical_bias="0.113" />
+        app:layout_constraintTop_toBottomOf="@+id/VersionUpdate"
+        app:layout_constraintVertical_bias="0.07" />
 
     <TextView
         android:id="@+id/ErrorLog"
@@ -187,11 +204,13 @@
         android:layout_height="wrap_content"
         android:background="@color/andy_accent"
         android:foreground="?android:attr/selectableItemBackground"
+        android:padding="10dp"
         android:text="Save"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.586"
+        app:layout_constraintHorizontal_bias="0.797"
         app:layout_constraintStart_toEndOf="@+id/cardView1"
         app:layout_constraintTop_toBottomOf="@+id/ExitBtn"
-        app:layout_constraintVertical_bias="0.189" />
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

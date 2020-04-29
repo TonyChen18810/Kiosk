@@ -214,7 +214,7 @@ public class OrderEntry extends AppCompatActivity {
                 CustomOrderKeyboard.enableEnterButton();
                 orderNumber.setEnabled(true);
             } else if (valid == 5) {
-                String helpText = "A different driver has already checked-in with this confirmation number";
+                String helpText = "A different driver has already checked in with this confirmation number";
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
                 dialog.setCancelable(false);

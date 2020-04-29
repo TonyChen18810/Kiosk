@@ -3,6 +3,8 @@ package com.dbc.kiosk;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -12,7 +14,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -118,6 +119,16 @@ public class Settings extends Fragment {
 
         TextView errorText = view.findViewById(R.id.ErrorLog);
         TextView errorTitle = view.findViewById(R.id.ErrorTitle);
+        TextView settingsText = view.findViewById(R.id.SettingsText);
+        TextView versionUpdate = view.findViewById(R.id.VersionUpdate);
+        String version = "";
+        try {
+            PackageInfo pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        versionUpdate.setText("Version " + version + " updates:");
         errorText.setText(getErrorMsg());
         // errorTitle.setText(errorTitle.getText().toString() + " " + getErrorDate());
         ImageButton exitBtn = view.findViewById(R.id.ExitBtn);
@@ -127,6 +138,8 @@ public class Settings extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.select_dialog_item);
         locationCoolerSpinner.setAdapter(adapter);
         exitBtn.setVisibility(View.INVISIBLE);
+        settingsText.setVisibility(View.GONE);
+        versionUpdate.setVisibility(View.GONE);
 
         saveBtn.setOnClickListener(v -> {
             settings = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -226,6 +239,8 @@ public class Settings extends Fragment {
                     errorText.setVisibility(View.VISIBLE);
                     errorTitle.setVisibility(View.VISIBLE);
                     saveBtn.setVisibility(View.VISIBLE);
+                    settingsText.setVisibility(View.VISIBLE);
+                    versionUpdate.setVisibility(View.VISIBLE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
             }

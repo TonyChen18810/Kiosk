@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -97,6 +96,8 @@ public class FirstScreen extends AppCompatActivity {
                 fragmentOpen[0] = false;
                 fm.beginTransaction().setCustomAnimations(R.anim.layout_slide_in, R.anim.fragment_close_exit).remove(settingsFragment[0]).commit();
                 Toast.makeText(FirstScreen.this, "Settings have been saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FirstScreen.this, "Cooler location set to: " + Settings.getCoolerLocation(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FirstScreen.this, "Kiosk number set to: " + Settings.getKioskNumber(), Toast.LENGTH_SHORT).show();
                 if (Language.getCurrentLanguage() == 0) {
                     setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
                 } else if (Language.getCurrentLanguage() == 1) {
