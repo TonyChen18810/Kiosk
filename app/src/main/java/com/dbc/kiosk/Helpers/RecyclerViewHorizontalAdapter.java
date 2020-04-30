@@ -82,11 +82,11 @@ public class RecyclerViewHorizontalAdapter extends RecyclerView.Adapter<Recycler
             this.appointment = itemView.findViewById(R.id.AppointmentTime);
             this.deleteBtn = itemView.findViewById(R.id.DeleteBtn);
 
-            if (Language.getCurrentLanguage() == 0) {
+            if (Language.getCurrentLanguage() == 1) {
                 deleteBtn.setText(R.string.delete_eng);
-            } else if (Language.getCurrentLanguage() == 1) {
-                deleteBtn.setText(R.string.delete_sp);
             } else if (Language.getCurrentLanguage() == 2) {
+                deleteBtn.setText(R.string.delete_sp);
+            } else if (Language.getCurrentLanguage() == 3) {
                 deleteBtn.setText(R.string.delete_fr);
             }
 

@@ -237,6 +237,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.495" />
 
+
+    <TextView
+        android:id="@+id/EnglishText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="English"
+        android:textColor="#C9000000"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/EnglishCheckbox"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.288" />
+
     <TextView
         android:id="@+id/SpanishText"
         android:layout_width="wrap_content"
@@ -246,8 +261,8 @@
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.534"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/SpanishCheckbox"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.288" />
 
@@ -260,66 +275,55 @@
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.768"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/FrenchCheckbox"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.288" />
 
-    <View
-        android:id="@+id/FrenchCheckbox"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/mycheckbox"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.663"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.29" />
-
-    <TextView
-        android:id="@+id/EnglishText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="English"
-        android:textColor="#C9000000"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.322"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.288" />
-
-    <View
+    <CheckBox
         android:id="@+id/EnglishCheckbox"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/mycheckbox"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="?android:attr/listChoiceIndicatorMultiple"
+        android:button="@null"
+        app:buttonTint="@color/andy_accent"
+        android:clickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintHorizontal_bias="0.215"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.29" />
+        app:layout_constraintVertical_bias="0.284" />
 
-    <View
+    <CheckBox
         android:id="@+id/SpanishCheckbox"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/mycheckbox"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="?android:attr/listChoiceIndicatorMultiple"
+        android:button="@null"
+        app:buttonTint="@color/andy_accent"
+        android:clickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.455"
+        app:layout_constraintHorizontal_bias="0.445"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.29" />
+        app:layout_constraintVertical_bias="0.284" />
+
+    <CheckBox
+        android:id="@+id/FrenchCheckbox"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="?android:attr/listChoiceIndicatorMultiple"
+        android:button="@null"
+        app:buttonTint="@color/andy_accent"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.697"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.284" />
 
     <TextView
         android:id="@+id/UnmatchingPhone"

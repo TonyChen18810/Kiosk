@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ConstaintLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,61 +18,47 @@
         app:layout_constraintVertical_bias="0.116"
         app:srcCompat="@drawable/dab_logo" />
 
-    <TextView
-        android:id="@+id/SpanishText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Español"
-        android:textColor="#C9000000"
-        android:textSize="40sp"
+    <CheckBox
+        android:id="@+id/EnglishCheckbox"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="?android:attr/listChoiceIndicatorMultiple"
+        android:button="@null"
+        app:buttonTint="@color/andy_accent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.026"
-        app:layout_constraintStart_toEndOf="@+id/SpanishCheckbox"
+        app:layout_constraintHorizontal_bias="0.171"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.332" />
+        app:layout_constraintVertical_bias="0.326" />
 
-    <View
+    <CheckBox
         android:id="@+id/SpanishCheckbox"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/mycheckbox"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="?android:attr/listChoiceIndicatorMultiple"
+        android:button="@null"
+        app:buttonTint="@color/andy_accent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.442"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.333" />
+        app:layout_constraintVertical_bias="0.326" />
 
-    <View
+    <CheckBox
         android:id="@+id/FrenchCheckbox"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/mycheckbox"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="?android:attr/listChoiceIndicatorMultiple"
+        android:button="@null"
+        app:buttonTint="@color/andy_accent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintHorizontal_bias="0.706"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.333" />
-
-    <TextView
-        android:id="@+id/FrenchText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Français"
-        android:textColor="#C9000000"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
-        app:layout_constraintStart_toEndOf="@+id/FrenchCheckbox"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.332" />
+        app:layout_constraintVertical_bias="0.325" />
 
     <TextView
         android:id="@+id/EnglishText"
@@ -83,24 +69,39 @@
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.016"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/EnglishCheckbox"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.332" />
+        app:layout_constraintVertical_bias="0.329" />
 
-    <View
-        android:id="@+id/EnglishCheckbox"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/mycheckbox"
-        android:clickable="true"
-        android:focusable="true"
+    <TextView
+        android:id="@+id/SpanishText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="304dp"
+        android:text="Español"
+        android:textColor="#C9000000"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.246"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/SpanishCheckbox"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.333" />
+        app:layout_constraintVertical_bias="0.328" />
+
+    <TextView
+        android:id="@+id/FrenchText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Français"
+        android:textColor="#C9000000"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/FrenchCheckbox"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.326" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/AppointmentCardView"
@@ -112,7 +113,7 @@
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.158"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -234,7 +235,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/VersionText"
         app:layout_constraintVertical_bias="0.094">
-
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -126,6 +126,7 @@ public class OrderEntry extends AppCompatActivity {
                 rulesAcceptBtn.setOnClickListener(v -> {
                     Intent intent = new Intent(OrderEntry.this, OrderSummary.class);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 });
             }
         });
@@ -137,11 +138,11 @@ public class OrderEntry extends AppCompatActivity {
                 CustomOrderKeyboard.enableEnterButton();
                 orderNumber.setText("");
                 String message = null;
-                if (Language.getCurrentLanguage() == 0) {
+                if (Language.getCurrentLanguage() == 1) {
                     message = "Invalid order number, please try again.";
-                } else if (Language.getCurrentLanguage() == 1) {
-                    message = "El número de pedido no es válido. Intente otra vez.";
                 } else if (Language.getCurrentLanguage() == 2) {
+                    message = "El número de pedido no es válido. Intente otra vez.";
+                } else if (Language.getCurrentLanguage() == 3) {
                     message = "Numéro de commande invalide, veuillez réessayer.";
                 }
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
@@ -167,11 +168,11 @@ public class OrderEntry extends AppCompatActivity {
                 checkOrderBtn.setEnabled(true);
                 CustomOrderKeyboard.enableEnterButton();
                 String message = null;
-                if (Language.getCurrentLanguage() == 0) {
+                if (Language.getCurrentLanguage() == 1) {
                     message = "Order #" + orderNumber.getText().toString() + " requires an appointment but hasn't had one scheduled, please call 831-455-4305 to schedule an appointment.";
-                } else if (Language.getCurrentLanguage() == 1) {
-                    message = "Pedido #" + orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
                 } else if (Language.getCurrentLanguage() == 2) {
+                    message = "Pedido #" + orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
+                } else if (Language.getCurrentLanguage() == 3) {
                     message = "Commande #" + orderNumber.getText().toString() + " nécessite un rendez-vous, mais aucun rendez-vous n’a été prévu. Veuillez appeler le 831 455-4305 pour en programmer un.";
                 }
                 HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
@@ -183,11 +184,11 @@ public class OrderEntry extends AppCompatActivity {
                 orderNumber.setText("");
             } else if (valid == 3) {
                 String helpText = "";
-                if (Language.getCurrentLanguage() == 0) {
+                if (Language.getCurrentLanguage() == 1) {
                     helpText = "The order has already been checked in.";
-                } else if (Language.getCurrentLanguage() == 1) {
-                    helpText = "El pedido ya se ha registrado.";
                 } else if (Language.getCurrentLanguage() == 2) {
+                    helpText = "El pedido ya se ha registrado.";
+                } else if (Language.getCurrentLanguage() == 3) {
                     helpText = "Cette commande a déjà été validée.";
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
@@ -199,11 +200,11 @@ public class OrderEntry extends AppCompatActivity {
                 orderNumber.setEnabled(true);
             } else if (valid == 4) {
                 String helpText = "";
-                if (Language.getCurrentLanguage() == 0) {
+                if (Language.getCurrentLanguage() == 1) {
                     helpText = "Order number is for a future date, you can only submit orders for today.";
-                } else if (Language.getCurrentLanguage() == 1) {
-                    helpText = "El número de pedido es para una fecha futura, solo puede enviar pedidos para hoy.";
                 } else if (Language.getCurrentLanguage() == 2) {
+                    helpText = "El número de pedido es para una fecha futura, solo puede enviar pedidos para hoy.";
+                } else if (Language.getCurrentLanguage() == 3) {
                     helpText = "Le numéro de commande est pour une date future, vous ne pouvez soumettre des commandes que pour aujourd'hui.";
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
@@ -214,7 +215,14 @@ public class OrderEntry extends AppCompatActivity {
                 CustomOrderKeyboard.enableEnterButton();
                 orderNumber.setEnabled(true);
             } else if (valid == 5) {
-                String helpText = "A different driver has already checked in with this confirmation number";
+                String helpText = "";
+                if (Language.getCurrentLanguage() == 1) {
+                    helpText = "A different driver has already checked in with this confirmation number.";
+                } else if (Language.getCurrentLanguage() == 2) {
+                    helpText = "Un controlador diferente ya se ha registrado con este número de confirmación";
+                } else if (Language.getCurrentLanguage() == 3) {
+                    helpText = "Un autre conducteur s'est déjà enregistré avec ce numéro de confirmation";
+                }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
                 dialog.setCancelable(false);
@@ -229,11 +237,11 @@ public class OrderEntry extends AppCompatActivity {
         appointmentTimeListener.observe(OrderEntry.this, aptCode -> {
             if (aptCode == 1) {
                 String helpText = "";
-                if (Language.getCurrentLanguage() == 0) {
+                if (Language.getCurrentLanguage() == 1) {
                     helpText = "Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.";
-                } else if (Language.getCurrentLanguage() == 1) {
-                    helpText = "Ha pasado el horario de la cita. Llame al 831-455-4305 para reprogramar la cita.";
                 } else if (Language.getCurrentLanguage() == 2) {
+                    helpText = "Ha pasado el horario de la cita. Llame al 831-455-4305 para reprogramar la cita.";
+                } else if (Language.getCurrentLanguage() == 3) {
                     helpText = "L’heure du rendez-vous est passée. Veuillez appeler le 831 455-4305 pour reprendre rendez-vous.";
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
@@ -243,11 +251,11 @@ public class OrderEntry extends AppCompatActivity {
                 orderNumber.setEnabled(true);
             } else if (aptCode == -2) {
                 String helpText = "";
-                if (Language.getCurrentLanguage() == 0) {
+                if (Language.getCurrentLanguage() == 1) {
                     helpText = "One or more of the added orders has a later appointment time. These submitted orders will not be checked in until 1 hour prior to appointment time.";
-                } else if (Language.getCurrentLanguage() == 1) {
-                    helpText = "Ha pasado el horario de la cita para uno o más de los pedidos agregados. Estos pedidos enviados no se registrarán hasta 1 hora antes del horario de la cita.";
                 } else if (Language.getCurrentLanguage() == 2) {
+                    helpText = "Ha pasado el horario de la cita para uno o más de los pedidos agregados. Estos pedidos enviados no se registrarán hasta 1 hora antes del horario de la cita.";
+                } else if (Language.getCurrentLanguage() == 3) {
                     helpText = "Une ou plusieurs des commandes ajoutées ont un rendez-vous plus tard. Les commandes soumises ne seront pas validées jusqu’à 1 heure avant l’heure du rendez-vous.";
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
@@ -290,11 +298,11 @@ public class OrderEntry extends AppCompatActivity {
                 DESTINATION_ATTEMPTS++;
                 if (DESTINATION_ATTEMPTS >= 2) {
                     String message = null;
-                    if (currentLanguage == 0) {
+                    if (currentLanguage == 1) {
                         message = "Maximum destination attempts exceeded, please try another order number or contact your dispatcher.";
-                    } else if (currentLanguage == 1) {
-                        message = "Se excedieron los intentos de destino máximos, intente con otro número de pedido o comuníquese con su despachador.";
                     } else if (currentLanguage == 2) {
+                        message = "Se excedieron los intentos de destino máximos, intente con otro número de pedido o comuníquese con su despachador.";
+                    } else if (currentLanguage == 3) {
                         message = "Nombre maximal de tentatives de destination dépassé, veuillez essayer un autre numéro de commande ou contacter votre répartiteur.";
                     }
                     HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
@@ -314,11 +322,11 @@ public class OrderEntry extends AppCompatActivity {
                     DESTINATION_ATTEMPTS = 0;
                 } else {
                     String message = null;
-                    if (currentLanguage == 0) {
+                    if (currentLanguage == 1) {
                         message = "Incorrect destination for the entered order number, you have one attempt remaining.";
-                    } else if (currentLanguage == 1) {
-                        message = "Destino incorrecto para el número de pedido ingresado, le queda un intento.";
                     } else if (currentLanguage == 2) {
+                        message = "Destino incorrecto para el número de pedido ingresado, le queda un intento.";
+                    } else if (currentLanguage == 3) {
                         message = "Destination incorrecte pour le numéro de commande saisi, il vous reste un tentative";
                     }
                     HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
@@ -333,7 +341,7 @@ public class OrderEntry extends AppCompatActivity {
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
 
         logoutBtn.setOnClickListener(v -> {
-            LogoutDialog dialog = new LogoutDialog(OrderEntry.this, v);
+            LogoutDialog dialog = new LogoutDialog(OrderEntry.this, OrderEntry.this);
             dialog.show();
             dialog.setCancelable(false);
         });
@@ -442,11 +450,11 @@ public class OrderEntry extends AppCompatActivity {
             }
             if (added) {
                 String helpText = "";
-                if (currentLanguage == 0) {
+                if (currentLanguage == 1) {
                     helpText = "The order has already been added";
-                } else if (currentLanguage == 1) {
-                    helpText = "El pedido ya se ha agregado";
                 } else if (currentLanguage == 2) {
+                    helpText = "El pedido ya se ha agregado";
+                } else if (currentLanguage == 3) {
                     helpText = "La commande a déjà été ajoutée";
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
@@ -513,7 +521,7 @@ public class OrderEntry extends AppCompatActivity {
     private void changeLanguage(int val) {
         System.out.println("val: " + val);
         switch(val) {
-            case 0:
+            case 1:
                 // English
                 orderNumber.setHint("Order number");
                 logoutBtn.setText(R.string.logout_eng);
@@ -523,7 +531,7 @@ public class OrderEntry extends AppCompatActivity {
                 addOrderBtn.setText(R.string.add_order_eng);
                 currentlyEntered.setText(R.string.entered_orders_eng);
                 break;
-            case 1:
+            case 2:
                 // Spanish
                 orderNumber.setHint("Número de pedido");
                 logoutBtn.setText(R.string.logout_sp);
@@ -534,7 +542,7 @@ public class OrderEntry extends AppCompatActivity {
                 currentlyEntered.setText(R.string.entered_orders_sp);
                 break;
 
-            case 2:
+            case 3:
                 // French
                 orderNumber.setHint("Numero de commande");
                 logoutBtn.setText(R.string.logout_fr);
@@ -585,7 +593,7 @@ public class OrderEntry extends AppCompatActivity {
         CustomOrderKeyboard.disableEnterButton();
         checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
         changeLanguage(currentLanguage);
-        if (currentLanguage == 2) {
+        if (currentLanguage == 3) {
             addOrderBtn.setTextSize(50);
             submitBtn.setTextSize(50);
         } else {
@@ -615,7 +623,7 @@ public class OrderEntry extends AppCompatActivity {
         TextView selectText = findViewById(R.id.SelectText);
         Button rulesAcceptBtn = findViewById(R.id.AcceptBtn);
 
-        if (currentLanguage == 0) {
+        if (currentLanguage == 1) {
             title.setText(R.string.regulations_eng);
             line1.setText(R.string.line1_eng);
             line2.setText(R.string.line2_eng);
@@ -633,7 +641,7 @@ public class OrderEntry extends AppCompatActivity {
             bottomText.setText(R.string.cooperation_eng);
             selectText.setText(R.string.verify_read_eng);
             rulesAcceptBtn.setText(R.string.accept_eng);
-        } else if (currentLanguage == 1) {
+        } else if (currentLanguage == 2) {
             title.setText(R.string.regulations_sp);
             line1.setText(R.string.line1_sp);
             line2.setText(R.string.line2_sp);
@@ -651,7 +659,7 @@ public class OrderEntry extends AppCompatActivity {
             bottomText.setText(R.string.cooperation_sp);
             selectText.setText(R.string.verify_read_sp);
             rulesAcceptBtn.setText(R.string.accept_sp);
-        } else if (currentLanguage == 2) {
+        } else if (currentLanguage == 3) {
             title.setText(R.string.regulations_fr);
             line1.setText(R.string.line_fr);
             line2.setText(R.string.line2_fr);

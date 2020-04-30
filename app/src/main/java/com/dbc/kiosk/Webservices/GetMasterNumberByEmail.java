@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.dbc.kiosk.Helpers.Time;
+import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderEntry;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -95,6 +96,7 @@ public class GetMasterNumberByEmail extends AsyncTask<Void, Void, Void> {
         if (activity != null) {
             Intent intent = new Intent(activity, OrderEntry.class);
             activity.startActivity(intent);
+            activity.overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
         }
     }
 }

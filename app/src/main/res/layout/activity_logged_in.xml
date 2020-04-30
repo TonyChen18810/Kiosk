@@ -258,20 +258,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <Spinner
-        android:id="@+id/StateSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:dropDownWidth="50dp"
-        android:spinnerMode="dialog" />
-
-    <Spinner
-        android:id="@+id/StateSpinner2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:dropDownWidth="50dp"
-        android:spinnerMode="dialog" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
         android:layout_width="wrap_content"
@@ -280,10 +266,9 @@
         app:cardElevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.089">
+        app:layout_constraintVertical_bias="0.076">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -415,20 +400,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <View
+                <CheckBox
                     android:id="@+id/TextCheckbox"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/mycheckbox"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
 
                 <TextView
                     android:id="@+id/Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
                     android:text="Text message"
                     android:textColor="#C9000000"
                     android:textSize="36sp" />
@@ -449,20 +439,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <View
+                <CheckBox
                     android:id="@+id/EmailCheckbox"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/mycheckbox"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
 
                 <TextView
                     android:id="@+id/Email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
                     android:text="Email"
                     android:textColor="#C9000000"
                     android:textSize="36sp" />
@@ -474,20 +469,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <View
+                <CheckBox
                     android:id="@+id/BothCheckbox"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/mycheckbox"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
 
                 <TextView
                     android:id="@+id/Both"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
                     android:text="Text message and email"
                     android:textColor="#C9000000"
                     android:textSize="36sp" />
@@ -572,10 +572,12 @@
         android:layout_height="1500dp"
         android:layout_gravity="center"
         android:background="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
 
     </ListView>
 
@@ -584,11 +586,13 @@
         android:layout_width="800dp"
         android:layout_height="1500dp"
         android:layout_gravity="center"
+        android:background="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/white">
+        tools:visibility="gone">
     </ListView>
 
     <androidx.constraintlayout.widget.ConstraintLayout

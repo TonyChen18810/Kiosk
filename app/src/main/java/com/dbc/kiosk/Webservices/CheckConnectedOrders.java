@@ -7,6 +7,34 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+/**
+ * CheckConnectedOrders.java
+ *
+ * Uses the GetOrderDetailsByMasterNumber web service, sends in either an email
+ * address or master number and returns a list of orders with that master number
+ * or email address (checked-in by that email/user)
+ *
+ * This is originally called from GetOrderDetails.java after that class receives
+ * info about the entered order. This is called with boolean b set to true
+ * which first sends in the master number of the entered order to retrieve any
+ * orders connected to it. (See line 79-83)
+ * We iterate through the retrieved orders, if any have isCheckedIn == true, we save
+ * the master number of that order in checkedInMasterNumber.
+ * This class is then called again with boolean b set to false which sends in the
+ * users email to retrieve any orders linked to that user (orders they have already
+ * checked in and the orders linked to those orders by master number) we save the master
+ * number of any of the returned orders into driverMasterNumber.
+ *
+ * We know compare both master numbers, if they're equal then this driver is allowed
+ * to check-in the currently entered order and any that may be connected to it (because
+ * the master number/confirmation number belong to them). If the user has no master number,
+ * but the order does - then he cannot check it in (if it has a master number and is checked-in,
+ * that means someone else has the confirmation number).
+ *
+ * These checks all happen in the onPostExecute() of this class.
+ *
+ * Note: this situation will rarely happen.
+ */
 public class CheckConnectedOrders extends AsyncTask<Void, Void, Void> {
 
     private String inEmail;

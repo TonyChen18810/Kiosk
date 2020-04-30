@@ -171,24 +171,24 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void scheduleAptText(MyViewHolder holder) {
-        if (Language.getCurrentLanguage() == 0) {
+        if (Language.getCurrentLanguage() == 1) {
             holder.errorMsg.setText("Appointment has not been scheduled. Please call 831-455-4305 to schedule appointment.");
-        } else if (Language.getCurrentLanguage() == 1) {
-            holder.errorMsg.setText("La cita no ha sido programada. Llame al 831-455-4305 para programar una cita.");
         } else if (Language.getCurrentLanguage() == 2) {
+            holder.errorMsg.setText("La cita no ha sido programada. Llame al 831-455-4305 para programar una cita.");
+        } else if (Language.getCurrentLanguage() == 3) {
             holder.errorMsg.setText("La commande nécessite un rendez-vous mais n'a pas eu de rendez-vous, veuillez appeler le 831-455-4305 pour planifier un rendez-vous.");
         }
     }
 
     private void scheduleApt(MyViewHolder holder) {
         String message = null;
-        if (Language.getCurrentLanguage() == 0) {
+        if (Language.getCurrentLanguage() == 1) {
             message = "Order #" + holder.orderNumber.getText().toString() + " requires an appointment but hasn't had one scheduled, please call 831-455-4305 to schedule an appointment.";
             holder.errorMsg.setText("Appointment has not been scheduled. Please call 831-455-4305 to schedule appointment.");
-        } else if (Language.getCurrentLanguage() == 1) {
+        } else if (Language.getCurrentLanguage() == 2) {
             message = "El pedido #" + holder.orderNumber.getText().toString() + " requiere una cita pero no ha programado una, llame al 831-455-4305 para programar una cita.";
             holder.errorMsg.setText("La cita no ha sido programada. Llame al 831-455-4305 para programar una cita.");
-        } else if (Language.getCurrentLanguage() == 2) {
+        } else if (Language.getCurrentLanguage() == 3) {
             message = "La commande #" + holder.orderNumber.getText().toString() + " nécessite un rendez-vous, mais aucun n’a été pris. Veuillez appeler le 831-455-4305 pour prendre rendez-vous.";
             holder.errorMsg.setText("Le rendez-vous n'a pas été prévu. Veuillez appeler le 831-455-4305 pour fixer un rendez-vous.");
         }
@@ -198,24 +198,24 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void lateText(MyViewHolder holder) {
-        if (Language.getCurrentLanguage() == 0) {
+        if (Language.getCurrentLanguage() == 1) {
             holder.errorMsg.setText("Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.");
-        } else if (Language.getCurrentLanguage() == 1) {
-            holder.errorMsg.setText("Nadie fue a la cita. Llame al 831-455-4305 para reprogramar una cita.");
         } else if (Language.getCurrentLanguage() == 2) {
+            holder.errorMsg.setText("Nadie fue a la cita. Llame al 831-455-4305 para reprogramar una cita.");
+        } else if (Language.getCurrentLanguage() == 3) {
             holder.errorMsg.setText("L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.");
         }
     }
 
     private void late(MyViewHolder holder) {
         String helpText = "";
-        if (Language.getCurrentLanguage() == 0) {
+        if (Language.getCurrentLanguage() == 1) {
             helpText = "Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.";
             holder.errorMsg.setText("Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.");
-        } else if (Language.getCurrentLanguage() == 1) {
+        } else if (Language.getCurrentLanguage() == 2) {
             helpText = "Se ha perdido el tiempo de la cita. Llame al 831-455-4305 para reprogramar una cita.";
             holder.errorMsg.setText("Nadie fue a la cita. Llame al 831-455-4305 para reprogramar una cita.");
-        } else if (Language.getCurrentLanguage() == 2) {
+        } else if (Language.getCurrentLanguage() == 3) {
             helpText = "L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.";
             holder.errorMsg.setText("L'heure du rendez-vous a été manquée. Veuillez appeler le 831-455-4305 pour reprogrammer un rendez-vous.");
         }
@@ -225,24 +225,24 @@ public class RecyclerViewAssociatedAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void differentAptTimeText(MyViewHolder holder) {
-        if (Language.getCurrentLanguage() == 0) {
+        if (Language.getCurrentLanguage() == 1) {
             holder.errorMsg.setText("The appointment time of this order differs from the appointment time of the entered order making it ineligible for pick-up.");
-        } else if (Language.getCurrentLanguage() == 1) {
-            holder.errorMsg.setText("La hora de la cita de este pedido difiere de la hora de la cita del pedido ingresado, por lo que no es elegible para ser recogido.");
         } else if (Language.getCurrentLanguage() == 2) {
+            holder.errorMsg.setText("La hora de la cita de este pedido difiere de la hora de la cita del pedido ingresado, por lo que no es elegible para ser recogido.");
+        } else if (Language.getCurrentLanguage() == 3) {
             holder.errorMsg.setText("L'heure de rendez-vous de cette commande diffère de l'heure de rendez-vous de la commande saisie, ce qui la rend inéligible au retrait.");
         }
     }
 
     private void differentAptTime(MyViewHolder holder) {
         String helpText = "";
-        if (Language.getCurrentLanguage() == 0) {
+        if (Language.getCurrentLanguage() == 1) {
             helpText = "The appointment time of this order differs from the appointment time of the entered order making it ineligible for pick-up.";
             holder.errorMsg.setText("The appointment time of this order differs from the appointment time of the entered order making it ineligible for pick-up.");
-        } else if (Language.getCurrentLanguage() == 1) {
+        } else if (Language.getCurrentLanguage() == 2) {
             helpText = "La hora de la cita de este pedido difiere de la hora de la cita del pedido ingresado, por lo que no es elegible para ser recogido.";
             holder.errorMsg.setText("La hora de la cita de este pedido difiere de la hora de la cita del pedido ingresado, por lo que no es elegible para ser recogido.");
-        } else if (Language.getCurrentLanguage() == 2) {
+        } else if (Language.getCurrentLanguage() == 3) {
             helpText = "L'heure de rendez-vous de cette commande diffère de l'heure de rendez-vous de la commande saisie, ce qui la rend inéligible au retrait.";
             holder.errorMsg.setText("L'heure de rendez-vous de cette commande diffère de l'heure de rendez-vous de la commande saisie, ce qui la rend inéligible au retrait.");
         }

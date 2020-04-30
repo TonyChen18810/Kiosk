@@ -11,7 +11,7 @@ package com.dbc.kiosk.Helpers;
  */
 public class Language {
 
-    private static int currentLanguage = 0;
+    private static int currentLanguage = 1;
 
     public static int getCurrentLanguage() {
         return currentLanguage;

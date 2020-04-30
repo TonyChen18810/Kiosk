@@ -47,11 +47,11 @@ public class ListViewDialog extends Dialog {
         if (listCode == 0) { // OrderEntry customer destination selector
             listViewTitle.setVisibility(View.VISIBLE);
             if (button.getId() == R.id.SelectDestinationBtn) {
-                if (Language.getCurrentLanguage() == 0) {
+                if (Language.getCurrentLanguage() == 1) {
                     listViewTitle.setText("Select customer destination");
-                } else if (Language.getCurrentLanguage() == 1) {
-                    listViewTitle.setText("Seleccionar destino del cliente");
                 } else if (Language.getCurrentLanguage() == 2) {
+                    listViewTitle.setText("Seleccionar destino del cliente");
+                } else if (Language.getCurrentLanguage() == 3) {
                     listViewTitle.setText("Sélectionnez la destination du client");
                 }
             }
@@ -69,19 +69,19 @@ public class ListViewDialog extends Dialog {
         } else if (listCode == 1) { // LoggedIn state selector
             listViewTitle.setVisibility(View.VISIBLE);
             if (button.getId() == R.id.StateButton1) {
-                if(Language.getCurrentLanguage() == 0) {
+                if(Language.getCurrentLanguage() == 1) {
                     listViewTitle.setText("Select Driver License State");
-                } else if (Language.getCurrentLanguage() == 1) {
-                    listViewTitle.setText("Seleccione el estado de la licencia de conducir");
                 } else if (Language.getCurrentLanguage() == 2) {
+                    listViewTitle.setText("Seleccione el estado de la licencia de conducir");
+                } else if (Language.getCurrentLanguage() == 3) {
                     listViewTitle.setText("Sélectionnez l'état du permis de conduire");
                 }
             } else if (button.getId() == R.id.StateButton2) {
-                if(Language.getCurrentLanguage() == 0) {
+                if(Language.getCurrentLanguage() == 1) {
                     listViewTitle.setText("Select Trailer License State");
-                } else if (Language.getCurrentLanguage() == 1) {
-                    listViewTitle.setText("Seleccionar estado de licencia de remolque");
                 } else if (Language.getCurrentLanguage() == 2) {
+                    listViewTitle.setText("Seleccionar estado de licencia de remolque");
+                } else if (Language.getCurrentLanguage() == 3) {
                     listViewTitle.setText("Sélectionnez l'état de la licence de la remorque");
                 }
             }
@@ -93,24 +93,23 @@ public class ListViewDialog extends Dialog {
                 String state = activity.getResources().getStringArray(R.array.states_abbreviated)[position];
                 button.setText(state);
                 dismiss();
-                LoggedIn.checkboxListener.setValue(true);
             });
         } else if (listCode == 2) { // CreateAccount state selector
             listViewTitle.setVisibility(View.VISIBLE);
             if (button.getId() == R.id.StateButton1) {
-                if(Language.getCurrentLanguage() == 0) {
+                if(Language.getCurrentLanguage() == 1) {
                     listViewTitle.setText("Select Driver License State");
-                } else if (Language.getCurrentLanguage() == 1) {
-                    listViewTitle.setText("Seleccione el estado de la licencia de conducir");
                 } else if (Language.getCurrentLanguage() == 2) {
+                    listViewTitle.setText("Seleccione el estado de la licencia de conducir");
+                } else if (Language.getCurrentLanguage() == 3) {
                     listViewTitle.setText("Sélectionnez l'état du permis de conduire");
                 }
             } else if (button.getId() == R.id.StateButton2) {
-                if(Language.getCurrentLanguage() == 0) {
+                if(Language.getCurrentLanguage() == 1) {
                     listViewTitle.setText("Select Trailer License State");
-                } else if (Language.getCurrentLanguage() == 1) {
-                    listViewTitle.setText("Seleccionar estado de licencia de remolque");
                 } else if (Language.getCurrentLanguage() == 2) {
+                    listViewTitle.setText("Seleccionar estado de licencia de remolque");
+                } else if (Language.getCurrentLanguage() == 3) {
                     listViewTitle.setText("Sélectionnez l'état de la licence de la remorque");
                 }
             }

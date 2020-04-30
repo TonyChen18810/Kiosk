@@ -9,9 +9,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.transition.TransitionManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.dbc.kiosk.Account;
@@ -25,6 +27,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.transitionseverywhere.ChangeText;
+
 /**
  * FirstScreen.java
  *
@@ -39,7 +43,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
  */
 public class FirstScreen extends AppCompatActivity {
     private String version;
-    private View englishCheckbox, spanishCheckbox, frenchCheckbox;
+    private CheckBox englishCheckbox, spanishCheckbox, frenchCheckbox;
     private TextView appointmentWarningText, existingAccountText, versionText;
     private Button noBtn, yesBtn;
 
@@ -58,6 +62,8 @@ public class FirstScreen extends AppCompatActivity {
         // Initialize Firebase Crashlytics, set tags
         Report report = new Report(FirstScreen.this);
         System.out.println(FirebaseInstanceId.getInstance().getInstanceId());
+
+        /**TransitionManager.beginDelayedTransition(transitionsContainer, new ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN));*/
 
         setup();
         // load settings (kiosk name/number and cooler location)
@@ -98,115 +104,81 @@ public class FirstScreen extends AppCompatActivity {
                 Toast.makeText(FirstScreen.this, "Settings have been saved", Toast.LENGTH_SHORT).show();
                 Toast.makeText(FirstScreen.this, "Cooler location set to: " + Settings.getCoolerLocation(), Toast.LENGTH_SHORT).show();
                 Toast.makeText(FirstScreen.this, "Kiosk number set to: " + Settings.getKioskNumber(), Toast.LENGTH_SHORT).show();
-                if (Language.getCurrentLanguage() == 0) {
-                    setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
-                } else if (Language.getCurrentLanguage() == 1) {
-                    setChecked(englishCheckbox, frenchCheckbox, spanishCheckbox);
-                } else if (Language.getCurrentLanguage() == 2) {
-                    setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
-                }
-            } else {
-                if (Language.getCurrentLanguage() == 0) {
-                    setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
-                } else if (Language.getCurrentLanguage() == 1) {
-                    setChecked(englishCheckbox, frenchCheckbox, spanishCheckbox);
-                } else if (Language.getCurrentLanguage() == 2) {
-                    setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
-                }
             }
         });
 
-        // clicked checkbox
-        englishCheckbox.setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
-            return true;
-        });
+        englishCheckbox.setOnClickListener(v -> handleChecks(englishCheckbox));
 
-        // clicked text next to check box
-        findViewById(R.id.EnglishText).setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
-            return true;
-        });
+        spanishCheckbox.setOnClickListener(v -> handleChecks(spanishCheckbox));
 
-        // clicked checkbox
-        spanishCheckbox.setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(frenchCheckbox, englishCheckbox, spanishCheckbox);
-            return true;
-        });
-
-        // clicked text next to check box
-        findViewById(R.id.SpanishText).setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(frenchCheckbox, englishCheckbox, spanishCheckbox);
-            return true;
-        });
-
-        // clicked checkbox
-        frenchCheckbox.setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
-            return true;
-        });
-
-        // clicked text next to check box
-        findViewById(R.id.FrenchText).setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
-            return true;
-        });
+        frenchCheckbox.setOnClickListener(v -> handleChecks(frenchCheckbox));
 
         yesBtn.setOnClickListener(v -> {
             Intent intent = new Intent(FirstScreen.this, MainActivity.class);
             intent.putExtra("accountStatus", "exists");
             startActivity(intent);
-            if (Language.getCurrentLanguage() == 0) {
-                englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-            } else if (Language.getCurrentLanguage() == 1) {
-                spanishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-            } else if (Language.getCurrentLanguage() == 2) {
-                frenchCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-            }
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
         });
 
         noBtn.setOnClickListener(v -> {
             Intent intent = new Intent(FirstScreen.this, MainActivity.class);
             intent.putExtra("accountStatus", "new");
             startActivity(intent);
-            if (Language.getCurrentLanguage() == 0) {
-                englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-            } else if (Language.getCurrentLanguage() == 1) {
-                spanishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-            } else if (Language.getCurrentLanguage() == 2) {
-                frenchCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-            }
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
         });
     }
 
-    /**
-     * @param checkBox
-     * use this function to check the custom language checkboxes
-     * the last checkbox passed as a parameter is the one to be checked
-     * all others are unchecked
-     */
-    public void setChecked(View... checkBox) {
-        for (int i = 0; i < checkBox.length; i++) {
-            if (i == checkBox.length-1) {
-                checkBox[i].setPressed(true);
-            } else {
-                checkBox[i].setPressed(false);
+    int b = 0;
+    public void handleChecks(CheckBox cb) {
+        if ((Language.getCurrentLanguage() == 1) && (cb.getId() == R.id.EnglishCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        } else if (Language.getCurrentLanguage() == 2 && (cb.getId() == R.id.SpanishCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        } else if (Language.getCurrentLanguage() == 3 && (cb.getId() == R.id.FrenchCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
             }
         }
-        if (checkBox[checkBox.length-1] == englishCheckbox) {
-            Language.setCurrentLanguage(0);
-        } else if (checkBox[checkBox.length-1] == spanishCheckbox) {
-            Language.setCurrentLanguage(1);
-        } else if (checkBox[checkBox.length-1] == frenchCheckbox) {
-            Language.setCurrentLanguage(2);
+        if (cb.getId() == R.id.EnglishCheckbox) {
+            englishCheckbox.setClickable(false);
+            changeLanguage(1);
+            if (spanishCheckbox.isChecked()) {
+                spanishCheckbox.toggle();
+                spanishCheckbox.setClickable(true);
+            }
+            if (frenchCheckbox.isChecked()) {
+                frenchCheckbox.toggle();
+                frenchCheckbox.setClickable(true);
+            }
         }
-        changeLanguage(Language.getCurrentLanguage());
+        if (cb.getId() == R.id.SpanishCheckbox) {
+            spanishCheckbox.setClickable(false);
+            changeLanguage(2);
+            if (englishCheckbox.isChecked()) {
+                englishCheckbox.toggle();
+                englishCheckbox.setClickable(true);
+            }
+            if (frenchCheckbox.isChecked()) {
+                frenchCheckbox.toggle();
+                frenchCheckbox.setClickable(true);
+            }
+        }
+        if (cb.getId() == R.id.FrenchCheckbox) {
+            frenchCheckbox.setClickable(false);
+            changeLanguage(3);
+            if (englishCheckbox.isChecked()) {
+                englishCheckbox.toggle();
+                englishCheckbox.setClickable(true);
+            }
+            if (spanishCheckbox.isChecked()) {
+                spanishCheckbox.toggle();
+                spanishCheckbox.setClickable(true);
+            }
+        }
     }
 
     /**
@@ -237,9 +209,17 @@ public class FirstScreen extends AppCompatActivity {
         spanishCheckbox = findViewById(R.id.SpanishCheckbox);
         frenchCheckbox = findViewById(R.id.FrenchCheckbox);
 
-        setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
+        if (Language.getCurrentLanguage() == 1) {
+            englishCheckbox.performClick();
+        } else if (Language.getCurrentLanguage() == 2) {
+            spanishCheckbox.performClick();
+        } else if (Language.getCurrentLanguage() == 3) {
+            frenchCheckbox.performClick();
+        }
+
         yesBtn.setEnabled(true);
         noBtn.setEnabled(true);
+        changeLanguage(Language.getCurrentLanguage());
     }
 
     /**
@@ -249,18 +229,19 @@ public class FirstScreen extends AppCompatActivity {
      * Called from setChecked()
      */
     public void changeLanguage(int currentLanguage) {
-        if (currentLanguage == 0) {
+        Language.setCurrentLanguage(currentLanguage);
+        if (currentLanguage == 1) {
             appointmentWarningText.setText(R.string.appt_required_eng);
             existingAccountText.setText(R.string.existing_account_eng);
             noBtn.setText(R.string.no_eng);
             yesBtn.setText(R.string.yes_eng);
-        } else if (currentLanguage == 1) {
+        } else if (currentLanguage == 2) {
             appointmentWarningText.setText(R.string.appt_required_sp);
             existingAccountText.setText(R.string.existing_account_sp);
             noBtn.setText(R.string.no_sp);
             yesBtn.setText(R.string.yes_sp);
 
-        } else if ((currentLanguage == 2)) {
+        } else if ((currentLanguage == 3)) {
             appointmentWarningText.setText(R.string.appt_required_fr);
             existingAccountText.setText(R.string.existing_account_fr);
             noBtn.setText(R.string.no_fr);

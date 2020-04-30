@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     public ProgressBar progressBar;
     private boolean newAccount;
     public static MutableLiveData<Boolean> accountExists;
-    private View englishCheckbox, spanishCheckbox, frenchCheckbox;
+    private CheckBox englishCheckbox, spanishCheckbox, frenchCheckbox;
     public static MutableLiveData<Boolean> emailListener;
     public static MutableLiveData<Boolean> phoneListener;
 
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         // Property added to new Intent() in FirstScreen.java
         // aka did the user click yes or no
         String accountStatus = getIntent().getExtras().getString("accountStatus");
-        System.out.println(accountStatus);
         setup();
 
         // user clicked no
@@ -96,14 +96,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     System.out.println("Account exists!");
                     setStatus(1, asList(emailAddressBox, phoneNumberBox), asList(noEmailWarning, noPhoneNumberWarning));
-                    if (Language.getCurrentLanguage() == 0) {
-                        englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                    } else if (Language.getCurrentLanguage() == 1) {
-                        spanishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                    } else if (Language.getCurrentLanguage() == 2) {
-                        frenchCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                    }
                     startActivity(new Intent(MainActivity.this, LoggedIn.class));
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 }
             } else if (newAccount) {
                 if (accountExists) {
@@ -119,15 +113,9 @@ public class MainActivity extends AppCompatActivity {
                     setStatus(1, asList(emailAddressBox, confirmEmailAddress, phoneNumberBox, confirmPhoneNumber), asList(noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone));
                     Intent createAccountIntent = new Intent(MainActivity.this, CreateAccount.class);
                     createAccountIntent.putExtra("Email Address", emailAddressBox.getText().toString());
-                    if (Language.getCurrentLanguage() == 0) {
-                        englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                    } else if (Language.getCurrentLanguage() == 1) {
-                        spanishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                    } else if (Language.getCurrentLanguage() == 2) {
-                        frenchCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                    }
                     createAccountIntent.putExtra("Phone Number", PhoneNumberFormat.extract(phoneNumberBox.getText().toString()));
                     startActivity(createAccountIntent);
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 }
             }
         });
@@ -299,52 +287,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        englishCheckbox.setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
-            return true;
-        });
-
-        findViewById(R.id.EnglishText).setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
-            return true;
-        });
-
-        spanishCheckbox.setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(frenchCheckbox, englishCheckbox, spanishCheckbox);
-            return true;
-        });
-
-        findViewById(R.id.SpanishText).setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(frenchCheckbox, englishCheckbox, spanishCheckbox);
-            return true;
-        });
-
-        frenchCheckbox.setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
-            return true;
-        });
-
-        findViewById(R.id.FrenchText).setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
-            return true;
-        });
-
         // takes user back to FirstScreen.java
         backBtn.setOnClickListener(v -> {
-            if (Language.getCurrentLanguage() == 0) {
-                englishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-            } else if (Language.getCurrentLanguage() == 1) {
-                spanishCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-            } else if (Language.getCurrentLanguage() == 2) {
-                frenchCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-            }
             startActivity(new Intent(MainActivity.this, FirstScreen.class));
+            overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
         });
 
         // Listens for response from CheckForExistingAccount.java web service,
@@ -376,6 +322,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("Email Address", emailAddressBox.getText().toString());
                     intent.putExtra("Phone Number", phoneNumberBox.getText().toString());
                     startActivity(intent);
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 }
             }
         });
@@ -410,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("Email Address", emailAddressBox.getText().toString());
                     intent.putExtra("Phone Number", phoneNumberBox.getText().toString());
                     startActivity(intent);
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 }
             }
         });
@@ -462,6 +410,62 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        englishCheckbox.setOnClickListener(v -> {
+            System.out.println("English checkbox clicked!");
+            handleChecks(englishCheckbox);
+        });
+
+        spanishCheckbox.setOnClickListener(v -> {
+            System.out.println("Spanish checkbox clicked!");
+            handleChecks(spanishCheckbox);
+        });
+
+        frenchCheckbox.setOnClickListener(v -> {
+            System.out.println("French checkbox clicked!");
+            handleChecks(frenchCheckbox);
+        });
+    }
+
+    int b = 0;
+    public void handleChecks(CheckBox cb) {
+        if ((Language.getCurrentLanguage() == 1) && (cb.getId() == R.id.EnglishCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        } else if (Language.getCurrentLanguage() == 2 && (cb.getId() == R.id.SpanishCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        } else if (Language.getCurrentLanguage() == 3 && (cb.getId() == R.id.FrenchCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        }
+        if (cb.getId() == R.id.SpanishCheckbox) {
+            spanishCheckbox.setClickable(false);
+            changeLanguage(2);
+            if (englishCheckbox.isChecked()) {
+                englishCheckbox.toggle();
+                englishCheckbox.setClickable(true);
+            }
+            if (frenchCheckbox.isChecked()) {
+                frenchCheckbox.toggle();
+                frenchCheckbox.setClickable(true);
+            }
+        }
+        if (cb.getId() == R.id.FrenchCheckbox) {
+            changeLanguage(3);
+            frenchCheckbox.setClickable(false);
+            if (englishCheckbox.isChecked()) {
+                englishCheckbox.toggle();
+                englishCheckbox.setClickable(true);
+            }
+            if (spanishCheckbox.isChecked()) {
+                spanishCheckbox.toggle();
+                spanishCheckbox.setClickable(true);
+            }
+        }
     }
 
     /**
@@ -492,30 +496,6 @@ public class MainActivity extends AppCompatActivity {
                 textViews.get(i).setVisibility(View.INVISIBLE);
             }
         }
-    }
-
-    /**
-     * @param checkBox
-     * use this function to check the custom language checkboxes
-     * the last checkbox passed as a parameter is the one to be checked
-     * all others are unchecked
-     */
-    private void setChecked(View... checkBox) {
-        for (int i = 0; i < checkBox.length; i++) {
-            if (i == checkBox.length-1) {
-                checkBox[i].setPressed(true);
-            } else {
-                checkBox[i].setPressed(false);
-            }
-        }
-        if (checkBox[checkBox.length-1] == englishCheckbox) {
-            Language.setCurrentLanguage(0);
-        } else if (checkBox[checkBox.length-1] == spanishCheckbox) {
-            Language.setCurrentLanguage(1);
-        } else if (checkBox[checkBox.length-1] == frenchCheckbox) {
-            Language.setCurrentLanguage(2);
-        }
-        changeLanguage(Language.getCurrentLanguage());
     }
 
     /**
@@ -622,22 +602,29 @@ public class MainActivity extends AppCompatActivity {
 
         nextBtn.setEnabled(false);
 
-        spanishCheckbox.setPressed(false);
-        frenchCheckbox.setPressed(false);
-        englishCheckbox.setPressed(true);
         States.setSates(MainActivity.this);
 
         setStatus(1, Collections.emptyList(), asList(noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone, confirmEmailAddress, confirmPhoneNumber, accountAlreadyExists, phoneAlreadyExists));
 
+        if (Language.getCurrentLanguage() == 1) {
+            englishCheckbox.setChecked(true);
+            englishCheckbox.setClickable(false);
+            spanishCheckbox.setClickable(true);
+            frenchCheckbox.setClickable(true);
+        } else if (Language.getCurrentLanguage() == 2) {
+            spanishCheckbox.setChecked(true);
+            spanishCheckbox.setClickable(false);
+            englishCheckbox.setClickable(true);
+            frenchCheckbox.setClickable(true);
+        } else if (Language.getCurrentLanguage() == 3) {
+            frenchCheckbox.setChecked(true);
+            frenchCheckbox.setClickable(false);
+            spanishCheckbox.setClickable(true);
+            englishCheckbox.setClickable(true);
+        }
+
         showSoftKeyboard(emailAddressBox);
         changeLanguage(Language.getCurrentLanguage());
-        if (Language.getCurrentLanguage() == 0) {
-            setChecked(spanishCheckbox, frenchCheckbox, englishCheckbox);
-        } else if (Language.getCurrentLanguage() == 1) {
-            setChecked(englishCheckbox, frenchCheckbox, spanishCheckbox);
-        } else if (Language.getCurrentLanguage() == 2) {
-            setChecked(spanishCheckbox, englishCheckbox, frenchCheckbox);
-        }
     }
     /**
      * @param val
@@ -646,10 +633,11 @@ public class MainActivity extends AppCompatActivity {
      * Called from setChecked()
      */
     private void changeLanguage(int val) {
+        Language.setCurrentLanguage(val);
         emailAddressBox.setHintTextColor(getResources().getColor(R.color.dark_gray));
         phoneNumberBox.setHintTextColor(getResources().getColor(R.color.dark_gray));
         switch(val) {
-            case 0:
+            case 1:
                 // English
                 emailAddressBox.setHint("Email address");
                 phoneNumberBox.setHint("Phone number");
@@ -665,7 +653,7 @@ public class MainActivity extends AppCompatActivity {
                 accountAlreadyExists.setText(R.string.account_already_exists_eng);
                 phoneAlreadyExists.setText("*An account with this phone number already exists");
                 break;
-            case 1:
+            case 2:
                 // Spanish
                 emailAddressBox.setHint("Dirección de email");
                 phoneNumberBox.setHint("N.º de teléfono");
@@ -681,7 +669,7 @@ public class MainActivity extends AppCompatActivity {
                 accountAlreadyExists.setText(R.string.account_already_exists_sp);
                 phoneAlreadyExists.setText("*Ya existe una cuenta con este número de teléfono");
                 break;
-            case 2:
+            case 3:
                 // French
                 emailAddressBox.setHint("Adresse courriel");
                 phoneNumberBox.setHint("Numéro de téléphone");

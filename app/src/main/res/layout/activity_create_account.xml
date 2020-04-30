@@ -309,20 +309,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <View
+                <CheckBox
                     android:id="@+id/TextCheckbox"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/mycheckbox"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
 
                 <TextView
                     android:id="@+id/Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
                     android:text="Text message"
                     android:textColor="#C9000000"
                     android:textSize="36sp" />
@@ -343,20 +348,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <View
+                <CheckBox
                     android:id="@+id/EmailCheckbox"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/mycheckbox"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
 
                 <TextView
                     android:id="@+id/Email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
                     android:text="Email"
                     android:textColor="#C9000000"
                     android:textSize="36sp" />
@@ -368,20 +378,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <View
+                <CheckBox
                     android:id="@+id/BothCheckbox"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/mycheckbox"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
 
                 <TextView
                     android:id="@+id/Both"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
                     android:text="Text message and email"
                     android:textColor="#C9000000"
                     android:textSize="36sp" />

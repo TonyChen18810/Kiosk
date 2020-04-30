@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -66,7 +67,7 @@ public class CreateAccount extends AppCompatActivity {
     String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
 
     private TextView txtText, emailText, bothText, selectText, standardRatesApply;
-    private View textCheckbox, emailCheckbox, bothCheckbox;
+    private CheckBox textCheckbox, emailCheckbox, bothCheckbox;
 
     private Button selectState1, selectState2;
     private boolean initialSelection1 = false, initialSelection2 = false;
@@ -104,12 +105,10 @@ public class CreateAccount extends AppCompatActivity {
         checkboxListener = new MutableLiveData<>();
         checkboxListener.observe(CreateAccount.this, updateState -> {
             if (updateState) {
-                setCommunication();
                 clicked1 = true;
                 selectState1.clearAnimation();
                 truckName.requestFocus();
             } else if (!updateState) {
-                setCommunication();
                 clicked2 = true;
                 selectState2.clearAnimation();
                 dispatcherPhoneNumber.requestFocus();
@@ -128,11 +127,11 @@ public class CreateAccount extends AppCompatActivity {
                     clicked1 = true;
                 } else {
                     initialSelection1 = true;
-                    if (Language.getCurrentLanguage() == 0) {
+                    if (Language.getCurrentLanguage() == 1) {
                         selectState1.setText(R.string.state_eng);
-                    } else if (Language.getCurrentLanguage() == 1) {
-                        selectState1.setText(R.string.state_sp);
                     } else if (Language.getCurrentLanguage() == 2) {
+                        selectState1.setText(R.string.state_sp);
+                    } else if (Language.getCurrentLanguage() == 3) {
                         selectState1.setText(R.string.state_fr);
                     }
                 }
@@ -156,11 +155,11 @@ public class CreateAccount extends AppCompatActivity {
                     clicked2 = true;
                 } else {
                     initialSelection2 = true;
-                    if (Language.getCurrentLanguage() == 0) {
+                    if (Language.getCurrentLanguage() == 1) {
                         selectState2.setText(R.string.state_eng);
-                    } else if (Language.getCurrentLanguage() == 1) {
-                        selectState2.setText(R.string.state_sp);
                     } else if (Language.getCurrentLanguage() == 2) {
+                        selectState2.setText(R.string.state_sp);
+                    } else if (Language.getCurrentLanguage() == 3) {
                         selectState2.setText(R.string.state_fr);
                     }
                 }
@@ -174,11 +173,11 @@ public class CreateAccount extends AppCompatActivity {
 
         driverNameHelp.setOnClickListener(v -> {
             String message = null;
-            if (Language.getCurrentLanguage() == 0) {
+            if (Language.getCurrentLanguage() == 1) {
                 message = "Please enter your first and last name.";
-            } else if (Language.getCurrentLanguage() == 1) {
-                message = "Escriba su nombre y apellido.";
             } else if (Language.getCurrentLanguage() == 2) {
+                message = "Escriba su nombre y apellido.";
+            } else if (Language.getCurrentLanguage() == 3) {
                 message = "Veuillez saisir votre prénom et nom.";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -188,11 +187,11 @@ public class CreateAccount extends AppCompatActivity {
 
         driverLicenseHelp.setOnClickListener(v -> {
             String message = null;
-            if (Language.getCurrentLanguage() == 0) {
+            if (Language.getCurrentLanguage() == 1) {
                 message = "Please enter your driver license number";
-            } else if (Language.getCurrentLanguage() == 1) {
-                message = "Escriba el número de su licencia de conducir";
             } else if (Language.getCurrentLanguage() == 2) {
+                message = "Escriba el número de su licencia de conducir";
+            } else if (Language.getCurrentLanguage() == 3) {
                 message = "Veuillez saisir votre numéro de permis de conduire";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -202,11 +201,11 @@ public class CreateAccount extends AppCompatActivity {
 
         truckNameHelp.setOnClickListener(v -> {
             String message = null;
-            if (Language.getCurrentLanguage() == 0) {
+            if (Language.getCurrentLanguage() == 1) {
                 message = "Please enter the company name of your truck (NOT the make/model)";
-            } else if (Language.getCurrentLanguage() == 1) {
-                message = "Escriba el nombre de la empresa de su camión (NO la marca/el modelo)";
             } else if (Language.getCurrentLanguage() == 2) {
+                message = "Escriba el nombre de la empresa de su camión (NO la marca/el modelo)";
+            } else if (Language.getCurrentLanguage() == 3) {
                 message = "Veuillez saisir le nom de l’entreprise de votre camion (PAS la marque/le modèle)";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -216,11 +215,11 @@ public class CreateAccount extends AppCompatActivity {
 
         truckNumberHelp.setOnClickListener(v -> {
             String message = null;
-            if (Language.getCurrentLanguage() == 0) {
+            if (Language.getCurrentLanguage() == 1) {
                 message = "Please enter the number of your truck";
-            } else if (Language.getCurrentLanguage() == 1) {
-                message = "Escriba el número de su camión";
             } else if (Language.getCurrentLanguage() == 2) {
+                message = "Escriba el número de su camión";
+            } else if (Language.getCurrentLanguage() == 3) {
                 message = "Veuillez saisir le numéro de votre camion";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -230,11 +229,11 @@ public class CreateAccount extends AppCompatActivity {
 
         trailerLicenseHelp.setOnClickListener(v -> {
             String message = null;
-            if (Language.getCurrentLanguage() == 0) {
+            if (Language.getCurrentLanguage() == 1) {
                 message = "Please enter the license plate number of your trailer";
-            } else if (Language.getCurrentLanguage() == 1) {
-                message = "Escriba el número de matrícula de su tráiler";
             } else if (Language.getCurrentLanguage() == 2) {
+                message = "Escriba el número de matrícula de su tráiler";
+            } else if (Language.getCurrentLanguage() == 3) {
                 message = "Veuillez saisir le numéro d’immatriculation de votre remorque";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -244,11 +243,11 @@ public class CreateAccount extends AppCompatActivity {
 
         dispatcherPhoneNumberHelp.setOnClickListener(v -> {
             String message = null;
-            if (Language.getCurrentLanguage() == 0) {
+            if (Language.getCurrentLanguage() == 1) {
                 message = "Please enter the phone number of your current dispatcher";
-            } else if (Language.getCurrentLanguage() == 1) {
-                message = "Escriba el número de teléfono de su despachante actual";
             } else if (Language.getCurrentLanguage() == 2) {
+                message = "Escriba el número de teléfono de su despachante actual";
+            } else if (Language.getCurrentLanguage() == 3) {
                 message = "Veuillez saisir le numéro de téléphone de votre répartiteur actuel";
             }
             HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
@@ -278,7 +277,7 @@ public class CreateAccount extends AppCompatActivity {
         });
 
         logoutBtn.setOnClickListener(v -> {
-            LogoutDialog dialog = new LogoutDialog(CreateAccount.this, v);
+            LogoutDialog dialog = new LogoutDialog(CreateAccount.this, CreateAccount.this);
             dialog.show();
             dialog.setCancelable(false);
             // Intent intent = new Intent(CreateAccount.this, MainActivity.class);
@@ -336,13 +335,6 @@ public class CreateAccount extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 new UpdateShippingTruckDriver(account, emailStr,CreateAccount.this).execute();
                 selectText.setVisibility(View.INVISIBLE);
-                if (PREFERRED_COMMUNICATION == 0) {
-                    textCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                } else if (PREFERRED_COMMUNICATION == 1) {
-                    emailCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                } else if (PREFERRED_COMMUNICATION == 2) {
-                    bothCheckbox.setBackgroundResource(R.drawable.checkbox_filler);
-                }
                 selectText.setVisibility(View.GONE);
             }
         });
@@ -355,10 +347,12 @@ public class CreateAccount extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.METHOD, "User created an account");
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
-
+/*
             findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                 startActivity(new Intent(CreateAccount.this, FirstScreen.class));
             });
+
+ */
 
             TextView userEmail = findViewById(R.id.emailAddress);
             TextView userNumber = findViewById(R.id.phoneNumber);
@@ -379,41 +373,11 @@ public class CreateAccount extends AppCompatActivity {
             userDispatcherPhone.setText(dispatcherNumberStr);
         });
 
-        textCheckbox.setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(emailCheckbox, bothCheckbox, textCheckbox);
-            return true;
-        });
+        textCheckbox.setOnClickListener(v -> handleChecks(textCheckbox));
 
-        findViewById(R.id.Text).setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(emailCheckbox, bothCheckbox, textCheckbox);
-            return true;
-        });
+        emailCheckbox.setOnClickListener(v -> handleChecks(emailCheckbox));
 
-        emailCheckbox.setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(bothCheckbox, textCheckbox, emailCheckbox);
-            return true;
-        });
-
-        findViewById(R.id.Email).setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(bothCheckbox, textCheckbox, emailCheckbox);
-            return true;
-        });
-
-        bothCheckbox.setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(textCheckbox, emailCheckbox, bothCheckbox);
-            return true;
-        });
-
-        findViewById(R.id.Both).setOnTouchListener((v, event) -> {
-            v.performClick();
-            setChecked(textCheckbox, emailCheckbox, bothCheckbox);
-            return true;
-        });
+        bothCheckbox.setOnClickListener(v -> handleChecks(bothCheckbox));
 
         selectState1.setOnClickListener(v -> {
             // trailerStateSpinner.performClick();
@@ -447,30 +411,56 @@ public class CreateAccount extends AppCompatActivity {
         }
     }
 
-    public void setCommunication() {
-        if (PREFERRED_COMMUNICATION == 0) {
-            setChecked(emailCheckbox, bothCheckbox, textCheckbox);
-        } else if (PREFERRED_COMMUNICATION == 1) {
-            setChecked(textCheckbox, bothCheckbox, emailCheckbox);
-        } else if (PREFERRED_COMMUNICATION == 2) {
-            setChecked(emailCheckbox, textCheckbox, bothCheckbox);
-        }
-    }
-
-    private void setChecked(View... checkBox) {
-        for (int i = 0; i < checkBox.length; i++) {
-            if (i == checkBox.length-1) {
-                checkBox[i].setPressed(true);
-            } else {
-                checkBox[i].setPressed(false);
+    int b = 0;
+    public void handleChecks(CheckBox cb) {
+        if ((PREFERRED_COMMUNICATION == 1) && (cb.getId() == R.id.TextCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        } else if (PREFERRED_COMMUNICATION == 2 && (cb.getId() == R.id.EmailCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        } else if (PREFERRED_COMMUNICATION == 3 && (cb.getId() == R.id.BothCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
             }
         }
-        if (checkBox[checkBox.length-1] == textCheckbox) {
-            PREFERRED_COMMUNICATION = 0;
-        } else if (checkBox[checkBox.length-1] == emailCheckbox) {
+        if (cb.getId() == R.id.TextCheckbox) {
+            textCheckbox.setClickable(false);
             PREFERRED_COMMUNICATION = 1;
-        } else if (checkBox[checkBox.length-1] == bothCheckbox) {
+            if (emailCheckbox.isChecked()) {
+                emailCheckbox.toggle();
+                emailCheckbox.setClickable(true);
+            }
+            if (bothCheckbox.isChecked()) {
+                bothCheckbox.toggle();
+                bothCheckbox.setClickable(true);
+            }
+        }
+        if (cb.getId() == R.id.EmailCheckbox) {
+            emailCheckbox.setClickable(false);
             PREFERRED_COMMUNICATION = 2;
+            if (textCheckbox.isChecked()) {
+                textCheckbox.toggle();
+                textCheckbox.setClickable(true);
+            }
+            if (bothCheckbox.isChecked()) {
+                bothCheckbox.toggle();
+                bothCheckbox.setClickable(true);
+            }
+        }
+        if (cb.getId() == R.id.BothCheckbox) {
+            bothCheckbox.setClickable(false);
+            PREFERRED_COMMUNICATION = 3;
+            if (textCheckbox.isChecked()) {
+                textCheckbox.toggle();
+                textCheckbox.setClickable(true);
+            }
+            if (emailCheckbox.isChecked()) {
+                emailCheckbox.toggle();
+                emailCheckbox.setClickable(true);
+            }
         }
     }
 
@@ -503,8 +493,8 @@ public class CreateAccount extends AppCompatActivity {
         driverName.setHintTextColor(getResources().getColor(R.color.dark_gray));
         dispatcherPhoneNumber.setHintTextColor(getResources().getColor(R.color.dark_gray));
         System.out.println("Current Language: " + Language.getCurrentLanguage());
-        switch(Language.getCurrentLanguage()) {
-            case 0:
+        switch (Language.getCurrentLanguage()) {
+            case 1:
                 //English
                 logoutBtn.setText(R.string.logout_eng);
                 nextBtn.setText(R.string.next_eng);
@@ -526,9 +516,8 @@ public class CreateAccount extends AppCompatActivity {
                 selectState2.setText(R.string.state_eng);
                 standardRatesApply.setText(R.string.standard_rates_apply_eng);
                 break;
-            case 1:
+            case 2:
                 //Spanish
-                System.out.println("SPANISH!!!!");
                 logoutBtn.setText(R.string.logout_sp);
                 nextBtn.setText(R.string.next_sp);
                 createAccount.setText(R.string.create_account_sp);
@@ -549,9 +538,8 @@ public class CreateAccount extends AppCompatActivity {
                 selectState2.setText(R.string.state_sp);
                 standardRatesApply.setText(R.string.standard_rates_apply_sp);
                 break;
-            case 2:
+            case 3:
                 //French
-                System.out.println("FRENCH!!!!");
                 logoutBtn.setText(R.string.logout_fr);
                 nextBtn.setText(R.string.next_fr);
                 createAccount.setText(R.string.create_account_fr);
@@ -646,7 +634,7 @@ public class CreateAccount extends AppCompatActivity {
         TextView driverLicense = findViewById(R.id.driverLicenseHint);
         TextView driverName = findViewById(R.id.driverNameHint);
         TextView dispatcherPhoneNumber = findViewById(R.id.dispatcherPhoneHint);
-        if (Language.getCurrentLanguage() == 0) {
+        if (Language.getCurrentLanguage() == 1) {
             successText.setText(R.string.congrats_account_eng);
             loginBtn.setText(R.string.log_in_eng);
             emailAddress.setText(R.string.hint_email_eng);
@@ -657,7 +645,7 @@ public class CreateAccount extends AppCompatActivity {
             driverLicense.setText(R.string.hint_driver_license_eng);
             driverName.setText(R.string.hint_driver_name_eng);
             dispatcherPhoneNumber.setText(R.string.hint_dispatcher_eng);
-        } else if (Language.getCurrentLanguage() == 1) {
+        } else if (Language.getCurrentLanguage() == 2) {
             successText.setText(R.string.congrats_account_sp);
             loginBtn.setText(R.string.log_in_sp);
             emailAddress.setText(R.string.hint_email_sp);
@@ -668,7 +656,7 @@ public class CreateAccount extends AppCompatActivity {
             driverLicense.setText(R.string.hint_driver_license_sp);
             driverName.setText(R.string.hint_driver_name_sp);
             dispatcherPhoneNumber.setText(R.string.hint_dispatcher_sp);
-        } else if (Language.getCurrentLanguage() == 2) {
+        } else if (Language.getCurrentLanguage() == 3) {
             successText.setText(R.string.congrats_account_fr);
             loginBtn.setText(R.string.log_in_fr);
             emailAddress.setText(R.string.hint_email_fr);

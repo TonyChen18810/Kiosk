@@ -73,17 +73,17 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
             congsigneeName.setText("");
             congsigneeName.setVisibility(View.GONE);
         }
-        if (Language.getCurrentLanguage() == 0) {
+        if (Language.getCurrentLanguage() == 1) {
             correctCustomer.setText(R.string.correct_customer_eng);
             destination.setText(R.string.select_destination_eng);
             yes.setText(R.string.yes_eng);
             no.setText(R.string.no_eng);
-        } else if (Language.getCurrentLanguage() == 1) {
+        } else if (Language.getCurrentLanguage() == 2) {
             correctCustomer.setText(R.string.correct_customer_sp);
             destination.setText(R.string.select_destination_sp);
             yes.setText(R.string.yes_sp);
             no.setText(R.string.no_sp);
-        } else if (Language.getCurrentLanguage() == 2) {
+        } else if (Language.getCurrentLanguage() == 3) {
             correctCustomer.setText(R.string.correct_customer_fr);
             destination.setText(R.string.select_destination_fr);
             yes.setText(R.string.yes_fr);

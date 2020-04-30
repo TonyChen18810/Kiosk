@@ -1,5 +1,6 @@
 package com.dbc.kiosk.Dialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +16,12 @@ import com.dbc.kiosk.Screens.FirstScreen;
 public class LogoutDialog extends Dialog implements android.view.View.OnClickListener {
 
     private Context context;
-    private View view;
+    private Activity activity;
 
-    public LogoutDialog(Context context, View view) {
+    public LogoutDialog(Context context, Activity activity) {
         super(context);
         this.context = context;
-        this.view = view;
+        this.activity = activity;
     }
 
     @Override
@@ -31,15 +32,15 @@ public class LogoutDialog extends Dialog implements android.view.View.OnClickLis
         Button yes = findViewById(R.id.btn_yes);
         Button no = findViewById(R.id.btn_no);
         TextView logoutText = findViewById(R.id.CorrectCustomer);
-        if (Language.getCurrentLanguage() == 0) {
+        if (Language.getCurrentLanguage() == 1) {
             logoutText.setText(R.string.logout_confirm_eng);
             yes.setText(R.string.yes_eng);
             no.setText(R.string.no_eng);
-        } else if (Language.getCurrentLanguage() == 1) {
+        } else if (Language.getCurrentLanguage() == 2) {
             logoutText.setText(R.string.logout_confirm_sp);
             yes.setText(R.string.yes_sp);
             no.setText(R.string.no_sp);
-        } else if (Language.getCurrentLanguage() == 2) {
+        } else if (Language.getCurrentLanguage() == 3) {
             logoutText.setText(R.string.logout_confirm_fr);
             yes.setText(R.string.yes_fr);
             no.setText(R.string.yes_fr);
@@ -55,6 +56,7 @@ public class LogoutDialog extends Dialog implements android.view.View.OnClickLis
             case R.id.btn_yes:
                 Intent intent = new Intent(context, FirstScreen.class);
                 context.startActivity(intent);
+                activity.overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 dismiss();
                 break;
             case R.id.btn_no:
