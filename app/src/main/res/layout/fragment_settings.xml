@@ -158,10 +158,9 @@
         android:gravity="center"
         android:text="
         \n&#8226; Does not let driver add a future order (different day), shows warning.\n
-        \n&#8226; User receives a different confirmation for each different day they enter orders. If they\n
-        return the same day they entered other orders, it uses the same confirmation number that was used for those.\n
         \n&#8226; Driver cannot enter an order that is connected to another driver.\n
-        \n&#8226; Cooler location can now be changed in the settings menu."
+        \n&#8226; Cooler location can now be changed in the settings menu.
+        \n&#8226; UI updates/fixes. Activity transitions, smooth text changes, CheckBox updates"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

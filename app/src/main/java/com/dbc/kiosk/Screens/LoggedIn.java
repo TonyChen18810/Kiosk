@@ -213,12 +213,6 @@ public class LoggedIn extends AppCompatActivity {
             }
         }
         if (cb.getId() == R.id.TextCheckbox) {
-            if (textCheckbox.isChecked()) {
-                textCheckbox.setChecked(true);
-                textCheckbox.setClickable(false);
-                Account.getCurrentAccount().setCommunicationPreference("1");
-                PREFERRED_COMMUNICATION = 1;
-            }
             textCheckbox.setClickable(false);
             Account.getCurrentAccount().setCommunicationPreference("1");
             PREFERRED_COMMUNICATION = 1;
@@ -470,13 +464,11 @@ public class LoggedIn extends AppCompatActivity {
         System.out.println("PREFERRED COMMUNICATION: " + PREFERRED_COMMUNICATION);
         System.out.println("Accounts contact preference: " + Account.getCurrentAccount().getCommunicationPreference());
 
-        if (Language.getCurrentLanguage() == 1) {
+        if (Account.getCurrentAccount().getCommunicationPreference().equals("1")) {
             textCheckbox.performClick();
-        } else if (Language.getCurrentLanguage() == 2) {
+        } else if (Account.getCurrentAccount().getCommunicationPreference().equals("2")) {
             emailCheckbox.performClick();
-        } else if (Language.getCurrentLanguage() == 3) {
-            bothCheckbox.performClick();
-        } else {
+        } else if (Account.getCurrentAccount().getCommunicationPreference().equals("3")) {
             bothCheckbox.performClick();
         }
     }

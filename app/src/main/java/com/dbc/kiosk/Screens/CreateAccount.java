@@ -263,7 +263,6 @@ public class CreateAccount extends AppCompatActivity {
                 if (selectState1.getText().equals("State") || selectState1.getText().equals("Estado") || selectState1.getText().equals("État")) {
                     selectState1.performClick();
                 }
-                // showSoftKeyboard(truckName);
             }
         });
 
@@ -272,7 +271,6 @@ public class CreateAccount extends AppCompatActivity {
                 if (selectState2.getText().equals("State") || selectState2.getText().equals("Estado") || selectState2.getText().equals("État")) {
                     selectState2.performClick();
                 }
-                // showSoftKeyboard(dispatcherPhoneNumber);
             }
         });
 
@@ -280,8 +278,6 @@ public class CreateAccount extends AppCompatActivity {
             LogoutDialog dialog = new LogoutDialog(CreateAccount.this, CreateAccount.this);
             dialog.show();
             dialog.setCancelable(false);
-            // Intent intent = new Intent(CreateAccount.this, MainActivity.class);
-            // startActivity(intent);
         });
 
         nextBtn.setOnClickListener(v -> {
@@ -331,7 +327,7 @@ public class CreateAccount extends AppCompatActivity {
                 dispatcherNumberStr = dispatcherPhoneNumber.getText().toString();
                 // pass a weak reference?
                 Account account = new Account(emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
-                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()+1), Integer.toString(PREFERRED_COMMUNICATION+1));
+                        driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()), Integer.toString(PREFERRED_COMMUNICATION));
                 progressBar.setVisibility(View.VISIBLE);
                 new UpdateShippingTruckDriver(account, emailStr,CreateAccount.this).execute();
                 selectText.setVisibility(View.INVISIBLE);
@@ -347,12 +343,11 @@ public class CreateAccount extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.METHOD, "User created an account");
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
-/*
+
             findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
                 startActivity(new Intent(CreateAccount.this, FirstScreen.class));
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
             });
-
- */
 
             TextView userEmail = findViewById(R.id.emailAddress);
             TextView userNumber = findViewById(R.id.phoneNumber);
@@ -380,14 +375,12 @@ public class CreateAccount extends AppCompatActivity {
         bothCheckbox.setOnClickListener(v -> handleChecks(bothCheckbox));
 
         selectState1.setOnClickListener(v -> {
-            // trailerStateSpinner.performClick();
             ListViewDialog dialog = new ListViewDialog(CreateAccount.this, selectState1, 2);
             dialog.show();
             dialog.setCancelable(false);
         });
 
         selectState2.setOnClickListener(v -> {
-            // driverStateSpinner.performClick();
             ListViewDialog dialog = new ListViewDialog(CreateAccount.this, selectState2, 2);
             dialog.show();
             dialog.setCancelable(false);

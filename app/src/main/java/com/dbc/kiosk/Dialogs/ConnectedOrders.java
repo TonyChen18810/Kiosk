@@ -90,6 +90,7 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                 List<Order> selectedOrders = new ArrayList<>(RecyclerViewAssociatedAdapter.getSelectedOrders());
                 for (int i = 0; i < selectedOrders.size(); i++) {
                     Order.addOrderToList(selectedOrders.get(i));
+                    adapter.notifyItemInserted(adapter.getItemCount() - 1);
                     if (Order.getOutlierOrders().contains(selectedOrders.get(i))) {
                         Order.removeOrderFromOutlierList(selectedOrders.get(i));
                     }
@@ -102,10 +103,8 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                     }
                 }
                 boolean showEarlyDialog = false;
-                adapter.notifyDataSetChanged();
-                adapter.notifyItemInserted(adapter.getItemCount() - 1);
-                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-                recyclerView.scheduleLayoutAnimation();
+                // adapter.notifyDataSetChanged();
+                // adapter.notifyItemInserted(adapter.getItemCount() - 1);
                 for (int i = 0; i < selectedOrders.size(); i++) {
                     if ((selectedOrders.get(i).getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(selectedOrders.get(i).getAppointmentTime()) == -1)
                             || GetOrderDetails.checkApppointmentTime(Order.getOrdersList().get((Order.getOrdersList().size()-1) - selectedOrders.size()).getAppointmentTime()) == -1) {
@@ -119,6 +118,13 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                     OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is one
                 }
                 Order.clearAssociatedOrderList();
+                // add an empty placeholder order so that the animation will apply for the last entered order
+                Order.addOrderToList(new Order("","","","","","","",
+                        "","","","","0","0"));
+                adapter.notifyItemInserted(adapter.getItemCount() - 1);
+                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                // remove the empty placeholder order
+                Order.removeOrderFromList(Order.getOrdersList().size() - 1);
                 dismiss();
                 break;
             case R.id.cancelBtn:

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.dbc.kiosk.Helpers.CustomOrderKeyboard;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.R;
 /**
@@ -45,5 +47,6 @@ public class HelpDialog extends Dialog implements android.view.View.OnClickListe
     @Override
     public void onClick(View v) {
         dismiss();
+        // CustomOrderKeyboard.disableEnterButton();
     }
 }

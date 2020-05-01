@@ -2,6 +2,7 @@ package com.dbc.kiosk.Screens;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,9 +10,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.transition.TransitionManager;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -27,7 +28,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.transitionseverywhere.ChangeText;
 
 /**
  * FirstScreen.java
@@ -63,9 +63,8 @@ public class FirstScreen extends AppCompatActivity {
         Report report = new Report(FirstScreen.this);
         System.out.println(FirebaseInstanceId.getInstance().getInstanceId());
 
-        /**TransitionManager.beginDelayedTransition(transitionsContainer, new ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN));*/
-
         setup();
+
         // load settings (kiosk name/number and cooler location)
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FirstScreen.this);
         Settings.setKioskNumber(settings.getString("kiosk_number", "01"));
@@ -88,7 +87,7 @@ public class FirstScreen extends AppCompatActivity {
                     if (!fragmentOpen[0]) {
                         fragmentOpen[0] = true;
                         // fm.beginTransaction().setCustomAnimations(R.anim.fragment_close_enter, R.anim.fragment_close_exit).add(R.id.placeholder, settingsFragment, settingsFragment.getClass().getSimpleName()).addToBackStack(null).commit();
-                        fm.beginTransaction().setCustomAnimations(R.anim.layout_slide_in, R.anim.fragment_close_exit).replace(R.id.placeholder, settingsFragment[0]).commit();
+                        fm.beginTransaction().setCustomAnimations(R.anim.recycler_add, R.anim.fragment_close_exit).replace(R.id.placeholder, settingsFragment[0]).commit();
                     }
                 }
             }
@@ -100,7 +99,7 @@ public class FirstScreen extends AppCompatActivity {
         settingsListener.observe(FirstScreen.this, savedIsClicked -> {
             if (savedIsClicked) {
                 fragmentOpen[0] = false;
-                fm.beginTransaction().setCustomAnimations(R.anim.layout_slide_in, R.anim.fragment_close_exit).remove(settingsFragment[0]).commit();
+                fm.beginTransaction().setCustomAnimations(R.anim.layout_slide_in, R.anim.exit_to_left).remove(settingsFragment[0]).commit();
                 Toast.makeText(FirstScreen.this, "Settings have been saved", Toast.LENGTH_SHORT).show();
                 Toast.makeText(FirstScreen.this, "Cooler location set to: " + Settings.getCoolerLocation(), Toast.LENGTH_SHORT).show();
                 Toast.makeText(FirstScreen.this, "Kiosk number set to: " + Settings.getKioskNumber(), Toast.LENGTH_SHORT).show();
@@ -144,6 +143,7 @@ public class FirstScreen extends AppCompatActivity {
             }
         }
         if (cb.getId() == R.id.EnglishCheckbox) {
+            textFadeStart();
             englishCheckbox.setClickable(false);
             changeLanguage(1);
             if (spanishCheckbox.isChecked()) {
@@ -154,8 +154,10 @@ public class FirstScreen extends AppCompatActivity {
                 frenchCheckbox.toggle();
                 frenchCheckbox.setClickable(true);
             }
+            textFadeEnd();
         }
         if (cb.getId() == R.id.SpanishCheckbox) {
+            textFadeStart();
             spanishCheckbox.setClickable(false);
             changeLanguage(2);
             if (englishCheckbox.isChecked()) {
@@ -166,8 +168,10 @@ public class FirstScreen extends AppCompatActivity {
                 frenchCheckbox.toggle();
                 frenchCheckbox.setClickable(true);
             }
+            textFadeEnd();
         }
         if (cb.getId() == R.id.FrenchCheckbox) {
+            textFadeStart();
             frenchCheckbox.setClickable(false);
             changeLanguage(3);
             if (englishCheckbox.isChecked()) {
@@ -178,6 +182,25 @@ public class FirstScreen extends AppCompatActivity {
                 spanishCheckbox.toggle();
                 spanishCheckbox.setClickable(true);
             }
+            textFadeEnd();
+        }
+    }
+
+    public void textFadeStart() {
+        TextView[] textArray = {appointmentWarningText, existingAccountText, noBtn, yesBtn};
+        AlphaAnimation ani = new AlphaAnimation(1.0f, 0.2f);
+        ani.setDuration(500);
+        for (TextView text : textArray) {
+            text.startAnimation(ani);
+        }
+    }
+
+    public void textFadeEnd() {
+        TextView[] textArray = {appointmentWarningText, existingAccountText, noBtn, yesBtn};
+        AlphaAnimation ani = new AlphaAnimation(0.2f, 1.0f);
+        ani.setDuration(500);
+        for (TextView text : textArray) {
+            text.startAnimation(ani);
         }
     }
 

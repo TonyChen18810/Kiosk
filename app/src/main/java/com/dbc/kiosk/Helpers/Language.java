@@ -18,6 +18,7 @@ public class Language {
     }
 
     public static void setCurrentLanguage(int language) {
+        System.out.println("CURRENT LANGUAGE: " + language);
         currentLanguage = language;
     }
 }

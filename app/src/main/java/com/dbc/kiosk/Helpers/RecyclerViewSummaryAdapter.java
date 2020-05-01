@@ -88,7 +88,7 @@ public class RecyclerViewSummaryAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         // adjust for longer spanish wording
-        if (Language.getCurrentLanguage() == 1) {
+        if (Language.getCurrentLanguage() == 2) {
             holder.itemView.findViewById(R.id.EstPallets).getLayoutParams().width = 140;
             holder.itemView.findViewById(R.id.EstWeight).getLayoutParams().width = 130;
         }

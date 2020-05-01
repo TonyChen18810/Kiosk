@@ -442,7 +442,22 @@ public class MainActivity extends AppCompatActivity {
                 cb.performClick();
             }
         }
+        if (cb.getId() == R.id.EnglishCheckbox) {
+            textFadeStart();
+            englishCheckbox.setClickable(false);
+            changeLanguage(1);
+            if (spanishCheckbox.isChecked()) {
+                spanishCheckbox.toggle();
+                spanishCheckbox.setClickable(true);
+            }
+            if (frenchCheckbox.isChecked()) {
+                frenchCheckbox.toggle();
+                frenchCheckbox.setClickable(true);
+            }
+            textFadeEnd();
+        }
         if (cb.getId() == R.id.SpanishCheckbox) {
+            textFadeStart();
             spanishCheckbox.setClickable(false);
             changeLanguage(2);
             if (englishCheckbox.isChecked()) {
@@ -453,10 +468,12 @@ public class MainActivity extends AppCompatActivity {
                 frenchCheckbox.toggle();
                 frenchCheckbox.setClickable(true);
             }
+            textFadeEnd();
         }
         if (cb.getId() == R.id.FrenchCheckbox) {
-            changeLanguage(3);
+            textFadeStart();
             frenchCheckbox.setClickable(false);
+            changeLanguage(3);
             if (englishCheckbox.isChecked()) {
                 englishCheckbox.toggle();
                 englishCheckbox.setClickable(true);
@@ -464,6 +481,33 @@ public class MainActivity extends AppCompatActivity {
             if (spanishCheckbox.isChecked()) {
                 spanishCheckbox.toggle();
                 spanishCheckbox.setClickable(true);
+            }
+            textFadeEnd();
+        }
+    }
+
+    public void textFadeStart() {
+        TextView[] textArray = {emailAddressBox, phoneNumberBox, confirmEmailAddress, confirmPhoneNumber, unmatchingEmail,
+                                unmatchingPhone, noEmailWarning, noPhoneNumberWarning, appointmentText, nextBtn, backBtn,
+                                accountAlreadyExists, phoneAlreadyExists};
+        AlphaAnimation ani = new AlphaAnimation(1.0f, 0.2f);
+        ani.setDuration(500);
+        for (TextView text : textArray) {
+            if (text.getVisibility() == View.VISIBLE) {
+                text.startAnimation(ani);
+            }
+        }
+    }
+
+    public void textFadeEnd() {
+        TextView[] textArray = {emailAddressBox, phoneNumberBox, confirmEmailAddress, confirmPhoneNumber, unmatchingEmail,
+                unmatchingPhone, noEmailWarning, noPhoneNumberWarning, appointmentText, nextBtn, backBtn,
+                accountAlreadyExists, phoneAlreadyExists};
+        AlphaAnimation ani = new AlphaAnimation(0.2f, 1.0f);
+        ani.setDuration(500);
+        for (TextView text : textArray) {
+            if (text.getVisibility() == View.VISIBLE) {
+                text.startAnimation(ani);
             }
         }
     }

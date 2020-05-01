@@ -135,7 +135,7 @@ public class OrderEntry extends AppCompatActivity {
             // non-existing order
             if (valid == 0) {
                 checkOrderBtn.setEnabled(true);
-                CustomOrderKeyboard.enableEnterButton();
+                // CustomOrderKeyboard.enableEnterButton();
                 orderNumber.setText("");
                 String message = null;
                 if (Language.getCurrentLanguage() == 1) {
@@ -155,7 +155,6 @@ public class OrderEntry extends AppCompatActivity {
             } else if (valid == 1) {
                 orderNumber.setEnabled(false);
                 checkOrderBtn.setEnabled(false);
-                CustomOrderKeyboard.disableEnterButton();
                 checkOrderBtn.setBackgroundResource(R.drawable.arrow_down_disabled);
                 CustomerDialog dialog = new CustomerDialog(OrderEntry.this, orderNumber, Order.getCurrentOrder().getCustomerName(),
                         buyerName, selectDestinationBtn, checkOrderBtn, OrderEntry.this, progressBar, cancelOrderBtn, keyboard);
@@ -163,10 +162,11 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.setCancelable(false);
                 dialog.show();
                 progressBar.setVisibility(View.GONE);
+                CustomOrderKeyboard.disableEnterButton();
                 // order needs to schedule appointment
             } else if (valid == 2) {
                 checkOrderBtn.setEnabled(true);
-                CustomOrderKeyboard.enableEnterButton();
+                // CustomOrderKeyboard.enableEnterButton();
                 String message = null;
                 if (Language.getCurrentLanguage() == 1) {
                     message = "Order #" + orderNumber.getText().toString() + " requires an appointment but hasn't had one scheduled, please call 831-455-4305 to schedule an appointment.";
@@ -179,7 +179,7 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.show();
                 dialog.setCancelable(false);
                 checkOrderBtn.setEnabled(true);
-                CustomOrderKeyboard.enableEnterButton();
+                CustomOrderKeyboard.disableEnterButton();
                 orderNumber.setEnabled(true);
                 orderNumber.setText("");
             } else if (valid == 3) {
@@ -196,7 +196,7 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.setCancelable(false);
                 orderNumber.setText("");
                 checkOrderBtn.setEnabled(true);
-                CustomOrderKeyboard.enableEnterButton();
+                CustomOrderKeyboard.disableEnterButton();
                 orderNumber.setEnabled(true);
             } else if (valid == 4) {
                 String helpText = "";
@@ -212,7 +212,7 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.setCancelable(false);
                 orderNumber.setText("");
                 checkOrderBtn.setEnabled(true);
-                CustomOrderKeyboard.enableEnterButton();
+                CustomOrderKeyboard.disableEnterButton();
                 orderNumber.setEnabled(true);
             } else if (valid == 5) {
                 String helpText = "";
@@ -228,7 +228,7 @@ public class OrderEntry extends AppCompatActivity {
                 dialog.setCancelable(false);
                 orderNumber.setText("");
                 checkOrderBtn.setEnabled(true);
-                CustomOrderKeyboard.enableEnterButton();
+                CustomOrderKeyboard.disableEnterButton();
                 orderNumber.setEnabled(true);
             }
             progressBar.setVisibility(View.GONE);
@@ -247,6 +247,7 @@ public class OrderEntry extends AppCompatActivity {
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
                 dialog.setCancelable(false);
+                progressBar.setVisibility(View.GONE);
                 orderNumber.setText("");
                 orderNumber.setEnabled(true);
             } else if (aptCode == -2) {
@@ -261,6 +262,9 @@ public class OrderEntry extends AppCompatActivity {
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();
                 dialog.setCancelable(false);
+                progressBar.setVisibility(View.GONE);
+                orderNumber.setText("");
+                orderNumber.setEnabled(true);
             }
         });
         // Used to initialize recycler view with data, empty order won't be visible.
@@ -498,6 +502,7 @@ public class OrderEntry extends AppCompatActivity {
         int selectedItemPosition = recyclerView.getChildLayoutPosition(v);
 
         Order.removeOrderFromList(selectedItemPosition);
+        RecyclerViewHorizontalAdapter.decrementLastPosition();
         adapter.notifyItemRemoved(selectedItemPosition);
 
         if (Order.getOrdersList().size() == 0) {
