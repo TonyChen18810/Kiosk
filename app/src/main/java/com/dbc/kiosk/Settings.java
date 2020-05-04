@@ -18,10 +18,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.dbc.kiosk.Screens.FirstScreen;
 import java.lang.ref.WeakReference;
 import java.util.Date;
@@ -42,6 +46,7 @@ public class Settings extends Fragment {
 
     private static String coolerLocation;
     private static String kioskNumber;
+    private static String DBC_URL;
     private static final String password = "4535";
 
     private static String errorMsg;
@@ -61,6 +66,10 @@ public class Settings extends Fragment {
         return kioskNumber;
     }
 
+    public static String getDbcUrl() {
+        return DBC_URL;
+    }
+
     public static void setCoolerLocation(String location) {
         coolerLocation = location;
     }
@@ -69,11 +78,8 @@ public class Settings extends Fragment {
         kioskNumber = num;
     }
 
-    public static void setError(String error, String errorC, String date, Context context) {
-        errorMsg = error;
-        errorClass = errorC;
-        errorDate = date;
-        saveSettings(context);
+    public static void setDbcUrl(String url) {
+        DBC_URL = url;
     }
 
     private static String getErrorMsg() {
@@ -90,20 +96,6 @@ public class Settings extends Fragment {
 
     public Settings(Activity activity) {
         mWeakActivity = new WeakReference<>(activity);
-    }
-
-    private static void saveSettings(Context context) {
-        if (context == null) {
-            context = mWeakActivity.get();
-        }
-        settings = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("cooler_location", coolerLocation);
-        editor.putString("kiosk_number", kioskNumber);
-        editor.putString("error_msg", getErrorMsg());
-        editor.putString("error_class", getErrorClass());
-        editor.putString("date", new Date().toString());
-        editor.commit();
     }
 
     @Override
@@ -130,7 +122,6 @@ public class Settings extends Fragment {
         }
         versionUpdate.setText("Version " + version + " updates:");
         errorText.setText(getErrorMsg());
-        // errorTitle.setText(errorTitle.getText().toString() + " " + getErrorDate());
         ImageButton exitBtn = view.findViewById(R.id.ExitBtn);
         Button saveBtn = view.findViewById(R.id.SaveBtn);
         Spinner locationCoolerSpinner = view.findViewById(R.id.CoolerLocationSpinner);
@@ -140,6 +131,29 @@ public class Settings extends Fragment {
         exitBtn.setVisibility(View.INVISIBLE);
         settingsText.setVisibility(View.GONE);
         versionUpdate.setVisibility(View.GONE);
+        Switch productionSwitch = view.findViewById(R.id.ProductionSwitch);
+
+        productionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                DBC_URL = "http://vmiis/DBCWebService/DBCWebService.asmx"; // production web services
+                // Toast.makeText(getContext(), "Production mode", Toast.LENGTH_SHORT).show();
+                System.out.println("System is on production mode");
+            } else {
+                DBC_URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx"; // test web services
+                // Toast.makeText(getContext(), "Test mode", Toast.LENGTH_SHORT).show();
+                System.out.println("System is on test mode");
+            }
+        });
+
+        if (DBC_URL.equals("http://vmiis/DBCWebService/DBCWebService.asmx")) {
+            // production
+            productionSwitch.setChecked(true);
+            System.out.println("System is on production mode");
+        } else if (DBC_URL.equals("http://VMSQLTEST/DBCWebService/DBCWebService.asmx")) {
+            // test
+            productionSwitch.setChecked(false);
+            System.out.println("System is on test mode");
+        }
 
         saveBtn.setOnClickListener(v -> {
             settings = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -149,18 +163,11 @@ public class Settings extends Fragment {
             editor.putString("error_msg", getErrorMsg());
             editor.putString("error_class", getErrorClass());
             editor.putString("error_date", getErrorDate());
+            editor.putString("DBC_URL", getDbcUrl());
             editor.commit();
             FirstScreen.settingsListener.setValue(true);
         });
-/*
-        exitBtn.setOnClickListener(v -> {
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            manager.getBackStackEntryCount();
-            transaction.remove(current);
-            transaction.commit();
-        });
-*/
+
         String[] coolerArray = getResources().getStringArray(R.array.cooler_locations);
 
         locationCoolerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -209,10 +216,11 @@ public class Settings extends Fragment {
             }
         }
 
-        CardView cardView1 = view.findViewById(R.id.cardView1), cardView2 = view.findViewById(R.id.cardView2);
+        CardView cardView1 = view.findViewById(R.id.cardView1), cardView2 = view.findViewById(R.id.cardView2), cardView3 = view.findViewById(R.id.cardView3);
         EditText adminPW = view.findViewById(R.id.AdminPW);
         cardView1.setVisibility(View.GONE);
         cardView2.setVisibility(View.GONE);
+        cardView3.setVisibility(View.GONE);
         errorText.setVisibility(View.GONE);
         errorTitle.setVisibility(View.GONE);
         saveBtn.setVisibility(View.GONE);
@@ -236,6 +244,7 @@ public class Settings extends Fragment {
                     adminPW.setVisibility(View.GONE);
                     cardView1.setVisibility(View.VISIBLE);
                     cardView2.setVisibility(View.VISIBLE);
+                    cardView3.setVisibility(View.VISIBLE);
                     errorText.setVisibility(View.VISIBLE);
                     errorTitle.setVisibility(View.VISIBLE);
                     saveBtn.setVisibility(View.VISIBLE);
@@ -258,9 +267,10 @@ public class Settings extends Fragment {
         super.onDestroyView();
     }
 
-    public static void getPrefs(Context context) {
+    private static void getPrefs(Context context) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         coolerLocation = settings.getString("cooler_location", "01");
         kioskNumber = settings.getString("kiosk_number", "01");
+        DBC_URL = settings.getString("DBC_URL", "http://vmiis/DBCWebService/DBCWebService.asmx"); // def value is production
     }
 }

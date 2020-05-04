@@ -53,7 +53,8 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
         String method = "GetOrderDetailsByMasterNumber";
         String soapAction = "http://tempuri.org/GetOrderDetailsByMasterNumber";
         // String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
-        String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
+        // String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
+        String URL = Settings.getDbcUrl();
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inMasterNumber", inMasterNumber);

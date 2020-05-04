@@ -3,6 +3,9 @@ package com.dbc.kiosk;
 import android.content.Context;
 import com.crashlytics.android.Crashlytics;
 import com.dbc.kiosk.Helpers.Time;
+
+import java.util.Set;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -31,6 +34,9 @@ public class Report {
 
             Crashlytics.setString("Current Time", Time.getCurrentTime());
             Crashlytics.setString("Current Date", Time.getCurrentDate());
+
+            Crashlytics.setString("Kiosk Number", Settings.getKioskNumber());
+            Crashlytics.setString("Cooler location", Settings.getCoolerLocation());
         }
     }
 

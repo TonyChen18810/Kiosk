@@ -2,7 +2,6 @@ package com.dbc.kiosk.Screens;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,7 +27,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
-
 /**
  * FirstScreen.java
  *
@@ -69,8 +67,10 @@ public class FirstScreen extends AppCompatActivity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FirstScreen.this);
         Settings.setKioskNumber(settings.getString("kiosk_number", "01"));
         Settings.setCoolerLocation(settings.getString("cooler_location", "01"));
+        Settings.setDbcUrl(settings.getString("DBC_URL", "http://vmiis/DBCWebService/DBCWebService.asmx")); // def value is production
         System.out.println("Kiosk number: " + Settings.getKioskNumber());
         System.out.println("Cooler location: " + Settings.getCoolerLocation());
+        System.out.println("System mode: " + Settings.getDbcUrl());
 
         // settings page - opens if version number is clicked 3 times
         final Fragment[] settingsFragment = new Fragment[1];
@@ -87,7 +87,7 @@ public class FirstScreen extends AppCompatActivity {
                     if (!fragmentOpen[0]) {
                         fragmentOpen[0] = true;
                         // fm.beginTransaction().setCustomAnimations(R.anim.fragment_close_enter, R.anim.fragment_close_exit).add(R.id.placeholder, settingsFragment, settingsFragment.getClass().getSimpleName()).addToBackStack(null).commit();
-                        fm.beginTransaction().setCustomAnimations(R.anim.recycler_add, R.anim.fragment_close_exit).replace(R.id.placeholder, settingsFragment[0]).commit();
+                        fm.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.placeholder, settingsFragment[0]).commit();
                     }
                 }
             }
@@ -103,6 +103,13 @@ public class FirstScreen extends AppCompatActivity {
                 Toast.makeText(FirstScreen.this, "Settings have been saved", Toast.LENGTH_SHORT).show();
                 Toast.makeText(FirstScreen.this, "Cooler location set to: " + Settings.getCoolerLocation(), Toast.LENGTH_SHORT).show();
                 Toast.makeText(FirstScreen.this, "Kiosk number set to: " + Settings.getKioskNumber(), Toast.LENGTH_SHORT).show();
+                if (Settings.getDbcUrl().equals("http://vmiis/DBCWebService/DBCWebService.asmx")) {
+                    Toast.makeText(FirstScreen.this, "App environment set to: PRODUCTION", Toast.LENGTH_SHORT).show();
+                    System.out.println("production");
+                } else if (Settings.getDbcUrl().equals("http://VMSQLTEST/DBCWebService/DBCWebService.asmx")) {
+                    Toast.makeText(FirstScreen.this, "App environment set to: TEST", Toast.LENGTH_SHORT).show();
+                    System.out.println("test");
+                }
             }
         });
 

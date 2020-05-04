@@ -26,6 +26,7 @@ import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.Helpers.States;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Report;
+import com.dbc.kiosk.Settings;
 import com.dbc.kiosk.Webservices.CheckForExistingAccount;
 import com.dbc.kiosk.Webservices.GetShippingTruckDriver;
 import java.util.Collections;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         // aka did the user click yes or no
         String accountStatus = getIntent().getExtras().getString("accountStatus");
         setup();
+
+        System.out.println("Mode: " + Settings.getDbcUrl());
 
         // user clicked no
         if (accountStatus.equals("new")) {
@@ -190,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (newAccount) {
                     if (emailAddressBox.length() != 0 && confirmEmailAddress.length() != 0 && phoneNumberBox.length() != 0
-                            && confirmPhoneNumber.length() != 0 && validEmail() && validNumber()) {
+                            && confirmPhoneNumber.length() != 0 && validEmail() && validNumber() && doesPhoneMatch() && doesEmailMatch()) {
                         nextBtn.setEnabled(true);
                     }
                     if (doesPhoneMatch() && validNumber()) {
@@ -268,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (newAccount) {
                     if (emailAddressBox.length() != 0 && confirmEmailAddress.length() != 0 && phoneNumberBox.length() != 0
-                            && confirmPhoneNumber.length() != 0 && validEmail() && validNumber()) {
+                            && confirmPhoneNumber.length() != 0 && validEmail() && validNumber() && confirmPhoneNumber.length() == phoneNumberBox.length()) {
                         nextBtn.setEnabled(true);
                     }
                 }

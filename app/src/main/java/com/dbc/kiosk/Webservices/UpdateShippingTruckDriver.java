@@ -8,6 +8,8 @@ import android.widget.ProgressBar;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.CreateAccount;
+import com.dbc.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -47,7 +49,8 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
         String method = "UpdateShippingTruckDriver";
         String soapAction = "http://tempuri.org/UpdateShippingTruckDriver";
         // String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
-        String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
+        // String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
+        String URL = Settings.getDbcUrl();
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inOldEmail", oldEmail);

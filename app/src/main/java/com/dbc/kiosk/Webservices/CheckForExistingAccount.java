@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Screens.LoggedIn;
 import com.dbc.kiosk.Screens.MainActivity;
+import com.dbc.kiosk.Settings;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -58,7 +60,8 @@ public class CheckForExistingAccount extends AsyncTask<Void, Void, Void> {
         String method = "GetShippingTruckDriver";
         String soapAction = "http://tempuri.org/GetShippingTruckDriver";
         // String URL = "http://vmiis/DBCWebService/DBCWebService.asmx";
-        String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
+        // String URL = "http://VMSQLTEST/DBCWebService/DBCWebService.asmx";
+        String URL = Settings.getDbcUrl();
 
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inEmail", userID);
