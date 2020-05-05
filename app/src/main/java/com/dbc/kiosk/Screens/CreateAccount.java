@@ -328,13 +328,14 @@ public class CreateAccount extends AppCompatActivity {
                 // pass a weak reference?
                 Account account = new Account(emailStr, driverNameStr, PhoneNumberFormat.extract(phoneStr), truckNameStr, truckNumberStr,
                         driverLicenseStr, driverStateStr, trailerLicenseStr, trailerStateStr, PhoneNumberFormat.extract(dispatcherNumberStr), Integer.toString(Language.getCurrentLanguage()), Integer.toString(PREFERRED_COMMUNICATION));
+                Account.setCurrentAccount(account);
                 progressBar.setVisibility(View.VISIBLE);
                 new UpdateShippingTruckDriver(account, emailStr,CreateAccount.this).execute();
                 selectText.setVisibility(View.INVISIBLE);
                 selectText.setVisibility(View.GONE);
             }
         });
-
+/*
         accountCreatedListener = new MutableLiveData<>();
         accountCreatedListener.observe(CreateAccount.this, aBoolean -> {
             setContentView(R.layout.account_created_msg);
@@ -367,7 +368,7 @@ public class CreateAccount extends AppCompatActivity {
             userDriverName.setText(driverNameStr);
             userDispatcherPhone.setText(dispatcherNumberStr);
         });
-
+*/
         textCheckbox.setOnClickListener(v -> handleChecks(textCheckbox));
 
         emailCheckbox.setOnClickListener(v -> handleChecks(emailCheckbox));

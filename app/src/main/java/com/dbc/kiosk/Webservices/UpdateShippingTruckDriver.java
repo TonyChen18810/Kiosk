@@ -1,6 +1,7 @@
 package com.dbc.kiosk.Webservices;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.ProgressBar;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.CreateAccount;
+import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Settings;
 
 import org.ksoap2.SoapEnvelope;
@@ -121,7 +123,10 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                 ProgressBar progressBar = activity.findViewById(R.id.ProgressBar);
                 logoutBtn.setEnabled(true);
                 progressBar.setVisibility(View.INVISIBLE);
-                CreateAccount.accountCreatedListener.setValue(true);
+                // CreateAccount.accountCreatedListener.setValue(true);
+                Intent intent = new Intent(activity, OrderEntry.class);
+                activity.startActivity(intent);
+
                 // CreateAccount.progessBar.hide();
                 // CreateAccount.hideKeyboard(activity);
                 // System.out.println("Here's the current focus: " + activity.getCurrentFocus());

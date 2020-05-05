@@ -114,8 +114,10 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                     }
                 }
                 if (showEarlyDialog) {
-                    OrderEntry.appointmentTimeListener.setValue(-2);
-                    OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is one
+                    // OrderEntry.appointmentTimeListener.setValue(-2);
+                    // OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is one
+                    OrderEntry.validOrderNumber.setValue(7);
+                    OrderEntry.validOrderNumber.setValue(-100);
                 }
                 Order.clearAssociatedOrderList();
                 // add an empty placeholder order so that the animation will apply for the last entered order
@@ -137,8 +139,10 @@ public class ConnectedOrders extends Dialog implements android.view.View.OnClick
                     }
                 }
                 if (GetOrderDetails.checkApppointmentTime(Order.getOrdersList().get(Order.getOrdersList().size()-1).getAppointmentTime()) == -1) {
-                    OrderEntry.appointmentTimeListener.setValue(-2);
-                    OrderEntry.appointmentTimeListener.setValue(-100);
+                    // OrderEntry.appointmentTimeListener.setValue(-2);
+                    // OrderEntry.appointmentTimeListener.setValue(-100);
+                    OrderEntry.validOrderNumber.setValue(7);
+                    OrderEntry.validOrderNumber.setValue(-100);
                 }
                 // setContentView(R.layout.activity_order_entry);
                 Order.clearAssociatedOrderList();

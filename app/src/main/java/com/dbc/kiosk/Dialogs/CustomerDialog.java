@@ -101,9 +101,10 @@ public class CustomerDialog extends Dialog implements android.view.View.OnClickL
                 new GetPossibleShipTos(a, Order.getCurrentOrder().getSOPNumber()).execute();
                 customer.setVisibility(View.VISIBLE);
                 customer.setText(customerNameStr);
-                destination.setVisibility(View.VISIBLE);
+                // .setVisibility(View.VISIBLE);
                 destination.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade));
                 destination.setEnabled(false);
+                // destination.performClick();
                 checkOrderBtn.setVisibility(View.GONE);
                 cancelOrderButton.setVisibility(View.VISIBLE);
                 cancelOrderButton.setEnabled(true);

@@ -71,7 +71,6 @@ public class OrderEntry extends AppCompatActivity {
     public static MutableLiveData<Boolean> submitDialogListener = null;
     public static MutableLiveData<Integer> validOrderNumber = null;
     public static MutableLiveData<String> destinationListener = null;
-    public static MutableLiveData<Integer> appointmentTimeListener = null;
 
     public static int DESTINATION_ATTEMPTS = 0;
 
@@ -102,7 +101,6 @@ public class OrderEntry extends AppCompatActivity {
         submitDialogListener = new MutableLiveData<>();
         validOrderNumber = new MutableLiveData<>();
         destinationListener = new MutableLiveData<>();
-        appointmentTimeListener = new MutableLiveData<>();
 
         addOrderListener.observe(OrderEntry.this, empty -> {
             if (empty) {
@@ -230,12 +228,7 @@ public class OrderEntry extends AppCompatActivity {
                 checkOrderBtn.setEnabled(true);
                 CustomOrderKeyboard.disableEnterButton();
                 orderNumber.setEnabled(true);
-            }
-            progressBar.setVisibility(View.GONE);
-        });
-
-        appointmentTimeListener.observe(OrderEntry.this, aptCode -> {
-            if (aptCode == 1) {
+            } else if (valid == 6) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 1) {
                     helpText = "Appointment time has been missed. Please call 831-455-4305 to re-schedule an appointment.";
@@ -250,7 +243,7 @@ public class OrderEntry extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 orderNumber.setText("");
                 orderNumber.setEnabled(true);
-            } else if (aptCode == -2) {
+            } else if (valid == 7) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 1) {
                     helpText = "One or more of the added orders has a later appointment time. These submitted orders will not be checked in until 1 hour prior to appointment time.";
@@ -266,6 +259,7 @@ public class OrderEntry extends AppCompatActivity {
                 orderNumber.setText("");
                 orderNumber.setEnabled(true);
             }
+            progressBar.setVisibility(View.GONE);
         });
         // Used to initialize recycler view with data, empty order won't be visible.
         // If recycler view is empty (an actual order gets removed, causing it to be empty),
@@ -296,7 +290,10 @@ public class OrderEntry extends AppCompatActivity {
                 selectDestinationBtn.setEnabled(false);
                 addOrderBtn.setEnabled(true);
                 addOrderBtn.startAnimation(AnimationUtils.loadAnimation(OrderEntry.this, R.anim.fade));
+                addOrderBtn.performClick();
                 DESTINATION_ATTEMPTS = 0;
+            } else if (selectedDestination.equals("show_dialog")) {
+                selectDestinationBtn.performClick();
             } else {
                 // incorrect
                 DESTINATION_ATTEMPTS++;
@@ -325,15 +322,8 @@ public class OrderEntry extends AppCompatActivity {
                     keyboard.setVisibility(View.VISIBLE);
                     DESTINATION_ATTEMPTS = 0;
                 } else {
-                    String message = null;
-                    if (currentLanguage == 1) {
-                        message = "Incorrect destination for the entered order number, you have one attempt remaining.";
-                    } else if (currentLanguage == 2) {
-                        message = "Destino incorrecto para el número de pedido ingresado, le queda un intento.";
-                    } else if (currentLanguage == 3) {
-                        message = "Destination incorrecte pour le numéro de commande saisi, il vous reste un tentative";
-                    }
-                    HelpDialog dialog = new HelpDialog(message, OrderEntry.this);
+                    DestinationErrorDialog dialog = new DestinationErrorDialog(OrderEntry.this);
+                    // selectDestinationBtn.performClick();
                     dialog.show();
                     dialog.setCancelable(false);
                 }
@@ -606,6 +596,8 @@ public class OrderEntry extends AppCompatActivity {
             submitBtn.setTextSize(60);
         }
         orderNumber.setShowSoftInputOnFocus(false);
+
+        addOrderBtn.setVisibility(View.GONE);
     }
 
     public void rulesRegulationsSetup() {

@@ -7,20 +7,17 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.R;
-/**
- * HelpDialog.java
- *
- * @params String helpText (text to be displayed in dialog), Context context
- */
-public class HelpDialog extends Dialog implements android.view.View.OnClickListener {
+import com.dbc.kiosk.Screens.OrderEntry;
 
-    private String helpText;
+public class DestinationErrorDialog extends Dialog implements android.view.View.OnClickListener {
 
-    public HelpDialog(String helpText, Context context) {
+    public DestinationErrorDialog(@NonNull Context context) {
         super(context);
-        this.helpText = helpText;
     }
 
     @Override
@@ -30,21 +27,23 @@ public class HelpDialog extends Dialog implements android.view.View.OnClickListe
         setContentView(R.layout.custom_dialog_help);
         TextView helpTextView = findViewById(R.id.HelpText);
         Button confirm = findViewById(R.id.btn_confirm);
-        helpTextView.setText(helpText);
         confirm.setOnClickListener(this);
 
         if (Language.getCurrentLanguage() == 1) {
+            helpTextView.setText("Incorrect destination for the entered order number, you have one attempt remaining.");
             confirm.setText("OK");
         } else if (Language.getCurrentLanguage() == 2) {
+            helpTextView.setText("Destino incorrecto para el número de pedido ingresado, le queda un intento.");
             confirm.setText("OK");
         } else if (Language.getCurrentLanguage() == 3) {
+            helpTextView.setText("Destination incorrecte pour le numéro de commande saisi, il vous reste un tentative");
             confirm.setText("OK");
         }
     }
 
     @Override
     public void onClick(View v) {
+        OrderEntry.destinationListener.setValue("show_dialog");
         dismiss();
-        // CustomOrderKeyboard.disableEnterButton();
     }
 }

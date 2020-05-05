@@ -104,6 +104,7 @@ public class GetPossibleShipTos extends AsyncTask<Void, Void, Void> {
                     OrderEntry.possibleCustomerDestinations.add(possibleDestinations.get(i).getDestination());
                 }
                 activity.findViewById(R.id.SelectDestinationBtn).setEnabled(true);
+                activity.findViewById(R.id.SelectDestinationBtn).performClick();
                 activity.findViewById(R.id.progressBar).setVisibility(View.GONE);
             }
         }

@@ -136,11 +136,15 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
             if (propertyCount < 1 && Order.getAssociatedOrdersList().size() < 1) {
                 System.out.println("No associated orders");
                 if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == -1) {
-                    OrderEntry.appointmentTimeListener.setValue(-2);
-                    OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
+                    // OrderEntry.appointmentTimeListener.setValue(-2);
+                    // OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
+                    OrderEntry.validOrderNumber.setValue(7);
+                    OrderEntry.validOrderNumber.setValue(-100);
                 } else if (Order.getCurrentOrder().getAppointment().equals("true") && GetOrderDetails.checkApppointmentTime(Order.getCurrentOrder().getAppointmentTime()) == 1) {
-                    OrderEntry.appointmentTimeListener.setValue(1);
-                    OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
+                    // OrderEntry.appointmentTimeListener.setValue(1);
+                    OrderEntry.validOrderNumber.setValue(6);
+                    // OrderEntry.appointmentTimeListener.setValue(-100); // reset value for next check if there is another
+                    OrderEntry.validOrderNumber.setValue(-100);
                 }
             } else if (Order.getAssociatedOrdersList().size() > 0){
                 System.out.println("There's associated orders!");

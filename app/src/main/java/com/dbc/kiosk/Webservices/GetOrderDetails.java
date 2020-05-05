@@ -167,7 +167,8 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                                 } else if (checkApppointmentTime(appointmentTime) == 1) {
                                     System.out.println("You're late");
                                     isGoodOrder = false;
-                                    OrderEntry.appointmentTimeListener.setValue(1);
+                                    // OrderEntry.appointmentTimeListener.setValue(1);
+                                    OrderEntry.validOrderNumber.setValue(6);
                                 } else if (checkApppointmentTime(appointmentTime) == 0) {
                                     System.out.println("On time");
                                     isGoodOrder = true;
