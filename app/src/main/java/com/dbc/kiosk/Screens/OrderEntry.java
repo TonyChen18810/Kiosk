@@ -199,11 +199,11 @@ public class OrderEntry extends AppCompatActivity {
             } else if (valid == 4) {
                 String helpText = "";
                 if (Language.getCurrentLanguage() == 1) {
-                    helpText = "Order number is for a future date, you can only submit orders for today.";
+                    helpText = "Order number is for a different date, you can only submit orders for today.";
                 } else if (Language.getCurrentLanguage() == 2) {
-                    helpText = "El número de pedido es para una fecha futura, solo puede enviar pedidos para hoy.";
+                    helpText = "El número de pedido es para una fecha diferente, solo puede enviar pedidos para hoy.";
                 } else if (Language.getCurrentLanguage() == 3) {
-                    helpText = "Le numéro de commande est pour une date future, vous ne pouvez soumettre des commandes que pour aujourd'hui.";
+                    helpText = "Le numéro de commande est pour une date différente, vous ne pouvez soumettre des commandes que pour aujourd'hui.";
                 }
                 HelpDialog dialog = new HelpDialog(helpText, OrderEntry.this);
                 dialog.show();

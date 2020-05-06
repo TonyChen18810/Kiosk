@@ -201,8 +201,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="
-        \n                  &#8226; UI updates/fixes. Activity transitions, smooth text changes, CheckBox updates                   \n
-        \n                  &#8226; Can swap between production and testing in the settings menu                    \n"
+        \n                  &#8226; Removed \'Add Order\' button, adds order automatically after correct state is selected                   \n
+        \n                  &#8226; Removed \'Select Destination\' button, triggers the list of 6 random destinations to open automatically                    \n
+        \n                  &#8226; User is redirected to order entry screen after creating an account rather than forcing another login                     \n
+        \n                  &#8226; Hotfix, changed Toronto -> Ontario in the state selection drop downs               \n"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

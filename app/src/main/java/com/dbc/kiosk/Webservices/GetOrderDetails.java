@@ -133,7 +133,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         // if order is good, it can be added - otherwise pop-up message is displayed
         boolean isGoodOrder = false;
 
-        if (propertyCount < 1) {
+        if (propertyCount < 1 && connection) {
             // order doesn't exist
             OrderEntry.validOrderNumber.setValue(0);
         }
@@ -255,7 +255,6 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         System.out.println("Apt. minute: " + aptMinuteInt);
         System.out.println("Logged in hour: " + loggedHourInt);
         System.out.println("Logged in minute: " + loggedMinuteInt);
-
 
         // aptCode -1 = early
         // aptCode 1 = late

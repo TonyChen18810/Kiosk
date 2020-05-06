@@ -8,10 +8,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.R;
-import com.dbc.kiosk.Screens.CreateAccount;
 import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Settings;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
