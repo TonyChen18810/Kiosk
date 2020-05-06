@@ -29,9 +29,7 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
     private String inMasterNumber;
     private String inEmail;
     private String inComment = "";
-    private String inUserID = "Kiosk";
     private String inSOPnumber;
-    private String inLocation = "01";
     private String isCheckedIn;
     private boolean lastCall;
 

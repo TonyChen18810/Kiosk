@@ -3,6 +3,7 @@ package com.dbc.kiosk.Webservices;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -10,6 +11,8 @@ import com.dbc.kiosk.Account;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Settings;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -122,6 +125,10 @@ public class UpdateShippingTruckDriver extends AsyncTask<Void, Void, Void> {
                 logoutBtn.setEnabled(true);
                 progressBar.setVisibility(View.INVISIBLE);
                 // CreateAccount.accountCreatedListener.setValue(true);
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.METHOD, "User created an account");
+                FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
                 Intent intent = new Intent(activity, OrderEntry.class);
                 activity.startActivity(intent);
 
