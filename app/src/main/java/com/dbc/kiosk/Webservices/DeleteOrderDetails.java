@@ -1,7 +1,10 @@
 package com.dbc.kiosk.Webservices;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 
+import com.dbc.kiosk.Account;
+import com.dbc.kiosk.Screens.OrderSummary;
 import com.dbc.kiosk.Settings;
 
 import org.ksoap2.SoapEnvelope;
@@ -9,6 +12,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import java.lang.ref.WeakReference;
 
 /**
  * DeleteOrderDetails.java
@@ -27,9 +32,16 @@ import org.ksoap2.transport.HttpTransportSE;
 public class DeleteOrderDetails extends AsyncTask<Void, Void, Void> {
 
     private String SOPnumber;
+    private String isCheckedIn;
+    private boolean lastCall;
+    private WeakReference<Activity> mWeakActivity;
+    private boolean connection;
 
-    public DeleteOrderDetails(String SOPnumber) {
+    public DeleteOrderDetails(String SOPnumber, Activity activity, String isCheckedIn, boolean lastCall) {
         this.SOPnumber = SOPnumber;
+        mWeakActivity = new WeakReference<>(activity);
+        this.isCheckedIn = isCheckedIn;
+        this.lastCall = lastCall;
     }
 
     @Override
@@ -53,15 +65,19 @@ public class DeleteOrderDetails extends AsyncTask<Void, Void, Void> {
         try {
             transportSE.call(soapAction, envelope);
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+            if (response != null) {
+                connection = true;
+            }
             if (response.toString().equals("0")) {
                 System.out.println("Success, order info deleted");
             } else if (response.toString().equals("1000")) {
                 System.out.println("Failure, order info NOT deleted");
             }
         } catch (Exception e) {
+            connection = false;
             e.printStackTrace();
             // Settings.setError(e.toString(), getClass().toString(), new Date().toString(), null);
-            Thread thread = new Thread(() -> new DeleteOrderDetails(SOPnumber).execute());
+            Thread thread = new Thread(() -> new DeleteOrderDetails(SOPnumber, mWeakActivity.get(), isCheckedIn, lastCall).execute());
             thread.start();
             try {
                 Thread.sleep(3000);
@@ -71,5 +87,13 @@ public class DeleteOrderDetails extends AsyncTask<Void, Void, Void> {
             }
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        if (connection) {
+            new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), SOPnumber, mWeakActivity.get(), isCheckedIn, lastCall).execute();
+        }
     }
 }

@@ -62,7 +62,6 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
         request.addProperty("inEmail", inEmail);
         request.addProperty("inComment", inComment);
         request.addProperty("inUserID", Settings.getKioskNumber());
-        System.out.println("Settings.getKioskNumber: " + Settings.getKioskNumber());
         request.addProperty("inSopNumber", inSOPnumber);
         request.addProperty("inLocation", Settings.getCoolerLocation());
         request.addProperty("inCheckedIn", isCheckedIn);

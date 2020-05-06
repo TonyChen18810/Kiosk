@@ -110,37 +110,21 @@ public class OrderSummary extends AppCompatActivity {
                 }
             }
 
-            System.out.println("Here are the outlier orders, they will now be updated:");
+            System.out.println("Here are the outlier orders, they will now be deleted and updated:");
             for (String SOP : outlierSet) {
-                new DeleteOrderDetails(SOP).execute();
+                new DeleteOrderDetails(SOP, OrderSummary.this, "false", false).execute(); // delete and update each outlier order
                 System.out.println(SOP);
             }
-
-            for (String SOP : outlierSet) {
-                new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), SOP, OrderSummary.this,"false",false).execute();
-            }
-/*
-            System.out.println("Here are the outlier orders, they will now be updated:");
-            for (int i = 0; i < outlierList.size(); i++) {
-                new DeleteOrderDetails(outlierList.get(i).getSOPNumber()).execute();
-                System.out.println(outlierList.get(i).getSOPNumber());
-            }
-            for (int i = 0; i < outlierList.size(); i++) {
-                new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), outlierList.get(i).getSOPNumber(), "false",false).execute();
-            }
-*/
-            System.out.println("Here are the orders to be checked in, they will now be updated:");
-            for (int i = 0; i < orderList.size(); i++) {
-                new DeleteOrderDetails(orderList.get(i).getSOPNumber()).execute();
-                System.out.println(orderList.get(i).getSOPNumber());
-            }
+            System.out.println("Here are the orders to be checked in, they will now be deleted and updated");
             for (int i = 0; i < orderList.size(); i++) {
                 if (i == orderList.size()-1) {
-                    new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), OrderSummary.this, "true",true).execute();
+                    new DeleteOrderDetails(orderList.get(i).getSOPNumber(), OrderSummary.this, "true",true).execute(); // last call, delete -> update -> send notification
                 } else {
-                    new UpdateMasterOrder(GetOrderDetails.getMasterNumber(), Account.getCurrentAccount().getEmail(), orderList.get(i).getSOPNumber(), OrderSummary.this, "true", false).execute();
+                    new DeleteOrderDetails(orderList.get(i).getSOPNumber(), OrderSummary.this, "true", false).execute(); // delete and update each added order
                 }
+                System.out.println(orderList.get(i).getSOPNumber());
             }
+
             setContentView(R.layout.final_screen);
             String message = "";
             if (Language.getCurrentLanguage() == 1) {
@@ -158,7 +142,7 @@ public class OrderSummary extends AppCompatActivity {
             logoutBtn.setEnabled(false);
             textView.setVisibility(View.INVISIBLE);
 
-            timer = new CountDownTimer(60000, 1000) {
+            timer = new CountDownTimer(5000, 1000) {
                 public void onTick(long millisUntilFinished) {
                     counter++;
                     textView.setText(String.valueOf(counter));

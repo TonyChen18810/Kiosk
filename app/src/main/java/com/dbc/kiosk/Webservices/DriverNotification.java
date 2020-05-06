@@ -2,10 +2,16 @@ package com.dbc.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.widget.Button;
+
+import com.dbc.kiosk.Account;
+import com.dbc.kiosk.Helpers.Time;
+import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderSummary;
 import com.dbc.kiosk.Settings;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -13,6 +19,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
+import java.net.CacheRequest;
 
 /**
  * DriverNotification.java
@@ -26,6 +33,8 @@ import java.lang.ref.WeakReference;
  * finished submitting the orders)
  */
 public class DriverNotification extends AsyncTask<Void, Void, Void> {
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private String inMasterNumber;
     private String inCoolerLocation = "01";
@@ -85,9 +94,25 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
         Activity activity = mWeakReference.get();
         if (activity != null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);
+            mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
+            mFirebaseAnalytics.setMinimumSessionDuration(500);
+            mFirebaseAnalytics.setSessionTimeoutDuration(300);
+            Bundle bundle = new Bundle();
+            bundle.putString("MASTER_NUMBER", GetOrderDetails.getMasterNumber());
+            bundle.putString("EMAIL", Account.getCurrentAccount().getEmail());
+            bundle.putString("PHONE", Account.getCurrentAccount().getPhoneNumber());
+            bundle.putString("TRUCK", Account.getCurrentAccount().getTruckName() + " " + Account.getCurrentAccount().getTruckNumber());
+            bundle.putString("TIME", Time.getCurrentTime());
+            for (int i = 0; i < Order.getOrdersList().size(); i++) {
+                String paramName = "ORDER" + i;
+                bundle.putString(paramName, Order.getOrdersList().get(i).getSOPNumber());
+            }
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, bundle);
+
             Button logoutBtn = activity.findViewById(R.id.LogoutBtn);
             logoutBtn.setEnabled(true);
-            OrderSummary.dialog.dismiss();;
+            OrderSummary.dialog.dismiss();
             OrderSummary.timer.start();
         }
     }
