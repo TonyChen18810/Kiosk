@@ -31,4 +31,9 @@ public class Time {
     public static String getCurrentDate() {
         return currentDate;
     }
+
+    public static void resetTimeAndDate() {
+        currentTime = null;
+        currentDate = null;
+    }
 }

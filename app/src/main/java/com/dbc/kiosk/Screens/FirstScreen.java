@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Helpers.Language;
+import com.dbc.kiosk.Helpers.Time;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Report;
@@ -219,6 +220,7 @@ public class FirstScreen extends AppCompatActivity {
         Account.setCurrentAccount(null);
         Order.reset();
         GetOrderDetails.setNewMasterNumber(null);
+        Time.resetTimeAndDate();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);

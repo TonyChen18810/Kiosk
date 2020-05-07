@@ -29,6 +29,7 @@ import com.dbc.kiosk.Helpers.KeyboardListener;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Webservices.GetServerTime;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
@@ -74,7 +75,6 @@ public class CreateAccount extends AppCompatActivity {
     private boolean clicked1 = false, clicked2 = false;
 
     public static MutableLiveData<Boolean> checkboxListener;
-    public static MutableLiveData<Boolean> accountCreatedListener;
 
     private int PREFERRED_COMMUNICATION = -1;
 
@@ -84,6 +84,8 @@ public class CreateAccount extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
+
+        new GetServerTime().execute();
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -289,7 +291,7 @@ public class CreateAccount extends AppCompatActivity {
             fields.add(driverName);
             fields.add(dispatcherPhoneNumber);
             List<EditText> errorFields = new ArrayList<>();
-            if (truckName.length() == 0 || truckNumber.length() == 0 || trailerLicense.length() == 0 || driverLicense.length() == 0 || driverName.length() == 0 || dispatcherPhoneNumber.length() == 0 || !clicked1 || !clicked2) {
+            if (truckName.length() == 0 || truckNumber.length() == 0 || trailerLicense.length() == 0 || driverLicense.length() == 0 || driverName.length() == 0 || dispatcherPhoneNumber.length() == 0 || !clicked1 || !clicked2 || PREFERRED_COMMUNICATION == -1) {
                 for (int i = 0; i < fields.size(); i++) {
                     if (fields.get(i).length() == 0) {
                         errorFields.add(fields.get(i));
@@ -312,6 +314,7 @@ public class CreateAccount extends AppCompatActivity {
                 textCheckbox.setEnabled(false);
                 emailCheckbox.setEnabled(false);
                 bothCheckbox.setEnabled(false);
+                selectText.setVisibility(View.INVISIBLE);
                 fields.clear();
                 errorFields.clear();
                 setStatus(1, errorFields);
