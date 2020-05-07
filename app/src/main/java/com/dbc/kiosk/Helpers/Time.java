@@ -16,11 +16,22 @@ public class Time {
     private static String currentTime;
     private static String currentDate;
 
-    public static void setTime(String time) {
+    public static void setTime(String time, String date) {
         currentTime = time;
+        StringBuilder dateBuilder = new StringBuilder();
+        String[] dateArray = date.split("-");
+        dateBuilder.append(dateArray[1]);
+        dateBuilder.append("/");
+        dateBuilder.append(dateArray[2]);
+        dateBuilder.append("/");
+        dateBuilder.append(dateArray[0]);
+        // System.out.println("Web service date: " + dateBuilder.toString());
+        currentDate = dateBuilder.toString();
+        /*
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
         currentDate = sdf.format(c.getTime());
+         */
         System.out.println("today's date: " + currentDate);
     }
 

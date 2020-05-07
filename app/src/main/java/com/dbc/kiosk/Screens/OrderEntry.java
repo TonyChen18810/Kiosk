@@ -431,6 +431,7 @@ public class OrderEntry extends AppCompatActivity {
         });
 
         checkOrderBtn.setOnClickListener(v -> {
+            System.out.println("Order Number entered: " + orderNumber.getText().toString());
             checkOrderBtn.setEnabled(false);
             checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
             CustomOrderKeyboard.disableEnterButton();

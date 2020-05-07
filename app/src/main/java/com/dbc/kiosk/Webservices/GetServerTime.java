@@ -40,9 +40,10 @@ public class GetServerTime extends AsyncTask<Void, Void, Void> {
         try {
             transportSE.call(soapAction, envelope);
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+            String date = response.toString().split(" ")[0];
             String time = response.toString().split(" ")[1];
             System.out.println("Server time without date: " + time);
-            Time.setTime(time);
+            Time.setTime(time, date);
         } catch (Exception e) {
             e.printStackTrace();
             // Settings.setError(e.toString(), getClass().toString(), new Date().toString(),null);
