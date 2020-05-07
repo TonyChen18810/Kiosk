@@ -12,7 +12,6 @@ import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Settings;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;

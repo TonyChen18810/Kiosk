@@ -3,7 +3,6 @@ package com.dbc.kiosk.Screens;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
@@ -31,7 +30,6 @@ import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Webservices.GetServerTime;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
@@ -78,16 +76,12 @@ public class CreateAccount extends AppCompatActivity {
 
     private int PREFERRED_COMMUNICATION = -1;
 
-    private FirebaseAnalytics mFirebaseAnalytics;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
         new GetServerTime().execute();
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();

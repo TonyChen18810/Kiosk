@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
         emailAddressBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -158,7 +157,9 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (s != null && s.length() > 0 && s.charAt(s.length() - 1) == ' '){
+                    s.replace(s.length() - 1, s.length(), "");
+                }
             }
         });
 
@@ -247,7 +248,9 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (s != null && s.length() > 0 && s.charAt(s.length() - 1) == ' '){
+                    s.replace(s.length() - 1, s.length(), "");
+                }
             }
         });
 
