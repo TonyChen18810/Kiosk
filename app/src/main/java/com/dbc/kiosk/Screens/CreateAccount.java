@@ -576,6 +576,12 @@ public class CreateAccount extends AppCompatActivity {
         driverLicenseHelp = findViewById(R.id.DriverLicenseHelp);
         driverNameHelp = findViewById(R.id.DriverNameHelp);
         dispatcherPhoneNumberHelp = findViewById(R.id.DispatcherPhoneNumberHelp);
+        truckNameHelp.setVisibility(View.INVISIBLE);
+        truckNumberHelp.setVisibility(View.INVISIBLE);
+        trailerLicenseHelp.setVisibility(View.INVISIBLE);
+        driverLicenseHelp.setVisibility(View.INVISIBLE);
+        driverNameHelp.setVisibility(View.INVISIBLE);
+        dispatcherPhoneNumberHelp.setVisibility(View.INVISIBLE);
         trailerStateSpinner = findViewById(R.id.StateSpinner);
         driverStateSpinner = findViewById(R.id.StateSpinner2);
         helpText = findViewById(R.id.HelpText);

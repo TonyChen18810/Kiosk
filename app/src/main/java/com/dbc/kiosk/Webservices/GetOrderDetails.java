@@ -151,7 +151,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                 System.out.println("Order date: " + orderDate);
                 System.out.println("Today's date: " + Time.getCurrentDate());
                 if (truckStatus.equals("Outstanding") && orderDate.equals(Time.getCurrentDate())) {
-                    System.out.println("The dates are equal!");
+                    System.out.println("The dates are equal");
                     System.out.println("propertyCount: " + propertyCount);
                     if (propertyCount > 0) {
                         System.out.println("THIS IS FOR ORDER NUMBER: " + SOPNumber);
@@ -202,7 +202,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                     System.out.println("Order already checked in / not Outstanding");
                     OrderEntry.validOrderNumber.setValue(3);
                 } else if (!orderDate.equals(Time.getCurrentDate())) {
-                    System.out.println("Dates do not match!");
+                    System.out.println("Dates do not match");
                     OrderEntry.validOrderNumber.setValue(4);
                 }
             }

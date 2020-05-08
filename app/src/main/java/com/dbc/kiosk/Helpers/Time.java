@@ -1,9 +1,4 @@
 package com.dbc.kiosk.Helpers;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * Time.java
  *

@@ -23,6 +23,7 @@ import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Report;
 import com.dbc.kiosk.Settings;
+import com.dbc.kiosk.Webservices.GetAllEmails;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -62,6 +63,10 @@ public class FirstScreen extends AppCompatActivity {
         // Initialize Firebase Crashlytics, set tags
         Report report = new Report(FirstScreen.this);
         System.out.println(FirebaseInstanceId.getInstance().getInstanceId());
+
+
+        Account.setEMAIL_LIST();
+        new GetAllEmails().execute();
 
         setup();
 
@@ -112,6 +117,8 @@ public class FirstScreen extends AppCompatActivity {
                     Toast.makeText(FirstScreen.this, "App environment set to: TEST", Toast.LENGTH_SHORT).show();
                     System.out.println("test");
                 }
+                Account.setEMAIL_LIST();
+                new GetAllEmails().execute();
             }
         });
 

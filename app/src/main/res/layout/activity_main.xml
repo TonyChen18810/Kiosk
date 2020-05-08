@@ -158,6 +158,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.371" />
 
+    <AutoCompleteTextView
+        android:id="@+id/AutoCompleteEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text"
+        android:ems="12"
+        android:fontFamily="@font/assistant"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:textColor="#000000"
+        android:textSize="60sp"
+        android:completionThreshold="3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.372">
+
+    </AutoCompleteTextView>
+
     <EditText
         android:id="@+id/ConfirmPhoneNumber"
         android:layout_width="wrap_content"

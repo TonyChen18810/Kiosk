@@ -1,5 +1,7 @@
 package com.dbc.kiosk;
 
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Account.java
  *
@@ -9,6 +11,24 @@ package com.dbc.kiosk;
  * populated using GetShippingTruckDriver.java web service
  */
 public class Account {
+
+    private static List<String> EMAIL_LIST;
+
+    public static void setEMAIL_LIST() {
+        if (EMAIL_LIST != null) {
+            EMAIL_LIST.clear();
+        }
+        EMAIL_LIST = new ArrayList<>();
+    }
+
+    public static void addToEMAIL_LIST(String email) {
+        EMAIL_LIST.add(email);
+        System.out.println(email);
+    }
+
+    public static List<String> getEMAIL_LIST() {
+        return EMAIL_LIST;
+    }
 
     private String email;
     private String phoneNumber;

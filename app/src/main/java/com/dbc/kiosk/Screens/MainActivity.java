@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -34,7 +36,6 @@ import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 import static java.util.Arrays.asList;
 /**
- *
  * MainActivity.java
  *
  * This activity is used for logging in or creating account
@@ -48,7 +49,9 @@ import static java.util.Arrays.asList;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private EditText emailAddressBox, phoneNumberBox, confirmEmailAddress, confirmPhoneNumber;
+    private AutoCompleteTextView emailAddressBox;
+
+    private EditText emailAddressBox_OLD, phoneNumberBox, confirmEmailAddress, confirmPhoneNumber;
     private TextView appointmentText, noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone, accountAlreadyExists, phoneAlreadyExists;
     private Button nextBtn, backBtn;
     public ProgressBar progressBar;
@@ -67,17 +70,24 @@ public class MainActivity extends AppCompatActivity {
         // Property added to new Intent() in FirstScreen.java
         // aka did the user click yes or no
         String accountStatus = getIntent().getExtras().getString("accountStatus");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.autofill_layout, Account.getEMAIL_LIST());
+        emailAddressBox = findViewById(R.id.AutoCompleteEmail);
+        emailAddressBox.setAdapter(adapter);
+
         setup();
 
         System.out.println("Mode: " + Settings.getDbcUrl());
 
         // user clicked no
         if (accountStatus.equals("new")) {
+            emailAddressBox.setThreshold(50);
             newAccount = true;
             newAccountExpand();
             // user clicked yes
         } else if (accountStatus.equals("exists")) {
             newAccount = false;
+            emailAddressBox.setThreshold(3);
         }
 
         // Listens for response from GetShippingTruckDriver.java web service
@@ -629,7 +639,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-        emailAddressBox = findViewById(R.id.EmailAddressBox);
+        emailAddressBox_OLD = findViewById(R.id.EmailAddressBox);
         phoneNumberBox = findViewById(R.id.PhoneNumberBox);
         confirmEmailAddress = findViewById(R.id.ConfirmEmailAddress);
         confirmPhoneNumber = findViewById(R.id.ConfirmPhoneNumber);
@@ -675,6 +685,8 @@ public class MainActivity extends AppCompatActivity {
 
         showSoftKeyboard(emailAddressBox);
         changeLanguage(Language.getCurrentLanguage());
+        // emailAddressBox.setVisibility(View.GONE);
+        emailAddressBox_OLD.setVisibility(View.GONE);
     }
     /**
      * @param val
@@ -686,6 +698,7 @@ public class MainActivity extends AppCompatActivity {
         Language.setCurrentLanguage(val);
         emailAddressBox.setHintTextColor(getResources().getColor(R.color.dark_gray));
         phoneNumberBox.setHintTextColor(getResources().getColor(R.color.dark_gray));
+        // emailAutoComplete.setHintTextColor(getResources().getColor(R.color.dark_gray));
         switch(val) {
             case 1:
                 // English
