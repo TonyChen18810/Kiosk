@@ -2,6 +2,7 @@ package com.dbc.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import com.dbc.kiosk.Account;
@@ -10,6 +11,8 @@ import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Settings;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -25,6 +28,8 @@ import java.lang.ref.WeakReference;
  * Called when the checkOrderBtn is pressed in OrderEntry.java (green arrow next to order number field)
  */
 public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private WeakReference<Activity> mWeakActivity;
     private String enteredSOPNumber;
@@ -197,6 +202,23 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                         System.out.println("truckStatus: " + truckStatus);
                         System.out.println("SOPnumber: " + SOPNumber);
                         OrderEntry.validOrderNumber.setValue(0);
+                        /*
+                        mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);
+                        mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
+                        mFirebaseAnalytics.setMinimumSessionDuration(500);
+                        mFirebaseAnalytics.setSessionTimeoutDuration(300);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("MASTER_NUMBER", GetOrderDetails.getMasterNumber());
+                        bundle.putString("EMAIL", Account.getCurrentAccount().getEmail());
+                        bundle.putString("PHONE", Account.getCurrentAccount().getPhoneNumber());
+                        bundle.putString("TRUCK", Account.getCurrentAccount().getTruckName() + " " + Account.getCurrentAccount().getTruckNumber());
+                        bundle.putString("TIME", Time.getCurrentTime());
+                        for (int i = 0; i < Order.getOrdersList().size(); i++) {
+                            String paramName = "ORDER" + i;
+                            bundle.putString(paramName, Order.getOrdersList().get(i).getSOPNumber());
+                        }
+                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, bundle);
+                         */
                     }
                 } else if (!truckStatus.equals("Outstanding")) {
                     System.out.println("Order already checked in / not Outstanding");

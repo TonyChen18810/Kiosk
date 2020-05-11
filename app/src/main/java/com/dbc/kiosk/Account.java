@@ -45,6 +45,8 @@ public class Account {
 
     private static Account CURRENT_ACCOUNT;
 
+    private static String LOADING_PREFERENCE;
+
     public Account(String email, String driverName, String phoneNumber, String truckName, String truckNumber, String driverLicense, String driverState,
                    String trailerLicense, String trailerState, String dispatcherPhoneNumber, String languagePreference, String communicationPreference) {
         if (email != null) {
@@ -117,6 +119,14 @@ public class Account {
 
     public static void setCurrentAccount(Account account) {
         CURRENT_ACCOUNT = account;
+    }
+
+    public static void setLoadingPreference(String loadingPreference) {
+        LOADING_PREFERENCE = loadingPreference;
+    }
+
+    public static String getLoadingPreference() {
+        return LOADING_PREFERENCE;
     }
 
     public void updateCurrentInfo(String email, String driverName, String phoneNumber, String truckName, String truckNumber, String driverLicense, String driverState,

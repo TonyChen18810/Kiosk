@@ -178,7 +178,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/OrdersView"
         android:layout_width="wrap_content"
-        android:layout_height="1100dp"
+        android:layout_height="600dp"
         android:clipToPadding="false"
         android:fadeScrollbars="false"
         android:orientation="vertical"
@@ -194,6 +194,189 @@
         app:layout_constraintVertical_bias="0.011" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/LoadingCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="7.5dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OrdersView"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/PreferLoadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="What loading method would you prefer?"
+                android:textColor="@color/andy_accent"
+                android:textSize="36sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/StraightCheckbox"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
+
+                <TextView
+                    android:id="@+id/Straight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Straight"
+                    android:textColor="#C9000000"
+                    android:textSize="36sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/SidewaysCheckbox"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
+
+                <TextView
+                    android:id="@+id/Sideways"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Sideways"
+                    android:textColor="#C9000000"
+                    android:textSize="36sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/BlockedCheckbox"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
+
+                <TextView
+                    android:id="@+id/Blocked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Blocked"
+                    android:textColor="#C9000000"
+                    android:textSize="36sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/NoPreferenceCheckbox"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
+
+                <TextView
+                    android:id="@+id/NoPreference"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="No preference"
+                    android:textColor="#C9000000"
+                    android:textSize="36sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/OtherCheckbox"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:button="@null"
+                    app:buttonTint="@color/andy_accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.326" />
+
+                <EditText
+                    android:id="@+id/Other"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter other here"
+                    android:textColor="#C9000000"
+                    android:textSize="36sp"
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -204,8 +387,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/OrdersView"
-        app:layout_constraintVertical_bias="0.048">
+        app:layout_constraintTop_toBottomOf="@+id/LoadingCard"
+        app:layout_constraintVertical_bias="0.131">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -310,7 +493,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView7"
-        app:layout_constraintVertical_bias="0.271" />
+        app:layout_constraintVertical_bias="0.267" />
 
     <Button
         android:id="@+id/LogoutBtn"

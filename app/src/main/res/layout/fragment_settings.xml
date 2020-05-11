@@ -201,9 +201,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="
-        \n                  &#8226; Fixes issue with submitting orders when there is a bad internet connection                   \n
-        \n                  &#8226; Fixes being able to create an account without a communication preference checked                    \n
-        \n                  &#8226; Fixes issue with the date/time not being set correctly upon account creation                     \n"
+        \n                  &#8226; Adds an email auto-fill/suggestion list - won't show until enough characters are typed in to bring up only 1 suggestion                   \n
+        \n                  &#8226; User can't enter a space character in the email fields                    \n
+        \n                  &#8226; Now using server date instead of the date on kiosk                     \n
+        \n                  &#8226; Adds loading options on order summary screen (straight, sideways, blocked, no preference, other)                     \n"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

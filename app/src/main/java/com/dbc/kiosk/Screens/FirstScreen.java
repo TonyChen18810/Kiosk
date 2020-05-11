@@ -226,6 +226,7 @@ public class FirstScreen extends AppCompatActivity {
     public void setup() {
         System.out.println("Reset values...");
         Account.setCurrentAccount(null);
+        Account.setLoadingPreference("");
         Order.reset();
         GetOrderDetails.setNewMasterNumber(null);
         Time.resetTimeAndDate();

@@ -351,6 +351,7 @@ public class OrderEntry extends AppCompatActivity {
             addOrderBtn.setEnabled(false);
             progressBar.setVisibility(View.VISIBLE);
             addOrderBtn.clearAnimation();
+            submitBtn.setEnabled(false);
             if (!recyclerView.isShown()) {
                 Order.getOrdersList().remove(0);
                 Order.addOrderToList(Order.getCurrentOrder());

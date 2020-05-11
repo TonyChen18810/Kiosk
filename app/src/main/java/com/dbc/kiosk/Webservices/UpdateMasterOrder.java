@@ -3,6 +3,7 @@ package com.dbc.kiosk.Webservices;
 import android.app.Activity;
 import android.os.AsyncTask;
 
+import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Settings;
 
 import org.ksoap2.SoapEnvelope;
@@ -28,7 +29,6 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
 
     private String inMasterNumber;
     private String inEmail;
-    private String inComment = "";
     private String inSOPnumber;
     private String isCheckedIn;
     private boolean lastCall;
@@ -58,7 +58,7 @@ public class UpdateMasterOrder extends AsyncTask<Void, Void, Void> {
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("inMasterNumber", inMasterNumber);
         request.addProperty("inEmail", inEmail);
-        request.addProperty("inComment", inComment);
+        request.addProperty("inComment", Account.getLoadingPreference());
         request.addProperty("inUserID", Settings.getKioskNumber());
         request.addProperty("inSopNumber", inSOPnumber);
         request.addProperty("inLocation", Settings.getCoolerLocation());

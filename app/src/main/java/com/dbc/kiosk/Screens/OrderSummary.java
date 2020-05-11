@@ -4,16 +4,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Dialogs.LogoutDialog;
 import com.dbc.kiosk.Dialogs.ProgressDialog;
+import com.dbc.kiosk.Helpers.KeyboardListener;
 import com.dbc.kiosk.Helpers.Language;
+import com.dbc.kiosk.Helpers.LoadingKeyboardListener;
 import com.dbc.kiosk.Helpers.RecyclerViewSummaryAdapter;
 import com.dbc.kiosk.Helpers.Rounder;
 import com.dbc.kiosk.Order;
@@ -26,6 +40,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
+
 /**
  *
  * OrderSummary.java
@@ -47,6 +64,11 @@ public class OrderSummary extends AppCompatActivity {
     TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight,
             totalOrders, totalPallets, totalWeight, ordersCount, totalPalletsCount, totalWeightCount;
     Button confirmBtn, backBtn;
+
+    private CheckBox straightCheckbox, sidewaysCheckbox, blockedCheckbox, noPreferenceCheckbox, otherCheckbox;
+    private EditText otherEntry;
+
+    private String loadingPreference = "";
 
     private Button logoutBtn;
 
@@ -87,7 +109,43 @@ public class OrderSummary extends AppCompatActivity {
             overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
         });
 
+        straightCheckbox.setOnClickListener(v -> handleChecks(straightCheckbox));
+        sidewaysCheckbox.setOnClickListener(v -> handleChecks(sidewaysCheckbox));
+        blockedCheckbox.setOnClickListener(v -> handleChecks(blockedCheckbox));
+        noPreferenceCheckbox.setOnClickListener(v -> handleChecks(noPreferenceCheckbox));
+        otherCheckbox.setOnClickListener(v -> handleChecks(otherCheckbox));
+
+        otherEntry.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println("HEy it changed, button enabled or disabled");
+                if (otherEntry.length() != 0 && otherEntry.isEnabled()) {
+                    confirmBtn.setEnabled(true);
+                }
+                if (otherEntry.length() == 0 && otherEntry.isEnabled()) {
+                    confirmBtn.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        // otherEntry.setOnEditorActionListener(new LoadingKeyboardListener());
+
         findViewById(R.id.ConfirmBtn).setOnClickListener(v -> {
+            if (loadingPreference.equals("Other")) {
+                loadingPreference += "-" + otherEntry.getText().toString();
+            }
+            Account.setLoadingPreference(loadingPreference);
+            System.out.println(Account.getLoadingPreference());
             List<Order> orderList = Order.getOrdersList();
             List<Order> outlierList = new ArrayList<>(Order.getOutlierOrders());
 
@@ -187,6 +245,156 @@ public class OrderSummary extends AppCompatActivity {
         });
     }
 
+    int b = 0;
+    public void handleChecks(CheckBox cb) {
+        if ((loadingPreference.equals("Straight")) && (cb.getId() == R.id.StraightCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        } else if ((loadingPreference.equals("Sideways")) && (cb.getId() == R.id.SidewaysCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        } else if ((loadingPreference.equals("Blocked")) && (cb.getId() == R.id.BlockedCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        } else if ((loadingPreference.equals("No Preference")) && (cb.getId() == R.id.NoPreferenceCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        } else if ((loadingPreference.equals("Other")) && (cb.getId() == R.id.OtherCheckbox)) {
+            if (++b == 1) {
+                cb.performClick();
+            }
+        }
+        if (cb.getId() == R.id.StraightCheckbox) {
+            straightCheckbox.setClickable(false);
+            loadingPreference = "Straight";
+            confirmBtn.setEnabled(true);
+            if (sidewaysCheckbox.isChecked()) {
+                sidewaysCheckbox.toggle();
+                sidewaysCheckbox.setClickable(true);
+            }
+            if (blockedCheckbox.isChecked()) {
+                blockedCheckbox.toggle();
+                blockedCheckbox.setClickable(true);
+            }
+            if (noPreferenceCheckbox.isChecked()) {
+                noPreferenceCheckbox.toggle();
+                noPreferenceCheckbox.setClickable(true);
+            }
+            if (otherCheckbox.isChecked()) {
+                otherCheckbox.toggle();
+                otherCheckbox.setClickable(true);
+                otherEntry.setEnabled(false);
+                otherEntry.setText("");
+            }
+        }
+        if (cb.getId() == R.id.SidewaysCheckbox) {
+            sidewaysCheckbox.setClickable(false);
+            loadingPreference = "Sideways";
+            confirmBtn.setEnabled(true);
+            if (straightCheckbox.isChecked()) {
+                straightCheckbox.toggle();
+                straightCheckbox.setClickable(true);
+            }
+            if (blockedCheckbox.isChecked()) {
+                blockedCheckbox.toggle();
+                blockedCheckbox.setClickable(true);
+            }
+            if (noPreferenceCheckbox.isChecked()) {
+                noPreferenceCheckbox.toggle();
+                noPreferenceCheckbox.setClickable(true);
+            }
+            if (otherCheckbox.isChecked()) {
+                otherCheckbox.toggle();
+                otherCheckbox.setClickable(true);
+                otherEntry.setEnabled(false);
+                otherEntry.setText("");
+            }
+        }
+        if (cb.getId() == R.id.BlockedCheckbox) {
+            blockedCheckbox.setClickable(false);
+            loadingPreference = "Blocked";
+            confirmBtn.setEnabled(true);
+            if (straightCheckbox.isChecked()) {
+                straightCheckbox.toggle();
+                straightCheckbox.setClickable(true);
+            }
+            if (sidewaysCheckbox.isChecked()) {
+                sidewaysCheckbox.toggle();
+                sidewaysCheckbox.setClickable(true);
+            }
+            if (noPreferenceCheckbox.isChecked()) {
+                noPreferenceCheckbox.toggle();
+                noPreferenceCheckbox.setClickable(true);
+            }
+            if (otherCheckbox.isChecked()) {
+                otherCheckbox.toggle();
+                otherCheckbox.setClickable(true);
+                otherEntry.setEnabled(false);
+                otherEntry.setText("");
+            }
+        }
+        if (cb.getId() == R.id.NoPreferenceCheckbox) {
+            noPreferenceCheckbox.setClickable(false);
+            loadingPreference = "No Preference";
+            confirmBtn.setEnabled(true);
+            if (straightCheckbox.isChecked()) {
+                straightCheckbox.toggle();
+                straightCheckbox.setClickable(true);
+            }
+            if (sidewaysCheckbox.isChecked()) {
+                sidewaysCheckbox.toggle();
+                sidewaysCheckbox.setClickable(true);
+            }
+            if (blockedCheckbox.isChecked()) {
+                blockedCheckbox.toggle();
+                blockedCheckbox.setClickable(true);
+            }
+            if (otherCheckbox.isChecked()) {
+                otherCheckbox.toggle();
+                otherCheckbox.setClickable(true);
+                otherEntry.setEnabled(false);
+                otherEntry.setText("");
+            }
+        }
+        if (cb.getId() == R.id.OtherCheckbox) {
+            otherCheckbox.setClickable(false);
+            loadingPreference = "Other";
+            otherEntry.setEnabled(true);
+            confirmBtn.setEnabled(false);
+            showSoftKeyboard(otherEntry);
+            if (straightCheckbox.isChecked()) {
+                straightCheckbox.toggle();
+                straightCheckbox.setClickable(true);
+            }
+            if (sidewaysCheckbox.isChecked()) {
+                sidewaysCheckbox.toggle();
+                sidewaysCheckbox.setClickable(true);
+            }
+            if (blockedCheckbox.isChecked()) {
+                blockedCheckbox.toggle();
+                blockedCheckbox.setClickable(true);
+            }
+            if (noPreferenceCheckbox.isChecked()) {
+                noPreferenceCheckbox.toggle();
+                noPreferenceCheckbox.setClickable(true);
+            }
+        }
+    }
+
+    private void showSoftKeyboard(View view) {
+        if (view.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(view, SHOW_IMPLICIT);
+            }
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     public void setup() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -206,9 +414,17 @@ public class OrderSummary extends AppCompatActivity {
         confirmBtn = findViewById(R.id.ConfirmBtn);
         logoutBtn = findViewById(R.id.LogoutBtn);
         backBtn = findViewById(R.id.BackBtn);
+        straightCheckbox = findViewById(R.id.StraightCheckbox);
+        sidewaysCheckbox = findViewById(R.id.SidewaysCheckbox);
+        blockedCheckbox = findViewById(R.id.BlockedCheckbox);
+        noPreferenceCheckbox = findViewById(R.id.NoPreferenceCheckbox);
+        otherCheckbox = findViewById(R.id.OtherCheckbox);
+        otherEntry = findViewById(R.id.Other);
+        otherEntry.setEnabled(false);
         ordersCount = findViewById(R.id.OrdersCount);
         totalPalletsCount = findViewById(R.id.PalletCount);
         totalWeightCount = findViewById(R.id.TotalWeight);
+        confirmBtn.setEnabled(false);
 
         ordersCount.setText(Integer.toString(Order.getOrdersList().size()));
         DecimalFormat formatter = new DecimalFormat("#,###");

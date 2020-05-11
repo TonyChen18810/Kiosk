@@ -3,6 +3,7 @@ package com.dbc.kiosk.Webservices;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dbc.kiosk.Dialogs.ConnectedOrders;
@@ -155,15 +156,19 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                     ConnectedOrders dialog = new ConnectedOrders(activity, recyclerView, adapter);
                     dialog.show();
                     dialog.setCancelable(false);
+                    Button submitButton = activity.findViewById(R.id.SubmitBtn2);
+                    submitButton.setEnabled(true);
                 }
             }
             Activity activity = mWeakActivity.get();
             if (activity != null) {
                 activity.findViewById(R.id.progressBar).setVisibility(View.GONE);
                 EditText orderNumber = activity.findViewById(R.id.OrderNumberBox);
+                Button submitButton = activity.findViewById(R.id.SubmitBtn2);
                 orderNumber.setEnabled(true);
                 orderNumber.setFocusable(true);
                 orderNumber.requestFocus();
+                submitButton.setEnabled(true);
             }
         }
     }
