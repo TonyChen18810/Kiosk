@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.dbc.kiosk.Account;
+import com.dbc.kiosk.Helpers.EmailSuggestionAdapter;
 import com.dbc.kiosk.Helpers.KeyboardListener;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
@@ -71,8 +72,9 @@ public class MainActivity extends AppCompatActivity {
         // aka did the user click yes or no
         String accountStatus = getIntent().getExtras().getString("accountStatus");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.autofill_layout, Account.getEMAIL_LIST());
+        // ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.autofill_layout, Account.getEMAIL_LIST());
         emailAddressBox = findViewById(R.id.AutoCompleteEmail);
+        EmailSuggestionAdapter adapter = new EmailSuggestionAdapter(this, R.layout.custom_suggestion_row, Account.getEMAIL_LIST(), emailAddressBox);
         emailAddressBox.setAdapter(adapter);
 
         setup();
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             // user clicked yes
         } else if (accountStatus.equals("exists")) {
             newAccount = false;
-            emailAddressBox.setThreshold(3);
+            emailAddressBox.setThreshold(1);
         }
 
         // Listens for response from GetShippingTruckDriver.java web service
