@@ -3,11 +3,7 @@ package com.dbc.kiosk;
 import android.content.Context;
 import com.crashlytics.android.Crashlytics;
 import com.dbc.kiosk.Helpers.Time;
-
-import java.util.Set;
-
 import io.fabric.sdk.android.Fabric;
-
 /**
  * Report.java
  *

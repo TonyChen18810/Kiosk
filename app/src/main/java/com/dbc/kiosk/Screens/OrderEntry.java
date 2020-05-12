@@ -39,7 +39,7 @@ import java.util.List;
  * After entering an order number and pressing the green arrow (checkOrderBtn),
  * calls GetOrderDetails.java. If this returns order information, GetPossibleShipTos.java
  * will be called, returning 6 destinations (5 incorrect, 1 correct). If the correct destination
- * is chosen, the order may be added. When the user presses "Add Order", GetOrderDetailsByMasterNumber.java
+ * is chosen, the order will be added. "Add Order" is automatically pressed, GetOrderDetailsByMasterNumber.java
  * will be called and will return a list of orders that share a master number (an empty list if no others share it).
  * ConnectedOrders.java and it's RecyclerView will be populated by the returned list of orders, those of which
  * can be selected to be added as well.
@@ -106,11 +106,9 @@ public class OrderEntry extends AppCompatActivity {
             if (empty) {
                 recyclerView.setVisibility(View.INVISIBLE);
                 currentlyEntered.setVisibility(View.INVISIBLE);
-                submitBtn.setEnabled(false);
             } else {
                 recyclerView.setVisibility(View.VISIBLE);
                 currentlyEntered.setVisibility(View.VISIBLE);
-                submitBtn.setEnabled(true);
             }
         });
 
@@ -378,7 +376,7 @@ public class OrderEntry extends AppCompatActivity {
             recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
             recyclerView.scheduleLayoutAnimation();
 
-            orderNumber.setText("");
+            // orderNumber.setText("");
             buyerName.setText("");
             selectDestinationBtn.setText("");
             buyerName.setVisibility(View.GONE);

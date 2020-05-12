@@ -18,17 +18,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.dbc.kiosk.Screens.FirstScreen;
 import java.lang.ref.WeakReference;
-import java.util.Date;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 /**
  * Settings.java
@@ -37,7 +33,7 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
  *
  * Called from FirstScreen.java when the version number is clicked 3 times.
  *
- * Invokes a fragment to act as a small settings menu, allowing user to
+ * Invokes a fragment to act as a settings menu, allowing user to
  * change values of cooler location and kiosk number (for future use)
  *
  * Requires password to be entered before allowing any change in settings.

@@ -18,7 +18,6 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import java.lang.ref.WeakReference;
-import java.util.Date;
 /**
  * GetOrderDetailsByMasterNumber.java
  *
@@ -169,6 +168,7 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                 orderNumber.setFocusable(true);
                 orderNumber.requestFocus();
                 submitButton.setEnabled(true);
+                orderNumber.setText("");
             }
         }
     }

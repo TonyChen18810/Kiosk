@@ -145,6 +145,7 @@
                     android:ems="8"
                     android:hint="Order Number"
                     android:textSize="80sp"
+                    android:maxLength="21"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

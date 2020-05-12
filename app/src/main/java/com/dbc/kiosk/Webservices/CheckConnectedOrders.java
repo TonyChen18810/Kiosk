@@ -3,12 +3,10 @@ package com.dbc.kiosk.Webservices;
 import android.os.AsyncTask;
 import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Settings;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 /**
  * CheckConnectedOrders.java
  *

@@ -10,24 +10,17 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Dialogs.LogoutDialog;
 import com.dbc.kiosk.Dialogs.ProgressDialog;
-import com.dbc.kiosk.Helpers.KeyboardListener;
 import com.dbc.kiosk.Helpers.Language;
-import com.dbc.kiosk.Helpers.LoadingKeyboardListener;
 import com.dbc.kiosk.Helpers.RecyclerViewSummaryAdapter;
 import com.dbc.kiosk.Helpers.Rounder;
 import com.dbc.kiosk.Order;
@@ -40,11 +33,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
-
 /**
- *
  * OrderSummary.java
  *
  * This activity is used for reviewing the entered orders and their information.
@@ -62,7 +52,7 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 public class OrderSummary extends AppCompatActivity {
 
     TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight,
-            totalOrders, totalPallets, totalWeight, ordersCount, totalPalletsCount, totalWeightCount;
+            totalOrders, totalPallets, totalWeight, ordersCount, totalPalletsCount, totalWeightCount, characterCounterTextView;
     Button confirmBtn, backBtn;
 
     private CheckBox straightCheckbox, sidewaysCheckbox, blockedCheckbox, noPreferenceCheckbox, otherCheckbox;
@@ -123,7 +113,6 @@ public class OrderSummary extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                System.out.println("HEy it changed, button enabled or disabled");
                 if (otherEntry.length() != 0 && otherEntry.isEnabled()) {
                     confirmBtn.setEnabled(true);
                 }
@@ -134,11 +123,10 @@ public class OrderSummary extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // counter!!
+                characterCounterTextView.setText(otherEntry.length() + "/225");
             }
         });
-
-        // otherEntry.setOnEditorActionListener(new LoadingKeyboardListener());
 
         findViewById(R.id.ConfirmBtn).setOnClickListener(v -> {
             if (loadingPreference.equals("Other")) {
@@ -424,6 +412,7 @@ public class OrderSummary extends AppCompatActivity {
         ordersCount = findViewById(R.id.OrdersCount);
         totalPalletsCount = findViewById(R.id.PalletCount);
         totalWeightCount = findViewById(R.id.TotalWeight);
+        characterCounterTextView = findViewById(R.id.CharacterCounter);
         confirmBtn.setEnabled(false);
 
         ordersCount.setText(Integer.toString(Order.getOrdersList().size()));

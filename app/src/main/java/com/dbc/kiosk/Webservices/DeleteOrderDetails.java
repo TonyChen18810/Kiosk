@@ -2,19 +2,14 @@ package com.dbc.kiosk.Webservices;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-
 import com.dbc.kiosk.Account;
-import com.dbc.kiosk.Screens.OrderSummary;
 import com.dbc.kiosk.Settings;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 import java.lang.ref.WeakReference;
-
 /**
  * DeleteOrderDetails.java
  *

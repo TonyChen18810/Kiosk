@@ -4,7 +4,6 @@ import com.dbc.kiosk.Helpers.Rounder;
 import com.dbc.kiosk.Webservices.GetOrderDetails;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Order.java
  *

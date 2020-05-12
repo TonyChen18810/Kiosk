@@ -12,7 +12,6 @@ import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderEntry;
 import com.dbc.kiosk.Settings;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -141,6 +140,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         if (propertyCount < 1 && connection) {
             // order doesn't exist
             OrderEntry.validOrderNumber.setValue(0);
+            invalidOrderNumberReceived();
         }
 
         System.out.println("connection: " + connection);
@@ -202,23 +202,7 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
                         System.out.println("truckStatus: " + truckStatus);
                         System.out.println("SOPnumber: " + SOPNumber);
                         OrderEntry.validOrderNumber.setValue(0);
-                        /*
-                        mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);
-                        mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
-                        mFirebaseAnalytics.setMinimumSessionDuration(500);
-                        mFirebaseAnalytics.setSessionTimeoutDuration(300);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("MASTER_NUMBER", GetOrderDetails.getMasterNumber());
-                        bundle.putString("EMAIL", Account.getCurrentAccount().getEmail());
-                        bundle.putString("PHONE", Account.getCurrentAccount().getPhoneNumber());
-                        bundle.putString("TRUCK", Account.getCurrentAccount().getTruckName() + " " + Account.getCurrentAccount().getTruckNumber());
-                        bundle.putString("TIME", Time.getCurrentTime());
-                        for (int i = 0; i < Order.getOrdersList().size(); i++) {
-                            String paramName = "ORDER" + i;
-                            bundle.putString(paramName, Order.getOrdersList().get(i).getSOPNumber());
-                        }
-                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, bundle);
-                         */
+                        invalidOrderNumberReceived();
                     }
                 } else if (!truckStatus.equals("Outstanding")) {
                     System.out.println("Order already checked in / not Outstanding");
@@ -254,20 +238,29 @@ public class GetOrderDetails extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    public void invalidOrderNumberReceived() {
+        Activity activity = mWeakActivity.get();
+        if (activity != null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);
+            mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
+            mFirebaseAnalytics.setMinimumSessionDuration(500);
+            mFirebaseAnalytics.setSessionTimeoutDuration(300);
+            Bundle bundle = new Bundle();
+            bundle.putString("ORDER_INFO", GetOrderDetails.getMasterNumber() + " / " + Order.getCurrentOrder().getSOPNumber() + " / "
+                    + Order.getCurrentOrder().getAppointmentTime() + Order.getCurrentOrder().getAppointment() + " / " + Order.getCurrentOrder().getTruckStatus()
+                    + " / " + Account.getCurrentAccount().getEmail() + " / " + Time.getCurrentTime() + " / " + Time.getCurrentDate());
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.CAMPAIGN_DETAILS, bundle);
+        }
+    }
+
     public static int checkApppointmentTime(String appointmentTime) {
         int aptCode = 0;
-        // System.out.println("Appointment time: " + appointmentTime);
-        // System.out.println("Logged in time: " + Time.getCurrentTime());
         char[] aptC = appointmentTime.toCharArray();
         char[] timeC = Time.getCurrentTime().toCharArray();
         String aptHour = ((aptC[0]-'0') + "" + (aptC[1]-'0'));
-        // System.out.println("Hour of apt: " + aptHour);
         String loggedInHour = ((timeC[0]-'0') + "" + (timeC[1]-'0'));
-        // System.out.println("Hour of logged in time: " + loggedInHour);
         String aptMinute = ((aptC[3]-'0') + "" + (aptC[4]-'0'));
-        // System.out.println("Minutes of apt: " + aptMinute);
         String loggedInMinute = ((timeC[3]-'0') + "" + (timeC[4]-'0'));
-        // System.out.println("Minutes of logged in time: " + loggedInMinute);
 
         int aptHourInt = Integer.parseInt(aptHour);
         int aptMinuteInt = Integer.parseInt(aptMinute);
