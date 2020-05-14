@@ -64,8 +64,6 @@ public class FirstScreen extends AppCompatActivity {
         Report report = new Report(FirstScreen.this);
         System.out.println(FirebaseInstanceId.getInstance().getInstanceId());
 
-
-        Account.setEMAIL_LIST();
         new GetAllEmails().execute();
 
         setup();
@@ -117,7 +115,6 @@ public class FirstScreen extends AppCompatActivity {
                     Toast.makeText(FirstScreen.this, "App environment set to: TEST", Toast.LENGTH_SHORT).show();
                     System.out.println("test");
                 }
-                Account.setEMAIL_LIST();
                 new GetAllEmails().execute();
             }
         });

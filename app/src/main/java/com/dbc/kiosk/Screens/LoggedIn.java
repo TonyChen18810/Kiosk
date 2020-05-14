@@ -32,6 +32,9 @@ import com.dbc.kiosk.Webservices.CheckForExistingAccount;
 import com.dbc.kiosk.Webservices.GetServerTime;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import org.w3c.dom.Text;
+
 import java.util.Collections;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
@@ -135,7 +138,8 @@ public class LoggedIn extends AppCompatActivity {
                 setStatus(0, Collections.singletonList(phoneNumber));
                 phoneInUseWarning.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
-                nextBtn.setEnabled(true);
+                enableObjects(nextBtn, logoutBtn, phoneNumber, driverName, driverLicense, selectState1, truckName, truckNumber,
+                        trailerLicense, selectState2, dispatcherPhoneNumber, textCheckbox, emailCheckbox, bothCheckbox);
             } else if (integer == 1) {
                 // good phone
                 System.out.println("Good phone...");
@@ -150,7 +154,8 @@ public class LoggedIn extends AppCompatActivity {
         });
 
         nextBtn.setOnClickListener(v -> {
-            nextBtn.setEnabled(false);
+            disableObjects(nextBtn, logoutBtn, phoneNumber, driverName, driverLicense, selectState1, truckName, truckNumber,
+                    trailerLicense, selectState2, dispatcherPhoneNumber, textCheckbox, emailCheckbox, bothCheckbox);
             emailStr = emailAddress.getText().toString();
             phoneStr = PhoneNumberFormat.extract(phoneNumber.getText().toString());
             truckNameStr = truckName.getText().toString();
@@ -262,6 +267,19 @@ public class LoggedIn extends AppCompatActivity {
             } else if (status == -1){
                 editTexts.get(i).getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
             }
+        }
+    }
+
+    // used to enable all of the EditTexts/Buttons/Checkboxes
+    public void enableObjects(TextView... textViews) {
+        for (TextView object : textViews) {
+            object.setEnabled(true);
+        }
+    }
+    // used to disable all of the EditTexts/Buttons/Checkboxes
+    public void disableObjects(TextView ... textViews) {
+        for (TextView object : textViews) {
+            object.setEnabled(false);
         }
     }
 

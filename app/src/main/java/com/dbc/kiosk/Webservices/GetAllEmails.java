@@ -12,10 +12,6 @@ public class GetAllEmails extends AsyncTask<Void, Void, Void> {
 
     private boolean connection;
 
-    public GetAllEmails() {
-        Account.setEMAIL_LIST();
-    }
-
     @Override
     protected Void doInBackground(Void... voids) {
         String namespace = "http://tempuri.org/";
@@ -37,6 +33,7 @@ public class GetAllEmails extends AsyncTask<Void, Void, Void> {
             if (response != null) {
                 connection = true;
                 if (response.getPropertyCount() > 0) {
+                    Account.setEMAIL_LIST();
                     for (int i = 0; i < response.getPropertyCount(); i++) {
                         String email = ((SoapObject) (response.getProperty(i))).getProperty(0).toString();
                         Account.addToEMAIL_LIST(email);
