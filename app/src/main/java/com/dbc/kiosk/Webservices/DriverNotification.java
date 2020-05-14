@@ -94,6 +94,7 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
         Activity activity = mWeakReference.get();
         if (activity != null) {
+            /*
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);
             mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
             mFirebaseAnalytics.setMinimumSessionDuration(500);
@@ -109,7 +110,7 @@ public class DriverNotification extends AsyncTask<Void, Void, Void> {
                 bundle.putString(paramName, Order.getOrdersList().get(i).getSOPNumber());
             }
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, bundle);
-
+*/
             Button logoutBtn = activity.findViewById(R.id.LogoutBtn);
             logoutBtn.setEnabled(true);
             OrderSummary.dialog.dismiss();

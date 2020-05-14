@@ -11,6 +11,7 @@ import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -52,7 +53,8 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 public class OrderSummary extends AppCompatActivity {
 
     TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight,
-            totalOrders, totalPallets, totalWeight, ordersCount, totalPalletsCount, totalWeightCount, characterCounterTextView;
+            totalOrders, totalPallets, totalWeight, ordersCount, totalPalletsCount, totalWeightCount, characterCounterTextView,
+            straight, blocked, sideways, noPreference, preferLoadingText;
     Button confirmBtn, backBtn;
 
     private CheckBox straightCheckbox, sidewaysCheckbox, blockedCheckbox, noPreferenceCheckbox, otherCheckbox;
@@ -403,12 +405,17 @@ public class OrderSummary extends AppCompatActivity {
         logoutBtn = findViewById(R.id.LogoutBtn);
         backBtn = findViewById(R.id.BackBtn);
         straightCheckbox = findViewById(R.id.StraightCheckbox);
+        straight = findViewById(R.id.Straight);
         sidewaysCheckbox = findViewById(R.id.SidewaysCheckbox);
+        sideways = findViewById(R.id.Sideways);
         blockedCheckbox = findViewById(R.id.BlockedCheckbox);
+        blocked = findViewById(R.id.Blocked);
         noPreferenceCheckbox = findViewById(R.id.NoPreferenceCheckbox);
+        noPreference = findViewById(R.id.NoPreference);
         otherCheckbox = findViewById(R.id.OtherCheckbox);
         otherEntry = findViewById(R.id.Other);
         otherEntry.setEnabled(false);
+        preferLoadingText = findViewById(R.id.PreferLoadingText);
         ordersCount = findViewById(R.id.OrdersCount);
         totalPalletsCount = findViewById(R.id.PalletCount);
         totalWeightCount = findViewById(R.id.TotalWeight);
@@ -441,6 +448,12 @@ public class OrderSummary extends AppCompatActivity {
             aptTime.setTextSize(40);
             destination.setTextSize(40);
             estWeight.setTextSize(40);
+            preferLoadingText.setText("Select your preferred loading method:");
+            straight.setText("Straight");
+            sideways.setText("Sideways");
+            blocked.setText("Blocked");
+            noPreference.setText("No Preference");
+            otherEntry.setHint("Other");
         } else if (Language.getCurrentLanguage() == 2) {
             confirmOrders.setText(R.string.confirm_orders_sp);
             confirmationNumberText.setText(R.string.confirmation_num_sp);
@@ -462,6 +475,12 @@ public class OrderSummary extends AppCompatActivity {
             aptTime.setTextSize(36);
             destination.setTextSize(36);
             estWeight.setTextSize(36);
+            preferLoadingText.setText("Seleccione la configuracion de su carga");
+            straight.setText("Paletas derechas");
+            sideways.setText("Paletas de lado");
+            blocked.setText("Paletas bloqueadass");
+            noPreference.setText("Sin preferencias");
+            otherEntry.setHint("Instucciones especificas");
         } else if (Language.getCurrentLanguage() == 3) {
             confirmOrders.setText(R.string.confirm_orders_fr);
             confirmationNumberText.setText(R.string.confirmation_num_fr);
@@ -483,6 +502,12 @@ public class OrderSummary extends AppCompatActivity {
             aptTime.setTextSize(30);
             destination.setTextSize(30);
             estWeight.setTextSize(30);
+            preferLoadingText.setText("Select your preferred loading method:");
+            straight.setText("Straight");
+            sideways.setText("Sideways");
+            blocked.setText("Blocked");
+            noPreference.setText("No Preference");
+            otherEntry.setHint("Other");
         }
     }
 }

@@ -227,6 +227,26 @@
                 04
             </font>
         </item>
+        <item>
+            <font size = "30">
+                05
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                06
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                07
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                08
+            </font>
+        </item>
     </string-array>
 
     <!-- English -->

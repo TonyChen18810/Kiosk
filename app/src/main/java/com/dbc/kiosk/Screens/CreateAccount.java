@@ -6,7 +6,9 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
@@ -16,14 +18,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.dbc.kiosk.Account;
-import com.dbc.kiosk.Dialogs.HelpDialog;
 import com.dbc.kiosk.Dialogs.ListViewDialog;
 import com.dbc.kiosk.Dialogs.LogoutDialog;
+import com.dbc.kiosk.Helpers.HintTextWatcher;
 import com.dbc.kiosk.Helpers.KeyboardListener;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
@@ -48,22 +49,16 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 public class CreateAccount extends AppCompatActivity {
     private String email, phone;
     private Button logoutBtn, nextBtn;
-    private TextView createAccount, verifyText, preferText, helpText;
-    private EditText emailAddress;
-    private EditText phoneNumber;
-    private EditText truckName;
-    private EditText truckNumber;
-    private EditText trailerLicense;
-    private EditText driverLicense;
-    private EditText driverName;
-    private EditText dispatcherPhoneNumber;
+    private TextView createAccount, verifyText, preferText, emailHint, phoneHint, driverNameHint,
+            driverLicenseHint, truckNameHint, truckNumberHint, trailerLicenseHint, dispatcherPhoneHint;
+    private EditText emailAddress, phoneNumber, truckName, truckNumber, trailerLicense, driverLicense,
+            driverName, dispatcherPhoneNumber;
     private Spinner trailerStateSpinner, driverStateSpinner;
-    private ImageButton truckNameHelp, truckNumberHelp, trailerLicenseHelp,
-            driverLicenseHelp, driverNameHelp, dispatcherPhoneNumberHelp;
 
     ProgressBar progressBar;
 
-    String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr, driverNameStr, dispatcherNumberStr;
+    String emailStr, phoneStr, truckNameStr, truckNumberStr, trailerLicenseStr, driverLicenseStr,
+            driverNameStr, dispatcherNumberStr;
 
     private TextView txtText, emailText, bothText, selectText, standardRatesApply;
     private CheckBox textCheckbox, emailCheckbox, bothCheckbox;
@@ -167,90 +162,6 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-        driverNameHelp.setOnClickListener(v -> {
-            String message = null;
-            if (Language.getCurrentLanguage() == 1) {
-                message = "Please enter your first and last name.";
-            } else if (Language.getCurrentLanguage() == 2) {
-                message = "Escriba su nombre y apellido.";
-            } else if (Language.getCurrentLanguage() == 3) {
-                message = "Veuillez saisir votre prénom et nom.";
-            }
-            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-            dialog.show();
-            dialog.setCancelable(false);
-        });
-
-        driverLicenseHelp.setOnClickListener(v -> {
-            String message = null;
-            if (Language.getCurrentLanguage() == 1) {
-                message = "Please enter your driver license number";
-            } else if (Language.getCurrentLanguage() == 2) {
-                message = "Escriba el número de su licencia de conducir";
-            } else if (Language.getCurrentLanguage() == 3) {
-                message = "Veuillez saisir votre numéro de permis de conduire";
-            }
-            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-            dialog.show();
-            dialog.setCancelable(false);
-        });
-
-        truckNameHelp.setOnClickListener(v -> {
-            String message = null;
-            if (Language.getCurrentLanguage() == 1) {
-                message = "Please enter the company name of your truck (NOT the make/model)";
-            } else if (Language.getCurrentLanguage() == 2) {
-                message = "Escriba el nombre de la empresa de su camión (NO la marca/el modelo)";
-            } else if (Language.getCurrentLanguage() == 3) {
-                message = "Veuillez saisir le nom de l’entreprise de votre camion (PAS la marque/le modèle)";
-            }
-            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-            dialog.show();
-            dialog.setCancelable(false);
-        });
-
-        truckNumberHelp.setOnClickListener(v -> {
-            String message = null;
-            if (Language.getCurrentLanguage() == 1) {
-                message = "Please enter the number of your truck";
-            } else if (Language.getCurrentLanguage() == 2) {
-                message = "Escriba el número de su camión";
-            } else if (Language.getCurrentLanguage() == 3) {
-                message = "Veuillez saisir le numéro de votre camion";
-            }
-            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-            dialog.show();
-            dialog.setCancelable(false);
-        });
-
-        trailerLicenseHelp.setOnClickListener(v -> {
-            String message = null;
-            if (Language.getCurrentLanguage() == 1) {
-                message = "Please enter the license plate number of your trailer";
-            } else if (Language.getCurrentLanguage() == 2) {
-                message = "Escriba el número de matrícula de su tráiler";
-            } else if (Language.getCurrentLanguage() == 3) {
-                message = "Veuillez saisir le numéro d’immatriculation de votre remorque";
-            }
-            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-            dialog.show();
-            dialog.setCancelable(false);
-        });
-
-        dispatcherPhoneNumberHelp.setOnClickListener(v -> {
-            String message = null;
-            if (Language.getCurrentLanguage() == 1) {
-                message = "Please enter the phone number of your current dispatcher";
-            } else if (Language.getCurrentLanguage() == 2) {
-                message = "Escriba el número de teléfono de su despachante actual";
-            } else if (Language.getCurrentLanguage() == 3) {
-                message = "Veuillez saisir le numéro de téléphone de votre répartiteur actuel";
-            }
-            HelpDialog dialog = new HelpDialog(message, CreateAccount.this);
-            dialog.show();
-            dialog.setCancelable(false);
-        });
-
         phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         dispatcherPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
@@ -269,6 +180,18 @@ public class CreateAccount extends AppCompatActivity {
                 }
             }
         });
+
+        driverName.addTextChangedListener(new HintTextWatcher(driverName, driverNameHint));
+
+        driverLicense.addTextChangedListener(new HintTextWatcher(driverLicense, driverLicenseHint));
+
+        truckName.addTextChangedListener(new HintTextWatcher(truckName, truckNameHint));
+
+        truckNumber.addTextChangedListener(new HintTextWatcher(truckNumber, truckNumberHint));
+
+        trailerLicense.addTextChangedListener(new HintTextWatcher(trailerLicense, trailerLicenseHint));
+
+        dispatcherPhoneNumber.addTextChangedListener(new HintTextWatcher(dispatcherPhoneNumber, dispatcherPhoneHint));
 
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(CreateAccount.this, CreateAccount.this);
@@ -304,7 +227,6 @@ public class CreateAccount extends AppCompatActivity {
             } else {
                 disableButtons(nextBtn, selectState1, selectState2, logoutBtn);
                 disableEditTexts(emailAddress, phoneNumber, truckName, truckNumber, trailerLicense, driverLicense, driverName, dispatcherPhoneNumber);
-                disableImageButtons(dispatcherPhoneNumberHelp, driverLicenseHelp, driverNameHelp, trailerLicenseHelp, truckNameHelp, truckNumberHelp);
                 textCheckbox.setEnabled(false);
                 emailCheckbox.setEnabled(false);
                 bothCheckbox.setEnabled(false);
@@ -332,40 +254,7 @@ public class CreateAccount extends AppCompatActivity {
                 selectText.setVisibility(View.GONE);
             }
         });
-/*
-        accountCreatedListener = new MutableLiveData<>();
-        accountCreatedListener.observe(CreateAccount.this, aBoolean -> {
-            setContentView(R.layout.account_created_msg);
-            accountCreatedSetup();
 
-            Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.METHOD, "User created an account");
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
-
-            findViewById(R.id.LogoutBtn).setOnClickListener(v1 -> {
-                startActivity(new Intent(CreateAccount.this, FirstScreen.class));
-                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-            });
-
-            TextView userEmail = findViewById(R.id.emailAddress);
-            TextView userNumber = findViewById(R.id.phoneNumber);
-            TextView userTruckName = findViewById(R.id.truckName);
-            TextView userTruckNumber = findViewById(R.id.truckNumber);
-            TextView userTrailerLicense = findViewById(R.id.trailerLicense);
-            TextView userDriverLicense = findViewById(R.id.driverLicense);
-            TextView userDriverName = findViewById(R.id.driverName);
-            TextView userDispatcherPhone = findViewById(R.id.dispatcherPhoneNumber);
-
-            userEmail.setText(email);
-            userNumber.setText(PhoneNumberFormat.formatPhoneNumber(phone));
-            userTruckName.setText(truckNameStr);
-            userTruckNumber.setText(truckNumberStr);
-            userTrailerLicense.setText(trailerLicenseStr);
-            userDriverLicense.setText(driverLicenseStr);
-            userDriverName.setText(driverNameStr);
-            userDispatcherPhone.setText(dispatcherNumberStr);
-        });
-*/
         textCheckbox.setOnClickListener(v -> handleChecks(textCheckbox));
 
         emailCheckbox.setOnClickListener(v -> handleChecks(emailCheckbox));
@@ -393,12 +282,6 @@ public class CreateAccount extends AppCompatActivity {
     public void disableButtons(Button... buttons) {
         for (Button button : buttons) {
             button.setEnabled(false);
-        }
-    }
-
-    public void disableImageButtons(ImageButton... imageButtons) {
-        for (ImageButton imageButton : imageButtons) {
-            imageButton.setEnabled(false);
         }
     }
 
@@ -490,13 +373,20 @@ public class CreateAccount extends AppCompatActivity {
                 logoutBtn.setText(R.string.logout_eng);
                 nextBtn.setText(R.string.next_eng);
                 createAccount.setText(R.string.create_account_eng);
-                helpText.setText(R.string.select_help_icon_eng);
+                emailHint.setText(R.string.hint_email_eng);
+                phoneHint.setText(R.string.hint_phone_eng);
                 truckName.setHint("Truck name");
+                truckNameHint.setText(R.string.hint_truck_name_eng);
                 truckNumber.setHint("Truck number");
+                truckNumberHint.setText(R.string.hint_truck_number_eng);
                 trailerLicense.setHint("Trailer license number");
+                trailerLicenseHint.setText(R.string.hint_trailer_license_eng);
                 driverLicense.setHint("Driver license number");
+                driverLicenseHint.setText(R.string.hint_driver_license_eng);
                 driverName.setHint("Driver's name");
+                driverNameHint.setText(R.string.hint_driver_name_eng);
                 dispatcherPhoneNumber.setHint("Dispatcher's phone number");
+                dispatcherPhoneHint.setText(R.string.hint_dispatcher_eng);
                 verifyText.setText(R.string.verify_next_eng);
                 preferText.setText(R.string.comm_preference_eng);
                 txtText.setText(R.string.text_msg_eng);
@@ -512,13 +402,20 @@ public class CreateAccount extends AppCompatActivity {
                 logoutBtn.setText(R.string.logout_sp);
                 nextBtn.setText(R.string.next_sp);
                 createAccount.setText(R.string.create_account_sp);
-                helpText.setText(R.string.select_help_icon_sp);
+                emailHint.setText(R.string.hint_email_sp);
+                phoneHint.setText(R.string.hint_phone_sp);
                 truckName.setHint("Nombre del camión");
+                truckNameHint.setText(R.string.hint_truck_name_sp);
                 truckNumber.setHint("N.º del camión");
+                truckNumberHint.setText(R.string.hint_truck_number_sp);
                 trailerLicense.setHint("N.º de la matrícula del tráiler");
+                trailerLicenseHint.setText(R.string.hint_trailer_license_sp);
                 driverLicense.setHint("N.º de licencia de conducir");
+                driverLicenseHint.setText(R.string.hint_driver_license_sp);
                 driverName.setHint("Nombre del conductor");
+                driverNameHint.setText(R.string.hint_driver_name_sp);
                 dispatcherPhoneNumber.setHint("N.º de teléfono del despachante");
+                dispatcherPhoneHint.setText(R.string.hint_dispatcher_sp);
                 verifyText.setText(R.string.verify_next_sp);
                 preferText.setText(R.string.comm_preference_sp);
                 txtText.setText(R.string.text_msg_sp);
@@ -534,13 +431,20 @@ public class CreateAccount extends AppCompatActivity {
                 logoutBtn.setText(R.string.logout_fr);
                 nextBtn.setText(R.string.next_fr);
                 createAccount.setText(R.string.create_account_fr);
-                helpText.setText(R.string.select_help_icon_fr);
+                emailHint.setText(R.string.hint_email_fr);
+                phoneHint.setText(R.string.hint_phone_fr);
                 truckName.setHint("Nom du camion");
+                truckNameHint.setText(R.string.hint_truck_name_fr);
                 truckNumber.setHint("Numéro du camion");
+                truckNumberHint.setText(R.string.hint_truck_number_fr);
                 trailerLicense.setHint("Numéro du permis de la remorque");
+                trailerLicenseHint.setText(R.string.hint_trailer_license_fr);
                 driverLicense.setHint("Numéro du permis de conduire");
+                driverLicenseHint.setText(R.string.hint_driver_license_fr);
                 driverName.setHint("Nom du conducteur");
+                driverNameHint.setText(R.string.hint_driver_name_fr);
                 dispatcherPhoneNumber.setHint("Numéro de téléphone du répartiteur");
+                dispatcherPhoneHint.setText(R.string.hint_dispatcher_fr);
                 verifyText.setText(R.string.verify_next_fr);
                 preferText.setText(R.string.comm_preference_fr);
                 txtText.setText(R.string.text_msg_fr);
@@ -570,24 +474,25 @@ public class CreateAccount extends AppCompatActivity {
         driverName = findViewById(R.id.DriverNameBox);
         dispatcherPhoneNumber = findViewById(R.id.DispatcherPhoneNumberBox);
         verifyText = findViewById(R.id.VerifyText);
-        truckNameHelp = findViewById(R.id.TruckNameHelp);
-        truckNumberHelp = findViewById(R.id.TruckNumberHelp);
-        trailerLicenseHelp = findViewById(R.id.TrailerLicenseHelp);
-        driverLicenseHelp = findViewById(R.id.DriverLicenseHelp);
-        driverNameHelp = findViewById(R.id.DriverNameHelp);
-        dispatcherPhoneNumberHelp = findViewById(R.id.DispatcherPhoneNumberHelp);
-        truckNameHelp.setVisibility(View.INVISIBLE);
-        truckNumberHelp.setVisibility(View.INVISIBLE);
-        trailerLicenseHelp.setVisibility(View.INVISIBLE);
-        driverLicenseHelp.setVisibility(View.INVISIBLE);
-        driverNameHelp.setVisibility(View.INVISIBLE);
-        dispatcherPhoneNumberHelp.setVisibility(View.INVISIBLE);
         trailerStateSpinner = findViewById(R.id.StateSpinner);
         driverStateSpinner = findViewById(R.id.StateSpinner2);
-        helpText = findViewById(R.id.HelpText);
         standardRatesApply = findViewById(R.id.StandardRatesApply);
         progressBar = findViewById(R.id.ProgressBar);
         progressBar.setVisibility(View.INVISIBLE);
+        emailHint = findViewById(R.id.EmailHint);
+        phoneHint = findViewById(R.id.PhoneHint);
+        driverNameHint = findViewById(R.id.DriverNameHint);
+        driverLicenseHint = findViewById(R.id.DriverLicenseHint);
+        truckNameHint = findViewById(R.id.TruckNameHint);
+        truckNumberHint = findViewById(R.id.TruckNumberHint);
+        trailerLicenseHint = findViewById(R.id.TrailerLicenseHint);
+        dispatcherPhoneHint = findViewById(R.id.DispatcherHint);
+        driverNameHint.setAlpha(0.0f);
+        driverLicenseHint.setAlpha(0.0f);
+        truckNameHint.setAlpha(0.0f);
+        truckNumberHint.setAlpha(0.0f);
+        trailerLicenseHint.setAlpha(0.0f);
+        dispatcherPhoneHint.setAlpha(0.0f);
 
         trailerStateSpinner.setVisibility(View.INVISIBLE);
         driverStateSpinner.setVisibility(View.INVISIBLE);
@@ -618,52 +523,5 @@ public class CreateAccount extends AppCompatActivity {
         phoneNumber.setTextColor(getResources().getColor(R.color.black));
 
         changeLanguage();
-    }
-
-    public void accountCreatedSetup() {
-        TextView successText = findViewById(R.id.textView);
-        Button loginBtn = findViewById(R.id.LogoutBtn);
-        TextView emailAddress = findViewById(R.id.emailHint);
-        TextView phoneNumber = findViewById(R.id.phoneHint);
-        TextView truckName = findViewById(R.id.truckNameHint);
-        TextView truckNumber = findViewById(R.id.truckNumberHint);
-        TextView trailerLicense = findViewById(R.id.trailerLicenseHint);
-        TextView driverLicense = findViewById(R.id.driverLicenseHint);
-        TextView driverName = findViewById(R.id.driverNameHint);
-        TextView dispatcherPhoneNumber = findViewById(R.id.dispatcherPhoneHint);
-        if (Language.getCurrentLanguage() == 1) {
-            successText.setText(R.string.congrats_account_eng);
-            loginBtn.setText(R.string.log_in_eng);
-            emailAddress.setText(R.string.hint_email_eng);
-            phoneNumber.setText(R.string.hint_phone_eng);
-            truckName.setText(R.string.hint_truck_name_eng);
-            truckNumber.setText(R.string.hint_truck_number_eng);
-            trailerLicense.setText(R.string.hint_trailer_license_eng);
-            driverLicense.setText(R.string.hint_driver_license_eng);
-            driverName.setText(R.string.hint_driver_name_eng);
-            dispatcherPhoneNumber.setText(R.string.hint_dispatcher_eng);
-        } else if (Language.getCurrentLanguage() == 2) {
-            successText.setText(R.string.congrats_account_sp);
-            loginBtn.setText(R.string.log_in_sp);
-            emailAddress.setText(R.string.hint_email_sp);
-            phoneNumber.setText(R.string.hint_phone_sp);
-            truckName.setText(R.string.hint_truck_name_sp);
-            truckNumber.setText(R.string.hint_truck_number_sp);
-            trailerLicense.setText(R.string.hint_trailer_license_sp);
-            driverLicense.setText(R.string.hint_driver_license_sp);
-            driverName.setText(R.string.hint_driver_name_sp);
-            dispatcherPhoneNumber.setText(R.string.hint_dispatcher_sp);
-        } else if (Language.getCurrentLanguage() == 3) {
-            successText.setText(R.string.congrats_account_fr);
-            loginBtn.setText(R.string.log_in_fr);
-            emailAddress.setText(R.string.hint_email_fr);
-            phoneNumber.setText(R.string.hint_phone_fr);
-            truckName.setText(R.string.hint_truck_name_fr);
-            truckNumber.setText(R.string.hint_truck_number_fr);
-            trailerLicense.setText(R.string.hint_trailer_license_fr);
-            driverLicense.setText(R.string.hint_driver_license_fr);
-            driverName.setText(R.string.hint_driver_name_fr);
-            dispatcherPhoneNumber.setText(R.string.hint_dispatcher_fr);
-        }
     }
 }
