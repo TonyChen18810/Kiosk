@@ -359,6 +359,13 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 nextBtn.setEnabled(true);
                 backBtn.setEnabled(true);
+                emailAddressBox.setEnabled(true);
+                confirmEmailAddress.setEnabled(true);
+                phoneNumberBox.setEnabled(true);
+                confirmPhoneNumber.setEnabled(true);
+                englishCheckbox.setEnabled(true);
+                spanishCheckbox.setEnabled(true);
+                frenchCheckbox.setEnabled(true);
             } else if (available) {
                 // good phone
                 System.out.println("Good phone...");
@@ -383,6 +390,13 @@ public class MainActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(v -> {
             nextBtn.setEnabled(false);
             backBtn.setEnabled(false);
+            englishCheckbox.setEnabled(false);
+            spanishCheckbox.setEnabled(false);
+            frenchCheckbox.setEnabled(false);
+            emailAddressBox.setEnabled(false);
+            phoneNumberBox.setEnabled(false);
+            confirmEmailAddress.setEnabled(false);
+            confirmPhoneNumber.setEnabled(false);
             if (!newAccount) {
                 if (validEmail() && validNumber()) {
                     progressBar.setVisibility(View.VISIBLE);
@@ -425,6 +439,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                     nextBtn.setEnabled(true);
                     backBtn.setEnabled(true);
+                    emailAddressBox.setEnabled(true);
+                    phoneNumberBox.setEnabled(true);
+                    confirmEmailAddress.setEnabled(true);
+                    confirmPhoneNumber.setEnabled(true);
+                    englishCheckbox.setEnabled(true);
+                    spanishCheckbox.setEnabled(true);
+                    frenchCheckbox.setEnabled(true);
                 }
             }
         });

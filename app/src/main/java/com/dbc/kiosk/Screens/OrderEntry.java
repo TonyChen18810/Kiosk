@@ -391,6 +391,7 @@ public class OrderEntry extends AppCompatActivity {
             cancelOrderBtn.setVisibility(View.GONE);
             checkOrderBtn.setVisibility(View.VISIBLE);
 
+            logoutBtn.setEnabled(true);
             // check if entered order has any connected orders
             try {
                 new GetOrderDetailsByMasterNumber(Order.getCurrentOrder().getMasterNumber(), OrderEntry.this).execute();
@@ -432,6 +433,7 @@ public class OrderEntry extends AppCompatActivity {
         checkOrderBtn.setOnClickListener(v -> {
             System.out.println("Order Number entered: " + orderNumber.getText().toString());
             checkOrderBtn.setEnabled(false);
+            logoutBtn.setEnabled(false);
             checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
             CustomOrderKeyboard.disableEnterButton();
             orderNumber.setEnabled(false);

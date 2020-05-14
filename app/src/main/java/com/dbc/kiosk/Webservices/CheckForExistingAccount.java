@@ -82,6 +82,8 @@ public class CheckForExistingAccount extends AsyncTask<Void, Void, Void> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Thread thread = new Thread(() -> new CheckForExistingAccount(mWeakActivity.get(), userID, email_phone, newAccount).execute());
+            thread.start();
         }
         return null;
     }

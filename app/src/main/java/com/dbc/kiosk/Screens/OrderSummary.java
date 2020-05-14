@@ -11,7 +11,6 @@ import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -54,7 +53,7 @@ public class OrderSummary extends AppCompatActivity {
 
     TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight,
             totalOrders, totalPallets, totalWeight, ordersCount, totalPalletsCount, totalWeightCount, characterCounterTextView,
-            straight, blocked, sideways, noPreference, preferLoadingText;
+            straight, blocked, sideways, noPreference, preferLoadingText, selectOne;
     Button confirmBtn, backBtn;
 
     private CheckBox straightCheckbox, sidewaysCheckbox, blockedCheckbox, noPreferenceCheckbox, otherCheckbox;
@@ -115,12 +114,7 @@ public class OrderSummary extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (otherEntry.length() != 0 && otherEntry.isEnabled()) {
-                    confirmBtn.setEnabled(true);
-                }
-                if (otherEntry.length() == 0 && otherEntry.isEnabled()) {
-                    confirmBtn.setEnabled(false);
-                }
+
             }
 
             @Override
@@ -131,112 +125,117 @@ public class OrderSummary extends AppCompatActivity {
         });
 
         findViewById(R.id.ConfirmBtn).setOnClickListener(v -> {
-            if (loadingPreference.equals("Other")) {
-                loadingPreference += "-" + otherEntry.getText().toString();
-            }
-            Account.setLoadingPreference(loadingPreference);
-            System.out.println(Account.getLoadingPreference());
-            List<Order> orderList = Order.getOrdersList();
-            List<Order> outlierList = new ArrayList<>(Order.getOutlierOrders());
+            if (loadingPreference.equals("")) {
+                selectOne.setVisibility(View.VISIBLE);
+            } else {
+                if (loadingPreference.equals("Other")) {
+                    loadingPreference += "-" + otherEntry.getText().toString();
+                }
+                Account.setLoadingPreference(loadingPreference);
+                System.out.println(Account.getLoadingPreference());
+                List<Order> orderList = Order.getOrdersList();
+                List<Order> outlierList = new ArrayList<>(Order.getOutlierOrders());
 
-            Set<String> outlierSet = new HashSet<>();
+                Set<String> outlierSet = new HashSet<>();
 
-            // doubly make sure there are no duplicate outlier orders, and also no outlier orders
-            // in the order list to be checked-in/submitted
-            for (int i = 0; i < outlierList.size(); i++) {
-                boolean contains = false;
-                for (int j = 0; j < orderList.size(); j++) {
-                    if (orderList.get(j).getSOPNumber().equals(outlierList.get(i).getSOPNumber())) {
-                        contains = true;
-                        break;
+                // doubly make sure there are no duplicate outlier orders, and also no outlier orders
+                // in the order list to be checked-in/submitted
+                for (int i = 0; i < outlierList.size(); i++) {
+                    boolean contains = false;
+                    for (int j = 0; j < orderList.size(); j++) {
+                        if (orderList.get(j).getSOPNumber().equals(outlierList.get(i).getSOPNumber())) {
+                            contains = true;
+                            break;
+                        }
+                    }
+                    if (!contains) {
+                        outlierSet.add(outlierList.get(i).getSOPNumber());
                     }
                 }
-                if (!contains) {
-                    outlierSet.add(outlierList.get(i).getSOPNumber());
-                }
-            }
 
-            System.out.println("Here are the outlier orders, they will now be deleted and updated:");
-            for (String SOP : outlierSet) {
-                new DeleteOrderDetails(SOP, OrderSummary.this, "false", false).execute(); // delete and update each outlier order
-                System.out.println(SOP);
-            }
-            System.out.println("Here are the orders to be checked in, they will now be deleted and updated");
-            for (int i = 0; i < orderList.size(); i++) {
-                if (i == orderList.size()-1) {
-                    new DeleteOrderDetails(orderList.get(i).getSOPNumber(), OrderSummary.this, "true",true).execute(); // last call, delete -> update -> send notification
-                } else {
-                    new DeleteOrderDetails(orderList.get(i).getSOPNumber(), OrderSummary.this, "true", false).execute(); // delete and update each added order
+                System.out.println("Here are the outlier orders, they will now be deleted and updated:");
+                for (String SOP : outlierSet) {
+                    new DeleteOrderDetails(SOP, OrderSummary.this, "false", false).execute(); // delete and update each outlier order
+                    System.out.println(SOP);
                 }
-                System.out.println(orderList.get(i).getSOPNumber());
-            }
+                System.out.println("Here are the orders to be checked in, they will now be deleted and updated");
+                for (int i = 0; i < orderList.size(); i++) {
+                    if (i == orderList.size()-1) {
+                        new DeleteOrderDetails(orderList.get(i).getSOPNumber(), OrderSummary.this, "true",true).execute(); // last call, delete -> update -> send notification
+                    } else {
+                        new DeleteOrderDetails(orderList.get(i).getSOPNumber(), OrderSummary.this, "true", false).execute(); // delete and update each added order
+                    }
+                    System.out.println(orderList.get(i).getSOPNumber());
+                }
 
-            setContentView(R.layout.final_screen);
-            String message = "";
-            if (Language.getCurrentLanguage() == 1) {
-                message = "Submitting your orders...";
-            } else if (Language.getCurrentLanguage() == 2) {
-                message = "Enviando sus pedidos...";
-            } else if (Language.getCurrentLanguage() == 3) {
-                message = "Soumettre vos commandes...";
-            }
-            dialog = new ProgressDialog(message, OrderSummary.this);
-            dialog.show();
-            dialog.setCancelable(false);
-            final Button logoutBtn = findViewById(R.id.LogoutBtn);
-            final TextView textView = findViewById(R.id.textView);
-            logoutBtn.setEnabled(false);
-            textView.setVisibility(View.INVISIBLE);
+                setContentView(R.layout.final_screen);
+                String message = "";
+                if (Language.getCurrentLanguage() == 1) {
+                    message = "Submitting your orders...";
+                } else if (Language.getCurrentLanguage() == 2) {
+                    message = "Enviando sus pedidos...";
+                } else if (Language.getCurrentLanguage() == 3) {
+                    message = "Soumettre vos commandes...";
+                }
+                dialog = new ProgressDialog(message, OrderSummary.this);
+                dialog.show();
+                dialog.setCancelable(false);
+                final Button logoutBtn = findViewById(R.id.LogoutBtn);
+                final TextView textView = findViewById(R.id.textView);
+                logoutBtn.setEnabled(false);
+                textView.setVisibility(View.INVISIBLE);
 
-            timer = new CountDownTimer(5000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    counter++;
-                    textView.setText(String.valueOf(counter));
-                }
-                public void onFinish() {
-                    textView.setText("done");
-                    logoutBtn.performClick();
-                }
-            };
+                timer = new CountDownTimer(5000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        counter++;
+                        textView.setText(String.valueOf(counter));
+                    }
+                    public void onFinish() {
+                        textView.setText("done");
+                        logoutBtn.performClick();
+                    }
+                };
 
-            TextView tv1 = findViewById(R.id.textView1);
-            TextView tv2 = findViewById(R.id.textView2);
-            if (Language.getCurrentLanguage() == 1) {
-                if (Order.getOrdersList().size() > 1) {
-                    tv1.setText(R.string.thanks_bye_eng);
-                } else {
-                    tv1.setText(R.string.thanks_bye2_eng);
+                TextView tv1 = findViewById(R.id.textView1);
+                TextView tv2 = findViewById(R.id.textView2);
+                if (Language.getCurrentLanguage() == 1) {
+                    if (Order.getOrdersList().size() > 1) {
+                        tv1.setText(R.string.thanks_bye_eng);
+                    } else {
+                        tv1.setText(R.string.thanks_bye2_eng);
+                    }
+                    tv2.setText(R.string.please_logout_eng);
+                    logoutBtn.setText(R.string.logout_eng);
+                } else if (Language.getCurrentLanguage() == 2) {
+                    if (Order.getOrdersList().size() > 1) {
+                        tv1.setText(R.string.thanks_bye_sp);
+                    } else {
+                        tv1.setText(R.string.thanks_bye2_sp);
+                    }
+                    tv2.setText(R.string.please_logout_sp);
+                    logoutBtn.setText(R.string.logout_sp);
+                } else if (Language.getCurrentLanguage() == 3) {
+                    if (Order.getOrdersList().size() > 1) {
+                        tv1.setText(R.string.thanks_bye_fr);
+                    } else {
+                        tv1.setText(R.string.thanks_bye2_fr);
+                    }
+                    tv2.setText(R.string.please_logout_fr);
+                    logoutBtn.setText(R.string.logout_fr);
                 }
-                tv2.setText(R.string.please_logout_eng);
-                logoutBtn.setText(R.string.logout_eng);
-            } else if (Language.getCurrentLanguage() == 2) {
-                if (Order.getOrdersList().size() > 1) {
-                    tv1.setText(R.string.thanks_bye_sp);
-                } else {
-                    tv1.setText(R.string.thanks_bye2_sp);
-                }
-                tv2.setText(R.string.please_logout_sp);
-                logoutBtn.setText(R.string.logout_sp);
-            } else if (Language.getCurrentLanguage() == 3) {
-                if (Order.getOrdersList().size() > 1) {
-                    tv1.setText(R.string.thanks_bye_fr);
-                } else {
-                    tv1.setText(R.string.thanks_bye2_fr);
-                }
-                tv2.setText(R.string.please_logout_fr);
-                logoutBtn.setText(R.string.logout_fr);
+                logoutBtn.setOnClickListener(v1 -> {
+                    timer.cancel();
+                    System.out.println("done");
+                    startActivity(new Intent(OrderSummary.this, FirstScreen.class));
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                });
             }
-            logoutBtn.setOnClickListener(v1 -> {
-                timer.cancel();
-                System.out.println("done");
-                startActivity(new Intent(OrderSummary.this, FirstScreen.class));
-                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-            });
         });
     }
 
     int b = 0;
     public void handleChecks(CheckBox cb) {
+        selectOne.setVisibility(View.GONE);
         if ((loadingPreference.equals("Straight")) && (cb.getId() == R.id.StraightCheckbox)) {
             if (++b == 1) {
                 cb.performClick();
@@ -261,7 +260,6 @@ public class OrderSummary extends AppCompatActivity {
         if (cb.getId() == R.id.StraightCheckbox) {
             straightCheckbox.setClickable(false);
             loadingPreference = "Straight";
-            confirmBtn.setEnabled(true);
             if (sidewaysCheckbox.isChecked()) {
                 sidewaysCheckbox.toggle();
                 sidewaysCheckbox.setClickable(true);
@@ -284,7 +282,6 @@ public class OrderSummary extends AppCompatActivity {
         if (cb.getId() == R.id.SidewaysCheckbox) {
             sidewaysCheckbox.setClickable(false);
             loadingPreference = "Sideways";
-            confirmBtn.setEnabled(true);
             if (straightCheckbox.isChecked()) {
                 straightCheckbox.toggle();
                 straightCheckbox.setClickable(true);
@@ -307,7 +304,6 @@ public class OrderSummary extends AppCompatActivity {
         if (cb.getId() == R.id.BlockedCheckbox) {
             blockedCheckbox.setClickable(false);
             loadingPreference = "Blocked";
-            confirmBtn.setEnabled(true);
             if (straightCheckbox.isChecked()) {
                 straightCheckbox.toggle();
                 straightCheckbox.setClickable(true);
@@ -330,7 +326,6 @@ public class OrderSummary extends AppCompatActivity {
         if (cb.getId() == R.id.NoPreferenceCheckbox) {
             noPreferenceCheckbox.setClickable(false);
             loadingPreference = "No Preference";
-            confirmBtn.setEnabled(true);
             if (straightCheckbox.isChecked()) {
                 straightCheckbox.toggle();
                 straightCheckbox.setClickable(true);
@@ -354,7 +349,6 @@ public class OrderSummary extends AppCompatActivity {
             otherCheckbox.setClickable(false);
             loadingPreference = "Other";
             otherEntry.setEnabled(true);
-            confirmBtn.setEnabled(false);
             showSoftKeyboard(otherEntry);
             if (straightCheckbox.isChecked()) {
                 straightCheckbox.toggle();
@@ -416,11 +410,12 @@ public class OrderSummary extends AppCompatActivity {
         otherEntry = findViewById(R.id.Other);
         otherEntry.setEnabled(false);
         preferLoadingText = findViewById(R.id.PreferLoadingText);
+        selectOne = findViewById(R.id.SelectOne);
+        selectOne.setVisibility(View.GONE);
         ordersCount = findViewById(R.id.OrdersCount);
         totalPalletsCount = findViewById(R.id.PalletCount);
         totalWeightCount = findViewById(R.id.TotalWeight);
         characterCounterTextView = findViewById(R.id.CharacterCounter);
-        confirmBtn.setEnabled(false);
 
         ordersCount.setText(Integer.toString(Order.getOrdersList().size()));
         DecimalFormat formatter = new DecimalFormat("#,###");
@@ -449,6 +444,7 @@ public class OrderSummary extends AppCompatActivity {
             destination.setTextSize(40);
             estWeight.setTextSize(40);
             preferLoadingText.setText("Select your preferred loading method:");
+            selectOne.setText("*You must select a loading method");
             straight.setText("Straight");
             sideways.setText("Sideways");
             blocked.setText("Blocked");
@@ -476,6 +472,7 @@ public class OrderSummary extends AppCompatActivity {
             destination.setTextSize(36);
             estWeight.setTextSize(36);
             preferLoadingText.setText("Seleccione la configuracion de su carga");
+            selectOne.setText("*Debes seleccionar un configuracion de carga");
             straight.setText("Paletas derechas");
             sideways.setText("Paletas de lado");
             blocked.setText("Paletas bloqueadass");
@@ -502,7 +499,8 @@ public class OrderSummary extends AppCompatActivity {
             aptTime.setTextSize(30);
             destination.setTextSize(30);
             estWeight.setTextSize(30);
-            preferLoadingText.setText("Select your preferred loading method:");
+            preferLoadingText.setText("Sélectionnez votre méthode de chargement préférée:");
+            selectOne.setText("*Vous devez sélectionner une méthode de chargement");
             straight.setText("Straight");
             sideways.setText("Sideways");
             blocked.setText("Blocked");
