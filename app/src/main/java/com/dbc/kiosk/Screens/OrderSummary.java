@@ -96,6 +96,8 @@ public class OrderSummary extends AppCompatActivity {
             dialog.setCancelable(false);
         });
         backBtn.setOnClickListener(v12 -> {
+            Intent intent = new Intent(OrderSummary.this, OrderEntry.class);
+            intent.putExtra("enable", "true");
             startActivity(new Intent(OrderSummary.this, OrderEntry.class));
             overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
         });

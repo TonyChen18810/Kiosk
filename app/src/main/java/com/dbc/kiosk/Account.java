@@ -27,6 +27,9 @@ public class Account {
     }
 
     public static List<String> getEMAIL_LIST() {
+        if (EMAIL_LIST == null) {
+            EMAIL_LIST = new ArrayList<>();
+        }
         return EMAIL_LIST;
     }
 

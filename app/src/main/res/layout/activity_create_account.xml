@@ -71,6 +71,17 @@
                 android:layout_marginBottom="5dp"/>
 
             <TextView
+                android:id="@+id/PhoneInUseWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="*Phone number already in use"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="20sp"
+                android:textAlignment="textEnd"
+                android:textStyle="italic" />
+
+            <TextView
                 android:id="@+id/DriverNameHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

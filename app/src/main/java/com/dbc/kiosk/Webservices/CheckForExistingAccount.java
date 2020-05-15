@@ -3,6 +3,7 @@ package com.dbc.kiosk.Webservices;
 import android.app.Activity;
 import android.os.AsyncTask;
 import com.dbc.kiosk.Account;
+import com.dbc.kiosk.Screens.CreateAccount;
 import com.dbc.kiosk.Screens.LoggedIn;
 import com.dbc.kiosk.Screens.MainActivity;
 import com.dbc.kiosk.Settings;
@@ -92,7 +93,13 @@ public class CheckForExistingAccount extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         if (connection) {
-            if (newAccount) {
+            if (email_phone == 3) {
+                if (propertyCount > 0) {
+                    CreateAccount.existingPhoneNumberListener.setValue(true);
+                } else {
+                    CreateAccount.existingPhoneNumberListener.setValue(false);
+                }
+            } else if (newAccount) {
                 if (propertyCount > 0 && email_phone == 0) {
                     System.out.println("The email is already in use.");
                     MainActivity.emailListener.setValue(false);

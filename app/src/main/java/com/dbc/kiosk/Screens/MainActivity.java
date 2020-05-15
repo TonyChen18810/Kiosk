@@ -100,13 +100,13 @@ public class MainActivity extends AppCompatActivity {
                 if (!accountExists) {
                     System.out.println("Account does not exist!");
                     setStatus(0, asList(emailAddressBox, phoneNumberBox), asList(noEmailWarning, noPhoneNumberWarning));
-                    nextBtn.setEnabled(true);
-                    backBtn.setEnabled(true);
+                    enableObjects(nextBtn, backBtn, emailAddressBox, phoneNumberBox, englishCheckbox, spanishCheckbox, frenchCheckbox);
+                    showSoftKeyboard(emailAddressBox);
                     progressBar.setVisibility(View.GONE);
                 } else if (!PhoneNumberFormat.extract(phoneNumberBox.getText().toString()).equals(Account.getCurrentAccount().getPhoneNumber())){
                     setStatus(0, Collections.singletonList(phoneNumberBox), Collections.singletonList(noPhoneNumberWarning));
-                    nextBtn.setEnabled(true);
-                    backBtn.setEnabled(true);
+                    enableObjects(nextBtn, backBtn, emailAddressBox, phoneNumberBox, englishCheckbox, spanishCheckbox, frenchCheckbox);
+                    showSoftKeyboard(phoneNumberBox);
                     progressBar.setVisibility(View.GONE);
                 } else {
                     System.out.println("Account exists!");
@@ -322,8 +322,7 @@ public class MainActivity extends AppCompatActivity {
                 // emailInUseWarning.setVisibility(View.VISIBLE);
                 accountAlreadyExists.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
-                nextBtn.setEnabled(true);
-                backBtn.setEnabled(true);
+                enableObjects(nextBtn, backBtn, emailAddressBox, confirmEmailAddress, phoneNumberBox, confirmPhoneNumber, englishCheckbox, spanishCheckbox, frenchCheckbox);
             } else if (available) {
                 // good email
                 System.out.println("Good email...");
@@ -357,15 +356,7 @@ public class MainActivity extends AppCompatActivity {
                 setStatus(0, Collections.singletonList(phoneNumberBox), Collections.emptyList());
                 // phoneInUseWarning.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
-                nextBtn.setEnabled(true);
-                backBtn.setEnabled(true);
-                emailAddressBox.setEnabled(true);
-                confirmEmailAddress.setEnabled(true);
-                phoneNumberBox.setEnabled(true);
-                confirmPhoneNumber.setEnabled(true);
-                englishCheckbox.setEnabled(true);
-                spanishCheckbox.setEnabled(true);
-                frenchCheckbox.setEnabled(true);
+                enableObjects(nextBtn, backBtn, emailAddressBox, confirmEmailAddress, phoneNumberBox, confirmPhoneNumber, englishCheckbox, spanishCheckbox, frenchCheckbox);
             } else if (available) {
                 // good phone
                 System.out.println("Good phone...");
@@ -388,15 +379,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         nextBtn.setOnClickListener(v -> {
-            nextBtn.setEnabled(false);
-            backBtn.setEnabled(false);
-            englishCheckbox.setEnabled(false);
-            spanishCheckbox.setEnabled(false);
-            frenchCheckbox.setEnabled(false);
-            emailAddressBox.setEnabled(false);
-            phoneNumberBox.setEnabled(false);
-            confirmEmailAddress.setEnabled(false);
-            confirmPhoneNumber.setEnabled(false);
+            disableObjects(nextBtn, backBtn, englishCheckbox, spanishCheckbox, frenchCheckbox, emailAddressBox, phoneNumberBox, confirmEmailAddress, confirmPhoneNumber);
             if (!newAccount) {
                 if (validEmail() && validNumber()) {
                     progressBar.setVisibility(View.VISIBLE);
@@ -437,15 +420,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         setStatus(-1, asList(phoneNumberBox, confirmPhoneNumber), Collections.singletonList(unmatchingPhone));
                     }
-                    nextBtn.setEnabled(true);
-                    backBtn.setEnabled(true);
-                    emailAddressBox.setEnabled(true);
-                    phoneNumberBox.setEnabled(true);
-                    confirmEmailAddress.setEnabled(true);
-                    confirmPhoneNumber.setEnabled(true);
-                    englishCheckbox.setEnabled(true);
-                    spanishCheckbox.setEnabled(true);
-                    frenchCheckbox.setEnabled(true);
+                    enableObjects(nextBtn, backBtn, emailAddressBox, phoneNumberBox, confirmEmailAddress, confirmPhoneNumber, englishCheckbox, spanishCheckbox, frenchCheckbox);
                 }
             }
         });
@@ -548,6 +523,19 @@ public class MainActivity extends AppCompatActivity {
             if (text.getVisibility() == View.VISIBLE) {
                 text.startAnimation(ani);
             }
+        }
+    }
+
+    // used to enable all of the EditTexts/Buttons/Checkboxes
+    public void enableObjects(TextView... textViews) {
+        for (TextView object : textViews) {
+            object.setEnabled(true);
+        }
+    }
+    // used to disable all of the EditTexts/Buttons/Checkboxes
+    public void disableObjects(TextView ... textViews) {
+        for (TextView object : textViews) {
+            object.setEnabled(false);
         }
     }
 

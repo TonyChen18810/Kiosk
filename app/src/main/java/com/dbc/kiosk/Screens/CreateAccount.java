@@ -6,9 +6,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
@@ -29,9 +27,11 @@ import com.dbc.kiosk.Helpers.KeyboardListener;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.R;
+import com.dbc.kiosk.Webservices.CheckForExistingAccount;
 import com.dbc.kiosk.Webservices.GetServerTime;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 /**
@@ -50,7 +50,7 @@ public class CreateAccount extends AppCompatActivity {
     private String email, phone;
     private Button logoutBtn, nextBtn;
     private TextView createAccount, verifyText, preferText, emailHint, phoneHint, driverNameHint,
-            driverLicenseHint, truckNameHint, truckNumberHint, trailerLicenseHint, dispatcherPhoneHint;
+            driverLicenseHint, truckNameHint, truckNumberHint, trailerLicenseHint, dispatcherPhoneHint, phoneInUseWarning;
     private EditText emailAddress, phoneNumber, truckName, truckNumber, trailerLicense, driverLicense,
             driverName, dispatcherPhoneNumber;
     private Spinner trailerStateSpinner, driverStateSpinner;
@@ -68,6 +68,7 @@ public class CreateAccount extends AppCompatActivity {
     private boolean clicked1 = false, clicked2 = false;
 
     public static MutableLiveData<Boolean> checkboxListener;
+    public static MutableLiveData<Boolean> existingPhoneNumberListener;
 
     private int PREFERRED_COMMUNICATION = -1;
 
@@ -103,6 +104,17 @@ public class CreateAccount extends AppCompatActivity {
                 clicked2 = true;
                 selectState2.clearAnimation();
                 dispatcherPhoneNumber.requestFocus();
+            }
+        });
+
+        existingPhoneNumberListener = new MutableLiveData<>();
+        existingPhoneNumberListener.observe(CreateAccount.this, exists -> {
+            if (exists) {
+                phoneInUseWarning.setVisibility(View.VISIBLE);
+                setStatus(0, Collections.singletonList(phoneNumber));
+            } else {
+                phoneInUseWarning.setVisibility(View.GONE);
+                setStatus(-1, Collections.singletonList(phoneNumber));
             }
         });
 
@@ -224,7 +236,11 @@ public class CreateAccount extends AppCompatActivity {
                 if (PREFERRED_COMMUNICATION == -1) {
                     selectText.setVisibility(View.VISIBLE);
                 }
+            } else if (!PhoneNumberFormat.extract(phone).equals(PhoneNumberFormat.extract(phoneNumber.getText().toString()))) {
+                new CheckForExistingAccount(CreateAccount.this, PhoneNumberFormat.extract(phoneNumber.getText().toString()), 3, false).execute();
             } else {
+                phoneInUseWarning.setVisibility(View.GONE);
+                setStatus(-1, Collections.singletonList(phoneNumber));
                 disableButtons(nextBtn, selectState1, selectState2, logoutBtn);
                 disableEditTexts(emailAddress, phoneNumber, truckName, truckNumber, trailerLicense, driverLicense, driverName, dispatcherPhoneNumber);
                 textCheckbox.setEnabled(false);
@@ -466,6 +482,7 @@ public class CreateAccount extends AppCompatActivity {
         nextBtn = findViewById(R.id.NextBtn);
         createAccount = findViewById(R.id.CreateAccountText);
         emailAddress = findViewById(R.id.EmailAddressBox);
+        emailAddress.setEnabled(false);
         phoneNumber = findViewById(R.id.PhoneNumberBox);
         truckName = findViewById(R.id.TruckNameBox);
         truckNumber = findViewById(R.id.TruckNumberBox);
@@ -487,6 +504,8 @@ public class CreateAccount extends AppCompatActivity {
         truckNumberHint = findViewById(R.id.TruckNumberHint);
         trailerLicenseHint = findViewById(R.id.TrailerLicenseHint);
         dispatcherPhoneHint = findViewById(R.id.DispatcherHint);
+        phoneInUseWarning = findViewById(R.id.PhoneInUseWarning);
+        phoneInUseWarning.setVisibility(View.GONE);
         driverNameHint.setAlpha(0.0f);
         driverLicenseHint.setAlpha(0.0f);
         truckNameHint.setAlpha(0.0f);

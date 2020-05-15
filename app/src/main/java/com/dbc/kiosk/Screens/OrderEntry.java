@@ -86,6 +86,18 @@ public class OrderEntry extends AppCompatActivity {
         report.setDriverTags();
         setup();
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String value = extras.getString("enable");
+            if (value.equals("enable")) {
+                submitBtn.setEnabled(true);
+            } else {
+                submitBtn.setEnabled(false);
+            }
+        } else {
+            submitBtn.setEnabled(false);
+        }
+
         System.out.println("Kiosk number: " + Settings.getKioskNumber());
         System.out.println("Cooler location: " + Settings.getCoolerLocation());
 
@@ -106,9 +118,11 @@ public class OrderEntry extends AppCompatActivity {
             if (empty) {
                 recyclerView.setVisibility(View.INVISIBLE);
                 currentlyEntered.setVisibility(View.INVISIBLE);
+                submitBtn.setEnabled(false);
             } else {
                 recyclerView.setVisibility(View.VISIBLE);
                 currentlyEntered.setVisibility(View.VISIBLE);
+                submitBtn.setEnabled(true);
             }
         });
 
@@ -129,6 +143,7 @@ public class OrderEntry extends AppCompatActivity {
 
         validOrderNumber.observe(OrderEntry.this, valid -> {
             // non-existing order
+            logoutBtn.setEnabled(true);
             if (valid == 0) {
                 checkOrderBtn.setEnabled(true);
                 // CustomOrderKeyboard.enableEnterButton();
@@ -331,6 +346,12 @@ public class OrderEntry extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+
+        if (!Order.getOrdersList().get(0).getSOPNumber().equals("")) {
+            submitBtn.setEnabled(true);
+        } else {
+            submitBtn.setEnabled(false);
+        }
 
         logoutBtn.setOnClickListener(v -> {
             LogoutDialog dialog = new LogoutDialog(OrderEntry.this, OrderEntry.this);
@@ -585,7 +606,7 @@ public class OrderEntry extends AppCompatActivity {
         phoneNumberStr.setText(PhoneNumberFormat.formatPhoneNumber(Account.getCurrentAccount().getPhoneNumber()));
         truckNumberStr.setText(String.format("%s %s", Account.getCurrentAccount().getTruckName(), Account.getCurrentAccount().getTruckNumber()));
         addOrderBtn.setEnabled(false);
-        submitBtn.setEnabled(false);
+        // submitBtn.setEnabled(false);
         checkOrderBtn.setEnabled(false);
         CustomOrderKeyboard.disableEnterButton();
         checkOrderBtn.setBackgroundResource(R.drawable.arrow_right_disabled);
