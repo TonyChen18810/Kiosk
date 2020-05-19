@@ -4,11 +4,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
-
+/**
+ * HintTextWatcher.java
+ *
+ * Controls whether or not the hints are displayed in
+ * CreateAccount.java. The hints will appear above
+ * the text entry field only if the field is not empty,
+ * if it IS empty then the hint is displayed inside the
+ * field itself.
+ */
 public class HintTextWatcher implements TextWatcher {
 
-    EditText field;
-    TextView hint;
+    private EditText field;
+    private TextView hint;
 
     public HintTextWatcher(EditText field, TextView hint) {
         this.field = field;

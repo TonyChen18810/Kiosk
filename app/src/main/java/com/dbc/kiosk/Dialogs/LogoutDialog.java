@@ -13,6 +13,12 @@ import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.FirstScreen;
 
+/**
+ * LogoutDialog.java
+ *
+ * Displays a confirmation dialog to the user if
+ * Logout is pressed on any of the screens
+ */
 public class LogoutDialog extends Dialog implements android.view.View.OnClickListener {
 
     private Context context;

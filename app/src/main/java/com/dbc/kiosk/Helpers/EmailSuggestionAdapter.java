@@ -14,7 +14,19 @@ import androidx.annotation.Nullable;
 import com.dbc.kiosk.R;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * EmailSuggestionAdapter.java
+ *
+ * This class is used to generate the suggestion list of emails
+ * after a user has typed enough characters in. This only applies
+ * to the email entry field on the initial log in page. (i.e. if
+ * they already have an account)
+ *
+ * The suggestion list will only be displayed if there is one result remaining
+ * to prevent revealing other truck drivers emails when possible
+ *
+ * Used in MainActivity.java
+ */
 public class EmailSuggestionAdapter extends ArrayAdapter<String> {
 
     private Context context;
@@ -105,6 +117,7 @@ public class EmailSuggestionAdapter extends ArrayAdapter<String> {
                     add(email);
                 }
                 notifyDataSetChanged();
+                // make sure suggestion list size is only 1 before displaying it
                 if (filterResults.count == 1) {
                     emailAddressBox.showDropDown();
                 } else {
@@ -113,6 +126,7 @@ public class EmailSuggestionAdapter extends ArrayAdapter<String> {
             } else {
                 clear();
                 notifyDataSetChanged();
+                // make sure suggestion list size is only 1 before displaying it
                 if (filterResults.count == 1) {
                     emailAddressBox.showDropDown();
                 } else {

@@ -8,6 +8,19 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+/**
+ * GetAllEmails.java
+ *
+ * This is used to supply EmailSuggestionAdapter.java with a
+ * list of emails to create a suggestion list with
+ *
+ * Uses the GetShippingTruckDriver web service method but instead
+ * passes in a wildcard (%) to retrieve all emails from the database
+ *
+ * The list of emails is maintained in Account.java
+ *
+ * Called from FirstScreen.java
+ */
 public class GetAllEmails extends AsyncTask<Void, Void, Void> {
 
     private boolean connection;

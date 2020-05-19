@@ -32,9 +32,6 @@ import com.dbc.kiosk.Webservices.CheckForExistingAccount;
 import com.dbc.kiosk.Webservices.GetServerTime;
 import com.dbc.kiosk.Webservices.UpdateShippingTruckDriver;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
-import org.w3c.dom.Text;
-
 import java.util.Collections;
 import java.util.List;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;

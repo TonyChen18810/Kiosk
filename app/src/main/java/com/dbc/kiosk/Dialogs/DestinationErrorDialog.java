@@ -7,13 +7,17 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.R;
 import com.dbc.kiosk.Screens.OrderEntry;
 
+/**
+ * DestinationErriorDialog.java
+ *
+ * Displays a dialog to the user when an incorrect destination is selected
+ * after entering an order number and confirming the correct customer
+ */
 public class DestinationErrorDialog extends Dialog implements android.view.View.OnClickListener {
 
     public DestinationErrorDialog(@NonNull Context context) {

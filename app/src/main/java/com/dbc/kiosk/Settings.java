@@ -45,11 +45,6 @@ public class Settings extends Fragment {
     private static String DBC_URL;
     private static final String password = "4535";
 
-    private static String errorMsg;
-    private static String errorClass;
-
-    private static String errorDate;
-
     private static SharedPreferences settings;
 
     private static WeakReference<Activity> mWeakActivity;
@@ -76,18 +71,6 @@ public class Settings extends Fragment {
 
     public static void setDbcUrl(String url) {
         DBC_URL = url;
-    }
-
-    private static String getErrorMsg() {
-        return errorMsg;
-    }
-
-    private static String getErrorClass() {
-        return errorClass;
-    }
-
-    private static String getErrorDate() {
-        return errorDate;
     }
 
     public Settings(Activity activity) {
@@ -117,7 +100,6 @@ public class Settings extends Fragment {
             e.printStackTrace();
         }
         versionUpdate.setText("Version " + version + " updates:");
-        errorText.setText(getErrorMsg());
         ImageButton exitBtn = view.findViewById(R.id.ExitBtn);
         Button saveBtn = view.findViewById(R.id.SaveBtn);
         Spinner locationCoolerSpinner = view.findViewById(R.id.CoolerLocationSpinner);
@@ -156,9 +138,6 @@ public class Settings extends Fragment {
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("cooler_location", coolerLocation);
             editor.putString("kiosk_number", kioskNumber);
-            editor.putString("error_msg", getErrorMsg());
-            editor.putString("error_class", getErrorClass());
-            editor.putString("error_date", getErrorDate());
             editor.putString("DBC_URL", getDbcUrl());
             editor.commit();
             FirstScreen.settingsListener.setValue(true);
@@ -267,6 +246,6 @@ public class Settings extends Fragment {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         coolerLocation = settings.getString("cooler_location", "01");
         kioskNumber = settings.getString("kiosk_number", "01");
-        DBC_URL = settings.getString("DBC_URL", "http://vmiis/DBCWebService/DBCWebService.asmx"); // def value is production
+        DBC_URL = settings.getString("DBC_URL", "http://vmiis/DBCWebService/DBCWebService.asmx"); // default value is production
     }
 }
