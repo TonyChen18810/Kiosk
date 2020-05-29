@@ -21,6 +21,7 @@ import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Dialogs.LogoutDialog;
 import com.dbc.kiosk.Dialogs.ProgressDialog;
 import com.dbc.kiosk.Helpers.Language;
+import com.dbc.kiosk.Helpers.PhoneNumberFormat;
 import com.dbc.kiosk.Helpers.RecyclerViewSummaryAdapter;
 import com.dbc.kiosk.Helpers.Rounder;
 import com.dbc.kiosk.Order;
@@ -51,9 +52,9 @@ import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
  */
 public class OrderSummary extends AppCompatActivity {
 
-    TextView confirmOrders, confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight,
+    TextView confirmationNumberText, orderNumber, buyerName, estPallets, aptTime, destination, estWeight,
             totalOrders, totalPallets, totalWeight, ordersCount, totalPalletsCount, totalWeightCount, characterCounterTextView,
-            straight, blocked, sideways, noPreference, preferLoadingText, selectOne;
+            straight, blocked, sideways, noPreference, preferLoadingText, selectOne, email, phone, truck;
     Button confirmBtn, backBtn;
 
     private CheckBox straightCheckbox, sidewaysCheckbox, blockedCheckbox, noPreferenceCheckbox, otherCheckbox;
@@ -386,8 +387,13 @@ public class OrderSummary extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-        confirmOrders = findViewById(R.id.ConfirmOrders);
         confirmationNumberText = findViewById(R.id.ConfirmationNumberText);
+        email = findViewById(R.id.EmailStr);
+        phone = findViewById(R.id.PhoneNumberStr);
+        truck = findViewById(R.id.TruckNumberStr);
+        email.setText(Account.getCurrentAccount().getEmail());
+        phone.setText(PhoneNumberFormat.formatPhoneNumber(Account.getCurrentAccount().getPhoneNumber()));
+        truck.setText(Account.getCurrentAccount().getTruckName() + " " + Account.getCurrentAccount().getTruckNumber());
         orderNumber = findViewById(R.id.OrderNum);
         buyerName = findViewById(R.id.BuyerName);
         estPallets = findViewById(R.id.EstPallets);
@@ -425,7 +431,6 @@ public class OrderSummary extends AppCompatActivity {
         totalWeightCount.setText(formatter.format(Order.getTotalWeight()) + " lbs");
 
         if (Language.getCurrentLanguage() == 1) {
-            confirmOrders.setText(R.string.confirm_orders_eng);
             confirmationNumberText.setText(R.string.confirmation_num_eng);
             orderNumber.setText(R.string.order_number_eng);
             buyerName.setText(R.string.buyer_name_eng);
@@ -453,7 +458,6 @@ public class OrderSummary extends AppCompatActivity {
             noPreference.setText("No Preference");
             otherEntry.setHint("Other");
         } else if (Language.getCurrentLanguage() == 2) {
-            confirmOrders.setText(R.string.confirm_orders_sp);
             confirmationNumberText.setText(R.string.confirmation_num_sp);
             orderNumber.setText(R.string.order_number_sp);
             buyerName.setText(R.string.buyer_name_sp);
@@ -481,7 +485,6 @@ public class OrderSummary extends AppCompatActivity {
             noPreference.setText("Sin preferencias");
             otherEntry.setHint("Instucciones especificas");
         } else if (Language.getCurrentLanguage() == 3) {
-            confirmOrders.setText(R.string.confirm_orders_fr);
             confirmationNumberText.setText(R.string.confirmation_num_fr);
             orderNumber.setText(R.string.order_number_fr);
             buyerName.setText(R.string.buyer_name_fr);

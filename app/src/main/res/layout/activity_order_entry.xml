@@ -318,7 +318,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
-                android:paddingTop="-500dp"
                 android:text="(123) 456-7890"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="#C9000000"

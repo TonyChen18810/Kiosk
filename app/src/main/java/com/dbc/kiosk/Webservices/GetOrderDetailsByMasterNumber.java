@@ -171,5 +171,13 @@ public class GetOrderDetailsByMasterNumber extends AsyncTask<Void, Void, Void> {
                 orderNumber.setText("");
             }
         }
+        /*
+        Activity activity = mWeakActivity.get();
+        if (activity != null) {
+            MoreOrdersDialog dialog = new MoreOrdersDialog(activity, activity);
+            dialog.show();
+            dialog.setCancelable(false);
+        }
+         */
     }
 }

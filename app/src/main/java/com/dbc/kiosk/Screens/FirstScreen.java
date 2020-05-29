@@ -29,7 +29,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
-
 /**
  * FirstScreen.java
  *
@@ -45,7 +44,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 public class FirstScreen extends AppCompatActivity {
     private String version;
     private CheckBox englishCheckbox, spanishCheckbox, frenchCheckbox;
-    private TextView appointmentWarningText, existingAccountText, versionText;
+    private TextView appointmentWarningText, existingAccountText, versionText, noBerries, wrongOffice;
     private Button noBtn, yesBtn;
 
     public static MutableLiveData<Boolean> settingsListener = null;
@@ -200,7 +199,7 @@ public class FirstScreen extends AppCompatActivity {
     }
 
     public void textFadeStart() {
-        TextView[] textArray = {appointmentWarningText, existingAccountText, noBtn, yesBtn};
+        TextView[] textArray = {appointmentWarningText, existingAccountText, noBtn, yesBtn, noBerries, wrongOffice};
         AlphaAnimation ani = new AlphaAnimation(1.0f, 0.2f);
         ani.setDuration(500);
         for (TextView text : textArray) {
@@ -209,7 +208,7 @@ public class FirstScreen extends AppCompatActivity {
     }
 
     public void textFadeEnd() {
-        TextView[] textArray = {appointmentWarningText, existingAccountText, noBtn, yesBtn};
+        TextView[] textArray = {appointmentWarningText, existingAccountText, noBtn, yesBtn, noBerries, wrongOffice};
         AlphaAnimation ani = new AlphaAnimation(0.2f, 1.0f);
         ani.setDuration(500);
         for (TextView text : textArray) {
@@ -238,6 +237,9 @@ public class FirstScreen extends AppCompatActivity {
         }
         versionText = findViewById(R.id.VersionText);
         versionText.setText("Version: " + version);
+
+        noBerries = findViewById(R.id.NoBerries);
+        wrongOffice = findViewById(R.id.WrongOffice);
 
         appointmentWarningText = findViewById(R.id.AppointmentText);
         existingAccountText = findViewById(R.id.ExistingAccountText);
@@ -273,17 +275,22 @@ public class FirstScreen extends AppCompatActivity {
             existingAccountText.setText(R.string.existing_account_eng);
             noBtn.setText(R.string.no_eng);
             yesBtn.setText(R.string.yes_eng);
+            noBerries.setText("NO DRISCOLL'S/BERRIES");
+            wrongOffice.setText("*If you have a Driscoll's order, you are at the wrong office.");
         } else if (currentLanguage == 2) {
             appointmentWarningText.setText(R.string.appt_required_sp);
             existingAccountText.setText(R.string.existing_account_sp);
             noBtn.setText(R.string.no_sp);
             yesBtn.setText(R.string.yes_sp);
-
+            noBerries.setText("NO DRISCOLL'S/BAYAS");
+            wrongOffice.setText("*Si tiene un pedido de Driscoll, está en la oficina equivocada.");
         } else if ((currentLanguage == 3)) {
             appointmentWarningText.setText(R.string.appt_required_fr);
             existingAccountText.setText(R.string.existing_account_fr);
             noBtn.setText(R.string.no_fr);
             yesBtn.setText(R.string.yes_fr);
+            noBerries.setText("PAS DE DRISCOLL'S/BAIES");
+            wrongOffice.setText("*Si vous avez une commande Driscoll, vous êtes au mauvais bureau.");
         }
     }
 }

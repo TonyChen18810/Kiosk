@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Helpers.Language;
 import com.dbc.kiosk.Order;
 import com.dbc.kiosk.R;
@@ -47,15 +49,18 @@ public class SubmitDialog extends Dialog implements android.view.View.OnClickLis
         Button no = findViewById(R.id.btn_no);
         TextView deleteOrder = findViewById(R.id.CorrectCustomer);
         if (Language.getCurrentLanguage() == 1) {
-            deleteOrder.setText(R.string.submit_confirm_eng);
+            // deleteOrder.setText(R.string.submit_confirm_eng);
+            deleteOrder.setText(Account.getCurrentAccount().getDriverName() + ", are you sure you want to submit these order(s)?");
             yes.setText(R.string.yes_eng);
             no.setText(R.string.no_eng);
         } else if (Language.getCurrentLanguage() == 2) {
-            deleteOrder.setText(R.string.submit_confirm_sp);
+            // deleteOrder.setText(R.string.submit_confirm_sp);
+            deleteOrder.setText("¿" + Account.getCurrentAccount().getDriverName() + ", está seguro de que quiere enviar estos pedidos?");
             yes.setText(R.string.yes_sp);
             no.setText(R.string.no_sp);
         } else if (Language.getCurrentLanguage() == 3) {
-            deleteOrder.setText(R.string.submit_confirm_fr);
+            // deleteOrder.setText(R.string.submit_confirm_fr);
+            deleteOrder.setText(Account.getCurrentAccount().getDriverName() + ", voulez-vous vraiment envoyer ces commandes?");
             yes.setText(R.string.yes_fr);
             no.setText(R.string.no_fr);
         }

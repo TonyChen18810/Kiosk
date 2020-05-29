@@ -201,11 +201,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="
-        \n                  &#8226; Remove help buttons on create account screen                   \n
-        \n                  &#8226; Adds more kiosk number options in settings menu                    \n
-        \n                  &#8226; Adds extra hints on create account screen                     \n
-        \n                  &#8226; Spanish translation for loading options. Warning for loading options if none are selected when 'Next' is pressed                     \n
-        \n                  &#8226; Disable all buttons/text entries while kiosk is loading                     \n"
+        \n                  &#8226; Added drivers name to app messages                   \n
+        \n                  &#8226; Added driver account info to Order Summary screen                    \n
+        \n                  &#8226; Enlarged and bolded driver account info on screens                     \n
+        \n                  &#8226; Added a Driscoll's/Berries warning on initial screen                     \n"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
