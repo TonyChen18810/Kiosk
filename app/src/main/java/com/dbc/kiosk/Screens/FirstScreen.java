@@ -1,5 +1,6 @@
 package com.dbc.kiosk.Screens;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
@@ -46,6 +47,7 @@ public class FirstScreen extends AppCompatActivity {
     private CheckBox englishCheckbox, spanishCheckbox, frenchCheckbox;
     private TextView appointmentWarningText, existingAccountText, versionText, noBerries, wrongOffice;
     private Button noBtn, yesBtn;
+    private CardView berryCard;
 
     public static MutableLiveData<Boolean> settingsListener = null;
 
@@ -75,6 +77,11 @@ public class FirstScreen extends AppCompatActivity {
         System.out.println("Kiosk number: " + Settings.getKioskNumber());
         System.out.println("Cooler location: " + Settings.getCoolerLocation());
         System.out.println("System mode: " + Settings.getDbcUrl());
+        if (Settings.getCoolerLocation().equals("06")) {
+            berryCard.setVisibility(View.INVISIBLE);
+        } else {
+            berryCard.setVisibility(View.VISIBLE);
+        }
 
         // settings page - opens if version number is clicked 3 times
         final Fragment[] settingsFragment = new Fragment[1];
@@ -113,6 +120,11 @@ public class FirstScreen extends AppCompatActivity {
                 } else if (Settings.getDbcUrl().equals("http://VMSQLTEST/DBCWebService/DBCWebService.asmx")) {
                     Toast.makeText(FirstScreen.this, "App environment set to: TEST", Toast.LENGTH_SHORT).show();
                     System.out.println("test");
+                }
+                if (Settings.getCoolerLocation().equals("06")) {
+                    berryCard.setVisibility(View.INVISIBLE);
+                } else {
+                    berryCard.setVisibility(View.VISIBLE);
                 }
                 new GetAllEmails().execute();
             }
@@ -238,6 +250,7 @@ public class FirstScreen extends AppCompatActivity {
         versionText = findViewById(R.id.VersionText);
         versionText.setText("Version: " + version);
 
+        berryCard = findViewById(R.id.BerryCard);
         noBerries = findViewById(R.id.NoBerries);
         wrongOffice = findViewById(R.id.WrongOffice);
 
@@ -275,21 +288,24 @@ public class FirstScreen extends AppCompatActivity {
             existingAccountText.setText(R.string.existing_account_eng);
             noBtn.setText(R.string.no_eng);
             yesBtn.setText(R.string.yes_eng);
-            noBerries.setText("NO DRISCOLL'S/BERRIES");
+            //noBerries.setText("NO DRISCOLL'S/BERRIES");
+            noBerries.setText("PLEASE CHECK IN DRISCOLL’S/BERRIES ORDERS AT OTHER OFFICE");
             wrongOffice.setText("*If you have a Driscoll's order, you are at the wrong office.");
         } else if (currentLanguage == 2) {
             appointmentWarningText.setText(R.string.appt_required_sp);
             existingAccountText.setText(R.string.existing_account_sp);
             noBtn.setText(R.string.no_sp);
             yesBtn.setText(R.string.yes_sp);
-            noBerries.setText("NO DRISCOLL'S/BAYAS");
+            //noBerries.setText("NO DRISCOLL'S/BAYAS");
+            noBerries.setText("POR FAVOR VERIFIQUE LOS PEDIDOS DE DRISCOLL'S/BERRIES EN OTRA OFICINA");
             wrongOffice.setText("*Si tiene un pedido de Driscoll, está en la oficina equivocada.");
         } else if ((currentLanguage == 3)) {
             appointmentWarningText.setText(R.string.appt_required_fr);
             existingAccountText.setText(R.string.existing_account_fr);
             noBtn.setText(R.string.no_fr);
             yesBtn.setText(R.string.yes_fr);
-            noBerries.setText("PAS DE DRISCOLL'S/BAIES");
+            //noBerries.setText("PAS DE DRISCOLL'S/BAIES");
+            noBerries.setText("VEUILLEZ VÉRIFIER LES COMMANDES DE DRISCOLL/BAIES À UN AUTRE BUREAU");
             wrongOffice.setText("*Si vous avez une commande Driscoll, vous êtes au mauvais bureau.");
         }
     }

@@ -201,10 +201,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="
-        \n                  &#8226; Added drivers name to app messages                   \n
-        \n                  &#8226; Added driver account info to Order Summary screen                    \n
-        \n                  &#8226; Enlarged and bolded driver account info on screens                     \n
-        \n                  &#8226; Added a Driscoll's/Berries warning on initial screen                     \n"
+        \n                  &#8226; Minor phrasing changes to the NO BERRIES/DRISCOLL'S message              \n
+        \n                  &#8226; The NO BERRIES message will only show if the location is set to Salinas (01), and disappear if set to Yuma (06)              \n"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

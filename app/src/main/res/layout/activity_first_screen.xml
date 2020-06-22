@@ -270,9 +270,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="NO DRISCOLL'S/BERRIES"
+                        android:text="PLEASE CHECK IN DRISCOLL’S/BERRIES ORDERS AT OTHER OFFICE"
                         android:textColor="#000000"
-                        android:textSize="50sp" />
+                        android:textSize="40sp" />
 
                     <TextView
                         android:id="@+id/WrongOffice"
