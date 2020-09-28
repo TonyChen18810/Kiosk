@@ -1,41 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.kiosk">
+    package="com.dbc.kiosk">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/truck_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysVisible"
-        android:name="com.example.App"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".OrderSummary"/>
-        <activity android:name=".AccountCreatedMsg" />
-        <activity android:name=".OrderSubmitted" />
-        <activity android:name=".OrderInfo" />
-        <activity android:name=".LoggedIn" />
-        <activity
-            android:name=".CreateAccount"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysVisible">
+        <activity android:name="com.dbc.kiosk.Screens.FirstScreen"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
+        <activity android:name="com.dbc.kiosk.Screens.OrderSummary"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity android:name="com.dbc.kiosk.Screens.OrderEntry"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity android:name="com.dbc.kiosk.Screens.LoggedIn"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateAlwaysVisible">
+        </activity>
+        <activity
+            android:name="com.dbc.kiosk.Screens.CreateAccount"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name="com.dbc.kiosk.Screens.MainActivity"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateAlwaysVisible">
+        </activity>
 
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            tools:node="remove"
+            android:name="io.fabric.ApiKey"/>
+    </application>
 </manifest>

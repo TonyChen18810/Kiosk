@@ -1,15 +1,27 @@
 <resources>
     <string name="app_name">Kiosk</string>
 
+    <string name="languageprompt">
+        <font size="70">
+            Language/Idioma/Langue
+        </font>
+    </string>
+
     <string name="yes">
-        <font size="20">
+        <font size="80">
             yes
         </font>
     </string>
 
     <string name="no">
-        <font size="20">
+        <font size="80">
             no
+        </font>
+    </string>
+
+    <string name="customer">
+        <font size="80">
+            Correct Customer?
         </font>
     </string>
 
@@ -104,17 +116,382 @@
         <item>West Virginia</item>
         <item>Wisconsin</item>
         <item>Wyoming</item>
+        <item>Ontario</item>
+        <item>Quebec</item>
+        <item>Nova Scotia</item>
+        <item>New Brunswick</item>
+        <item>Manitoba</item>
+        <item>British Columbia</item>
+        <item>Prince Edward Island</item>
+        <item>Saskatchewan</item>
+        <item>Alberta</item>
+        <item>Newfoundland and Labrador</item>
+        <item>Mexico</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string-array name="states_abbreviated">
+        <item>AL</item>
+        <item>AK</item>
+        <item>AZ</item>
+        <item>AR</item>
+        <item>CA</item>
+        <item>CO</item>
+        <item>CT</item>
+        <item>DE</item>
+        <item>FL</item>
+        <item>GA</item>
+        <item>HI</item>
+        <item>ID</item>
+        <item>IL</item>
+        <item>IN</item>
+        <item>IA</item>
+        <item>KS</item>
+        <item>KY</item>
+        <item>LA</item>
+        <item>ME</item>
+        <item>MD</item>
+        <item>MA</item>
+        <item>MI</item>
+        <item>MN</item>
+        <item>MS</item>
+        <item>MO</item>
+        <item>MT</item>
+        <item>NE</item>
+        <item>NV</item>
+        <item>NH</item>
+        <item>NJ</item>
+        <item>NM</item>
+        <item>NY</item>
+        <item>NC</item>
+        <item>ND</item>
+        <item>OH</item>
+        <item>OK</item>
+        <item>OR</item>
+        <item>PA</item>
+        <item>RI</item>
+        <item>SC</item>
+        <item>SD</item>
+        <item>TN</item>
+        <item>TX</item>
+        <item>UT</item>
+        <item>VT</item>
+        <item>VA</item>
+        <item>WA</item>
+        <item>WV</item>
+        <item>WI</item>
+        <item>WY</item>
+        <item>ON</item>
+        <item>QC</item>
+        <item>NS</item>
+        <item>NB</item>
+        <item>MB</item>
+        <item>BC</item>
+        <item>PE</item>
+        <item>SK</item>
+        <item>AB</item>
+        <item>NL</item>
+        <item>MX</item>
+    </string-array>
+
+    <string-array name="cooler_locations">
+        <item>
+            <font size = "30">
+                01
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                06
+            </font>
+        </item>
+    </string-array>
+
+    <string-array name="kiosk_numbers">
+        <item>
+            <font size = "30">
+                01
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                02
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                03
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                04
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                05
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                06
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                07
+            </font>
+        </item>
+        <item>
+            <font size = "30">
+                08
+            </font>
+        </item>
+    </string-array>
+
+    <!-- English -->
+    <string name="email_doesnt_match_eng">*Entered email addresses do not match</string>
+    <string name="phone_doesnt_match_eng">*Entered phone numbers do not match</string>
+    <string name="invalid_email_eng">*Invalid email address</string>
+    <string name="invalid_phone_eng">*Invalid phone number</string>
+    <string name="appt_required_eng">*If your order requires an appointment please call 831&#8211;455&#8211;4305 to schedule an appointment</string>
+    <string name="next_eng">Next</string>
+    <string name="log_in_eng">Log in</string>
+    <string name="state_eng">State</string>
+    <string name="logout_eng">Logout</string>
+    <string name="create_account_eng">Create Account</string>
+    <string name="select_help_icon_eng">Select icon for help</string>
+    <string name="verify_next_eng">*By clicking \'Next\' I verify that all information is correct and accurate</string>
+    <string name="comm_preference_eng">How would you prefer communication?</string>
+    <string name="text_msg_eng">Text message</string>
+    <string name="email_eng">Email</string>
+    <string name="text_and_email_eng">Text message and email</string>
+    <string name="select_one_eng">*Please select one</string>
+    <string name="logged_in_as_eng">Logged in as:</string>
+    <string name="verify_submit_eng">*By clicking \'Submit\' I verify that all \n information is correct and accurate</string>
+    <string name="submit_orders_eng">Submit Order(s)</string>
+    <string name="add_order_eng">Add Order</string>
+    <string name="entered_orders_eng">You have entered information for the following order(s):</string>
+    <string name="correct_customer_eng">Is this the correct customer for this order number?</string>
+    <string name="select_destination_eng">Select destination</string>
+    <string name="yes_eng">Yes</string>
+    <string name="no_eng">No</string>
+    <string name="confirm_eng">Confirm</string>
+    <string name="delete_eng">Delete</string>
+    <string name="existing_account_eng">Do you have an existing account?</string>
+
+    <string name="regulations_eng">Rules and regulations</string>
+    <string name="line1_eng">&#8226; Your trailer temperature must be set to 34&#176;F continuously and pre-cooled prior to loading.</string>
+    <string name="line2_eng">&#8226; Your trailer must be in sanitary condition to transport human food.</string>
+    <string name="line3_eng">&#8226; Trailers are to be cleaned prior to loading, no cleaning on the premises.</string>
+    <string name="line4_eng">&#8226; You must slide your tandems to the back prior to loading.</string>
+    <string name="line5_eng">&#8226; You are responsible for your own load locks. You are expected to remove your load locks prior to loading and secure your load after loading.</string>
+    <string name="line6_eng">&#8226; All drivers are expected to be present while being loaded.</string>
+    <string name="line7_eng">&#8226; All drivers are to stand in designated areas at all times.</string>
+    <string name="line8_eng">&#8226; Absolutely no minors allowed on the dock. No exceptions!</string>
+    <string name="line9_eng">&#8226; Drivers are not allowed inside the cold box or on the loading dock.</string>
+    <string name="line10_eng">&#8226; Do not operate doors or dock plates.</string>
+    <string name="line11_eng">&#8226; Be extremely cautious of wet, slippery floors as well as moving forklifts.</string>
+    <string name="line12_eng">&#8226; Cash transactions and/or gratuities of any kind are strictly prohibited.</string>
+    <string name="line13_eng">&#8226; Be advised that video surveillance is capturing your actions 24 hours a day.</string>
+    <string name="cooperation_eng">Your cooperation will ensure faster and safer loading</string>
+    <string name="verify_read_eng">*By selecting \'Accept\' below, you are agreeing that you read and understand the protocol set forth by the facility and that all information previously entered is true and correct.</string>
+    <string name="submit_eng">Submit</string>
+    <string name="confirm_orders_eng">Please confirm the following order(s):</string>
+    <string name="confirmation_num_eng">Confirmation number:</string>
+    <string name="order_number_eng">Order\nNumber</string>
+    <string name="buyer_name_eng">Customer Name</string>
+    <string name="est_pallets_eng">Est.\nPallets</string>
+    <string name="apt_time_eng">Apt. Time</string>
+    <string name="destination_eng">Destination</string>
+    <string name="est_weight_eng">Est. Weight</string>
+    <string name="total_orders_eng">Total order count:</string>
+    <string name="pallet_count_eng">Total pallet count:</string>
+    <string name="total_weight_eng">Total weight:</string>
+    <string name="thanks_bye_eng">Thank you for submitting your orders. You will receive a notification once orders have been approved by a D’Arrigo Representative.</string>
+    <string name="thanks_bye2_eng">Thank you for submitting your order. You will receive a notification once your order has been approved by a D’Arrigo Representative.</string>
+    <string name="please_logout_eng">Please log-out when finished.</string>
+
+    <!-- Spanish -->
+    <string name="email_doesnt_match_sp">*Las direcciones de email no coinciden.</string>
+    <string name="phone_doesnt_match_sp">*Los números de teléfono no coinciden</string>
+    <string name="invalid_email_sp">*El email no es válido</string>
+    <string name="invalid_phone_sp">*El número de teléfono no es válido</string>
+    <string name="appt_required_sp">*Si su pedido es con cita, llame al 831&#8211;455&#8211;4305 para programarla</string>
+    <string name="next_sp">Siguiente</string>
+    <string name="log_in_sp">Iniciar sesión</string>
+    <string name="state_sp">Estado</string>
+    <string name="logout_sp">Cerrar sesión</string>
+    <string name="create_account_sp">Crear cuenta</string>
+    <string name="select_help_icon_sp">Seleccione el ícono para obtener ayuda</string>
+    <string name="verify_next_sp">*Haciendo clic en ‘Siguiente’, confirmo que toda la información es correcta y exacta</string>
+    <string name="comm_preference_sp">¿Cómo prefiere recibir comunicaciones?</string>
+    <string name="text_msg_sp">Mensaje de texto</string>
+    <string name="email_sp">Email</string>
+    <string name="text_and_email_sp">Mensaje de texto e email</string>
+    <string name="select_one_sp">*Seleccione uno</string>
+    <string name="logged_in_as_sp">Inició sesión como:</string>
+    <string name="verify_submit_sp">*Haciendo clic en \'Enviar\', confirmo que toda \n la información es correcta y exacta</string>
+    <string name="submit_orders_sp">Enviar pedidos</string>
+    <string name="add_order_sp">Agregar pedido</string>
+    <string name="entered_orders_sp">Ha dado información sobre los siguientes pedidos:</string>
+    <string name="yes_sp">Sí</string>
+    <string name="no_sp">No</string>
+    <string name="confirm_sp">Confirmar</string>
+    <string name="delete_sp">Eliminar</string>
+    <string name="existing_account_sp">¿Ya tiene una cuenta?</string>
+    <string name="correct_customer_sp">¿Es este el cliente correcto para este número de pedido?</string>
+    <string name="select_destination_sp">Seleccione destino</string>
+
+    <string name="regulations_sp">Reglas y regulaciones</string>
+    <string name="line1_sp">&#8226; El tráiler debe estar a una temperatura constante de 34&#176;F y se lo debe enfriar antes de la carga.</string>
+    <string name="line2_sp">&#8226; Su tráiler debe estar en debidas condiciones de higiene para transportar comida para el consumo humano.</string>
+    <string name="line3_sp">&#8226; Los tráileres deben limpiarse antes de la carga. No se permite la limpieza en las instalaciones.</string>
+    <string name="line4_sp">&#8226; Debe deslizar los tándems hacia atrás antes de la carga.</string>
+    <string name="line5_sp">&#8226; Usted es responsable de sujetar la carga. Debe quitar el mecanismo de sujeción antes de cargar y sujetar la carga cuando haya terminado.</string>
+    <string name="line6_sp">&#8226; Todos los conductores deben estar presentes durante la carga.</string>
+    <string name="line7_sp">&#8226; Todos los conductores deben permanecer en las áreas designadas en todo momento.</string>
+    <string name="line8_sp">&#8226; No se permiten menores en el muelle de carga. Sin excepciones.</string>
+    <string name="line9_sp">&#8226; No se permite entrar con comida ni bebida a la cámara de frío.</string>
+    <string name="line10_sp">&#8226; No abra ni cierre puertas ni maneje las planchas de los muelles.</string>
+    <string name="line11_sp">&#8226; Los conductores no pueden entrar a la cámara de frío ni al muelle de carga.</string>
+    <string name="line12_sp">&#8226; Tenga mucho cuidado con los pisos mojados y resbaladizos y con los montacargas en movimiento.</string>
+    <string name="line13_sp">&#8226; Están estrictamente prohibidas las operaciones con dinero en efectivo y las propinas de cualquier tipo.</string>
+    <string name="line14_sp">&#8226; Las cámaras de seguridad graban las 24 horas del día.</string>
+    <string name="cooperation_sp">Su cooperación hará que la carga sea más rápida y segura.</string>
+    <string name="verify_read_sp">*Haciendo clic en \'Aceptar\' abajo, usted confirma que ha leído y entiende el protocolo establecido por las instalaciones y que toda la información que escribió anteriormente es verdadera y correcta.</string>
+    <string name="submit_sp">Enviar</string>
+    <string name="confirm_orders_sp">Confirme el/los siguiente(s) pedido(s):</string>
+    <string name="confirmation_num_sp">Número de confirmación:</string>
+    <string name="order_number_sp">Número\nde pedido</string>
+    <string name="buyer_name_sp">Nombre del cliente</string>
+    <string name="est_pallets_sp">Palés\nestimados</string>
+    <string name="apt_time_sp">Hora de\nla cita</string>
+    <string name="destination_sp">Destino</string>
+    <string name="est_weight_sp">Peso\nestimado</string>
+    <string name="total_orders_sp">Cantidad total de pedidos:</string>
+    <string name="pallet_count_sp">Cantidad total de palés:</string>
+    <string name="total_weight_sp">Peso total:</string>
+    <string name="thanks_bye_sp">Gracias por enviar los pedidos. Recibirá una notificación cuando un representante de D\'Arrigo los haya aprobado.</string>
+    <string name="thanks_bye2_sp">Gracias por enviar su pedido. Recibirá una notificación cuando un representante de D\'Arrigo lo haya aprobado.</string>
+    <string name="please_logout_sp">Cierre sesión cuando termine.</string>
+
+    <!-- French -->
+    <string name="email_doesnt_match_fr">*Les adresses courriel saisies ne correspondent pas</string>
+    <string name="phone_doesnt_match_fr">*Les numéros de téléphone saisis ne correspondent pas</string>
+    <string name="invalid_email_fr">*Adresse courriel invalide</string>
+    <string name="invalid_phone_fr">*Numéro de téléphone invalide</string>
+    <string name="appt_required_fr">*Si votre commande nécessite de prendre un rendez-vous, veuillez appeler le 831&#8211;455&#8211;4305 pour le planifier</string>
+    <string name="next_fr">Envoyer</string>
+    <string name="log_in_fr">Connexion</string>
+    <string name="state_fr">État</string>
+    <string name="logout_fr">Déconnexion</string>
+    <string name="create_account_fr">Créer un compte</string>
+    <string name="select_help_icon_fr">Cliquer sur l\’icône pour obtenir de l\’aide</string>
+    <string name="verify_next_fr">*En cliquant sur « Envoyer », je confirme que toutes les informations sont correctes</string>
+    <string name="comm_preference_fr">Comment préférez-vous être contacté?</string>
+    <string name="text_msg_fr">SMS</string>
+    <string name="email_fr">Courriel</string>
+    <string name="text_and_email_fr">SMS et courriel</string>
+    <string name="select_one_fr">*Veuillez sélectionner une réponse</string>
+    <string name="logged_in_as_fr">Connecté en tant que:</string>
+    <string name="verify_submit_fr">*En cliquant sur « Envoyer », je confirme que \n toutes les informations sont correctes</string>
+    <string name="submit_orders_fr">Envoyer commandes</string>
+    <string name="add_orders_fr">Ajouter commande</string>
+    <string name="entered_orders_fr">Vous avez saisi des informations pour les commandes suivantes:</string>
+    <string name="correct_customer_fr">Est-ce le bon client pour ce numéro de commande?</string>
+    <string name="select_destination_fr">Sélectionner la destination</string>
+    <string name="yes_fr">Oui</string>
+    <string name="no_fr">Non</string>
+    <string name="confirm_fr">Confirmer</string>
+    <string name="delete_fr">Supprimer</string>
+    <string name="existing_account_fr">Disposez-vous déjà d’un compte?</string>
+
+    <string name="regulations_fr">Règlement</string>
+    <string name="line_fr">&#8226; La température de votre remorque doit être réglée sur 34* en continu et pré-réfrigérée avant le chargement.</string>
+    <string name="line2_fr">&#8226; Votre remorque doit être suffisamment propre pour transporter de la nourriture destinée à une consommation humaine.</string>
+    <string name="line3_fr">&#8226; Les remorques doivent être nettoyées avant le chargement. Il est interdit de procéder au nettoyage dans les locaux.</string>
+    <string name="line4_fr">&#8226; Vous devez faire glisser vos tandems à l’arrière avant de procéder au chargement.</string>
+    <string name="line5_fr">&#8226; Vous êtes responsable de vos verrous de charge. Vous devez retirer vos verrous de charge avant de procéder au chargement et vous devez arrimer votre charge après le chargement.</string>
+    <string name="line6_fr">&#8226; Tous les conducteurs doivent être présents pendant la phase de chargement.</string>
+    <string name="line7_fr">&#8226; Tous les conducteurs doivent se tenir dans la zone désignée en tout temps.</string>
+    <string name="line8_fr">&#8226; Les mineurs sont strictement interdits sur le quai de chargement. Aucune exception.</string>
+    <string name="line9_fr">&#8226; Les boissons et la nourriture ne sont pas autorisées dans la caisse frigorifique.</string>
+    <string name="line10_fr">&#8226; Veuillez ne pas utiliser les portes ou plateaux du quai.</string>
+    <string name="line11_fr">&#8226; Les conducteurs ne sont pas autorisés à l’intérieur de la caisse frigorifique ou sur le quai de chargement.</string>
+    <string name="line12_fr">&#8226; Veillez à bien faire attention aux sols mouillés et glissants, mais aussi aux lève-palettes en mouvement.</string>
+    <string name="line13_fr">&#8226; Les transactions en espèces ou les gratifications de toute sorte sont strictement interdites.</string>
+    <string name="line14_fr">&#8226; Nous vous rappelons que la vidéosurveillance vous enregistre 24 h/24.</string>
+    <string name="cooperation_fr">Votre coopération permettra de garantir un chargement plus rapide et sécuritaire.</string>
+    <string name="verify_read_fr">*En cliquant sur « Accepter » ci-dessous, vous reconnaissez avoir lu et compris le protocole établi par le site et que toutes les informations saisies précédemment sont vraies et correctes.</string>
+    <string name="submit_fr">Envoyer</string>
+    <string name="confirm_orders_fr">Veuillez confirmer les commandes suivantes:</string>
+    <string name="confirmation_num_fr">Numéro de confirmation:</string>
+    <string name="order_number_fr">Numéro de\ncommande</string>
+    <string name="buyer_name_fr">Nom du client</string>
+    <string name="est_pallets_fr">Palettes\nestimé</string>
+    <string name="apt_time_fr">Heure du rendez-vous</string>
+    <string name="destination_fr">Destination</string>
+    <string name="est_weight_fr">Poids estimé</string>
+    <string name="total_orders_fr">Nombre total de commandes:</string>
+    <string name="pallet_count_fr">Nombre total de palettes:</string>
+    <string name="total_weight_fr">Poids total:</string>
+    <string name="thanks_bye_fr">Merci d\’avoir envoyé vos commandes. Vous recevrez une notification une fois que vos commandes auront été approuvées par un représentant D’Arrigo.</string>
+    <string name="thanks_bye2_fr">Merci d\’avoir envoyé votre commande. Vous recevrez une notification une fois que votre commande aura été approuvée par un représentant D’Arrigo.</string>
+    <string name="please_logout_fr">Veuillez vous déconnecter quand vous avez fini.</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_login">Sign in</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="back_eng">Back</string>
+    <string name="back_sp">Volver</string>
+    <string name="back_fr">Retour</string>
+    <string name="account_already_exists_eng">*An account with this email already exists</string>
+    <string name="account_already_exists_sp">*Ya existe una cuenta con este dirección de email</string>
+    <string name="account_already_exists_fr">*Un compte avec cette adresse courriel existe déjà</string>
+    <string name="hint_email_eng">Email address</string>
+    <string name="hint_phone_eng">Phone number</string>
+    <string name="hint_driver_name_eng">Driver name</string>
+    <string name="hint_driver_license_eng">Driver license number</string>
+    <string name="hint_truck_name_eng">Name of truck</string>
+    <string name="hint_truck_number_eng">Truck number</string>
+    <string name="hint_trailer_license_eng">Trailer license number</string>
+    <string name="hint_dispatcher_eng">Dispatcher phone number</string>
+    <string name="following_orders_eng">The following order(s) are also connected with your previously entered order. You can tap any order to add it to your orders.</string>
+    <string name="following_orders_sp">Los siguientes pedidos también están relacionados con el pedido especificado. Puede hacer clic en cualquier pedido para agregarlo a su lista de pedidos.</string>
+    <string name="following_orders_fr">Les commandes suivantes sont également liées à votre commande précédemment saisie. Vous pouvez appuyer sur n\’importe quelle commande pour l\’ajouter à vos commandes.</string>
+    <string name="delete_order_eng">Are you sure you want to delete order:</string>
+    <string name="delete_order_sp">¿Está seguro de que quiere eliminar el pedido: </string>
+    <string name="delete_order_fr">Voulez-vous vraiment supprimer la commande: </string>
+    <string name="logout_confirm_eng">Are you sure you want to logout?</string>
+    <string name="logout_confirm_sp">¿Está seguro de que quiere cerrar sesión?</string>
+    <string name="logout_confirm_fr">Voulez-vous vraiment vous déconnecter?</string>
+    <string name="submit_confirm_eng">Are you sure you want to submit these order(s)?</string>
+    <string name="submit_confirm_sp">¿Está seguro de que quiere enviar estos pedidos?</string>
+    <string name="submit_confirm_fr">Voulez-vous vraiment envoyer ces commandes?</string>
+    <string name="accept_eng">Accept</string>
+    <string name="accept_sp">Aceptar</string>
+    <string name="accept_fr">Accepter</string>
+    <string name="standard_rates_apply_eng">*Standard messaging rates apply</string>
+    <string name="standard_rates_apply_sp">*Se aplican tarifas estándar de mensajes de texto</string>
+    <string name="standard_rates_apply_fr">*Des tarifs de messagerie standard s\'appliquent</string>
+    <string name="congrats_account_eng">Congratulations! You have successfully created an account. You are now ready to log in.</string>
+    <string name="congrats_account_sp">¡Felicidades! Ha creado una cuenta con éxito. Ahora está listo para iniciar sesión.</string>
+    <string name="hint_email_sp">Dirección de email</string>
+    <string name="hint_phone_sp">N.º de teléfono</string>
+    <string name="hint_truck_name_sp">Nombre actual del camión</string>
+    <string name="hint_truck_number_sp">N.º actual del camión</string>
+    <string name="hint_trailer_license_sp">Matrícula actual del tráiler</string>
+    <string name="hint_driver_license_sp">Licencia del conductor</string>
+    <string name="hint_driver_name_sp">Nombre del conductor</string>
+    <string name="hint_dispatcher_sp">N.º de teléfono del despachante</string>
+    <string name="congrats_account_fr">Félicitations! Vous avez réussi à créer un compte. Vous êtes maintenant prêt à vous connecter.</string>
+    <string name="hint_email_fr">Adresse courriel</string>
+    <string name="hint_phone_fr">Numéro de telephone</string>
+    <string name="hint_truck_name_fr">Nom actuel du camion</string>
+    <string name="hint_truck_number_fr">Numéro actuel du camion</string>
+    <string name="hint_trailer_license_fr">Permis actuel de la remorque</string>
+    <string name="hint_driver_license_fr">Permis de conduire</string>
+    <string name="hint_driver_name_fr">Nom du conducteur</string>
+    <string name="hint_dispatcher_fr">Numéro de téléphone du répartiteur</string>
+
+
 </resources>
