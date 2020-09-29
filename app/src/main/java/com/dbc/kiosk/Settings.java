@@ -11,9 +11,11 @@ import androidx.fragment.app.Fragment;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,8 +25,12 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.dbc.kiosk.Screens.FirstScreen;
+import com.dbc.kiosk.Webservices.GetSystemPassword;
 import java.lang.ref.WeakReference;
+import java.util.concurrent.ExecutionException;
+
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 /**
  * Settings.java
@@ -43,7 +49,6 @@ public class Settings extends Fragment {
     private static String coolerLocation;
     private static String kioskNumber;
     private static String DBC_URL;
-    private static final String password = "4535";
 
     private static SharedPreferences settings;
 
@@ -206,32 +211,40 @@ public class Settings extends Fragment {
             imm.showSoftInput(adminPW, SHOW_IMPLICIT);
         }
         adminPW.requestFocus();
-
-        adminPW.addTextChangedListener(new TextWatcher() {
+        adminPW.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (adminPW.getText().toString().equals(password)) {
-                    adminPW.setVisibility(View.GONE);
-                    cardView1.setVisibility(View.VISIBLE);
-                    cardView2.setVisibility(View.VISIBLE);
-                    cardView3.setVisibility(View.VISIBLE);
-                    errorText.setVisibility(View.VISIBLE);
-                    errorTitle.setVisibility(View.VISIBLE);
-                    saveBtn.setVisibility(View.VISIBLE);
-                    settingsText.setVisibility(View.VISIBLE);
-                    versionUpdate.setVisibility(View.VISIBLE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    GetSystemPassword getSysPass = new GetSystemPassword();
+                    try {
+                        String password = getSysPass.execute().get();
+                        if (password.equals("")) {
+                            Toast.makeText(getActivity(),"ERROR: Unable to Verify System Password",Toast.LENGTH_SHORT).show();
+                        } else if(adminPW.getText().toString().equals(password)) {
+                            adminPW.setVisibility(View.GONE);
+                            cardView1.setVisibility(View.VISIBLE);
+                            cardView2.setVisibility(View.VISIBLE);
+                            cardView3.setVisibility(View.VISIBLE);
+                            errorText.setVisibility(View.VISIBLE);
+                            errorTitle.setVisibility(View.VISIBLE);
+                            saveBtn.setVisibility(View.VISIBLE);
+                            settingsText.setVisibility(View.VISIBLE);
+                            versionUpdate.setVisibility(View.VISIBLE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        } else {
+                            Toast.makeText(getActivity(),"Invalid Password",Toast.LENGTH_SHORT).show();
+                        }
+                        handled = true;
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(),"ERROR: Unable to Verify System Password",Toast.LENGTH_SHORT).show();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(),"ERROR: Unable to Verify System Password",Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                return handled;
             }
         });
         return view;
