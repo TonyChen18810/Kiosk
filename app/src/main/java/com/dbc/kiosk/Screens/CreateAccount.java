@@ -516,8 +516,8 @@ public class CreateAccount extends AppCompatActivity {
         trailerStateSpinner.setVisibility(View.INVISIBLE);
         driverStateSpinner.setVisibility(View.INVISIBLE);
 
-        driverLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
-        trailerLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        driverLicense.setFilters( new InputFilter[] {new InputFilter.LengthFilter(20), new InputFilter.AllCaps()});
+        trailerLicense.setFilters( new InputFilter[] {new InputFilter.LengthFilter(20), new InputFilter.AllCaps()});
 
         txtText = findViewById(R.id.Text);
         emailText = findViewById(R.id.Email);
