@@ -48,7 +48,8 @@
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
                 android:textSize="60sp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:maxLength="49" />
 
             <TextView
                 android:id="@+id/PhoneHint"
@@ -68,7 +69,8 @@
                 android:inputType="phone"
                 android:textColor="#C9000000"
                 android:textSize="60sp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:maxLength="20" />
 
             <TextView
                 android:id="@+id/PhoneInUseWarning"
@@ -99,7 +101,8 @@
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
                 android:textSize="60sp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:maxLength="30"/>
 
             <TextView
                 android:id="@+id/DriverLicenseHint"
@@ -122,6 +125,7 @@
                     android:layout_gravity="left"
                     android:background="@drawable/edit_text"
                     android:ems="11"
+                    android:maxLength="20"
                     android:inputType="textEmailAddress"
                     android:textSize="60sp" />
 
@@ -156,7 +160,8 @@
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
                 android:textSize="60sp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:maxLength="20" />
 
             <TextView
                 android:id="@+id/TruckNumberHint"
@@ -177,7 +182,8 @@
                 android:textColor="#C9000000"
                 android:textSize="60sp"
                 tools:ignore="TextFields"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:maxLength="20" />
 
             <TextView
                 android:id="@+id/TrailerLicenseHint"
@@ -200,6 +206,7 @@
                     android:layout_gravity="left"
                     android:background="@drawable/edit_text"
                     android:ems="11"
+                    android:maxLength="20"
                     android:inputType="textEmailAddress"
                     android:textColor="#C9000000"
                     android:textSize="60sp" />
@@ -235,7 +242,8 @@
                 android:ems="12"
                 android:inputType="phone"
                 android:textSize="60sp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:maxLength="20" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

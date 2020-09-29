@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.dbc.kiosk.Account;
 import com.dbc.kiosk.Helpers.EmailSuggestionAdapter;
 import com.dbc.kiosk.Helpers.KeyboardListener;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private AutoCompleteTextView emailAddressBox;
 
     private EditText emailAddressBox_OLD, phoneNumberBox, confirmEmailAddress, confirmPhoneNumber;
-    private TextView appointmentText, noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone, accountAlreadyExists, phoneAlreadyExists;
+    private TextView appointmentText, noEmailWarning, noPhoneNumberWarning, unmatchingEmail, unmatchingPhone , accountAlreadyExists, phoneAlreadyExists;
     private Button nextBtn, backBtn;
     public ProgressBar progressBar;
     private boolean newAccount;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox englishCheckbox, spanishCheckbox, frenchCheckbox;
     public static MutableLiveData<Boolean> emailListener;
     public static MutableLiveData<Boolean> phoneListener;
+    private String emailNotFoundWarning, wrongPhoneNumberWarning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         // aka did the user click yes or no
         String accountStatus = getIntent().getExtras().getString("accountStatus");
 
-        // ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.autofill_layout, Account.getEMAIL_LIST());
         emailAddressBox = findViewById(R.id.AutoCompleteEmail);
         EmailSuggestionAdapter adapter = new EmailSuggestionAdapter(this, R.layout.custom_suggestion_row, Account.getEMAIL_LIST(), emailAddressBox);
         emailAddressBox.setAdapter(adapter);
@@ -98,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
             if (!newAccount) {
                 if (!accountExists) {
                     System.out.println("Account does not exist!");
-                    setStatus(0, asList(emailAddressBox, phoneNumberBox), asList(noEmailWarning, noPhoneNumberWarning));
+                    Toast.makeText(getApplicationContext(), emailNotFoundWarning,Toast.LENGTH_LONG).show();
                     enableObjects(nextBtn, backBtn, emailAddressBox, phoneNumberBox, englishCheckbox, spanishCheckbox, frenchCheckbox);
                     showSoftKeyboard(emailAddressBox);
                     progressBar.setVisibility(View.GONE);
                 } else if (!PhoneNumberFormat.extract(phoneNumberBox.getText().toString()).equals(Account.getCurrentAccount().getPhoneNumber())){
-                    setStatus(0, Collections.singletonList(phoneNumberBox), Collections.singletonList(noPhoneNumberWarning));
+                    Toast.makeText(getApplicationContext(),wrongPhoneNumberWarning ,Toast.LENGTH_LONG).show();
                     enableObjects(nextBtn, backBtn, emailAddressBox, phoneNumberBox, englishCheckbox, spanishCheckbox, frenchCheckbox);
                     showSoftKeyboard(phoneNumberBox);
                     progressBar.setVisibility(View.GONE);
@@ -318,7 +319,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Email in use...");
                 confirmEmailAddress.setText("");
                 setStatus(0, Collections.singletonList(emailAddressBox), Collections.emptyList());
-                // emailInUseWarning.setVisibility(View.VISIBLE);
                 accountAlreadyExists.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
                 enableObjects(nextBtn, backBtn, emailAddressBox, confirmEmailAddress, phoneNumberBox, confirmPhoneNumber, englishCheckbox, spanishCheckbox, frenchCheckbox);
@@ -327,7 +327,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Good email...");
                 accountAlreadyExists.setVisibility(View.INVISIBLE);
                 setStatus(-1, Collections.singletonList(emailAddressBox), Collections.emptyList());
-                // emailInUseWarning.setVisibility(View.GONE);
             }
 
             if (phoneListener.getValue() != null && emailListener.getValue() != null) {
@@ -353,7 +352,6 @@ public class MainActivity extends AppCompatActivity {
                 phoneAlreadyExists.setVisibility(View.VISIBLE);
                 confirmPhoneNumber.setText("");
                 setStatus(0, Collections.singletonList(phoneNumberBox), Collections.emptyList());
-                // phoneInUseWarning.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
                 enableObjects(nextBtn, backBtn, emailAddressBox, confirmEmailAddress, phoneNumberBox, confirmPhoneNumber, englishCheckbox, spanishCheckbox, frenchCheckbox);
             } else if (available) {
@@ -361,7 +359,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Good phone...");
                 phoneAlreadyExists.setVisibility(View.INVISIBLE);
                 setStatus(-1, Collections.singletonList(phoneNumberBox), Collections.emptyList());
-                // phoneInUseWarning.setVisibility(View.GONE);
             }
 
             if (phoneListener.getValue() != null && emailListener.getValue() != null) {
@@ -662,7 +659,6 @@ public class MainActivity extends AppCompatActivity {
         unmatchingPhone = findViewById(R.id.UnmatchingPhone);
         accountAlreadyExists = findViewById(R.id.AccountAlreadyExists);
         phoneAlreadyExists = findViewById(R.id.PhoneAlreadyExists);
-
         englishCheckbox = findViewById(R.id.EnglishCheckbox);
         spanishCheckbox = findViewById(R.id.SpanishCheckbox);
         frenchCheckbox = findViewById(R.id.FrenchCheckbox);
@@ -681,21 +677,29 @@ public class MainActivity extends AppCompatActivity {
             englishCheckbox.setClickable(false);
             spanishCheckbox.setClickable(true);
             frenchCheckbox.setClickable(true);
+
+            emailNotFoundWarning = getString(R.string.email_not_found_eng);
+            wrongPhoneNumberWarning = getString(R.string.wrong_phone_number_eng);
         } else if (Language.getCurrentLanguage() == 2) {
             spanishCheckbox.setChecked(true);
             spanishCheckbox.setClickable(false);
             englishCheckbox.setClickable(true);
             frenchCheckbox.setClickable(true);
+
+            emailNotFoundWarning = getString(R.string.email_not_found_sp);
+            wrongPhoneNumberWarning = getString(R.string.wrong_phone_number_sp);
         } else if (Language.getCurrentLanguage() == 3) {
             frenchCheckbox.setChecked(true);
             frenchCheckbox.setClickable(false);
             spanishCheckbox.setClickable(true);
             englishCheckbox.setClickable(true);
+
+            emailNotFoundWarning = getString(R.string.email_not_found_fr);
+            wrongPhoneNumberWarning = getString(R.string.wrong_phone_number_fr);
         }
 
         showSoftKeyboard(emailAddressBox);
         changeLanguage(Language.getCurrentLanguage());
-        // emailAddressBox.setVisibility(View.GONE);
         emailAddressBox_OLD.setVisibility(View.GONE);
     }
     /**
@@ -725,6 +729,8 @@ public class MainActivity extends AppCompatActivity {
                 backBtn.setText(R.string.back_eng);
                 accountAlreadyExists.setText(R.string.account_already_exists_eng);
                 phoneAlreadyExists.setText("*An account with this phone number already exists");
+                emailNotFoundWarning = getString(R.string.email_not_found_eng);
+                wrongPhoneNumberWarning = getString(R.string.wrong_phone_number_eng);
                 break;
             case 2:
                 // Spanish
@@ -741,6 +747,8 @@ public class MainActivity extends AppCompatActivity {
                 backBtn.setText(R.string.back_sp);
                 accountAlreadyExists.setText(R.string.account_already_exists_sp);
                 phoneAlreadyExists.setText("*Ya existe una cuenta con este número de teléfono");
+                emailNotFoundWarning = getString(R.string.email_not_found_sp);
+                wrongPhoneNumberWarning = getString(R.string.wrong_phone_number_sp);
                 break;
             case 3:
                 // French
@@ -757,6 +765,8 @@ public class MainActivity extends AppCompatActivity {
                 backBtn.setText(R.string.back_fr);
                 accountAlreadyExists.setText(R.string.account_already_exists_fr);
                 phoneAlreadyExists.setText("*Un compte avec ce numéro de téléphone existe déjà");
+                emailNotFoundWarning = getString(R.string.email_not_found_fr);
+                wrongPhoneNumberWarning = getString(R.string.wrong_phone_number_fr);
                 break;
         }
     }

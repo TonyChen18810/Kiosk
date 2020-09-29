@@ -250,6 +250,8 @@
     </string-array>
 
     <!-- English -->
+    <string name="email_not_found_eng">*Unable to find account</string>
+    <string name="wrong_phone_number_eng">*Incorrect phone number entered</string>
     <string name="email_doesnt_match_eng">*Entered email addresses do not match</string>
     <string name="phone_doesnt_match_eng">*Entered phone numbers do not match</string>
     <string name="invalid_email_eng">*Invalid email address</string>
@@ -313,6 +315,8 @@
     <string name="please_logout_eng">Please log-out when finished.</string>
 
     <!-- Spanish -->
+    <string name="email_not_found_sp">*No puedo encontrar la cuenta</string>
+    <string name="wrong_phone_number_sp">*Se ingresó un número de teléfono incorrecto</string>
     <string name="email_doesnt_match_sp">*Las direcciones de email no coinciden.</string>
     <string name="phone_doesnt_match_sp">*Los números de teléfono no coinciden</string>
     <string name="invalid_email_sp">*El email no es válido</string>
@@ -377,6 +381,8 @@
     <string name="please_logout_sp">Cierre sesión cuando termine.</string>
 
     <!-- French -->
+    <string name="email_not_found_fr">*Impossible de trouver le compte</string>
+    <string name="wrong_phone_number_fr">*Numéro de téléphone incorrect</string>
     <string name="email_doesnt_match_fr">*Les adresses courriel saisies ne correspondent pas</string>
     <string name="phone_doesnt_match_fr">*Les numéros de téléphone saisis ne correspondent pas</string>
     <string name="invalid_email_fr">*Adresse courriel invalide</string>

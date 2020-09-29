@@ -55,7 +55,7 @@
                 android:inputType="textEmailAddress"
                 android:textColor="#C9000000"
                 android:textSize="50sp"
-                android:maxLength="50" />
+                android:maxLength="49" />
 
 
             <TextView
