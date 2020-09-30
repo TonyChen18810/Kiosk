@@ -251,7 +251,7 @@
 
     <!-- English -->
     <string name="email_not_found_eng">*Unable to find account</string>
-    <string name="wrong_phone_number_eng">*Incorrect phone number entered</string>
+    <string name="wrong_phone_number_eng">*Incorrect phone number for email entered</string>
     <string name="email_doesnt_match_eng">*Entered email addresses do not match</string>
     <string name="phone_doesnt_match_eng">*Entered phone numbers do not match</string>
     <string name="invalid_email_eng">*Invalid email address</string>
