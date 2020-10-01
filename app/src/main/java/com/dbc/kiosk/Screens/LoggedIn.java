@@ -437,10 +437,8 @@ public class LoggedIn extends AppCompatActivity {
         driverStateListView.setVisibility(View.GONE);
         trailerStateListView.setVisibility(View.GONE);
 
-        // emailAddress.setEnabled(false);
-        // phoneNumber.setEnabled(false);
-        driverLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps(), new InputFilter.LengthFilter(20)});
-        trailerLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps(), new InputFilter.LengthFilter(20)});
+        driverLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps(), new InputFilter.LengthFilter(11)});
+        trailerLicense.setFilters(new InputFilter[] {new InputFilter.AllCaps(), new InputFilter.LengthFilter(11)});
 
         String commPreference = Account.getCurrentAccount().getCommunicationPreference();
         System.out.println("commPreference: " + commPreference);
