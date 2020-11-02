@@ -45,9 +45,10 @@ import com.google.firebase.iid.FirebaseInstanceId;
 public class FirstScreen extends AppCompatActivity {
     private String version;
     private CheckBox englishCheckbox, spanishCheckbox, frenchCheckbox;
-    private TextView appointmentWarningText, existingAccountText, versionText, noBerries, wrongOffice;
+    private TextView appointmentWarningText, existingAccountText, versionText, noBerries, wrongOffice, azWrongOffice;
     private Button noBtn, yesBtn;
     private CardView berryCard;
+    private CardView azCard;
 
     public static MutableLiveData<Boolean> settingsListener = null;
 
@@ -79,7 +80,9 @@ public class FirstScreen extends AppCompatActivity {
         System.out.println("System mode: " + Settings.getDbcUrl());
         if (Settings.getCoolerLocation().equals("06")) {
             berryCard.setVisibility(View.INVISIBLE);
+            azCard.setVisibility(View.VISIBLE);
         } else {
+            azCard.setVisibility(View.INVISIBLE);
             berryCard.setVisibility(View.VISIBLE);
         }
 
@@ -123,7 +126,9 @@ public class FirstScreen extends AppCompatActivity {
                 }
                 if (Settings.getCoolerLocation().equals("06")) {
                     berryCard.setVisibility(View.INVISIBLE);
+                    azCard.setVisibility(View.VISIBLE);
                 } else {
+                    azCard.setVisibility(View.INVISIBLE);
                     berryCard.setVisibility(View.VISIBLE);
                 }
                 new GetAllEmails().execute();
@@ -211,7 +216,7 @@ public class FirstScreen extends AppCompatActivity {
     }
 
     public void textFadeStart() {
-        TextView[] textArray = {appointmentWarningText, existingAccountText, noBtn, yesBtn, noBerries, wrongOffice};
+        TextView[] textArray = {appointmentWarningText, existingAccountText, noBtn, yesBtn, noBerries, wrongOffice, azWrongOffice};
         AlphaAnimation ani = new AlphaAnimation(1.0f, 0.2f);
         ani.setDuration(500);
         for (TextView text : textArray) {
@@ -220,7 +225,7 @@ public class FirstScreen extends AppCompatActivity {
     }
 
     public void textFadeEnd() {
-        TextView[] textArray = {appointmentWarningText, existingAccountText, noBtn, yesBtn, noBerries, wrongOffice};
+        TextView[] textArray = {appointmentWarningText, existingAccountText, noBtn, yesBtn, noBerries, wrongOffice, azWrongOffice};
         AlphaAnimation ani = new AlphaAnimation(0.2f, 1.0f);
         ani.setDuration(500);
         for (TextView text : textArray) {
@@ -251,8 +256,10 @@ public class FirstScreen extends AppCompatActivity {
         versionText.setText("Version: " + version);
 
         berryCard = findViewById(R.id.BerryCard);
+        azCard = findViewById(R.id.AzCard);
         noBerries = findViewById(R.id.NoBerries);
         wrongOffice = findViewById(R.id.WrongOffice);
+        azWrongOffice = findViewById(R.id.AZWrongOffice);
 
         appointmentWarningText = findViewById(R.id.AppointmentText);
         existingAccountText = findViewById(R.id.ExistingAccountText);
@@ -291,6 +298,7 @@ public class FirstScreen extends AppCompatActivity {
             //noBerries.setText("NO DRISCOLL'S/BERRIES");
             noBerries.setText("PLEASE CHECK IN DRISCOLL’S/BERRIES ORDERS AT OTHER OFFICE");
             wrongOffice.setText("*If you have a Driscoll's order, you are at the wrong office.");
+            azWrongOffice.setText("*If you are checking in an order for a shipper other than D'Arrigo such as: Bengard, Sabor, or The Garlic Company please go to the check in window.");
         } else if (currentLanguage == 2) {
             appointmentWarningText.setText(R.string.appt_required_sp);
             existingAccountText.setText(R.string.existing_account_sp);
@@ -299,6 +307,7 @@ public class FirstScreen extends AppCompatActivity {
             //noBerries.setText("NO DRISCOLL'S/BAYAS");
             noBerries.setText("POR FAVOR VERIFIQUE LOS PEDIDOS DE DRISCOLL'S/BERRIES EN OTRA OFICINA");
             wrongOffice.setText("*Si tiene un pedido de Driscoll, está en la oficina equivocada.");
+            azWrongOffice.setText("*Si está registrando un pedido para un expedidor que no sea D'Arrigo, como: Bengard, Sabor o The Garlic Company, vaya a la ventana de registro");
         } else if ((currentLanguage == 3)) {
             appointmentWarningText.setText(R.string.appt_required_fr);
             existingAccountText.setText(R.string.existing_account_fr);
@@ -307,6 +316,7 @@ public class FirstScreen extends AppCompatActivity {
             //noBerries.setText("PAS DE DRISCOLL'S/BAIES");
             noBerries.setText("VEUILLEZ VÉRIFIER LES COMMANDES DE DRISCOLL/BAIES À UN AUTRE BUREAU");
             wrongOffice.setText("*Si vous avez une commande Driscoll, vous êtes au mauvais bureau.");
+            azWrongOffice.setText("*Si vous enregistrez une commande pour un expéditeur autre que D'Arrigo tel que: Bengard, Sabor ou The Garlic Company, veuillez vous rendre dans la fenêtre d'enregistrement.");
         }
     }
 }
